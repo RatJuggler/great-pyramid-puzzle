@@ -18,3 +18,7 @@ The tiles are regular triangles which are split into 12 segments by six lines, t
 sides. The four segments along each side are either red or white.
 
 ![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-segments.png)
+
+### Triangle Resources
+https://en.wikipedia.org/wiki/Equilateral_triangle
+https://mathworld.wolfram.com/EquilateralTriangle.html
