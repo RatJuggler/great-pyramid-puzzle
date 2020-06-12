@@ -3,6 +3,7 @@ settings.outformat="pdf";
 import geometry;
 
 size(5cm, 0);
+defaultpen(fontsize(10pt));
 
 // Origin
 point origin = (0, 0);
@@ -18,18 +19,26 @@ point A = point(a_triangle, 1);
 point B = point(a_triangle, 0);
 point C = point(a_triangle, 2);
 
-dot(Label("A"), A);
-dot(Label("B"), B);
-dot(Label("C"), C);
+dot(A);
+dot(B);
+dot(C);
+
+label("A", A, N);
+label("B", B, E);
+label("C", C, W);
 
 // Sides
 path side1 = (A--B);
 path side2 = (B--C);
 path side3 = (C--A);
 
-draw("1", side1);
-draw("2", side2);
-draw("3", side3);
+draw(side1);
+draw(side2);
+draw(side3);
+
+label("1", side1, NE);
+label("2", side2, S);
+label("3", side3, NW);
 
 // Bisectors
 path bisectorA = (A--(-A.x,-A.y));
