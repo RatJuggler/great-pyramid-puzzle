@@ -1,9 +1,12 @@
+// Drawing file for asymptote (https://asymptote.sourceforge.io/).
+
 settings.outformat="pdf";
 
 import geometry;
 
 size(5cm, 0);
-defaultpen(fontsize(10pt));
+defaultpen(fontsize(8pt));
+pen divider = dashed + gray;
 
 // Origin
 point origin = (0, 0);
@@ -36,27 +39,27 @@ draw(side1);
 draw(side2);
 draw(side3);
 
-label("1", side1, NE);
-label("2", side2, S);
-label("3", side3, NW);
+label("Side1", side1, NE);
+label("Side2", side2, S);
+label("Side3", side3, NW);
 
 // Bisectors
 path bisectorA = (A--(-A.x,-A.y));
 path bisectorB = (B--(-B.x,-B.y));
 path bisectorC = (C--(-C.x,-C.y));
 
-draw(bisectorA);
-draw(bisectorB);
-draw(bisectorC);
+draw(bisectorA, divider);
+draw(bisectorB, divider);
+draw(bisectorC, divider);
 
 // Parallels
 path parallelA = ((-A.y,-A.x)--(A.y,A.x));
 path parallelB = ((-B.y,-B.x)--(B.y,B.x));
 path parallelC = ((-C.y,-C.x)--(C.y,C.x));
 
-draw(parallelA);
-draw(parallelB);
-draw(parallelC);
+draw(parallelA, divider);
+draw(parallelB, divider);
+draw(parallelC, divider);
 
 // Triangles numbered clockwise from A: t1, t2, t3, ... t12
 // Odd numbers are filled red, even are left white.
