@@ -41,36 +41,40 @@ draw(bisectorB);
 draw(bisectorC);
 
 // Parallels
-draw((-A.y,-A.x)--(A.y,A.x));
-draw((-B.y,-B.x)--(B.y,B.x));
-draw((-C.y,-C.x)--(C.y,C.x));
+path parallelA = ((-A.y,-A.x)--(A.y,A.x));
+path parallelB = ((-B.y,-B.x)--(B.y,B.x));
+path parallelC = ((-C.y,-C.x)--(C.y,C.x));
+
+draw(parallelA);
+draw(parallelB);
+draw(parallelC);
 
 // Triangles numbered clockwise from A: t1, t2, t3, ... t12
 // Odd numbers are filled red, even are left white.
 
-point a1 = intersectionpoint(side1, (origin--(-C.y,-C.x)));
+point a1 = intersectionpoint(side1, parallelC);
 path t1 = (origin--A--a1--cycle);
 fill(t1, red);
 
 point a2 = intersectionpoint(side1, bisectorC);
-point a3 = intersectionpoint(side1, (origin--(A.y,A.x)));
+point a3 = intersectionpoint(side1, parallelA);
 path t3 = (origin--a2--a3--cycle);
 fill(t3, red);
 
-point b1 = intersectionpoint(side2, (origin--(-B.y,-B.x)));
+point b1 = intersectionpoint(side2, parallelB);
 path t5 = (origin--B--b1--cycle);
 fill(t5, red);
 
 point b2 = intersectionpoint(side2, bisectorA);
-point b3 = intersectionpoint(side2, (origin--(C.y,C.x)));
+point b3 = intersectionpoint(side2, parallelC);
 path t7 = (origin--b2--b3--cycle);
 fill(t7, red);
 
-point c1 = intersectionpoint(side3, (origin--(-A.y,-A.x)));
+point c1 = intersectionpoint(side3, parallelA);
 path t9 = (origin--C--c1--cycle);
 fill(t9, red);
 
 point c2 = intersectionpoint(side3, bisectorB);
-point c3 = intersectionpoint(side3, (origin--(B.y,B.x)));
+point c3 = intersectionpoint(side3, parallelB);
 path t11 = (origin--c2--c3--cycle);
 fill(t11, red);
