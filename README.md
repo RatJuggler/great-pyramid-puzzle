@@ -17,8 +17,7 @@ There was also a smaller version, called the Great Pyramid Pocket Puzzle, with 1
 The tiles are regular triangles which are split into 12 segments by six lines, the three bisectors and three lines parallel to the
 sides. The four segments along each side are either red or white.
 
-![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-segments.png)
+![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile.svg)
 
 ### Triangle Resources
 https://en.wikipedia.org/wiki/Equilateral_triangle
-https://mathworld.wolfram.com/EquilateralTriangle.html

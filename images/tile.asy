@@ -6,9 +6,12 @@ settings.outformat="svg";
 
 import geometry;
 
+// Size and formatting
 size(10cm, 0);
-defaultpen(fontsize(12pt));
+pen apex = fontsize(12pt);
+pen side = fontsize(11pt);
 pen divider = dashed + gray;
+pen segment = fontsize(10pt);
 
 // Origin
 point origin = (0, 0);
@@ -28,9 +31,9 @@ dot(A);
 dot(B);
 dot(C);
 
-label("A", A, N);
-label("B", B, E);
-label("C", C, W);
+label("A", A, N, apex);
+label("B", B, E, apex);
+label("C", C, W, apex);
 
 // Sides
 path side1 = (A--B);
@@ -41,9 +44,9 @@ draw(side1);
 draw(side2);
 draw(side3);
 
-label("Side1", side1, NE);
-label("Side2", side2, S);
-label("Side3", side3, NW);
+label("Side1", side1, NE, side);
+label("Side2", side2, S, side);
+label("Side3", side3, NW, side);
 
 // Bisectors
 path bisectorA = (A--(-A.x,-A.y));
@@ -69,44 +72,44 @@ draw(parallelC, divider);
 point a1 = intersectionpoint(side1, parallelC);
 path seg1 = (origin--A--a1--cycle);
 fill(seg1, red);
-label("Seg1", (origin--A), E);
+label("Seg1", (origin--A), E, segment);
 
 point a2 = intersectionpoint(side1, bisectorC);
-label("Seg2", (a1--a2), SW);
+label("Seg2", (a1--a2), SW, segment);
 
 point a3 = intersectionpoint(side1, parallelA);
 path seg3 = (origin--a2--a3--cycle);
 fill(seg3, red);
-label("Seg3", (a2--a3));
+label("Seg3", (a2--a3), segment);
 
-label("Seg4", (a3--B));
+label("Seg4", (a3--B), segment);
 
 point b1 = intersectionpoint(side2, parallelB);
 path seg5 = (origin--B--b1--cycle);
 fill(seg5, red);
-label("Seg5", (B--b1));
+label("Seg5", (B--b1), segment);
 
 point b2 = intersectionpoint(side2, bisectorA);
-label("Seg6", (b1--b2));
+label("Seg6", (b1--b2), segment);
 
 point b3 = intersectionpoint(side2, parallelC);
 path seg7 = (origin--b2--b3--cycle);
 fill(seg7, red);
-label("Seg7", (b2--b3));
+label("Seg7", (b2--b3), segment);
 
-label("Seg8", (b3--C));
+label("Seg8", (b3--C), segment);
 
 point c1 = intersectionpoint(side3, parallelA);
 path seg9 = (origin--C--c1--cycle);
 fill(seg9, red);
-label("Seg9", (C--c1));
+label("Seg9", (C--c1), segment);
 
 point c2 = intersectionpoint(side3, bisectorB);
-label("Seg10", (c1--c2));
+label("Seg10", (c1--c2), segment);
 
 point c3 = intersectionpoint(side3, parallelB);
 path seg11 = (origin--c2--c3--cycle);
 fill(seg11, red);
-label("Seg11", (c2--c3), SE);
+label("Seg11", (c2--c3), SE, segment);
 
-label("Seg12", (origin--A), W);
+label("Seg12", (origin--A), W, segment);
