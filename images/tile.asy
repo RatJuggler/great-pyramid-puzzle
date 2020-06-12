@@ -1,11 +1,13 @@
 // Drawing file for asymptote (https://asymptote.sourceforge.io/).
 
-settings.outformat="pdf";
+// Settings for svg output (can also use pdf).
+settings.libgs="";
+settings.outformat="svg";
 
 import geometry;
 
-size(5cm, 0);
-defaultpen(fontsize(8pt));
+size(10cm, 0);
+defaultpen(fontsize(12pt));
 pen divider = dashed + gray;
 
 // Origin
@@ -61,32 +63,50 @@ draw(parallelA, divider);
 draw(parallelB, divider);
 draw(parallelC, divider);
 
-// Triangles numbered clockwise from A: t1, t2, t3, ... t12
-// Odd numbers are filled red, even are left white.
+// Segments are numbered clockwise from A: Seg1, Seg2, Seg3, ... Seg12
+// Odd numbers are shown filled red, even are left white.
 
 point a1 = intersectionpoint(side1, parallelC);
-path t1 = (origin--A--a1--cycle);
-fill(t1, red);
+path seg1 = (origin--A--a1--cycle);
+fill(seg1, red);
+label("Seg1", (origin--A), E);
 
 point a2 = intersectionpoint(side1, bisectorC);
+label("Seg2", (a1--a2), SW);
+
 point a3 = intersectionpoint(side1, parallelA);
-path t3 = (origin--a2--a3--cycle);
-fill(t3, red);
+path seg3 = (origin--a2--a3--cycle);
+fill(seg3, red);
+label("Seg3", (a2--a3));
+
+label("Seg4", (a3--B));
 
 point b1 = intersectionpoint(side2, parallelB);
-path t5 = (origin--B--b1--cycle);
-fill(t5, red);
+path seg5 = (origin--B--b1--cycle);
+fill(seg5, red);
+label("Seg5", (B--b1));
 
 point b2 = intersectionpoint(side2, bisectorA);
+label("Seg6", (b1--b2));
+
 point b3 = intersectionpoint(side2, parallelC);
-path t7 = (origin--b2--b3--cycle);
-fill(t7, red);
+path seg7 = (origin--b2--b3--cycle);
+fill(seg7, red);
+label("Seg7", (b2--b3));
+
+label("Seg8", (b3--C));
 
 point c1 = intersectionpoint(side3, parallelA);
-path t9 = (origin--C--c1--cycle);
-fill(t9, red);
+path seg9 = (origin--C--c1--cycle);
+fill(seg9, red);
+label("Seg9", (C--c1));
 
 point c2 = intersectionpoint(side3, bisectorB);
+label("Seg10", (c1--c2));
+
 point c3 = intersectionpoint(side3, parallelB);
-path t11 = (origin--c2--c3--cycle);
-fill(t11, red);
+path seg11 = (origin--c2--c3--cycle);
+fill(seg11, red);
+label("Seg11", (c2--c3), SE);
+
+label("Seg12", (origin--A), W);
