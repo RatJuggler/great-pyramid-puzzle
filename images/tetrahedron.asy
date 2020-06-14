@@ -47,9 +47,10 @@ draw(tile_a4);
 
 // Face B tiles
 path tile_b1 = shift(face_b_center) * scale(tile_scale) * polygon(3);
-path tile_b2 = shift(0, 0) * shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
-path tile_b3 = shift(0, 0) * shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
-path tile_b4 = shift(0, 0) * shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
+path tile_b2 = shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
+tile_b2 = shift(0, (point(tile_b2, 2).y - face_b_center.y) - tile_gap) * tile_b2;
+path tile_b3 = shift((point(tile_b1, 0).x - face_a_center.x) + tile_gap, -(point(tile_b1, 2).y - face_b_center.y) + (tile_gap * 0.5)) * shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
+path tile_b4 = shift(-(point(tile_b1, 0).x - face_a_center.x) - tile_gap, -(point(tile_b1, 2).y - face_b_center.y) + (tile_gap * 0.5)) * shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
 
 draw(tile_b1);
 draw(tile_b2);
