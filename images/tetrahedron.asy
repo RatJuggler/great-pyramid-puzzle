@@ -36,9 +36,9 @@ real tile_scale = ((face_side - (tile_gap * 3)) / 2) / face_side;
 
 // Face A tiles
 path tile_a1 = shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
-path tile_a2 = shift(0, 0) * shift(face_a_center) * scale(tile_scale) * polygon(3);
-path tile_a3 = shift(0, 0) * shift(face_a_center) * scale(tile_scale) * polygon(3);
-path tile_a4 = shift(0, 0) * shift(face_a_center) * scale(tile_scale) * polygon(3);
+path tile_a2 = shift(0, -(point(tile_a1, 2).y - face_a_center.y) + tile_gap) * shift(face_a_center) * scale(tile_scale) * polygon(3);
+path tile_a3 = shift((point(tile_a2, 0).x - face_a_center.x) + tile_gap, -(point(tile_a1, 1).y - face_a_center.y) - (tile_gap * 0.5)) * shift(face_a_center) * scale(tile_scale) * polygon(3);
+path tile_a4 = shift(-(point(tile_a2, 0).x - face_a_center.x) - tile_gap, -(point(tile_a1, 1).y - face_a_center.y) - (tile_gap * 0.5)) * shift(face_a_center) * scale(tile_scale) * polygon(3);
 
 draw(tile_a1);
 draw(tile_a2);
@@ -58,9 +58,9 @@ draw(tile_b4);
 
 // Face C tiles
 path tile_c1 = shift(face_c_center) * scale(tile_scale) * rotate(60) * polygon(3);
-path tile_c2 = shift(0, 0) * shift(face_c_center) * scale(tile_scale) * polygon(3);
-path tile_c3 = shift(0, 0) * shift(face_c_center) * scale(tile_scale) * polygon(3);
-path tile_c4 = shift(0, 0) * shift(face_c_center) * scale(tile_scale) * polygon(3);
+path tile_c2 = shift(0, -(point(tile_c1, 2).y - face_c_center.y) + tile_gap) * shift(face_c_center) * scale(tile_scale) * polygon(3);
+path tile_c3 = shift((point(tile_c2, 0).x - face_c_center.x) + tile_gap, -(point(tile_c1, 1).y - face_c_center.y) - (tile_gap * 0.5)) * shift(face_c_center) * scale(tile_scale) * polygon(3);
+path tile_c4 = shift(-(point(tile_c2, 0).x - face_c_center.x) - tile_gap, -(point(tile_c1, 1).y - face_c_center.y) - (tile_gap * 0.5)) * shift(face_c_center) * scale(tile_scale) * polygon(3);
 
 draw(tile_c1);
 draw(tile_c2);
@@ -69,9 +69,9 @@ draw(tile_c4);
 
 // Face D tiles
 path tile_d1 = shift(face_d_center) * scale(tile_scale) * rotate(60) * polygon(3);
-path tile_d2 = shift(0, 0) * shift(face_d_center) * scale(tile_scale) * polygon(3);
-path tile_d3 = shift(0, 0) * shift(face_d_center) * scale(tile_scale) * polygon(3);
-path tile_d4 = shift(0, 0) * shift(face_d_center) * scale(tile_scale) * polygon(3);
+path tile_d2 = shift(0, -(point(tile_d1, 2).y - face_d_center.y) + tile_gap) * shift(face_d_center) * scale(tile_scale) * polygon(3);
+path tile_d3 = shift((point(tile_d2, 0).x - face_d_center.x) + tile_gap, -(point(tile_d1, 1).y - face_d_center.y) - (tile_gap * 0.5)) * shift(face_d_center) * scale(tile_scale) * polygon(3);
+path tile_d4 = shift(-(point(tile_d2, 0).x - face_d_center.x) - tile_gap, -(point(tile_d1, 1).y - face_d_center.y) - (tile_gap * 0.5)) * shift(face_d_center) * scale(tile_scale) * polygon(3);
 
 draw(tile_d1);
 draw(tile_d2);
