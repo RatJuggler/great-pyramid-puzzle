@@ -48,14 +48,14 @@ label("Side1", side1, NE, side);
 label("Side2", side2, S, side);
 label("Side3", side3, NW, side);
 
-// Bisectors
-path bisectorA = (A--(-A.x,-A.y));
-path bisectorB = (B--(-B.x,-B.y));
-path bisectorC = (C--(-C.x,-C.y));
+// Medians
+path medianA = (A--(-A.x,-A.y));
+path medianB = (B--(-B.x,-B.y));
+path medianC = (C--(-C.x,-C.y));
 
-draw(bisectorA, divider);
-draw(bisectorB, divider);
-draw(bisectorC, divider);
+draw(medianA, divider);
+draw(medianB, divider);
+draw(medianC, divider);
 
 // Parallels
 path parallelA = ((-A.y,-A.x)--(A.y,A.x));
@@ -74,7 +74,7 @@ path seg1 = (origin--A--a1--cycle);
 fill(seg1, red);
 label("Seg1", (origin--A), E, segment);
 
-point a2 = intersectionpoint(side1, bisectorC);
+point a2 = intersectionpoint(side1, medianC);
 label("Seg2", (a1--a2), SW, segment);
 
 point a3 = intersectionpoint(side1, parallelA);
@@ -89,7 +89,7 @@ path seg5 = (origin--B--b1--cycle);
 fill(seg5, red);
 label("Seg5", (B--b1), segment);
 
-point b2 = intersectionpoint(side2, bisectorA);
+point b2 = intersectionpoint(side2, medianA);
 label("Seg6", (b1--b2), segment);
 
 point b3 = intersectionpoint(side2, parallelC);
@@ -104,7 +104,7 @@ path seg9 = (origin--C--c1--cycle);
 fill(seg9, red);
 label("Seg9", (C--c1), segment);
 
-point c2 = intersectionpoint(side3, bisectorB);
+point c2 = intersectionpoint(side3, medianB);
 label("Seg10", (c1--c2), segment);
 
 point c3 = intersectionpoint(side3, parallelB);
