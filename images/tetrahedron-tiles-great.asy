@@ -17,6 +17,7 @@ pen tile_label = fontsize(2pt);
 pen note_label = fontsize(8pt);
 pen face_colour = palegray;
 pen tile_colour = lightgray;
+pen title_label = fontsize(14pt);
 
 
 // Tetrahedron triangle faces, outward facing surfaces will be shown so would fold down
@@ -165,3 +166,6 @@ label("TP-D9", label_down * tile_d9, SE, tile_label);
 
 label("*Outward facing surfaces shown.", (point(face_d, 2).x, point(face_b, 1).y), E, note_label);
 label("*TP = Tile Position", (point(face_d, 2).x, point(face_b, 1).y - 0.125), E, note_label);
+
+// Title
+label("Tile positions for the great puzzle.", (0, point(face_a, 2).y - 0.4), N, title_label);
