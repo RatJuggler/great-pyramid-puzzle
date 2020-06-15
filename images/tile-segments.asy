@@ -7,11 +7,18 @@ settings.outformat="svg";
 import geometry;
 
 // Size and formatting
-size(10cm, 0);
+size(10cm);
+unitsize(3cm);
 pen apex = fontsize(12pt);
-pen side = fontsize(11pt);
+pen side = fontsize(12pt) + linewidth(1);
 pen divider = dashed + gray;
 pen segment = fontsize(10pt);
+transform label_up = shift(0, 0.05);
+transform label_down = shift(0, -0.05);
+transform label_left = shift(-0.05, 0);
+transform label_right = shift(0.05, 0);
+pen title_label = fontsize(14pt);
+
 
 // Origin
 point origin = (0, 0);
@@ -27,10 +34,6 @@ point A = point(a_triangle, 1);
 point B = point(a_triangle, 0);
 point C = point(a_triangle, 2);
 
-dot(A);
-dot(B);
-dot(C);
-
 label("A", A, N, apex);
 label("B", B, E, apex);
 label("C", C, W, apex);
@@ -40,16 +43,12 @@ path side1 = (A--B);
 path side2 = (B--C);
 path side3 = (C--A);
 
-draw(side1);
-draw(side2);
-draw(side3);
-
-label("Side1", side1, NE, side);
-label("Side2", side2, S, side);
-label("Side3", side3, NW, side);
+draw(Label("Side1"), side1, NE, side);
+draw(Label("Side2"), side2, S, side);
+draw(Label("Side3"), side3, NW, side);
 
 // Medians
-path medianA = (A--(-A.x,-A.y));
+path medianA = (A--(-A.x,-A.y/1.4));
 path medianB = (B--(-B.x,-B.y));
 path medianC = (C--(-C.x,-C.y));
 
@@ -72,37 +71,37 @@ draw(parallelC, divider);
 point a1 = intersectionpoint(side1, parallelC);
 path seg1 = (origin--A--a1--cycle);
 fill(seg1, red);
-label("Seg1", (origin--A), E, segment);
+label("Seg1", label_right * (origin--A), E, segment);
 
 point a2 = intersectionpoint(side1, medianC);
-label("Seg2", (a1--a2), SW, segment);
+label("Seg2", label_down * label_right * (a1--a2), SW, segment);
 
 point a3 = intersectionpoint(side1, parallelA);
 path seg3 = (origin--a2--a3--cycle);
 fill(seg3, red);
 label("Seg3", (a2--a3), segment);
 
-label("Seg4", (a3--B), segment);
+label("Seg4", label_up * label_up * label_left * label_left * (a3--B), segment);
 
 point b1 = intersectionpoint(side2, parallelB);
 path seg5 = (origin--B--b1--cycle);
 fill(seg5, red);
-label("Seg5", (B--b1), segment);
+label("Seg5", label_up * label_left * label_left * label_left * (B--b1), segment);
 
 point b2 = intersectionpoint(side2, medianA);
-label("Seg6", (b1--b2), segment);
+label("Seg6", label_up * label_left * (b1--b2), segment);
 
 point b3 = intersectionpoint(side2, parallelC);
 path seg7 = (origin--b2--b3--cycle);
 fill(seg7, red);
-label("Seg7", (b2--b3), segment);
+label("Seg7", label_up * label_right * (b2--b3), segment);
 
-label("Seg8", (b3--C), segment);
+label("Seg8", label_up * label_right * label_right * label_right * (b3--C), segment);
 
 point c1 = intersectionpoint(side3, parallelA);
 path seg9 = (origin--C--c1--cycle);
 fill(seg9, red);
-label("Seg9", (C--c1), segment);
+label("Seg9", label_up * label_up * label_right * label_right * (C--c1), segment);
 
 point c2 = intersectionpoint(side3, medianB);
 label("Seg10", (c1--c2), segment);
@@ -110,6 +109,9 @@ label("Seg10", (c1--c2), segment);
 point c3 = intersectionpoint(side3, parallelB);
 path seg11 = (origin--c2--c3--cycle);
 fill(seg11, red);
-label("Seg11", (c2--c3), SE, segment);
+label("Seg11", label_down * label_left * (c2--c3), SE, segment);
 
 label("Seg12", (origin--A), W, segment);
+
+// Title
+label("The 12 segments on a tile.", (0, b3.y - 0.4), N, title_label);
