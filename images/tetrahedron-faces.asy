@@ -24,33 +24,34 @@ point face_d_center = (-point(face_a, 0).x - face_gap, -point(face_a, 1).y - (fa
 path face_d = shift(face_d_center) * polygon(3);
 
 dot(Label("Face A"), face_a_center, N, face_label);
-draw(Label("A1"), (point(face_a, 0)--point(face_a, 1)), S, side_label);
-draw(Label("A3"), (point(face_a, 1)--point(face_a, 2)), E, side_label);
-draw(Label("A2"), (point(face_a, 2)--point(face_a, 3)), W, side_label);
+draw(Label("S-A1"), (point(face_a, 0)--point(face_a, 1)), S, side_label);
+draw(Label("S-A3"), (point(face_a, 1)--point(face_a, 2)), E, side_label);
+draw(Label("S-A2"), (point(face_a, 2)--point(face_a, 3)), W, side_label);
 
 dot(Label("Face B"), face_b_center, N, face_label);
 path B1 = (point(face_b, 0)--point(face_b, 1));
-draw(Label("B1"), B1, W, side_label);
-draw(Label("B2"), (point(face_b, 2)--point(face_b, 3)), N, side_label);
+draw(Label("S-B1"), B1, W, side_label);
+draw(Label("S-B2"), (point(face_b, 2)--point(face_b, 3)), N, side_label);
 path B3 = (point(face_b, 1)--point(face_b, 2));
-draw(Label("B3"), B3, E, side_label);
+draw(Label("S-B3"), B3, E, side_label);
 
 dot(Label("Face C"), face_c_center, S, face_label);
 path C3 = (point(face_c, 0)--point(face_c, 1));
-draw(Label("C3"), C3, W, side_label);
-draw(Label("C2"), (point(face_c, 1)--point(face_c, 2)), E, side_label);
+draw(Label("S-C3"), C3, W, side_label);
+draw(Label("S-C2"), (point(face_c, 1)--point(face_c, 2)), E, side_label);
 path C1 = (point(face_c, 2)--point(face_c, 3));
-draw(Label("C1"), C1, N, side_label);
+draw(Label("S-C1"), C1, N, side_label);
 
 dot(Label("Face D"), face_d_center, S, face_label);
-draw(Label("D2"), (point(face_d, 0)--point(face_d, 1)), W, side_label);
+draw(Label("S-D2"), (point(face_d, 0)--point(face_d, 1)), W, side_label);
 path D1 = (point(face_d, 1)--point(face_d, 2));
-draw(Label("D1"), D1, E, side_label);
+draw(Label("S-D1"), D1, E, side_label);
 path D3 = (point(face_d, 2)--point(face_d, 3));
-draw(Label("D3"), D3, N, side_label);
+draw(Label("S-D3"), D3, N, side_label);
 
 draw(midpoint(B1)..(midpoint(C3).x, point(face_a, 0).y)..midpoint(C3), black, Arrows);
 draw(midpoint(C1)..(0, point(face_a, 2).y - point(face_a, 0).y)..midpoint(D3), black, Arrows);
 draw(midpoint(D1)..(midpoint(D1).x, point(face_a, 1).y)..midpoint(B3), black, Arrows);
 
 label("*Outward facing surfaces shown.", (point(face_d, 2).x, point(face_b, 1).y), E, note_label);
+label("*S = Side", (point(face_d, 2).x, point(face_b, 1).y - 0.125), E, note_label);
