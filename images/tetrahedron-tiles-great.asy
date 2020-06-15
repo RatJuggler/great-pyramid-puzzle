@@ -72,15 +72,34 @@ filldraw(tile_a9, tile_colour);
 label("TP-A9", tile_a9, NE, tile_label);
 
 // Face B tiles
-path tile_b1 = shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
-path tile_b2 = shift(0, face_b_center.y - point(tile_b1, 2).y + tile_gap) * shift(face_b_center) * scale(tile_scale) * polygon(3);
-path tile_b3 = shift((point(tile_b1, 0).x - face_a_center.x) + tile_gap, -(point(tile_b1, 0).y - face_b_center.y) - (tile_gap * 0.5)) * shift(face_b_center) * scale(tile_scale) * polygon(3);
-path tile_b4 = shift(-(point(tile_b1, 0).x - face_a_center.x) - tile_gap, -(point(tile_b1, 0).y - face_b_center.y) - (tile_gap * 0.5)) * shift(face_b_center) * scale(tile_scale) * polygon(3);
+path tile_b1 = shift(0, tile_offset_y2) * shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
+path tile_b2 = shift(0, -tile_offset_y2) * shift(face_b_center) * scale(tile_scale) * polygon(3);
+path tile_b3 = shift(-tile_offset_x, -tile_offset_y) * shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
+path tile_b4 = shift(-tile_offset_x * 2, -tile_offset_y2) * shift(face_b_center) * scale(tile_scale) * polygon(3);
+path tile_b5 = shift(-tile_offset_x, tile_offset_y) * shift(face_b_center) * scale(tile_scale) * polygon(3);
+path tile_b6 = shift(0, tile_offset_y2 * 2) * shift(face_b_center) * scale(tile_scale) * polygon(3);
+path tile_b7 = shift(tile_offset_x, tile_offset_y) * shift(face_b_center) * scale(tile_scale) * polygon(3);
+path tile_b8 = shift(tile_offset_x, -tile_offset_y) * shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
+path tile_b9 = shift(tile_offset_x * 2, -tile_offset_y2) * shift(face_b_center) * scale(tile_scale) * polygon(3);
 
-draw(Label("TP-B1"), tile_b1, NE, tile_label);
-draw(Label("TP-B2"), tile_b2, SE, tile_label);
-draw(Label("TP-B3"), tile_b3, SE, tile_label);
-draw(Label("TP-B4"), tile_b4, SE, tile_label);
+filldraw(tile_b1, tile_colour);
+label("TP-B1", tile_b1, NE, tile_label);
+filldraw(tile_b2, tile_colour);
+label("TP-B2", tile_b2, SE, tile_label);
+filldraw(tile_b3, tile_colour);
+label("TP-B3", tile_b3, NE, tile_label);
+filldraw(tile_b4, tile_colour);
+label("TP-B4", tile_b4, SE, tile_label);
+filldraw(tile_b5, tile_colour);
+label("TP-B5", tile_b5, SE, tile_label);
+filldraw(tile_b6, tile_colour);
+label("TP-B6", tile_b6, SE, tile_label);
+filldraw(tile_b7, tile_colour);
+label("TP-B7", tile_b7, SE, tile_label);
+filldraw(tile_b8, tile_colour);
+label("TP-B8", tile_b8, SE, tile_label);
+filldraw(tile_b9, tile_colour);
+label("TP-B9", tile_b9, SE, tile_label);
 
 // Face C tiles
 path tile_c1 = shift(face_c_center) * scale(tile_scale) * rotate(60) * polygon(3);
