@@ -44,8 +44,8 @@ real tile_offset_y2 = -point(reference_tile, 0).y * 2 + (tile_gap / 2);
 // Face A tiles
 path tile_a1 = shift(face_a_center) * scale(tile_scale) * polygon(3);
 path tile_a2 = shift(0, -tile_offset_y2) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
-path tile_a4 = shift(tile_offset_x, tile_offset_y) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
 path tile_a3 = shift(-tile_offset_x, tile_offset_y) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
+path tile_a4 = shift(tile_offset_x, tile_offset_y) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
 
 filldraw(tile_a1, tile_colour);
 label("TP-A1", tile_a1, SE, tile_label);
@@ -73,9 +73,9 @@ label("TP-B4", tile_b4, SE, tile_label);
 
 // Face C tiles
 path tile_c1 = shift(face_c_center) * scale(tile_scale) * rotate(60) * polygon(3);
-path tile_c4 = shift(0, tile_offset_y2) * shift(face_c_center) * scale(tile_scale) * polygon(3);
 path tile_c2 = shift(tile_offset_x, -tile_offset_y) * shift(face_c_center) * scale(tile_scale) * polygon(3);
 path tile_c3 = shift(-tile_offset_x, -tile_offset_y) * shift(face_c_center) * scale(tile_scale) * polygon(3);
+path tile_c4 = shift(0, tile_offset_y2) * shift(face_c_center) * scale(tile_scale) * polygon(3);
 
 filldraw(tile_c1, tile_colour);
 label("TP-C1", tile_c1, NE, tile_label);
@@ -88,9 +88,9 @@ label("TP-C4", tile_c4, SE, tile_label);
 
 // Face D tiles
 path tile_d1 = shift(face_d_center) * scale(tile_scale) * rotate(60) * polygon(3);
+path tile_d2 = shift(-tile_offset_x, -tile_offset_y) * shift(face_d_center) * scale(tile_scale) * polygon(3);
 path tile_d3 = shift(0, tile_offset_y2) * shift(face_d_center) * scale(tile_scale) * polygon(3);
 path tile_d4 = shift(tile_offset_x, -tile_offset_y) * shift(face_d_center) * scale(tile_scale) * polygon(3);
-path tile_d2 = shift(-tile_offset_x, -tile_offset_y) * shift(face_d_center) * scale(tile_scale) * polygon(3);
 
 filldraw(tile_d1, tile_colour);
 label("TP-D1", tile_d1, NE, tile_label);
