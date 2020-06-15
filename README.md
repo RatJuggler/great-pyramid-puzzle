@@ -21,6 +21,10 @@ sides. The four segments along each side are either red or white.
 
 ![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tetrahedron-faces.svg)
 
+![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tetrahedron-tiles-pocket.svg)
+
+![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tetrahedron-tiles-great.svg)
+
 ### Resources
 - A quick overview on [equilateral triangle](https://en.wikipedia.org/wiki/Equilateral_triangle) geometry.
-- [Asymptote](https://asymptote.sourceforge.io/), used to generate the segment and tetrahedron faces diagram.
+- [Asymptote](https://asymptote.sourceforge.io/), used to generate the segment and tetrahedron face/side and tile position diagrams.
