@@ -13,6 +13,9 @@ real face_gap = 0.05;
 real tile_gap = 0.05;
 pen tile_label = fontsize(8pt);
 pen note_label = fontsize(8pt);
+pen face_colour = palegray;
+pen tile_colour = lightgray;
+
 
 // Tetrahedron triangle faces, outward facing surfaces will be shown so would fold down
 point face_a_center = (0, 0);
@@ -24,10 +27,10 @@ path face_c = shift(face_c_center) * polygon(3);
 point face_d_center = (-point(face_a, 0).x - face_gap, -point(face_a, 1).y - (face_gap * 0.5));
 path face_d = shift(face_d_center) * polygon(3);
 
-draw(face_a);
-draw(face_b);
-draw(face_c);
-draw(face_d);
+filldraw(face_a, face_colour);
+filldraw(face_b, face_colour);
+filldraw(face_c, face_colour);
+filldraw(face_d, face_colour);
 
 // Fit tiles onto a face
 real face_side = length(point(face_a, 0)--point(face_a, 1));
@@ -44,10 +47,14 @@ path tile_a2 = shift(0, -tile_offset_y2) * shift(face_a_center) * scale(tile_sca
 path tile_a4 = shift(tile_offset_x, tile_offset_y) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
 path tile_a3 = shift(-tile_offset_x, tile_offset_y) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
 
-draw(Label("TP-A1"), tile_a1, SE, tile_label);
-draw(Label("TP-A2"), tile_a2, NE, tile_label);
-draw(Label("TP-A3"), tile_a3, NE, tile_label);
-draw(Label("TP-A4"), tile_a4, NE, tile_label);
+filldraw(tile_a1, tile_colour);
+label("TP-A1", tile_a1, SE, tile_label);
+filldraw(tile_a2, tile_colour);
+label("TP-A2", tile_a2, NE, tile_label);
+filldraw(tile_a3, tile_colour);
+label("TP-A3", tile_a3, NE, tile_label);
+filldraw(tile_a4, tile_colour);
+label("TP-A4", tile_a4, NE, tile_label);
 
 // Face B tiles
 path tile_b1 = shift(face_b_center) * scale(tile_scale) * rotate(60) * polygon(3);
@@ -55,10 +62,14 @@ path tile_b2 = shift(0, tile_offset_y2) * shift(face_b_center) * scale(tile_scal
 path tile_b3 = shift(tile_offset_x, -tile_offset_y) * shift(face_b_center) * scale(tile_scale) * polygon(3);
 path tile_b4 = shift(-tile_offset_x, -tile_offset_y) * shift(face_b_center) * scale(tile_scale) * polygon(3);
 
-draw(Label("TP-B1"), tile_b1, NE, tile_label);
-draw(Label("TP-B2"), tile_b2, SE, tile_label);
-draw(Label("TP-B3"), tile_b3, SE, tile_label);
-draw(Label("TP-B4"), tile_b4, SE, tile_label);
+filldraw(tile_b1, tile_colour);
+label("TP-B1", tile_b1, NE, tile_label);
+filldraw(tile_b2, tile_colour);
+label("TP-B2", tile_b2, SE, tile_label);
+filldraw(tile_b3, tile_colour);
+label("TP-B3", tile_b3, SE, tile_label);
+filldraw(tile_b4, tile_colour);
+label("TP-B4", tile_b4, SE, tile_label);
 
 // Face C tiles
 path tile_c1 = shift(face_c_center) * scale(tile_scale) * rotate(60) * polygon(3);
@@ -66,10 +77,14 @@ path tile_c4 = shift(0, tile_offset_y2) * shift(face_c_center) * scale(tile_scal
 path tile_c2 = shift(tile_offset_x, -tile_offset_y) * shift(face_c_center) * scale(tile_scale) * polygon(3);
 path tile_c3 = shift(-tile_offset_x, -tile_offset_y) * shift(face_c_center) * scale(tile_scale) * polygon(3);
 
-draw(Label("TP-C1"), tile_c1, NE, tile_label);
-draw(Label("TP-C2"), tile_c2, SE, tile_label);
-draw(Label("TP-C3"), tile_c3, SE, tile_label);
-draw(Label("TP-C4"), tile_c4, SE, tile_label);
+filldraw(tile_c1, tile_colour);
+label("TP-C1", tile_c1, NE, tile_label);
+filldraw(tile_c2, tile_colour);
+label("TP-C2", tile_c2, SE, tile_label);
+filldraw(tile_c3, tile_colour);
+label("TP-C3", tile_c3, SE, tile_label);
+filldraw(tile_c4, tile_colour);
+label("TP-C4", tile_c4, SE, tile_label);
 
 // Face D tiles
 path tile_d1 = shift(face_d_center) * scale(tile_scale) * rotate(60) * polygon(3);
@@ -77,10 +92,14 @@ path tile_d3 = shift(0, tile_offset_y2) * shift(face_d_center) * scale(tile_scal
 path tile_d4 = shift(tile_offset_x, -tile_offset_y) * shift(face_d_center) * scale(tile_scale) * polygon(3);
 path tile_d2 = shift(-tile_offset_x, -tile_offset_y) * shift(face_d_center) * scale(tile_scale) * polygon(3);
 
-draw(Label("TP-D1"), tile_d1, NE, tile_label);
-draw(Label("TP-D2"), tile_d2, SE, tile_label);
-draw(Label("TP-D3"), tile_d3, SE, tile_label);
-draw(Label("TP-D4"), tile_d4, SE, tile_label);
+filldraw(tile_d1, tile_colour);
+label("TP-D1", tile_d1, NE, tile_label);
+filldraw(tile_d2, tile_colour);
+label("TP-D2", tile_d2, SE, tile_label);
+filldraw(tile_d3, tile_colour);
+label("TP-D3", tile_d3, SE, tile_label);
+filldraw(tile_d4, tile_colour);
+label("TP-D4", tile_d4, SE, tile_label);
 
 label("*Outward facing surfaces shown.", (point(face_d, 2).x, point(face_b, 1).y), E, note_label);
 label("*TP = Tile Position", (point(face_d, 2).x, point(face_b, 1).y - 0.125), E, note_label);
