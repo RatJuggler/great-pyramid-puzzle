@@ -70,6 +70,16 @@
 <use x='208.947' xlink:href='#g0-65' y='231.091'/>
 <use x='215.289' xlink:href='#g0-49' y='231.091'/>
 <g transform='matrix(0.996264 0 0 0.996264 208.204 233.05)'>
+<path d='M 64.968 -38.4112L 2.13396 -38.4112L 33.551 16.0047L 64.968 -38.4112Z' fill='#e6e6e6'/>
+</g>
+<g transform='matrix(0.996264 0 0 0.996264 208.204 233.05)'>
+<path d='M 64.968 -38.4112L 2.13396 -38.4112L 33.551 16.0047L 64.968 -38.4112Z' fill='none' stroke='#000000' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10.0375' stroke-width='0.501875'/>
+</g><use x='227.674' xlink:href='#g0-84' y='220.138'/>
+<use x='233.79' xlink:href='#g0-80' y='220.138'/>
+<use x='239.549' xlink:href='#g0-45' y='220.138'/>
+<use x='242.372' xlink:href='#g0-65' y='220.138'/>
+<use x='248.715' xlink:href='#g0-50' y='220.138'/>
+<g transform='matrix(0.996264 0 0 0.996264 208.204 233.05)'>
 <path d='M 31.417 20.2726L -31.417 20.2726L 0 74.6885L 31.417 20.2726Z' fill='#e6e6e6'/>
 </g>
 <g transform='matrix(0.996264 0 0 0.996264 208.204 233.05)'>
@@ -78,7 +88,7 @@
 <use x='200.365' xlink:href='#g0-80' y='278.602'/>
 <use x='206.124' xlink:href='#g0-45' y='278.602'/>
 <use x='208.947' xlink:href='#g0-65' y='278.602'/>
-<use x='215.289' xlink:href='#g0-50' y='278.602'/>
+<use x='215.289' xlink:href='#g0-51' y='278.602'/>
 <g transform='matrix(0.996264 0 0 0.996264 208.204 233.05)'>
 <path d='M -2.13396 -38.4112L -64.968 -38.4112L -33.551 16.0047L -2.13396 -38.4112Z' fill='#e6e6e6'/>
 </g>
@@ -88,17 +98,7 @@
 <use x='166.939' xlink:href='#g0-80' y='220.138'/>
 <use x='172.698' xlink:href='#g0-45' y='220.138'/>
 <use x='175.521' xlink:href='#g0-65' y='220.138'/>
-<use x='181.864' xlink:href='#g0-51' y='220.138'/>
-<g transform='matrix(0.996264 0 0 0.996264 208.204 233.05)'>
-<path d='M 64.968 -38.4112L 2.13396 -38.4112L 33.551 16.0047L 64.968 -38.4112Z' fill='#e6e6e6'/>
-</g>
-<g transform='matrix(0.996264 0 0 0.996264 208.204 233.05)'>
-<path d='M 64.968 -38.4112L 2.13396 -38.4112L 33.551 16.0047L 64.968 -38.4112Z' fill='none' stroke='#000000' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10.0375' stroke-width='0.501875'/>
-</g><use x='227.674' xlink:href='#g0-84' y='220.138'/>
-<use x='233.79' xlink:href='#g0-80' y='220.138'/>
-<use x='239.549' xlink:href='#g0-45' y='220.138'/>
-<use x='242.372' xlink:href='#g0-65' y='220.138'/>
-<use x='248.715' xlink:href='#g0-52' y='220.138'/>
+<use x='181.864' xlink:href='#g0-52' y='220.138'/>
 <g transform='matrix(0.996264 0 0 0.996264 208.204 233.05)'>
 <path d='M 31.417 -107.765L -31.417 -107.765L 0 -53.3489L 31.417 -107.765Z' fill='#e6e6e6'/>
 </g>

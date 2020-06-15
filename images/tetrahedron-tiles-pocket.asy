@@ -43,9 +43,9 @@ real tile_offset_y2 = -point(reference_tile, 0).y * 2 + (tile_gap / 2);
 
 // Face A tiles
 path tile_a1 = shift(face_a_center) * scale(tile_scale) * polygon(3);
-path tile_a2 = shift(0, -tile_offset_y2) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
-path tile_a3 = shift(-tile_offset_x, tile_offset_y) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
-path tile_a4 = shift(tile_offset_x, tile_offset_y) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
+path tile_a2 = shift(tile_offset_x, tile_offset_y) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
+path tile_a3 = shift(0, -tile_offset_y2) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
+path tile_a4 = shift(-tile_offset_x, tile_offset_y) * shift(face_a_center) * scale(tile_scale) * rotate(60) * polygon(3);
 
 filldraw(tile_a1, tile_colour);
 label("TP-A1", tile_a1, SE, tile_label);
