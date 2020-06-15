@@ -18,9 +18,9 @@ point face_a_center = (0, 0);
 path face_a = rotate(60) * polygon(3);
 point face_b_center = (0, -point(face_a, 2).y + face_gap);
 path face_b = shift(face_b_center) * polygon(3);
-point face_c_center = (point(face_a, 0).x + face_gap, point(face_a, 2).y + point(face_a, 1).y - (face_gap * 0.5));
+point face_c_center = (point(face_a, 0).x + face_gap, -point(face_a, 1).y - (face_gap * 0.5));
 path face_c = shift(face_c_center) * polygon(3);
-point face_d_center = (-point(face_a, 0).x - face_gap, point(face_a, 2).y + point(face_a, 1).y - (face_gap * 0.5));
+point face_d_center = (-point(face_a, 0).x - face_gap, -point(face_a, 1).y - (face_gap * 0.5));
 path face_d = shift(face_d_center) * polygon(3);
 
 dot(Label("Face A"), face_a_center, N, face_label);
