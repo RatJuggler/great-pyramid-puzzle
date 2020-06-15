@@ -13,7 +13,9 @@ real face_gap = 0.05;
 pen face_label = fontsize(12pt);
 pen side_label = fontsize(10pt);
 pen note_label = fontsize(8pt);
-pen face_colour = palegray;
+pen face_colour = palegray + linewidth(1);
+pen title_label = fontsize(14pt);
+
 
 // Tetrahedron triangle faces, outward facing surfaces will be shown so would fold down
 point face_a_center = (0, 0);
@@ -55,9 +57,12 @@ label("S-D1", D1, E, side_label);
 path D3 = (point(face_d, 2)--point(face_d, 3));
 label("S-D3", D3, N, side_label);
 
-draw(midpoint(B1)..(midpoint(C3).x, point(face_a, 0).y)..midpoint(C3), black, Arrows);
-draw(midpoint(C1)..(0, point(face_a, 2).y - point(face_a, 0).y)..midpoint(D3), black, Arrows);
-draw(midpoint(D1)..(midpoint(D1).x, point(face_a, 1).y)..midpoint(B3), black, Arrows);
+draw(midpoint(B1)..(midpoint(C3).x, point(face_a, 0).y)..midpoint(C3), gray, Arrows);
+draw(midpoint(C1)..(0, point(face_a, 2).y - point(face_a, 0).y)..midpoint(D3), gray, Arrows);
+draw(midpoint(D1)..(midpoint(D1).x, point(face_a, 1).y)..midpoint(B3), gray, Arrows);
 
 label("*Outward facing surfaces shown.", (point(face_d, 2).x, point(face_b, 1).y), E, note_label);
 label("*S = Side", (point(face_d, 2).x, point(face_b, 1).y - 0.125), E, note_label);
+
+// Title
+label("Faces and sides of the tetrahedron.", (0, point(face_a, 2).y - 0.4), N, title_label);
