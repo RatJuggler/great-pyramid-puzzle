@@ -7,7 +7,8 @@ settings.outformat="svg";
 import geometry;
 
 // Size and formatting
-size(10cm, 0);
+size(10cm);
+unitsize(3cm);
 real face_gap = 0.05;
 pen face_label = fontsize(12pt);
 pen side_label = fontsize(10pt);
