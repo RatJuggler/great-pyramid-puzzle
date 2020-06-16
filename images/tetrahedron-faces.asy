@@ -29,11 +29,11 @@ path face_d = shift(face_d_center) * polygon(3);
 
 dot(Label("Face A"), face_a_center, N, face_label);
 filldraw(face_a, face_colour);
-label("S-A1", (point(face_a, 0)--point(face_a, 1)), S, side_label);
-label("S-A3", (point(face_a, 1)--point(face_a, 2)), E, side_label);
-label("S-A2", (point(face_a, 2)--point(face_a, 3)), W, side_label);
+label("S-A1", (point(face_a, 2)--point(face_a, 3)), W, side_label);
+label("S-A2", (point(face_a, 1)--point(face_a, 2)), E, side_label);
+label("S-A3", (point(face_a, 0)--point(face_a, 1)), S, side_label);
 
-dot(Label("Face B"), face_b_center, N, face_label);
+dot(Label("Face B"), face_b_center, S, face_label);
 filldraw(face_b, face_colour);
 path B1 = (point(face_b, 0)--point(face_b, 1));
 label("S-B1", B1, W, side_label);
@@ -43,17 +43,17 @@ label("S-B3", B3, E, side_label);
 
 dot(Label("Face C"), face_c_center, S, face_label);
 filldraw(face_c, face_colour);
-path C3 = (point(face_c, 0)--point(face_c, 1));
-label("S-C3", C3, W, side_label);
-label("S-C2", (point(face_c, 1)--point(face_c, 2)), E, side_label);
 path C1 = (point(face_c, 2)--point(face_c, 3));
 label("S-C1", C1, N, side_label);
+label("S-C2", (point(face_c, 1)--point(face_c, 2)), E, side_label);
+path C3 = (point(face_c, 0)--point(face_c, 1));
+label("S-C3", C3, W, side_label);
 
 dot(Label("Face D"), face_d_center, S, face_label);
 filldraw(face_d, face_colour);
-label("S-D2", (point(face_d, 0)--point(face_d, 1)), W, side_label);
 path D1 = (point(face_d, 1)--point(face_d, 2));
 label("S-D1", D1, E, side_label);
+label("S-D2", (point(face_d, 0)--point(face_d, 1)), W, side_label);
 path D3 = (point(face_d, 2)--point(face_d, 3));
 label("S-D3", D3, N, side_label);
 
