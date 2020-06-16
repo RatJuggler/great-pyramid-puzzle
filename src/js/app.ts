@@ -1,3 +1,7 @@
-import '../css/styles.css';
+import { Tetrahedron } from "./tetrahedron.js";
 
-console.log("Hello World!");
+console.log("Initialising...");
+
+let puzzle = new Tetrahedron("Pocket");
+
+puzzle.display();
