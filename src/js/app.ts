@@ -1,4 +1,4 @@
-import { Tetrahedron } from "./tetrahedron.js";
+import { Tetrahedron } from "./tetrahedron";
 
 console.log("Initialising...");
 

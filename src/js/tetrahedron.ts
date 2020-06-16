@@ -1,9 +1,13 @@
 export class Tetrahedron {
 
-    constructor(private name: string) {}
+    constructor(private _name: string) {}
 
     display() {
-        console.log(`Solving: ${this.name}`);
+        console.log(`Solving: ${this._name}`);
+    }
+
+    get name(): string {
+        return this._name;
     }
 
 }
