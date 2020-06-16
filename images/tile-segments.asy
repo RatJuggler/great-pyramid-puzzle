@@ -71,10 +71,10 @@ draw(parallelC, divider);
 point a1 = intersectionpoint(side1, parallelC);
 path seg1 = (origin--A--a1--cycle);
 fill(seg1, red);
-label("Seg1", label_right * (origin--A), E, segment);
+label("Seg1", label_down * label_down * (origin--A), E, segment);
 
 point a2 = intersectionpoint(side1, medianC);
-label("Seg2", label_down * label_right * (a1--a2), SW, segment);
+label("Seg2", label_down * label_down * (a1--a2), segment);
 
 point a3 = intersectionpoint(side1, parallelA);
 path seg3 = (origin--a2--a3--cycle);
@@ -109,9 +109,9 @@ label("Seg10", (c1--c2), segment);
 point c3 = intersectionpoint(side3, parallelB);
 path seg11 = (origin--c2--c3--cycle);
 fill(seg11, red);
-label("Seg11", label_down * label_left * (c2--c3), SE, segment);
+label("Seg11", label_down * label_down * (c2--c3), segment);
 
-label("Seg12", (origin--A), W, segment);
+label("Seg12", label_down * label_down * (origin--A), W, segment);
 
 // Title
 label("The 12 segments on a tile.", (0, b3.y - 0.4), N, title_label);
