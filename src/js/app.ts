@@ -1,12 +1,7 @@
-import {Face} from "./face";
-import { Tetrahedron } from "./tetrahedron";
+import { Tetrahedron } from "./tetrahedron.js";
 
 console.log("Initialising...");
 
-let face = new Face("A", 1);
-
-face.display();
-
-let puzzle = new Tetrahedron("Pocket");
+let puzzle = new Tetrahedron("Pocket", 4);
 
 puzzle.display();
