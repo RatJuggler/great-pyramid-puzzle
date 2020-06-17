@@ -1,0 +1,41 @@
+{
+  "$id": "https://pyramid.puzzle/pyramid-puzzle-data-schema.json",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "description": "Define the layouts and tiles used in the Pyramid Puzzles.",
+  "type": "object",
+  "properties": {
+    "puzzle": {
+      "description": "The name of this version of the Pyramid Puzzle.",
+      "type": "string"
+    },
+    "number_of_tiles": {
+      "description": "The number of tiles used on the puzzle.",
+      "type": "number"
+    },
+    "tiles": {
+      "description": "The tiles used by the version of the puzzle.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tile": {
+            "description": "A number to identify the individual tile.",
+            "type": "number"
+          },
+          "side1": {
+            "description": "A string representing the pattern on side one of the tile (Seg1, Seg2, Seg3, Seg4)",
+            "type": "string"
+          },
+          "side2": {
+            "description": "A string representing the pattern on side two of the tile (Seg5, Seg6, Seg7, Seg8).",
+            "type": "string"
+          },
+          "side3": {
+            "description": "A string representing the pattern on side three of the tile (Seg9, Seg10, Seg11, Seg12).",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
