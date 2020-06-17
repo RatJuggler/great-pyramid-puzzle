@@ -2,9 +2,9 @@ import { Face } from '../../src/js/face';
 import { expect } from 'chai';
 import 'mocha';
 
-describe("Face tests", () => {
+describe("Face behavior", () => {
 
-    describe("constructor", () => {
+    describe("a new Face", () => {
 
         context("with valid parameters", () => {
             it("should return a correctly initialised instance", () => {
@@ -23,6 +23,34 @@ describe("Face tests", () => {
                 expect(() => {
                     new Face(id, numberOfTiles);
                 }).to.throw(Error, "Number of tiles on a Face must be one of 1,4,9!");
+            });
+        });
+
+    });
+
+    describe("adding a Tile", () => {
+
+        context("to an empty Face", () => {
+            it("it should always be added", () => {
+
+            })
+        });
+
+        context("to a full Face", () => {
+            it("it should always be rejected", () => {
+
+            });
+        });
+
+        context("to a Face with existing Tiles which match", () => {
+            it("should be added", () => {
+
+            });
+        });
+
+        context("to a Face with existing Tiles which don't match", () => {
+            it("should be rejected", () => {
+
             });
         });
 
