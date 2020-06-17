@@ -1,5 +1,5 @@
 import { Face } from '../../src/js/face';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import 'mocha';
 
 describe("Face behavior", () => {
@@ -32,25 +32,25 @@ describe("Face behavior", () => {
 
         context("to an empty Face", () => {
             it("it should always be added", () => {
-
+                assert.fail("Behavior not implemented...");
             })
         });
 
         context("to a full Face", () => {
             it("it should always be rejected", () => {
-
+                assert.fail("Behavior not implemented...");
             });
         });
 
         context("to a Face with existing Tiles which match", () => {
             it("should be added", () => {
-
+                assert.fail("Behavior not implemented...");
             });
         });
 
         context("to a Face with existing Tiles which don't match", () => {
             it("should be rejected", () => {
-
+                assert.fail("Behavior not implemented...");
             });
         });
 
