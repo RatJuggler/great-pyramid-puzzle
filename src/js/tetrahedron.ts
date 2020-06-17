@@ -3,12 +3,12 @@ import { Tile } from "./tile";
 
 export class Tetrahedron {
 
-    static faceIds = ["A", "B", "C", "D"];
+    static faceNames = ["A", "B", "C", "D"];
 
     private _faces: Face[] = [];
 
-    constructor(private _name: string, numberOfTiles: number) {
-        Tetrahedron.faceIds.forEach(faceId => this._faces.push(new Face(faceId, numberOfTiles)));
+    constructor(private _name: string, numberOfTilesPerFace: number) {
+        Tetrahedron.faceNames.forEach(faceName => this._faces.push(new Face(faceName, numberOfTilesPerFace)));
     }
 
     display() {
