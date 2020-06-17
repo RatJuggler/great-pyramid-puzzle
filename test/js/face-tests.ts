@@ -8,7 +8,7 @@ describe("Face tests", () => {
 
         context("with valid parameters", () => {
             it("should return a correctly initialised instance", () => {
-                const id = "A";
+                const id = "Face1";
                 const numberOfTiles = 4;
                 const face = new Face(id, numberOfTiles);
                 expect(face.id).to.equal(id);
@@ -18,7 +18,7 @@ describe("Face tests", () => {
 
         context("with invalid parameters", () => {
             it("should throw an error", () => {
-                const id = "A";
+                const id = "Face2";
                 const numberOfTiles = 13;
                 expect(() => {
                     new Face(id, numberOfTiles);
