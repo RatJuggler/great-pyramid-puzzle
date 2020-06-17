@@ -1,4 +1,4 @@
-import { Face } from "./face.js";
+import { Face } from "./face";
 
 export class Tetrahedron {
 
