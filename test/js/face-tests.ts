@@ -9,7 +9,7 @@ describe("Face behavior", () => {
 
         context("with valid parameters", () => {
             it("should return a correctly initialised instance", () => {
-                const id = "Face1";
+                const id = "ValidFace";
                 const numberOfTiles = 4;
                 const face = new Face(id, numberOfTiles);
                 expect(face.id).to.equal(id);
@@ -20,7 +20,7 @@ describe("Face behavior", () => {
         context("with invalid parameters", () => {
             it("should throw an error", () => {
                 expect(() => {
-                    new Face("Face2", 13);
+                    new Face("InvalidFace", 13);
                 }).to.throw(Error, "Number of tiles on a Face must be one of 1,4,9!");
             });
         });
@@ -31,7 +31,7 @@ describe("Face behavior", () => {
 
         context("to an empty Face", () => {
             it("it should always be added", () => {
-                const face = new Face("Face3", 1);
+                const face = new Face("EmptyFace", 1);
                 const tile = new Tile("XYZ");
                 face.addTile(tile);
                 expect(face.tiles.includes(tile)).to.be.true;
@@ -40,7 +40,12 @@ describe("Face behavior", () => {
 
         context("to a full Face", () => {
             it("it should always be rejected", () => {
-                assert.fail("Behavior not implemented...");
+                const face = new Face("FullFace", 1);
+                const tile = new Tile("PQR");
+                face.addTile(tile);
+                const anotherTile = new Tile("IJK");
+                face.addTile(anotherTile);
+                expect(face.tiles.includes(anotherTile)).to.be.false;
             });
         });
 

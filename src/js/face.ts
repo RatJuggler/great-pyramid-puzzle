@@ -30,7 +30,9 @@ export class Face {
     }
 
     addTile(tile: Tile): void {
-        this._tiles.push(tile);
+        if (this._tiles.length < this.numberOfTiles) {
+            this._tiles.push(tile);
+        }
     }
 
 }
