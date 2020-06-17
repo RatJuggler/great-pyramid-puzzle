@@ -9,7 +9,7 @@ describe("Tetrahedron behaviour", () => {
 
         context("with valid parameters", () => {
             it("should return a correctly initialised instance", () => {
-                const name = "Name1";
+                const name = "ValidTetrahedron";
                 const numberOfTiles = 4;
                 const puzzle = new Tetrahedron(name, numberOfTiles);
                 expect(puzzle.name).to.equal(name);
@@ -21,7 +21,7 @@ describe("Tetrahedron behaviour", () => {
         context("with invalid parameters", () => {
             it("should throw an error", () => {
                 expect(() => {
-                    new Tetrahedron("Name2", 13);
+                    new Tetrahedron("InvalidTetrahedron", 13);
                 }).to.throw(Error, "Number of tiles on a Face must be one of 1,4,9!");
             });
         });
@@ -32,14 +32,18 @@ describe("Tetrahedron behaviour", () => {
 
         context("to an empty Tetrahedron", () => {
             it("it should always be added", () => {
-                const puzzle = new Tetrahedron("Name3", 1);
+                const puzzle = new Tetrahedron("EmptyTetrahedron", 1);
                 const tile = new Tile("123")
                 puzzle.addTile(tile);
+                assert.fail("Behavior not implemented...");
             })
         });
 
         context("to a full Tetrahedron", () => {
             it("it should always be rejected", () => {
+                const puzzle = new Tetrahedron("FullTetrahedron", 1);
+                const tile = new Tile("123")
+                puzzle.addTile(tile);
                 assert.fail("Behavior not implemented...");
             });
         });
