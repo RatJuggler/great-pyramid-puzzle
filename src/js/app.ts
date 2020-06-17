@@ -3,7 +3,7 @@ import { Tetrahedron } from "./tetrahedron";
 
 console.log("Initialising...");
 
-let face = new Face("A");
+let face = new Face("A", 1);
 
 face.display();
 
