@@ -1,13 +1,26 @@
+import { Face } from "./face.js";
+
 export class Tetrahedron {
 
-    constructor(private _name: string) {}
+    static faceIds = ["A", "B", "C", "D"];
+
+    private _faces: Face[] = [];
+
+    constructor(private _name: string, numberOfTiles: number) {
+        Tetrahedron.faceIds.forEach(faceId => this._faces.push(new Face(faceId, numberOfTiles)));
+    }
 
     display() {
         console.log(`Solving: ${this._name}`);
+        this._faces.forEach(face => face.display());
     }
 
     get name(): string {
         return this._name;
+    }
+
+    get faces(): Face[] {
+        return this._faces;
     }
 
 }
