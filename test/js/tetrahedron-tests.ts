@@ -13,7 +13,7 @@ describe("Tetrahedron behaviour", () => {
                 const numberOfTiles = 4;
                 const puzzle = new Tetrahedron(name, numberOfTiles);
                 expect(puzzle.name).to.equal(name);
-                expect(puzzle.faces.length).to.equal(Tetrahedron.faceIds.length);
+                expect(puzzle.faces.length).to.equal(Tetrahedron.faceNames.length);
                 puzzle.faces.forEach(face => expect(face.numberOfTiles).to.equal(numberOfTiles));
             });
         });
