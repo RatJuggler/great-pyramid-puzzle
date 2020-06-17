@@ -3,7 +3,7 @@ export class Tile {
     constructor(private _segments: string) {}
 
     display() {
-        console.log(this._segments);
+        console.log(`Tile: ${this._segments}`);
     }
 
     get segments(): string {

@@ -1,6 +1,10 @@
+import { Tile } from "./tile";
+
 export class Face {
 
     static validTileCounts = [1, 4, 9];
+
+    private _tiles: Tile[] = [];
 
     constructor(private _id: string, private _numberOfTiles: number) {
         if (!(Face.validTileCounts.includes(_numberOfTiles))) {
@@ -10,6 +14,7 @@ export class Face {
 
     display() {
         console.log(`Face: ${this._id} - Tiles: ${this._numberOfTiles}`);
+        this._tiles.forEach(tile => console.log(tile.display()));
     }
 
     get id(): string {
@@ -18,6 +23,14 @@ export class Face {
 
     get numberOfTiles(): number {
         return this._numberOfTiles;
+    }
+
+    get tiles(): Tile[] {
+        return this._tiles;
+    }
+
+    addTile(tile: Tile): void {
+        this._tiles.push(tile);
     }
 
 }
