@@ -2,9 +2,9 @@ import { Tetrahedron } from '../../src/js/tetrahedron';
 import { expect } from 'chai';
 import 'mocha';
 
-describe("Tetrahedron tests", () => {
+describe("Tetrahedron behaviour", () => {
 
-    describe("constructor", () => {
+    describe("a new Tetrahedron", () => {
 
         context("with valid parameters", () => {
             it("should return a correctly initialised instance", () => {
@@ -24,6 +24,34 @@ describe("Tetrahedron tests", () => {
                 expect(() => {
                     new Tetrahedron(name, numberOfTiles);
                 }).to.throw(Error, "Number of tiles on a Face must be one of 1,4,9!");
+            });
+        });
+
+    });
+
+    describe("adding a Tile", () => {
+
+        context("to an empty Tetrahedron", () => {
+            it("it should always be added", () => {
+
+            })
+        });
+
+        context("to a full Tetrahedron", () => {
+            it("it should always be rejected", () => {
+
+            });
+        });
+
+        context("to a Tetrahedron with existing Tiles which match", () => {
+           it("should be added", () => {
+
+           });
+        });
+
+        context("to a Tetrahedron with existing Tiles which don't match", () => {
+            it("should be rejected", () => {
+
             });
         });
 
