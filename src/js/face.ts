@@ -23,11 +23,13 @@ export class Face {
         return this._id;
     }
 
-    get numberOfTiles(): number {
-        return this._numberOfTiles;
-    }
-
     joinSideWith(side: number, face: Face, faceSide: number) : void {
+        if (side < 1 || side > 3) {
+            throw new Error(`Join side must be 1, 2 or 3!`);
+        }
+        if (faceSide < 1 || faceSide > 3) {
+            throw new Error(`Side to join with must be 1, 2 or 3!`);
+        }
         this._joinsWith.push({side: side, face: face, faceSide: faceSide});
     }
 
@@ -36,7 +38,7 @@ export class Face {
     }
 
     addTile(tile: Tile): void {
-        if (this._tiles.length < this.numberOfTiles) {
+        if (this._tiles.length < this._numberOfTiles) {
             this._tiles.push(tile);
         }
     }

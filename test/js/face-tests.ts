@@ -5,23 +5,44 @@ import 'mocha';
 
 describe("Face behavior", () => {
 
-    describe("a new Face", () => {
+    describe("if a new Face", () => {
 
-        context("with valid parameters", () => {
+        context("is created with valid parameters", () => {
             it("should return a correctly initialised instance", () => {
                 const id = "ValidFace";
                 const numberOfTiles = 4;
                 const face = new Face(id, numberOfTiles);
                 expect(face.id).to.equal(id);
-                expect(face.numberOfTiles).to.equal(numberOfTiles);
+            });
+        });
+
+        context("is created with invalid parameters", () => {
+            it("should throw an error", () => {
+                expect(() => {
+                    new Face("InvalidFace", 25);
+                }).to.throw(Error, "Number of tiles on a Face must be one of 1,4,9!");
+            });
+        });
+
+    });
+
+    describe("if a Face side is joined to another Face side", () => {
+
+        context("with valid parameters", () => {
+            it("should be accepted", () => {
+                const face1 = new Face("Test1", 1);
+                const face2 = new Face("Test2", 1);
+                face1.joinSideWith(1, face2, 1);
             });
         });
 
         context("with invalid parameters", () => {
             it("should throw an error", () => {
+                const face1 = new Face("Test1", 1);
+                const face2 = new Face("Test2", 1);
                 expect(() => {
-                    new Face("InvalidFace", 13);
-                }).to.throw(Error, "Number of tiles on a Face must be one of 1,4,9!");
+                    face1.joinSideWith(7, face2, -1);
+                }).to.throw(Error, "Join side must be 1, 2 or 3!");
             });
         });
 
