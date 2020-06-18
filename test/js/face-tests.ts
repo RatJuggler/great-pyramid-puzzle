@@ -32,7 +32,7 @@ describe("Face behavior", () => {
             it("should be accepted", () => {
                 const face1 = new Face("Test1", 1);
                 const face2 = new Face("Test2", 1);
-                face1.joinSideWith(1, face2, 1);
+                face1.joinSideWith("1", face2, "1");
             });
         });
 
@@ -41,8 +41,8 @@ describe("Face behavior", () => {
                 const face1 = new Face("Test1", 1);
                 const face2 = new Face("Test2", 1);
                 expect(() => {
-                    face1.joinSideWith(7, face2, -1);
-                }).to.throw(Error, "Join side must be 1, 2 or 3!");
+                    face1.joinSideWith("7", face2, "Z");
+                }).to.throw(Error, "Join side must be one of 1,2,3!");
             });
         });
 

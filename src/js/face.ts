@@ -3,13 +3,14 @@ import { Tile } from "./tile";
 export class Face {
 
     private static validTileCounts = [1, 4, 9];
+    private static sideNames = ["1", "2", "3"];
 
-    private _joinsWith: { side: number, face: Face, faceSide: number }[] = [];
+    private _joinsWith: { side: string, face: Face, faceSide: string }[] = [];
     private _tiles: Tile[] = [];
 
     constructor(private _id: string, private _numberOfTiles: number) {
         if (!(Face.validTileCounts.includes(_numberOfTiles))) {
-            throw new Error(`Number of tiles on a Face must be one of ${(Face.validTileCounts)}!`);
+            throw new Error(`Number of tiles on a Face must be one of ${Face.validTileCounts}!`);
         }
     }
 
@@ -23,12 +24,12 @@ export class Face {
         return this._id;
     }
 
-    joinSideWith(side: number, face: Face, faceSide: number) : void {
-        if (side < 1 || side > 3) {
-            throw new Error(`Join side must be 1, 2 or 3!`);
+    joinSideWith(side: string, face: Face, faceSide: string) : void {
+        if (!(Face.sideNames.includes(side))) {
+            throw new Error(`Join side must be one of ${Face.sideNames}!`);
         }
-        if (faceSide < 1 || faceSide > 3) {
-            throw new Error(`Side to join with must be 1, 2 or 3!`);
+        if (!(Face.sideNames.includes(faceSide))) {
+            throw new Error(`Side to join with must be one of ${Face.sideNames}!`);
         }
         this._joinsWith.push({side: side, face: face, faceSide: faceSide});
     }
