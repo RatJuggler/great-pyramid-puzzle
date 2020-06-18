@@ -9,10 +9,10 @@ describe("Face behavior", () => {
 
         context("is created with valid parameters", () => {
             it("should return a correctly initialised instance", () => {
-                const id = "ValidFace";
+                const name = "ValidFace";
                 const numberOfTiles = 4;
-                const face = new Face(id, numberOfTiles);
-                expect(face.id).to.equal(id);
+                const face = new Face(name, numberOfTiles);
+                expect(face.name).to.equal(name);
             });
         });
 
