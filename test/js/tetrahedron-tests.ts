@@ -13,7 +13,6 @@ describe("Tetrahedron behaviour", () => {
                 const tilesPerFace = 4;
                 const puzzle = new Tetrahedron(name, tilesPerFace);
                 expect(puzzle.name).to.equal(name);
-                puzzle.faces.forEach(face => expect(face.numberOfTiles).to.equal(tilesPerFace));
             });
         });
 
