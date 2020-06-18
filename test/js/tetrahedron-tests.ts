@@ -10,18 +10,17 @@ describe("Tetrahedron behaviour", () => {
         context("with valid parameters", () => {
             it("should return a correctly initialised instance", () => {
                 const name = "ValidTetrahedron";
-                const numberOfTiles = 4;
-                const puzzle = new Tetrahedron(name, numberOfTiles);
+                const tilesPerFace = 4;
+                const puzzle = new Tetrahedron(name, tilesPerFace);
                 expect(puzzle.name).to.equal(name);
-                expect(puzzle.faces.length).to.equal(Tetrahedron.faceNames.length);
-                puzzle.faces.forEach(face => expect(face.numberOfTiles).to.equal(numberOfTiles));
+                puzzle.faces.forEach(face => expect(face.numberOfTiles).to.equal(tilesPerFace));
             });
         });
 
         context("with invalid parameters", () => {
             it("should throw an error", () => {
                 expect(() => {
-                    new Tetrahedron("InvalidTetrahedron", 13);
+                    new Tetrahedron("InvalidTetrahedron", 16);
                 }).to.throw(Error, "Number of tiles on a Face must be one of 1,4,9!");
             });
         });
