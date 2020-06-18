@@ -5,7 +5,7 @@ export class Face {
     private static validTileCounts = [1, 4, 9];
     private static sideNames = ["1", "2", "3"];
 
-    private _joinsWith: { side: string, face: Face, faceSide: string }[] = [];
+    private _joins: { fromSide: string, toFace: Face, toFaceSide: string }[] = [];
     private _tiles: Tile[] = [];
 
     constructor(private _name: string, private _numberOfTiles: number) {
@@ -16,7 +16,7 @@ export class Face {
 
     display() {
         console.log(`Face: ${this._name} - Tiles: ${this._numberOfTiles}`);
-        this._joinsWith.forEach(join => console.log(`Side: ${join.side} Joins with: ${join.face.name}-${join.faceSide}`))
+        this._joins.forEach(join => console.log(`Side: ${join.fromSide} Joins to: ${join.toFace.name}-${join.toFaceSide}`))
         this._tiles.forEach(tile => console.log(tile.display()));
     }
 
@@ -24,14 +24,17 @@ export class Face {
         return this._name;
     }
 
-    joinSideWith(side: string, face: Face, faceSide: string) : void {
-        if (!(Face.sideNames.includes(side))) {
-            throw new Error(`Join side must be one of ${Face.sideNames}!`);
+    join(fromSide: string, toFace: Face, toFaceSide: string) : void {
+        if (this._numberOfTiles != toFace._numberOfTiles) {
+            throw new Error("Cannot join Faces with different numbers of tiles!");
         }
-        if (!(Face.sideNames.includes(faceSide))) {
-            throw new Error(`Side to join with must be one of ${Face.sideNames}!`);
+        if (!(Face.sideNames.includes(fromSide))) {
+            throw new Error(`Side to join from must be one of ${Face.sideNames}!`);
         }
-        this._joinsWith.push({side: side, face: face, faceSide: faceSide});
+        if (!(Face.sideNames.includes(toFaceSide))) {
+            throw new Error(`Side to join to must be one of ${Face.sideNames}!`);
+        }
+        this._joins.push({fromSide: fromSide, toFace: toFace, toFaceSide: toFaceSide});
     }
 
     get tiles(): Tile[] {

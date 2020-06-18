@@ -7,16 +7,17 @@ describe("Face behavior", () => {
 
     describe("if a new Face", () => {
 
-        context("is created with valid parameters", () => {
+        context("is created with a valid number of tiles", () => {
             it("should return a correctly initialised instance", () => {
                 const name = "ValidFace";
                 const numberOfTiles = 4;
                 const face = new Face(name, numberOfTiles);
+                expect(face).to.be.an.instanceOf(Face);
                 expect(face.name).to.equal(name);
             });
         });
 
-        context("is created with invalid parameters", () => {
+        context("is created with invalid number of tiles", () => {
             it("should throw an error", () => {
                 expect(() => {
                     new Face("InvalidFace", 25);
@@ -26,23 +27,43 @@ describe("Face behavior", () => {
 
     });
 
-    describe("if a Face side is joined to another Face side", () => {
+    describe("if a Face is joined to another Face", () => {
 
-        context("with valid parameters", () => {
+        context("with valid side names for both", () => {
             it("should be accepted", () => {
-                const face1 = new Face("Test1", 1);
-                const face2 = new Face("Test2", 1);
-                face1.joinSideWith("1", face2, "1");
+                const face1 = new Face("Face1", 1);
+                const face2 = new Face("Face2", 1);
+                face1.join("1", face2, "1");
             });
         });
 
-        context("with invalid parameters", () => {
+        context("where the Faces have differing numbers of tiles", () => {
             it("should throw an error", () => {
-                const face1 = new Face("Test1", 1);
-                const face2 = new Face("Test2", 1);
+                const face1 = new Face("Face1", 1);
+                const face2 = new Face("Face2", 4);
                 expect(() => {
-                    face1.joinSideWith("7", face2, "Z");
-                }).to.throw(Error, "Join side must be one of 1,2,3!");
+                    face1.join("1", face2, "1");
+                }).to.throw(Error, "Cannot join Faces with different numbers of tiles!");
+            });
+        });
+
+        context("with an invalid side name to join from", () => {
+            it("should throw an error", () => {
+                const face1 = new Face("Face1", 1);
+                const face2 = new Face("Face2", 1);
+                expect(() => {
+                    face1.join("7", face2, "1");
+                }).to.throw(Error, "Side to join from must be one of 1,2,3!");
+            });
+        });
+
+        context("with an invalid side name to join to", () => {
+            it("should throw an error", () => {
+                const face1 = new Face("Face1", 1);
+                const face2 = new Face("Face2", 1);
+                expect(() => {
+                    face1.join("1", face2, "Z");
+                }).to.throw(Error, "Side to join to must be one of 1,2,3!");
             });
         });
 

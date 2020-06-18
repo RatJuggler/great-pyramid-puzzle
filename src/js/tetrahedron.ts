@@ -18,18 +18,18 @@ export class Tetrahedron {
         this._faces.push(this._faceC);
         this._faceD = new Face("D", numberOfTilesPerFace);
         this._faces.push(this._faceD);
-        this._faceA.joinSideWith("1", this._faceC, "2");
-        this._faceA.joinSideWith("2", this._faceD, "2");
-        this._faceA.joinSideWith("3", this._faceB, "2");
-        this._faceB.joinSideWith("1", this._faceC, "3");
-        this._faceB.joinSideWith("2", this._faceA, "2");
-        this._faceB.joinSideWith("3", this._faceD, "1");
-        this._faceC.joinSideWith("1", this._faceD, "3");
-        this._faceC.joinSideWith("2", this._faceA, "1");
-        this._faceC.joinSideWith("3", this._faceB, "1");
-        this._faceD.joinSideWith("1", this._faceB, "3");
-        this._faceD.joinSideWith("2", this._faceA, "2");
-        this._faceD.joinSideWith("3", this._faceC, "1");
+        this._faceA.join("1", this._faceC, "2");
+        this._faceA.join("2", this._faceD, "2");
+        this._faceA.join("3", this._faceB, "2");
+        this._faceB.join("1", this._faceC, "3");
+        this._faceB.join("2", this._faceA, "2");
+        this._faceB.join("3", this._faceD, "1");
+        this._faceC.join("1", this._faceD, "3");
+        this._faceC.join("2", this._faceA, "1");
+        this._faceC.join("3", this._faceB, "1");
+        this._faceD.join("1", this._faceB, "3");
+        this._faceD.join("2", this._faceA, "2");
+        this._faceD.join("3", this._faceC, "1");
     }
 
     display() {
