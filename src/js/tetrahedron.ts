@@ -41,10 +41,6 @@ export class Tetrahedron {
         return this._name;
     }
 
-    get faces(): Face[] {
-        return this._faces;
-    }
-
     addTile(tile: Tile): void {
         this._faces[0].addTile(tile);
     }
