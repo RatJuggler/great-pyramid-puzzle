@@ -10,7 +10,7 @@ interface SideJoinProperties {
 export class Face {
 
     private static validTileCounts = [1, 4, 9];
-    private static sideNames = ["1", "2", "3"];
+    private static sideNames = ["A", "B", "C"];
 
     private _joins = new Map<string, SideJoinProperties>();
     private _tiles = new Array<Tile>();
@@ -28,17 +28,17 @@ export class Face {
         let tile4 = new Tile("4");
         this._tiles.push(tile4);
         // tile1.join("1", to another face?);
-        tile1.join("2", tile4, "3");
+        tile1.join("B", tile4, "C");
         // tile1.join("3", to another face?);
-        tile2.join("1", tile3, "2");
+        tile2.join("A", tile3, "B");
         // tile1.join("2", to another face?);
         // tile1.join("3", to another face?);
-        tile3.join("1", tile4, "3");
-        tile3.join("2", tile2, "1");
-        tile3.join("3", tile1, "2");
+        tile3.join("A", tile4, "C");
+        tile3.join("B", tile2, "A");
+        tile3.join("C", tile1, "B");
         // tile4.join("1", to another face?);
         // tile4.join("2", to another face?);
-        tile4.join("3", tile3, "1");
+        tile4.join("C", tile3, "A");
     }
 
     display() {
