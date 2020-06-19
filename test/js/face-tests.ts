@@ -1,6 +1,5 @@
 import { Face } from '../../src/js/face';
-import { Tile } from "../../src/js/tile";
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import 'mocha';
 
 describe("Face behavior", () => {
@@ -64,42 +63,6 @@ describe("Face behavior", () => {
                 expect(() => {
                     face1.join("1", face2, "Z");
                 }).to.throw(Error, "Side to join to must be one of 1,2,3!");
-            });
-        });
-
-    });
-
-    describe("adding a Tile", () => {
-
-        context("to an empty Face", () => {
-            it("it should always be added", () => {
-                const face = new Face("EmptyFace", 1);
-                const tile = new Tile("XYZ");
-                face.addTile(tile);
-                expect(face.tiles.includes(tile)).to.be.true;
-            })
-        });
-
-        context("to a full Face", () => {
-            it("it should always be rejected", () => {
-                const face = new Face("FullFace", 1);
-                const tile = new Tile("PQR");
-                face.addTile(tile);
-                const anotherTile = new Tile("IJK");
-                face.addTile(anotherTile);
-                expect(face.tiles.includes(anotherTile)).to.be.false;
-            });
-        });
-
-        context("to a Face with existing Tiles which match", () => {
-            it("should be added", () => {
-                assert.fail("Behavior not implemented...");
-            });
-        });
-
-        context("to a Face with existing Tiles which don't match", () => {
-            it("should be rejected", () => {
-                assert.fail("Behavior not implemented...");
             });
         });
 
