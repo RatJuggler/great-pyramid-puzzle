@@ -4,23 +4,46 @@ import 'mocha';
 
 describe("Tile behaviour", () => {
 
-    describe("a new Tile", () => {
+    describe("if a new Tile", () => {
 
-        context("with valid parameters", () => {
+        context("is created with a valid identifier", () => {
             it("should return a correctly initialised instance", () => {
-                const segments = "XYZ";
-                let tile = new Tile(segments);
-                expect(tile.segments).to.equal(segments);
+                const id = "XYZ";
+                let tile = new Tile(id);
+                expect(tile).to.be.an.instanceOf(Tile);
+                expect(tile.id).to.equal(id);
             });
         });
 
-        context("with invalid parameters", () => {
-            it("should throw an error", () => {
-                const segments = "123";
-                expect(() => {
-                    new Tile(segments);
-                }).to.throw(Error, "Invalid segment combination!");
+    });
 
+    describe("if a Tile is joined to another Tile", () => {
+
+        context("with valid side names for both Tiles", () => {
+            it("should be accepted", () => {
+                const tile1 = new Tile("Tile1");
+                const tile2 = new Tile("Tile2");
+                tile1.join("1", tile2, "1");
+            });
+        });
+
+        context("where the side to join from is invalid", () => {
+            it("should throw an error", () => {
+                const tile1 = new Tile("Tile1");
+                const tile2 = new Tile("Tile2");
+                expect(() => {
+                    tile1.join("9", tile2, "1");
+                }).to.throw(Error, "Side to join from must be one of 1,2,3!");
+            });
+        });
+
+        context("where the side name to join to is invalid", () => {
+            it("should throw an error", () => {
+                const tile1 = new Tile("Tile1");
+                const tile2 = new Tile("Tile2");
+                expect(() => {
+                    tile1.join("1", tile2, "X");
+                }).to.throw(Error, "Side to join to must be one of 1,2,3!");
             });
         });
 
