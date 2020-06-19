@@ -6,7 +6,7 @@ interface SideJoinProperties {
 
 export class Tile {
 
-    private static sideNames = ["1", "2", "3"];
+    private static sideNames = ["A", "B", "C"];
 
     private _joins = new Map<string, SideJoinProperties>();
 

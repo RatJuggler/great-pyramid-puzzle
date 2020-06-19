@@ -23,7 +23,7 @@ describe("Tile behaviour", () => {
             it("should be accepted", () => {
                 const tile1 = new Tile("Tile1");
                 const tile2 = new Tile("Tile2");
-                tile1.join("1", tile2, "1");
+                tile1.join("A", tile2, "A");
             });
         });
 
@@ -32,8 +32,8 @@ describe("Tile behaviour", () => {
                 const tile1 = new Tile("Tile1");
                 const tile2 = new Tile("Tile2");
                 expect(() => {
-                    tile1.join("9", tile2, "1");
-                }).to.throw(Error, "Side to join from must be one of 1,2,3!");
+                    tile1.join("1", tile2, "A");
+                }).to.throw(Error, "Side to join from must be one of A,B,C!");
             });
         });
 
@@ -42,8 +42,8 @@ describe("Tile behaviour", () => {
                 const tile1 = new Tile("Tile1");
                 const tile2 = new Tile("Tile2");
                 expect(() => {
-                    tile1.join("1", tile2, "X");
-                }).to.throw(Error, "Side to join to must be one of 1,2,3!");
+                    tile1.join("A", tile2, "X");
+                }).to.throw(Error, "Side to join to must be one of A,B,C!");
             });
         });
 
