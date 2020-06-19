@@ -1,5 +1,4 @@
 import { Face } from "./face";
-import { Tile } from "./tile";
 
 export class Tetrahedron {
 
@@ -39,10 +38,6 @@ export class Tetrahedron {
 
     get name(): string {
         return this._name;
-    }
-
-    addTile(tile: Tile): void {
-        this._faces[0].addTile(tile);
     }
 
 }
