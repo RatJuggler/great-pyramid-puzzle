@@ -13,18 +13,38 @@ export class Face {
     private static sideNames = ["1", "2", "3"];
 
     private _joins = new Map<string, SideJoinProperties>();
-    private _tiles: Tile[] = [];
+    private _tiles = new Array<Tile>();
 
     constructor(private _name: string, private _numberOfTiles: number) {
         if (!(Face.validTileCounts.includes(_numberOfTiles))) {
             throw new Error(`Number of tiles on a Face must be one of ${Face.validTileCounts}!`);
         }
+        let tile1 = new Tile("1");
+        this._tiles.push(tile1);
+        let tile2 = new Tile("2");
+        this._tiles.push(tile2);
+        let tile3 = new Tile("3");
+        this._tiles.push(tile3);
+        let tile4 = new Tile("4");
+        this._tiles.push(tile4);
+        // tile1.join("1", to another face?);
+        tile1.join("2", tile4, "3");
+        // tile1.join("3", to another face?);
+        tile2.join("1", tile3, "2");
+        // tile1.join("2", to another face?);
+        // tile1.join("3", to another face?);
+        tile3.join("1", tile4, "3");
+        tile3.join("2", tile2, "1");
+        tile3.join("3", tile1, "2");
+        // tile4.join("1", to another face?);
+        // tile4.join("2", to another face?);
+        tile4.join("3", tile3, "1");
     }
 
     display() {
         console.log(`Face: ${this._name} - Tiles: ${this._numberOfTiles}`);
         this._joins.forEach((join, side) => console.log(`S-${this._name}${side} -> S-${join.toFace.name}${join.toFaceSide}`));
-        this._tiles.forEach(tile => console.log(tile.display()));
+        this._tiles.forEach(tile => tile ? console.log(tile.display()) : () => {});
     }
 
     get name(): string {
@@ -42,16 +62,6 @@ export class Face {
             throw new Error(`Side to join to must be one of ${Face.sideNames}!`);
         }
         this._joins.set(fromSide, {toFace: toFace, toFaceSide: toFaceSide});
-    }
-
-    get tiles(): Tile[] {
-        return this._tiles;
-    }
-
-    addTile(tile: Tile): void {
-        if (this._tiles.length < this._numberOfTiles) {
-            this._tiles.push(tile);
-        }
     }
 
 }
