@@ -27,17 +27,17 @@ export class Face {
         this._tiles.push(tile3);
         let tile4 = new Tile("4");
         this._tiles.push(tile4);
-        // tile1.join("1", to another face?);
+        // tile1.join("A", to another face?);
         tile1.join("B", tile4, "C");
-        // tile1.join("3", to another face?);
+        // tile1.join("C", to another face?);
         tile2.join("A", tile3, "B");
-        // tile1.join("2", to another face?);
-        // tile1.join("3", to another face?);
+        // tile1.join("B", to another face?);
+        // tile1.join("C", to another face?);
         tile3.join("A", tile4, "C");
         tile3.join("B", tile2, "A");
         tile3.join("C", tile1, "B");
-        // tile4.join("1", to another face?);
-        // tile4.join("2", to another face?);
+        // tile4.join("A", to another face?);
+        // tile4.join("B", to another face?);
         tile4.join("C", tile3, "A");
     }
 

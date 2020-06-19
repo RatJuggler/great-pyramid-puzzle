@@ -3,32 +3,32 @@ import { Face } from "./face";
 export class Tetrahedron {
 
     private _faces: Face[] = [];
-    private _faceA: Face;
-    private _faceB: Face;
-    private _faceC: Face;
-    private _faceD: Face;
+    private _face1: Face;
+    private _face2: Face;
+    private _face3: Face;
+    private _face4: Face;
 
     constructor(private _name: string, numberOfTilesPerFace: number) {
-        this._faceA = new Face("A", numberOfTilesPerFace);
-        this._faces.push(this._faceA);
-        this._faceB = new Face("B", numberOfTilesPerFace);
-        this._faces.push(this._faceB);
-        this._faceC = new Face("C", numberOfTilesPerFace);
-        this._faces.push(this._faceC);
-        this._faceD = new Face("D", numberOfTilesPerFace);
-        this._faces.push(this._faceD);
-        this._faceA.join("1", this._faceC, "2");
-        this._faceA.join("2", this._faceD, "2");
-        this._faceA.join("3", this._faceB, "2");
-        this._faceB.join("1", this._faceC, "3");
-        this._faceB.join("2", this._faceA, "2");
-        this._faceB.join("3", this._faceD, "1");
-        this._faceC.join("1", this._faceD, "3");
-        this._faceC.join("2", this._faceA, "1");
-        this._faceC.join("3", this._faceB, "1");
-        this._faceD.join("1", this._faceB, "3");
-        this._faceD.join("2", this._faceA, "2");
-        this._faceD.join("3", this._faceC, "1");
+        this._face1 = new Face("1", numberOfTilesPerFace);
+        this._faces.push(this._face1);
+        this._face2 = new Face("2", numberOfTilesPerFace);
+        this._faces.push(this._face2);
+        this._face3 = new Face("3", numberOfTilesPerFace);
+        this._faces.push(this._face3);
+        this._face4 = new Face("4", numberOfTilesPerFace);
+        this._faces.push(this._face4);
+        this._face1.join("A", this._face3, "B");
+        this._face1.join("B", this._face4, "B");
+        this._face1.join("C", this._face2, "B");
+        this._face2.join("A", this._face3, "C");
+        this._face2.join("B", this._face1, "C");
+        this._face2.join("C", this._face4, "A");
+        this._face3.join("A", this._face4, "C");
+        this._face3.join("B", this._face1, "A");
+        this._face3.join("C", this._face2, "A");
+        this._face4.join("A", this._face2, "C");
+        this._face4.join("B", this._face1, "B");
+        this._face4.join("C", this._face3, "A");
     }
 
     display() {
