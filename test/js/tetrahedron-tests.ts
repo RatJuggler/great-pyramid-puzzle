@@ -1,6 +1,5 @@
 import { Tetrahedron } from '../../src/js/tetrahedron';
-import { Tile } from "../../src/js/tile";
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import 'mocha';
 
 describe("Tetrahedron behaviour", () => {
@@ -21,40 +20,6 @@ describe("Tetrahedron behaviour", () => {
                 expect(() => {
                     new Tetrahedron("InvalidTetrahedron", 16);
                 }).to.throw(Error, "Number of tiles on a Face must be one of 1,4,9!");
-            });
-        });
-
-    });
-
-    describe("adding a Tile", () => {
-
-        context("to an empty Tetrahedron", () => {
-            it("it should always be added", () => {
-                const puzzle = new Tetrahedron("EmptyTetrahedron", 1);
-                const tile = new Tile("123")
-                puzzle.addTile(tile);
-                assert.fail("Behavior not implemented...");
-            })
-        });
-
-        context("to a full Tetrahedron", () => {
-            it("it should always be rejected", () => {
-                const puzzle = new Tetrahedron("FullTetrahedron", 1);
-                const tile = new Tile("123")
-                puzzle.addTile(tile);
-                assert.fail("Behavior not implemented...");
-            });
-        });
-
-        context("to a Tetrahedron with existing Tiles which match", () => {
-           it("should be added", () => {
-               assert.fail("Behavior not implemented...");
-           });
-        });
-
-        context("to a Tetrahedron with existing Tiles which don't match", () => {
-            it("should be rejected", () => {
-                assert.fail("Behavior not implemented...");
             });
         });
 
