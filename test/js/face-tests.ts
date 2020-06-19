@@ -17,7 +17,7 @@ describe("Face behavior", () => {
             });
         });
 
-        context("is created with invalid number of tiles", () => {
+        context("is created with an invalid number of tiles", () => {
             it("should throw an error", () => {
                 expect(() => {
                     new Face("InvalidFace", 25);
@@ -29,7 +29,7 @@ describe("Face behavior", () => {
 
     describe("if a Face is joined to another Face", () => {
 
-        context("with valid side names for both", () => {
+        context("with valid side names for both Faces", () => {
             it("should be accepted", () => {
                 const face1 = new Face("Face1", 1);
                 const face2 = new Face("Face2", 1);
@@ -47,7 +47,7 @@ describe("Face behavior", () => {
             });
         });
 
-        context("with an invalid side name to join from", () => {
+        context("where the side to join from is invalid", () => {
             it("should throw an error", () => {
                 const face1 = new Face("Face1", 1);
                 const face2 = new Face("Face2", 1);
@@ -57,7 +57,7 @@ describe("Face behavior", () => {
             });
         });
 
-        context("with an invalid side name to join to", () => {
+        context("where the side name to join to is invalid", () => {
             it("should throw an error", () => {
                 const face1 = new Face("Face1", 1);
                 const face2 = new Face("Face2", 1);
