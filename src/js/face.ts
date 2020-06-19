@@ -1,11 +1,18 @@
 import { Tile } from "./tile";
 
+
+interface SideJoinProperties {
+    toFace: Face;
+    toFaceSide: string;
+}
+
+
 export class Face {
 
     private static validTileCounts = [1, 4, 9];
     private static sideNames = ["1", "2", "3"];
 
-    private _joins: { fromSide: string, toFace: Face, toFaceSide: string }[] = [];
+    private _joins = new Map<string, SideJoinProperties>();
     private _tiles: Tile[] = [];
 
     constructor(private _name: string, private _numberOfTiles: number) {
@@ -16,7 +23,7 @@ export class Face {
 
     display() {
         console.log(`Face: ${this._name} - Tiles: ${this._numberOfTiles}`);
-        this._joins.forEach(join => console.log(`Side: ${join.fromSide} Joins to: ${join.toFace.name}-${join.toFaceSide}`))
+        this._joins.forEach((join, side) => console.log(`S-${this._name}${side} -> S-${join.toFace.name}${join.toFaceSide}`));
         this._tiles.forEach(tile => console.log(tile.display()));
     }
 
@@ -34,7 +41,7 @@ export class Face {
         if (!(Face.sideNames.includes(toFaceSide))) {
             throw new Error(`Side to join to must be one of ${Face.sideNames}!`);
         }
-        this._joins.push({fromSide: fromSide, toFace: toFace, toFaceSide: toFaceSide});
+        this._joins.set(fromSide, {toFace: toFace, toFaceSide: toFaceSide});
     }
 
     get tiles(): Tile[] {
