@@ -41,10 +41,12 @@ export class Face {
         tile4.join("C", tile3, "A");
     }
 
-    display() {
-        console.log(`Face: ${this._name} - Tiles: ${this._numberOfTiles}`);
-        this._joins.forEach((join, side) => console.log(`S-${this._name}${side} -> S-${join.toFace.name}${join.toFaceSide}`));
-        this._tiles.forEach(tile => tile ? console.log(tile.display()) : () => {});
+    toString(): string {
+        let faceString = `Face: ${this._name}, Number of Tiles: ${this._numberOfTiles}, Joins: `;
+        this._joins.forEach((join, side) => faceString += `(${this._name}-${side}->${join.toFace.name}-${join.toFaceSide})`);
+        faceString += '\n';
+        this._tiles.forEach(tile => faceString += tile.toString());
+        return faceString;
     }
 
     get name(): string {

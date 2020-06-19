@@ -4,4 +4,4 @@ console.log("Initialising...");
 
 let puzzle = new Tetrahedron("Pocket", 4);
 
-puzzle.display();
+console.log(puzzle.toString());

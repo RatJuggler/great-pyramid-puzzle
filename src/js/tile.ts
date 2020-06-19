@@ -12,9 +12,10 @@ export class Tile {
 
     constructor(private _id: string) {}
 
-    display() {
-        console.log(`Tile: ${this._id}`);
-        this._joins.forEach((join, side) => console.log(`S-${this._id}${side} -> S-${join.toTile._id}${join.toTileSide}`));
+    toString(): string {
+        let tileString = `Tile: ${this._id}, Joins: `;
+        this._joins.forEach((join, side) => tileString += `(${this._id}-${side}->${join.toTile._id}-${join.toTileSide})`);
+        return tileString + '\n';
     }
 
     get id(): string {

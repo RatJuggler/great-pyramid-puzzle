@@ -31,9 +31,10 @@ export class Tetrahedron {
         this._face4.join("C", this._face3, "A");
     }
 
-    display() {
-        console.log(`Solving: ${this._name}`);
-        this._faces.forEach(face => face.display());
+    toString(): string {
+        let tetrahedronString = `Solving: ${this._name}`;
+        this._faces.forEach(face => tetrahedronString += face.toString());
+        return tetrahedronString;
     }
 
     get name(): string {
