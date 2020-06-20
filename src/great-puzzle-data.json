@@ -1,6 +1,89 @@
 {
   "puzzle": "great",
-  "number_of_tiles": 36,
+  "numberOfTilesPerFace": 9,
+  "totalNumberOfTiles": 36,
+  "faces": [
+    {
+      "name": "1",
+      "joins": [
+        {
+          "fromSide": "A",
+          "toSide": "B",
+          "ofFace": "3"
+        },
+        {
+          "fromSide": "B",
+          "toSide": "B",
+          "ofFace": "4"
+        },
+        {
+          "fromSide": "C",
+          "toSide": "B",
+          "ofFace": "2"
+        }
+      ]
+    },
+    {
+      "name": "2",
+      "joins": [
+        {
+          "fromSide": "A",
+          "toSide": "C",
+          "ofFace": "3"
+        },
+        {
+          "fromSide": "B",
+          "toSide": "C",
+          "ofFace": "1"
+        },
+        {
+          "fromSide": "C",
+          "toSide": "A",
+          "ofFace": "4"
+        }
+      ]
+    },
+    {
+      "name": "3",
+      "joins": [
+        {
+          "fromSide": "A",
+          "toSide": "C",
+          "ofFace": "4"
+        },
+        {
+          "fromSide": "B",
+          "toSide": "A",
+          "ofFace": "1"
+        },
+        {
+          "fromSide": "C",
+          "toSide": "A",
+          "ofFace": "2"
+        }
+      ]
+    },
+    {
+      "name": "4",
+      "joins": [
+        {
+          "fromSide": "A",
+          "toSide": "C",
+          "ofFace": "2"
+        },
+        {
+          "fromSide": "B",
+          "toSide": "B",
+          "ofFace": "1"
+        },
+        {
+          "fromSide": "C",
+          "toSide": "A",
+          "ofFace": "3"
+        }
+      ]
+    }
+  ],
   "tiles": [
     {
       "tile": 1,

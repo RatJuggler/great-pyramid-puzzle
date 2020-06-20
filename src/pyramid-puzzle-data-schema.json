@@ -8,9 +8,47 @@
       "description": "The name of this version of the Pyramid Puzzle.",
       "type": "string"
     },
-    "number_of_tiles": {
-      "description": "The number of tiles used on the puzzle.",
+    "numberOfTilesPerFace": {
+      "description": "The number of tiles used on each face of the puzzle.",
       "type": "number"
+    },
+    "totalNumberOfTiles": {
+      "description": "The total number of tiles used on the puzzle.",
+      "type": "number"
+    },
+    "faces": {
+      "description": "The faces of the tetrahedron.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of a face on the tetrahedron.",
+            "type": "string"
+          },
+          "joins": {
+            "description": "How a face joins with other faces on the tetrahedron.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fromSide": {
+                  "description": "The side of this face...",
+                  "type": "string"
+                },
+                "toSide": {
+                  "description": "Connects to this side...",
+                  "type": "string"
+                },
+                "ofFace": {
+                  "description": "Of this face.",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "tiles": {
       "description": "The tiles used by the version of the puzzle.",
