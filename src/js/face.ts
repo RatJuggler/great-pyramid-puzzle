@@ -2,8 +2,8 @@ import { Tile } from "./tile";
 
 
 interface SideJoinProperties {
-    readonly toFace: Face;
-    readonly toFaceSide: string;
+    readonly toSide: string;
+    readonly ofFace: Face;
 }
 
 
@@ -47,7 +47,7 @@ export class Face {
 
     toString(): string {
         let faceString = `Face: ${this._name}, Number of Tiles: ${this._numberOfTiles}, Joins: `;
-        this._joins.forEach((join, side) => faceString += `(${this._name}-${side}->${join.toFace.name}-${join.toFaceSide})`);
+        this._joins.forEach((join, side) => faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
         faceString += '\n';
         this._tiles.forEach(tile => faceString += tile.toString());
         return faceString;
@@ -57,17 +57,17 @@ export class Face {
         return this._name;
     }
 
-    join(fromSide: string, toFace: Face, toFaceSide: string) : void {
-        if (this._numberOfTiles != toFace._numberOfTiles) {
+    join(fromSide: string, toSide: string, ofFace: Face) : void {
+        if (this._numberOfTiles != ofFace._numberOfTiles) {
             throw new Error("Cannot join Faces with different numbers of tiles!");
         }
         if (!(Face.SIDE_NAMES.includes(fromSide))) {
             throw new Error(`Side to join from must be one of ${Face.SIDE_NAMES}!`);
         }
-        if (!(Face.SIDE_NAMES.includes(toFaceSide))) {
+        if (!(Face.SIDE_NAMES.includes(toSide))) {
             throw new Error(`Side to join to must be one of ${Face.SIDE_NAMES}!`);
         }
-        this._joins.set(fromSide, {toFace: toFace, toFaceSide: toFaceSide});
+        this._joins.set(fromSide, {toSide: toSide, ofFace: ofFace});
     }
 
 }

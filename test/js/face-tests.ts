@@ -39,7 +39,7 @@ describe("Face behavior", () => {
             it("should be accepted", () => {
                 const face1 = new Face("1", 1);
                 const face2 = new Face("2", 1);
-                face1.join("A", face2, "B");
+                face1.join("A", "B", face2);
             });
         });
 
@@ -48,7 +48,7 @@ describe("Face behavior", () => {
                 const face1 = new Face("1", 1);
                 const face2 = new Face("2", 4);
                 expect(() => {
-                    face1.join("A", face2, "B");
+                    face1.join("A", "B", face2);
                 }).to.throw(Error, "Cannot join Faces with different numbers of tiles!");
             });
         });
@@ -58,7 +58,7 @@ describe("Face behavior", () => {
                 const face1 = new Face("1", 1);
                 const face2 = new Face("2", 1);
                 expect(() => {
-                    face1.join("7", face2, "A");
+                    face1.join("7", "A", face2);
                 }).to.throw(Error, "Side to join from must be one of A,B,C!");
             });
         });
@@ -68,7 +68,7 @@ describe("Face behavior", () => {
                 const face1 = new Face("1", 1);
                 const face2 = new Face("2", 1);
                 expect(() => {
-                    face1.join("A", face2, "Z");
+                    face1.join("A", "Z", face2);
                 }).to.throw(Error, "Side to join to must be one of A,B,C!");
             });
         });

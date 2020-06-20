@@ -38,7 +38,7 @@ export class Tetrahedron {
         for (const faceData of config.faces) {
             let fromFace = this._faces.get(faceData.name);
             for (const joinData of faceData.joins) {
-                fromFace!.join(joinData.fromSide, this._faces.get(joinData.ofFace)!, joinData.toSide);
+                fromFace!.join(joinData.fromSide, joinData.toSide, this._faces.get(joinData.ofFace)!);
             }
         }
     }
