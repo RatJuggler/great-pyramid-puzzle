@@ -1,42 +1,41 @@
 import { Face } from "./face";
 
+
+interface FaceJoinData {
+    fromSide: string;
+    toSide: string;
+    ofFace: string;
+}
+
+interface FaceData {
+    name: string;
+    joins: FaceJoinData[]
+}
+
 interface PuzzleData {
     puzzle: string;
     numberOfTilesPerFace: number;
     totalNumberOfTiles: number;
+    faces: FaceData[];
 }
 
 export class Tetrahedron {
 
-    private _name: string;
-    private _faces: Face[] = [];
-    private _face1: Face;
-    private _face2: Face;
-    private _face3: Face;
-    private _face4: Face;
+    readonly _name: string;
+    readonly _faces = new Map<string, Face>();
 
     constructor(config: PuzzleData) {
         this._name = config.puzzle;
-        this._face1 = new Face("1", config.numberOfTilesPerFace);
-        this._faces.push(this._face1);
-        this._face2 = new Face("2", config.numberOfTilesPerFace);
-        this._faces.push(this._face2);
-        this._face3 = new Face("3", config.numberOfTilesPerFace);
-        this._faces.push(this._face3);
-        this._face4 = new Face("4", config.numberOfTilesPerFace);
-        this._faces.push(this._face4);
-        this._face1.join("A", this._face3, "B");
-        this._face1.join("B", this._face4, "B");
-        this._face1.join("C", this._face2, "B");
-        this._face2.join("A", this._face3, "C");
-        this._face2.join("B", this._face1, "C");
-        this._face2.join("C", this._face4, "A");
-        this._face3.join("A", this._face4, "C");
-        this._face3.join("B", this._face1, "A");
-        this._face3.join("C", this._face2, "A");
-        this._face4.join("A", this._face2, "C");
-        this._face4.join("B", this._face1, "B");
-        this._face4.join("C", this._face3, "A");
+        for (const faceData of config.faces) {
+            let newFace = new Face(faceData.name, config.numberOfTilesPerFace);
+            this._faces.set(newFace.name, newFace);
+        }
+        for (const faceData of config.faces) {
+            let fromFace = this._faces.get(faceData.name);
+            for (const joinData of faceData.joins) {
+                fromFace!.join(joinData.fromSide, this._faces.get(joinData.ofFace)!, joinData.toSide);
+            }
+        }
     }
 
     toString(): string {
