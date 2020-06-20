@@ -1,21 +1,29 @@
 import { Face } from "./face";
 
+interface PuzzleData {
+    puzzle: string;
+    numberOfTilesPerFace: number;
+    totalNumberOfTiles: number;
+}
+
 export class Tetrahedron {
 
+    private _name: string;
     private _faces: Face[] = [];
     private _face1: Face;
     private _face2: Face;
     private _face3: Face;
     private _face4: Face;
 
-    constructor(private _name: string, numberOfTilesPerFace: number) {
-        this._face1 = new Face("1", numberOfTilesPerFace);
+    constructor(config: PuzzleData) {
+        this._name = config.puzzle;
+        this._face1 = new Face("1", config.numberOfTilesPerFace);
         this._faces.push(this._face1);
-        this._face2 = new Face("2", numberOfTilesPerFace);
+        this._face2 = new Face("2", config.numberOfTilesPerFace);
         this._faces.push(this._face2);
-        this._face3 = new Face("3", numberOfTilesPerFace);
+        this._face3 = new Face("3", config.numberOfTilesPerFace);
         this._faces.push(this._face3);
-        this._face4 = new Face("4", numberOfTilesPerFace);
+        this._face4 = new Face("4", config.numberOfTilesPerFace);
         this._faces.push(this._face4);
         this._face1.join("A", this._face3, "B");
         this._face1.join("B", this._face4, "B");
