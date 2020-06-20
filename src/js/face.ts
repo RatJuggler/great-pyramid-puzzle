@@ -2,22 +2,26 @@ import { Tile } from "./tile";
 
 
 interface SideJoinProperties {
-    toFace: Face;
-    toFaceSide: string;
+    readonly toFace: Face;
+    readonly toFaceSide: string;
 }
 
 
 export class Face {
 
-    private static validTileCounts = [1, 4, 9];
-    private static sideNames = ["A", "B", "C"];
+    private static FACE_NAMES = ["1", "2", "3", "4"];
+    private static VALID_TILE_COUNTS = [1, 4, 9];
+    private static SIDE_NAMES = ["A", "B", "C"];
 
     private _joins = new Map<string, SideJoinProperties>();
     private _tiles = new Array<Tile>();
 
     constructor(private _name: string, private _numberOfTiles: number) {
-        if (!(Face.validTileCounts.includes(_numberOfTiles))) {
-            throw new Error(`Number of tiles on a Face must be one of ${Face.validTileCounts}!`);
+        if (!(Face.FACE_NAMES.includes(_name))) {
+            throw new Error(`Face name must be one of ${Face.FACE_NAMES}!`)
+        }
+        if (!(Face.VALID_TILE_COUNTS.includes(_numberOfTiles))) {
+            throw new Error(`Number of tiles on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
         }
         let tile1 = new Tile("1");
         this._tiles.push(tile1);
@@ -27,7 +31,7 @@ export class Face {
         this._tiles.push(tile3);
         let tile4 = new Tile("4");
         this._tiles.push(tile4);
-        // tile1.join("A", to another face?);
+        // tile1.join("A", this.getFaceOnSide("A"), "");
         tile1.join("B", tile4, "C");
         // tile1.join("C", to another face?);
         tile2.join("A", tile3, "B");
@@ -57,11 +61,11 @@ export class Face {
         if (this._numberOfTiles != toFace._numberOfTiles) {
             throw new Error("Cannot join Faces with different numbers of tiles!");
         }
-        if (!(Face.sideNames.includes(fromSide))) {
-            throw new Error(`Side to join from must be one of ${Face.sideNames}!`);
+        if (!(Face.SIDE_NAMES.includes(fromSide))) {
+            throw new Error(`Side to join from must be one of ${Face.SIDE_NAMES}!`);
         }
-        if (!(Face.sideNames.includes(toFaceSide))) {
-            throw new Error(`Side to join to must be one of ${Face.sideNames}!`);
+        if (!(Face.SIDE_NAMES.includes(toFaceSide))) {
+            throw new Error(`Side to join to must be one of ${Face.SIDE_NAMES}!`);
         }
         this._joins.set(fromSide, {toFace: toFace, toFaceSide: toFaceSide});
     }
