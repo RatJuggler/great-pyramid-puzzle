@@ -21,10 +21,15 @@ interface PuzzleData {
 
 export class Tetrahedron {
 
+    private readonly FACES = 4;
+
     readonly _name: string;
     readonly _faces = new Map<string, Face>();
 
     constructor(config: PuzzleData) {
+        if (config.faces.length != this.FACES) {
+            throw new Error(`Tetrahedron must always have configuration data for ${this.FACES} Faces!`)
+        }
         this._name = config.puzzle;
         for (const faceData of config.faces) {
             let newFace = new Face(faceData.name, config.numberOfTilesPerFace);

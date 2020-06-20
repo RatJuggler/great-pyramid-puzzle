@@ -19,7 +19,7 @@ describe("Tetrahedron behaviour", () => {
             it("should throw an error", () => {
                 expect(() => {
                     new Tetrahedron(invalid_config);
-                }).to.throw(Error, "Number of tiles on a Face must be one of 1,4,9!");
+                }).to.throw(Error, "Tetrahedron must always have configuration data for 4 Faces!");
             });
         });
 
