@@ -1,30 +1,12 @@
 import { Face } from "./face";
 
 
-interface FaceJoinData {
-    fromSide: string;
-    toSide: string;
-    ofFace: string;
-}
-
-interface FaceData {
-    name: string;
-    joins: FaceJoinData[]
-}
-
-interface PuzzleData {
-    puzzle: string;
-    numberOfTilesPerFace: number;
-    totalNumberOfTiles: number;
-    faces: FaceData[];
-}
-
 export class Tetrahedron {
 
     private readonly FACES = 4;
 
-    readonly _name: string;
-    readonly _faces = new Map<string, Face>();
+    private readonly _name: string;
+    private readonly _faces = new Map<string, Face>();
 
     constructor(config: PuzzleData) {
         if (config.faces.length != this.FACES) {
