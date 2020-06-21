@@ -1,4 +1,4 @@
-import { TilePositionData } from "./puzzle-data-schema";
+import {FaceData, TilePositionData} from "./puzzle-data-schema";
 import { TilePosition } from "./tile-position";
 
 
@@ -24,9 +24,19 @@ export class Face {
         if (!(Face.VALID_TILE_COUNTS.includes(_numberOfTiles))) {
             throw new Error(`Number of tiles on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
         }
+        // We can't join the tile positions until they've been created for every face.
         for (const tilePositionData of tilePositions) {
             let newTilePosition = new TilePosition(tilePositionData.position);
             this._tilePositions.set(newTilePosition.id, newTilePosition);
+        }
+    }
+
+    static joinFaces(faceData: FaceData[], faces: Map<string, Face>) {
+        for (const faceDetails of faceData) {
+            let fromFace = faces.get(faceDetails.name);
+            for (const joinData of faceDetails.joins) {
+                fromFace!.join(joinData.fromSide, joinData.toSide, faces.get(joinData.ofFace)!);
+            }
         }
     }
 
@@ -40,6 +50,10 @@ export class Face {
 
     get name(): string {
         return this._name;
+    }
+
+    getTilePosition(position: string): TilePosition {
+        return this._tilePositions.get(position)!;
     }
 
     join(fromSide: string, toSide: string, ofFace: Face) : void {

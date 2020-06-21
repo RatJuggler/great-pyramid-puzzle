@@ -1,6 +1,7 @@
 import { TilePosition } from '../../src/js/tile-position';
 import { expect } from 'chai';
 import 'mocha';
+import {Face} from "../../src/js/face";
 
 describe("TilePosition behaviour", () => {
 
@@ -21,28 +22,31 @@ describe("TilePosition behaviour", () => {
 
         context("with valid side names for both Tiles", () => {
             it("should be accepted", () => {
+                const face1 = new Face("1", 1, []);
                 const tile1 = new TilePosition("Tile1");
                 const tile2 = new TilePosition("Tile2");
-                tile1.join("A", tile2, "A");
+                tile1.join("A", "A", tile2, face1);
             });
         });
 
         context("where the side to join from is invalid", () => {
             it("should throw an error", () => {
+                const face1 = new Face("1", 1, []);
                 const tile1 = new TilePosition("Tile1");
                 const tile2 = new TilePosition("Tile2");
                 expect(() => {
-                    tile1.join("1", tile2, "A");
+                    tile1.join("1", "A", tile2, face1);
                 }).to.throw(Error, "Side to join from must be one of A,B,C!");
             });
         });
 
         context("where the side name to join to is invalid", () => {
             it("should throw an error", () => {
+                const face1 = new Face("1", 1, []);
                 const tile1 = new TilePosition("Tile1");
                 const tile2 = new TilePosition("Tile2");
                 expect(() => {
-                    tile1.join("A", tile2, "X");
+                    tile1.join("A", "X", tile2, face1);
                 }).to.throw(Error, "Side to join to must be one of A,B,C!");
             });
         });
