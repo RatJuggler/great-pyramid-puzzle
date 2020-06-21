@@ -19,11 +19,13 @@ sides. The four segments along each side are either red or white.
 
 ![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-segments.svg)
 
-![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tetrahedron-faces.svg)
+![Image of Tetrahedron Faces](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tetrahedron-faces.svg)
 
-![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tetrahedron-tiles-pocket.svg)
+![Image of Tile Positions for Test](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-positions-test.svg)
 
-![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tetrahedron-tiles-great.svg)
+![Image of Tile Positions for Pocket](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-positions-pocket.svg)
+
+![Image of Tile Positions for Great](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-positions-great.svg)
 
 ### Resources
 - A quick overview on [equilateral triangle](https://en.wikipedia.org/wiki/Equilateral_triangle) geometry.
