@@ -71,7 +71,7 @@
                         "description": "Connects to this side...",
                         "type": "string"
                       },
-                      "ofTile": {
+                      "ofTilePosition": {
                         "description": "Of this tile position...",
                         "type": "string"
                       },

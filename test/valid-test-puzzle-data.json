@@ -29,19 +29,19 @@
             {
               "fromSide": "A",
               "toSide": "B",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "3"
             },
             {
               "fromSide": "B",
               "toSide": "B",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "4"
             },
             {
               "fromSide": "C",
               "toSide": "B",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "2"
             }
           ]
@@ -74,19 +74,19 @@
             {
               "fromSide": "A",
               "toSide": "C",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "3"
             },
             {
               "fromSide": "B",
               "toSide": "C",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "1"
             },
             {
               "fromSide": "C",
               "toSide": "A",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "4"
             }
           ]
@@ -119,19 +119,19 @@
             {
               "fromSide": "A",
               "toSide": "C",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "4"
             },
             {
               "fromSide": "B",
               "toSide": "A",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "1"
             },
             {
               "fromSide": "C",
               "toSide": "A",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "2"
             }
           ]
@@ -164,19 +164,19 @@
             {
               "fromSide": "A",
               "toSide": "C",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "2"
             },
             {
               "fromSide": "B",
               "toSide": "B",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "1"
             },
             {
               "fromSide": "C",
               "toSide": "A",
-              "ofTile": "1",
+              "ofTilePosition": "1",
               "onFace": "3"
             }
           ]

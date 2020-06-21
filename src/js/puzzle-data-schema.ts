@@ -3,7 +3,7 @@
 interface TilePositionJoinData {
     readonly fromSide: string;
     readonly toSide: string;
-    readonly ofTile: string;
+    readonly ofTilePosition: string;
     readonly onFace: string;
 }
 
