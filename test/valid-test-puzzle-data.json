@@ -21,6 +21,31 @@
           "toSide": "B",
           "ofFace": "2"
         }
+      ],
+      "tilePositions": [
+        {
+          "position": "1",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "B",
+              "ofTile": "1",
+              "onFace": "3"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "B",
+              "ofTile": "1",
+              "onFace": "4"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTile": "1",
+              "onFace": "2"
+            }
+          ]
+        }
       ]
     },
     {
@@ -40,6 +65,31 @@
           "fromSide": "C",
           "toSide": "A",
           "ofFace": "4"
+        }
+      ],
+      "tilePositions": [
+        {
+          "position": "1",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTile": "1",
+              "onFace": "3"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "C",
+              "ofTile": "1",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTile": "1",
+              "onFace": "4"
+            }
+          ]
         }
       ]
     },
@@ -61,6 +111,31 @@
           "toSide": "A",
           "ofFace": "2"
         }
+      ],
+      "tilePositions": [
+        {
+          "position": "1",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTile": "1",
+              "onFace": "4"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "A",
+              "ofTile": "1",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTile": "1",
+              "onFace": "2"
+            }
+          ]
+        }
       ]
     },
     {
@@ -80,6 +155,31 @@
           "fromSide": "C",
           "toSide": "A",
           "ofFace": "3"
+        }
+      ],
+      "tilePositions": [
+        {
+          "position": "1",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTile": "1",
+              "onFace": "2"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "B",
+              "ofTile": "1",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTile": "1",
+              "onFace": "3"
+            }
+          ]
         }
       ]
     }
