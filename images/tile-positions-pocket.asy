@@ -13,11 +13,29 @@ real face_gap = 0.05;
 real tile_gap = 0.05;
 pen tile_label = fontsize(12pt);
 pen note_label = fontsize(8pt);
+pen side_label = fontsize(6pt);
 pen face_colour = palegray;
 pen tile_colour = lightgray;
-transform label_right = shift(0.05, 0);
+transform label_down_right = shift(0.05, -0.05);
+transform label_up_right = shift(0.05, 0.05);
 pen title_label = fontsize(14pt);
 
+
+void tile_position_up(path tile_position, string id, string side1 = "A", string side2 = "B", string side3 = "C") {
+    filldraw(tile_position, tile_colour);
+    label(id, label_down_right * tile_position, SE, tile_label);
+    label(side1, (point(tile_position, 1)--point(tile_position, 3)), SW, side_label);
+    label(side2, (point(tile_position, 3)--point(tile_position, 2)), N, side_label);
+    label(side3, (point(tile_position, 2)--point(tile_position, 1)), SE, side_label);
+}
+
+void tile_position_down(path tile_position, string id, string side1 = "A", string side2 = "B", string side3 = "C") {
+    filldraw(tile_position, tile_colour);
+    label(id, label_up_right * tile_position, NE, tile_label);
+    label(side1, (point(tile_position, 3)--point(tile_position, 2)), NW, side_label);
+    label(side2, (point(tile_position, 2)--point(tile_position, 1)), NE, side_label);
+    label(side3, (point(tile_position, 1)--point(tile_position, 3)), S, side_label);
+}
 
 // Tetrahedron triangle faces, outward facing surfaces will be shown so would fold down
 point face_1_center = (0, 0);
@@ -49,14 +67,10 @@ path tile_1_2 = shift(-tile_offset_x, tile_offset_y) * shift(face_1_center) * sc
 path tile_1_3 = shift(face_1_center) * scale(tile_scale) * polygon(3);
 path tile_1_4 = shift(0, -tile_offset_y2) * shift(face_1_center) * scale(tile_scale) * rotate(60) * polygon(3);
 
-filldraw(tile_1_1, tile_colour);
-label("1-1", label_right * tile_1_1, NE, tile_label);
-filldraw(tile_1_2, tile_colour);
-label("1-2", label_right * tile_1_2, NE, tile_label);
-filldraw(tile_1_3, tile_colour);
-label("1-3", label_right * tile_1_3, SE, tile_label);
-filldraw(tile_1_4, tile_colour);
-label("1-4", label_right * tile_1_4, NE, tile_label);
+tile_position_down(tile_1_1, "1-1");
+tile_position_down(tile_1_2, "1-2");
+tile_position_up(tile_1_3, "1-3");
+tile_position_down(tile_1_4, "1-4");
 
 // Face 2 tiles
 path tile_2_1 = shift(0, tile_offset_y2) * shift(face_2_center) * scale(tile_scale) * polygon(3);
@@ -64,14 +78,10 @@ path tile_2_2 = shift(-tile_offset_x, -tile_offset_y) * shift(face_2_center) * s
 path tile_2_3 = shift(face_2_center) * scale(tile_scale) * rotate(60) * polygon(3);
 path tile_2_4 = shift(tile_offset_x, -tile_offset_y) * shift(face_2_center) * scale(tile_scale) * polygon(3);
 
-filldraw(tile_2_1, tile_colour);
-label("2-1", label_right * tile_2_1, SE, tile_label);
-filldraw(tile_2_2, tile_colour);
-label("2-2", label_right * tile_2_2, SE, tile_label);
-filldraw(tile_2_3, tile_colour);
-label("2-3", label_right * tile_2_3, NE, tile_label);
-filldraw(tile_2_4, tile_colour);
-label("2-4", label_right * tile_2_4, SE, tile_label);
+tile_position_up(tile_2_1, "2-1");
+tile_position_up(tile_2_2, "2-2");
+tile_position_down(tile_2_3, "2-3");
+tile_position_up(tile_2_4, "2-4");
 
 // Face 3 tiles
 path tile_3_1 = shift(tile_offset_x, -tile_offset_y) * shift(face_3_center) * scale(tile_scale) * polygon(3);
@@ -79,14 +89,10 @@ path tile_3_2 = shift(0, tile_offset_y2) * shift(face_3_center) * scale(tile_sca
 path tile_3_3 = shift(face_3_center) * scale(tile_scale) * rotate(60) * polygon(3);
 path tile_3_4 = shift(-tile_offset_x, -tile_offset_y) * shift(face_3_center) * scale(tile_scale) * polygon(3);
 
-filldraw(tile_3_1, tile_colour);
-label("3-1", label_right * tile_3_1, SE, tile_label);
-filldraw(tile_3_2, tile_colour);
-label("3-2", label_right * tile_3_2, SE, tile_label);
-filldraw(tile_3_3, tile_colour);
-label("3-3", label_right * tile_3_3, NE, tile_label);
-filldraw(tile_3_4, tile_colour);
-label("3-4", label_right * tile_3_4, SE, tile_label);
+tile_position_up(tile_3_1, "3-1", "C", "A", "B");
+tile_position_up(tile_3_2, "3-2", "C", "A", "B");
+tile_position_down(tile_3_3, "3-3", "C", "A", "B");
+tile_position_up(tile_3_4, "3-4", "C", "A", "B");
 
 // Face 4 tiles
 path tile_4_3 = shift(face_4_center) * scale(tile_scale) * rotate(60) * polygon(3);
@@ -94,14 +100,10 @@ path tile_4_1 = shift(-tile_offset_x, -tile_offset_y) * shift(face_4_center) * s
 path tile_4_4 = shift(0, tile_offset_y2) * shift(face_4_center) * scale(tile_scale) * polygon(3);
 path tile_4_2 = shift(tile_offset_x, -tile_offset_y) * shift(face_4_center) * scale(tile_scale) * polygon(3);
 
-filldraw(tile_4_1, tile_colour);
-label("4-1", label_right * tile_4_1, SE, tile_label);
-filldraw(tile_4_2, tile_colour);
-label("4-2", label_right * tile_4_2, SE, tile_label);
-filldraw(tile_4_3, tile_colour);
-label("4-3", label_right * tile_4_3, NE, tile_label);
-filldraw(tile_4_4, tile_colour);
-label("4-4", label_right * tile_4_4, SE, tile_label);
+tile_position_up(tile_4_1, "4-1", "B", "C", "A");
+tile_position_up(tile_4_2, "4-2", "B", "C", "A");
+tile_position_down(tile_4_3, "4-3", "B", "C", "A");
+tile_position_up(tile_4_4, "4-4", "B", "C", "A");
 
 label("*Outward facing surfaces shown.", (point(face_4, 2).x, point(face_2, 1).y), E, note_label);
 label("*Face-Tile", (point(face_4, 2).x, point(face_2, 1).y - 0.125), E, note_label);
