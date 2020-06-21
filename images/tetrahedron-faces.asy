@@ -62,6 +62,7 @@ draw(midpoint(A3)..(0, point(face_1, 2).y - point(face_1, 0).y)..midpoint(C4), g
 draw(midpoint(A4)..(midpoint(A4).x, point(face_1, 1).y)..midpoint(C2), gray, Arrows);
 
 label("*Outward facing surfaces shown.", (point(face_4, 2).x, point(face_2, 1).y), E, note_label);
+label("*Face-Side", (point(face_4, 2).x, point(face_2, 1).y - 0.125), E, note_label);
 
 // Title
 label("Faces and sides of the tetrahedron.", (0, point(face_1, 2).y - 0.4), N, title_label);
