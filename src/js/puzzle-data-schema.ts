@@ -17,3 +17,5 @@ interface PuzzleData {
     readonly totalNumberOfTiles: number;
     readonly faces: FaceData[];
 }
+
+export { PuzzleData, FaceData, FaceJoinData };

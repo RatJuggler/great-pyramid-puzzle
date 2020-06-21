@@ -1,3 +1,4 @@
+import { PuzzleData } from "./puzzle-data-schema";
 import { Face } from "./face";
 
 
