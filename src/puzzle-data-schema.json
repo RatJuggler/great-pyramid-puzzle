@@ -46,6 +46,44 @@
                 }
               }
             }
+          },
+          "tilePositions": {
+            "description": "How tiles are positioned on a face.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "position": {
+                  "description": "Tile position identifier",
+                  "type": "string"
+                },
+                "joins": {
+                  "description": "How a tile joins with other tiles on the tetrahedron.",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "fromSide": {
+                        "description": "The side of the tile at this position...",
+                        "type": "string"
+                      },
+                      "toSide": {
+                        "description": "Connects to this side...",
+                        "type": "string"
+                      },
+                      "ofTile": {
+                        "description": "Of this tile position...",
+                        "type": "string"
+                      },
+                      "onFace": {
+                        "description": "On this face.",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
