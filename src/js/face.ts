@@ -15,7 +15,7 @@ export class Face {
     private static SIDE_NAMES = ["A", "B", "C"];
 
     private _joins = new Map<string, SideJoinProperties>();
-    private _tiles = new Array<TilePosition>();
+    private _tilePositions = new Map<string, TilePosition>();
 
     constructor(private _name: string, private _numberOfTiles: number, tilePositions: TilePositionData[]) {
         if (!(Face.FACE_NAMES.includes(_name))) {
@@ -25,7 +25,8 @@ export class Face {
             throw new Error(`Number of tiles on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
         }
         for (const tilePositionData of tilePositions) {
-            console.log(tilePositionData);
+            let newTilePosition = new TilePosition(tilePositionData.position);
+            this._tilePositions.set(newTilePosition.id, newTilePosition);
         }
     }
 
@@ -33,7 +34,7 @@ export class Face {
         let faceString = `Face: ${this._name}, Number of Tiles: ${this._numberOfTiles}, Joins: `;
         this._joins.forEach((join, side) => faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
         faceString += '\n';
-        this._tiles.forEach(tile => faceString += tile.toString());
+        this._tilePositions.forEach(tilePosition => faceString += tilePosition.toString());
         return faceString;
     }
 
