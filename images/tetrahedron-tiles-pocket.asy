@@ -58,7 +58,7 @@ label("1-3", label_right * tile_1_3, SE, tile_label);
 filldraw(tile_1_4, tile_colour);
 label("1-4", label_right * tile_1_4, NE, tile_label);
 
-// Face B tiles
+// Face 2 tiles
 path tile_2_1 = shift(0, tile_offset_y2) * shift(face_2_center) * scale(tile_scale) * polygon(3);
 path tile_2_2 = shift(-tile_offset_x, -tile_offset_y) * shift(face_2_center) * scale(tile_scale) * polygon(3);
 path tile_2_3 = shift(face_2_center) * scale(tile_scale) * rotate(60) * polygon(3);
@@ -73,7 +73,7 @@ label("2-3", label_right * tile_2_3, NE, tile_label);
 filldraw(tile_2_4, tile_colour);
 label("2-4", label_right * tile_2_4, SE, tile_label);
 
-// Face C tiles
+// Face 3 tiles
 path tile_3_1 = shift(tile_offset_x, -tile_offset_y) * shift(face_3_center) * scale(tile_scale) * polygon(3);
 path tile_3_2 = shift(0, tile_offset_y2) * shift(face_3_center) * scale(tile_scale) * polygon(3);
 path tile_3_3 = shift(face_3_center) * scale(tile_scale) * rotate(60) * polygon(3);
@@ -88,7 +88,7 @@ label("3-3", label_right * tile_3_3, NE, tile_label);
 filldraw(tile_3_4, tile_colour);
 label("3-4", label_right * tile_3_4, SE, tile_label);
 
-// Face D tiles
+// Face 4 tiles
 path tile_4_3 = shift(face_4_center) * scale(tile_scale) * rotate(60) * polygon(3);
 path tile_4_1 = shift(-tile_offset_x, -tile_offset_y) * shift(face_4_center) * scale(tile_scale) * polygon(3);
 path tile_4_4 = shift(0, tile_offset_y2) * shift(face_4_center) * scale(tile_scale) * polygon(3);
@@ -104,6 +104,7 @@ filldraw(tile_4_4, tile_colour);
 label("4-4", label_right * tile_4_4, SE, tile_label);
 
 label("*Outward facing surfaces shown.", (point(face_4, 2).x, point(face_2, 1).y), E, note_label);
+label("*Face-Tile", (point(face_4, 2).x, point(face_2, 1).y - 0.125), E, note_label);
 
 // Title
 label("Tile positions for the Pocket puzzle.", (0, point(face_1, 2).y - 0.4), N, title_label);
