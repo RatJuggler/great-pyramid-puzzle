@@ -1,3 +1,4 @@
+import { TilePositionData } from "./puzzle-data-schema";
 import { Tile } from "./tile";
 
 
@@ -16,33 +17,16 @@ export class Face {
     private _joins = new Map<string, SideJoinProperties>();
     private _tiles = new Array<Tile>();
 
-    constructor(private _name: string, private _numberOfTiles: number) {
+    constructor(private _name: string, private _numberOfTiles: number, tilePositions: TilePositionData[]) {
         if (!(Face.FACE_NAMES.includes(_name))) {
             throw new Error(`Face name must be one of ${Face.FACE_NAMES}!`)
         }
         if (!(Face.VALID_TILE_COUNTS.includes(_numberOfTiles))) {
             throw new Error(`Number of tiles on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
         }
-        let tile1 = new Tile("1");
-        this._tiles.push(tile1);
-        let tile2 = new Tile("2");
-        this._tiles.push(tile2);
-        let tile3 = new Tile("3");
-        this._tiles.push(tile3);
-        let tile4 = new Tile("4");
-        this._tiles.push(tile4);
-        // tile1.join("A", this.getFaceOnSide("A"), "");
-        tile1.join("B", tile4, "C");
-        // tile1.join("C", to another face?);
-        tile2.join("A", tile3, "B");
-        // tile1.join("B", to another face?);
-        // tile1.join("C", to another face?);
-        tile3.join("A", tile4, "C");
-        tile3.join("B", tile2, "A");
-        tile3.join("C", tile1, "B");
-        // tile4.join("A", to another face?);
-        // tile4.join("B", to another face?);
-        tile4.join("C", tile3, "A");
+        for (const tilePositionData of tilePositions) {
+            console.log(tilePositionData);
+        }
     }
 
     toString(): string {

@@ -15,7 +15,7 @@ export class Tetrahedron {
         }
         this._name = config.puzzle;
         for (const faceData of config.faces) {
-            let newFace = new Face(faceData.name, config.numberOfTilesPerFace);
+            let newFace = new Face(faceData.name, config.numberOfTilesPerFace, faceData.tilePositions);
             this._faces.set(newFace.name, newFace);
         }
         for (const faceData of config.faces) {
