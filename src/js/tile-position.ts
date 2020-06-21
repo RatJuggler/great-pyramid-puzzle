@@ -1,11 +1,11 @@
 interface SideJoinProperties {
-    readonly toTile: Tile;
+    readonly toTile: TilePosition;
     readonly toTileSide: string;
-    getTile(): Tile;
+    getTile(): TilePosition;
 }
 
 
-export class Tile {
+export class TilePosition {
 
     private static SIDE_NAMES = ["A", "B", "C"];
 
@@ -23,12 +23,12 @@ export class Tile {
         return this._id;
     }
 
-    join(fromSide: string, toTile: Tile, toTileSide: string) : void {
-        if (!(Tile.SIDE_NAMES.includes(fromSide))) {
-            throw new Error(`Side to join from must be one of ${Tile.SIDE_NAMES}!`);
+    join(fromSide: string, toTile: TilePosition, toTileSide: string) : void {
+        if (!(TilePosition.SIDE_NAMES.includes(fromSide))) {
+            throw new Error(`Side to join from must be one of ${TilePosition.SIDE_NAMES}!`);
         }
-        if (!(Tile.SIDE_NAMES.includes(toTileSide))) {
-            throw new Error(`Side to join to must be one of ${Tile.SIDE_NAMES}!`);
+        if (!(TilePosition.SIDE_NAMES.includes(toTileSide))) {
+            throw new Error(`Side to join to must be one of ${TilePosition.SIDE_NAMES}!`);
         }
         this._joins.set(fromSide, {
             toTile: toTile,

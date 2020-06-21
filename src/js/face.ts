@@ -1,5 +1,5 @@
 import { TilePositionData } from "./puzzle-data-schema";
-import { Tile } from "./tile";
+import { TilePosition } from "./tile-position";
 
 
 interface SideJoinProperties {
@@ -15,7 +15,7 @@ export class Face {
     private static SIDE_NAMES = ["A", "B", "C"];
 
     private _joins = new Map<string, SideJoinProperties>();
-    private _tiles = new Array<Tile>();
+    private _tiles = new Array<TilePosition>();
 
     constructor(private _name: string, private _numberOfTiles: number, tilePositions: TilePositionData[]) {
         if (!(Face.FACE_NAMES.includes(_name))) {
