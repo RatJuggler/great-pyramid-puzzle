@@ -43,7 +43,7 @@ real tile_offset_x = point(reference_tile, 0).x + (tile_gap / 2);
 real tile_offset_y = -point(reference_tile, 0).y + (tile_gap / 2);
 real tile_offset_y2 = -point(reference_tile, 0).y * 2 + (tile_gap / 2);
 
-// Face A tiles
+// Face 1 tiles
 path tile_1_1 = shift(tile_offset_x * 2, tile_offset_y2) * shift(face_1_center) * scale(tile_scale) * rotate(60) * polygon(3);
 path tile_1_2 = shift(0, tile_offset_y2) * shift(face_1_center) * scale(tile_scale) * rotate(60) * polygon(3);
 path tile_1_3 = shift(tile_offset_x, tile_offset_y) * shift(face_1_center) * scale(tile_scale) * polygon(3);
@@ -73,7 +73,7 @@ label("1-8", label_right * tile_1_8, SE, tile_label);
 filldraw(tile_1_9, tile_colour);
 label("1-9", label_right * tile_1_9, NE, tile_label);
 
-// Face B tiles
+// Face 2 tiles
 path tile_2_1 = shift(0, tile_offset_y2 * 2) * shift(face_2_center) * scale(tile_scale) * polygon(3);
 path tile_2_2 = shift(-tile_offset_x, tile_offset_y) * shift(face_2_center) * scale(tile_scale) * polygon(3);
 path tile_2_3 = shift(0, tile_offset_y2) * shift(face_2_center) * scale(tile_scale) * rotate(60) * polygon(3);
@@ -103,7 +103,7 @@ label("2-8", label_right * tile_2_8, NE, tile_label);
 filldraw(tile_2_9, tile_colour);
 label("2-9", label_right * tile_2_9, SE, tile_label);
 
-// Face C tiles
+// Face 3 tiles
 path tile_3_1 = shift(tile_offset_x * 2, -tile_offset_y2) * shift(face_3_center) * scale(tile_scale) * polygon(3);
 path tile_3_2 = shift(tile_offset_x, tile_offset_y) * shift(face_3_center) * scale(tile_scale) * polygon(3);
 path tile_3_3 = shift(tile_offset_x, -tile_offset_y) * shift(face_3_center) * scale(tile_scale) * rotate(60) * polygon(3);
@@ -133,7 +133,7 @@ label("3-8", label_right * tile_3_8, NE, tile_label);
 filldraw(tile_3_9, tile_colour);
 label("3-9", label_right * tile_3_9, SE, tile_label);
 
-// Face D tiles
+// Face 4 tiles
 path tile_4_1 = shift(-tile_offset_x * 2, -tile_offset_y2) * shift(face_4_center) * scale(tile_scale) * polygon(3);
 path tile_4_2 = shift(0, -tile_offset_y2) * shift(face_4_center) * scale(tile_scale) * polygon(3);
 path tile_4_3 = shift(-tile_offset_x, -tile_offset_y) * shift(face_4_center) * scale(tile_scale) * rotate(60) * polygon(3);
@@ -164,6 +164,7 @@ filldraw(tile_4_9, tile_colour);
 label("4-9", label_right * tile_4_9, SE, tile_label);
 
 label("*Outward facing surfaces shown.", (point(face_4, 2).x, point(face_2, 1).y), E, note_label);
+label("*Face-Tile", (point(face_4, 2).x, point(face_2, 1).y - 0.125), E, note_label);
 
 // Title
 label("Tile positions for the Great puzzle.", (0, point(face_1, 2).y - 0.4), N, title_label);
