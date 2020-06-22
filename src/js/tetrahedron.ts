@@ -1,27 +1,25 @@
-import { PuzzleData } from "./puzzle-data-schema";
 import { Face } from "./face";
-import {TilePosition} from "./tile-position";
+import { FaceData } from "./puzzle-data-schema";
+import { TilePosition } from "./tile-position";
 
 
 export class Tetrahedron {
 
     private readonly FACES = 4;
 
-    private readonly _name: string;
     private readonly _faces = new Map<string, Face>();
 
-    constructor(config: PuzzleData) {
-        if (config.faces.length != this.FACES) {
+    constructor(private _name: string, numberOfTilesPerFace: number, faceData: FaceData[]) {
+        if (faceData.length != this.FACES) {
             throw new Error(`Tetrahedron must always have configuration data for ${this.FACES} Faces!`)
         }
-        this._name = config.puzzle;
         // We have to create all of the face and tile positions before we can join them together.
-        for (const faceData of config.faces) {
-            let newFace = new Face(faceData.name, config.numberOfTilesPerFace, faceData.tilePositions);
+        for (const faceDetails of faceData) {
+            let newFace = new Face(faceDetails.name, numberOfTilesPerFace, faceDetails.tilePositions);
             this._faces.set(newFace.name, newFace);
         }
-        Face.joinFaces(config.faces, this._faces);
-        TilePosition.joinTilePositions(config.faces, this._faces);
+        Face.joinFaces(faceData, this._faces);
+        TilePosition.joinTilePositions(faceData, this._faces);
     }
 
     toString(): string {

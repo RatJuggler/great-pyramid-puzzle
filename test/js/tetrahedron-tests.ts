@@ -8,17 +8,19 @@ describe("Tetrahedron behaviour", () => {
 
     describe("a new Tetrahedron", () => {
 
-        context("with valid configuration file", () => {
+        context("with a valid configuration file", () => {
             it("should return a correctly initialised instance", () => {
-                const puzzle = new Tetrahedron(valid_config1.testPuzzleData);
+                const puzzleData = valid_config1.testPuzzleData;
+                const puzzle = new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
                 expect(puzzle.name).to.equal("test-valid");
             });
         });
 
-        context("with invalid configuration file 1", () => {
+        context("with an invalid configuration file 1", () => {
             it("should throw an error", () => {
+                const puzzleData = invalid_config1.testPuzzleData;
                 expect(() => {
-                    new Tetrahedron(invalid_config1.testPuzzleData);
+                    new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
                 }).to.throw(Error, "Tetrahedron must always have configuration data for 4 Faces!");
             });
         });
