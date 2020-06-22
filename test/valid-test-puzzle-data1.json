@@ -1,5 +1,5 @@
 {
-  "tesDescription": "There must be configuration data for 4 faces.",
+  "tesDescription": "Simplest valid full configuration.",
   "testPuzzleData": {
     "puzzle": "test-valid",
     "numberOfTilesPerFace": 1,
@@ -189,27 +189,27 @@
     "tiles": [
       {
         "tile": "1",
-        "sideA": "0011",
+        "sideA": "1011",
         "sideB": "0010",
-        "sideC": "0001"
+        "sideC": "1010"
       },
       {
         "tile": "2",
-        "sideA": "1000",
-        "sideB": "0001",
-        "sideC": "0110"
+        "sideA": "1100",
+        "sideB": "0100",
+        "sideC": "1001"
       },
       {
         "tile": "3",
-        "sideA": "0110",
-        "sideB": "1000",
-        "sideC": "0100"
+        "sideA": "0101",
+        "sideB": "1001",
+        "sideC": "0010"
       },
       {
         "tile": "4",
         "sideA": "0100",
-        "sideB": "0100",
-        "sideC": "1000"
+        "sideB": "0010",
+        "sideC": "1101"
       }
     ]
   }
