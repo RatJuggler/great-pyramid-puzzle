@@ -1,5 +1,4 @@
 import {Face} from "./face";
-import {FaceData} from "./puzzle-data-schema";
 
 
 interface TilePositionJoinProperties {
@@ -19,20 +18,9 @@ export class TilePosition {
 
     toString(): string {
         let tileString = `Tile: ${this._id}, Joins: `;
-        this._joins.forEach((join, side) => tileString += `(${this._id}-${side}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
+        this._joins.forEach((join, side) =>
+            tileString += `(${this._id}-${side}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
         return tileString;
-    }
-
-    static joinTilePositions(faceData: FaceData[], faces: Map<string, Face>): void {
-        for (const faceDetails of faceData) {
-            for (const tilePositionDetails of faceDetails.tilePositions) {
-                let fromTilePosition = faces.get(faceDetails.name)!.getTilePosition(tilePositionDetails.position);
-                for (const joinData of tilePositionDetails.joins) {
-                    let onFace = faces.get(joinData.onFace)!;
-                    fromTilePosition.join(joinData.fromSide, joinData.toSide, onFace.getTilePosition(joinData.ofTilePosition), onFace);
-                }
-            }
-        }
     }
 
     get id(): string {

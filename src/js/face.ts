@@ -1,4 +1,4 @@
-import {FaceData, TilePositionData} from "./puzzle-data-schema";
+import { TilePositionData} from "./puzzle-data-schema";
 import { TilePosition } from "./tile-position";
 
 
@@ -34,18 +34,10 @@ export class Face {
         }
     }
 
-    static joinFaces(faceData: FaceData[], faces: Map<string, Face>) {
-        for (const faceDetails of faceData) {
-            let fromFace = faces.get(faceDetails.name);
-            for (const joinData of faceDetails.joins) {
-                fromFace!.join(joinData.fromSide, joinData.toSide, faces.get(joinData.ofFace)!);
-            }
-        }
-    }
-
     toString(): string {
         let faceString = `Face: ${this._name}, Tile Positions: ${this.tilePositionCount}, Joins: `;
-        this._joins.forEach((join, side) => faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
+        this._joins.forEach((join, side) =>
+            faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
         faceString += '\n';
         this._tilePositions.forEach(tilePosition => faceString += tilePosition.toString() + '\n');
         return faceString;
