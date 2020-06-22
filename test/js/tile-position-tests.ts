@@ -1,7 +1,7 @@
 import { TilePosition } from '../../src/js/tile-position';
+import { Face } from "../../src/js/face";
 import { expect } from 'chai';
 import 'mocha';
-import {Face} from "../../src/js/face";
 
 let oneTilePositions = [
     {"position": "1", "joins": []}
@@ -11,9 +11,9 @@ let faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
 
 describe("TilePosition behaviour", () => {
 
-    describe("if a new TilePosition", () => {
+    describe("if a new TilePosition is created", () => {
 
-        context("is created with a valid identifier", () => {
+        context("with a valid identifier", () => {
             it("should return a correctly initialised instance", () => {
                 const id = "XYZ";
                 let tile = new TilePosition(id);
