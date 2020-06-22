@@ -8,7 +8,7 @@ describe("Tile behaviour", () => {
 
     describe("if a new Tile is created", () => {
 
-        context("is created with a valid identifier", () => {
+        context("with a valid identifier", () => {
             it("should return a correctly initialised instance", () => {
                 const tileData: TileData = {
                     "tile": "TestTile",
