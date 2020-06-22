@@ -1,0 +1,40 @@
+{
+  "tesDescription": "There must be configuration data for 4 faces.",
+  "testPuzzleData": {
+    "puzzle": "test-invalid",
+    "numberOfTilesPerFace": 16,
+    "totalNumberOfTiles": 64,
+    "faces": [
+      {
+        "name": "1",
+        "joins": [],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": []
+          }
+        ]
+      },
+      {
+        "name": "2",
+        "joins": [],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": []
+          }
+        ]
+      },
+      {
+        "name": "3",
+        "joins": [],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": []
+          }
+        ]
+      }
+    ]
+  }
+}

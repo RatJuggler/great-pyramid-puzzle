@@ -1,0 +1,190 @@
+{
+  "tesDescription": "There must be configuration data for 4 faces.",
+  "testPuzzleData": {
+    "puzzle": "test-valid",
+    "numberOfTilesPerFace": 1,
+    "totalNumberOfTiles": 4,
+    "faces": [
+      {
+        "name": "1",
+        "joins": [
+          {
+            "fromSide": "A",
+            "toSide": "B",
+            "ofFace": "3"
+          },
+          {
+            "fromSide": "B",
+            "toSide": "B",
+            "ofFace": "4"
+          },
+          {
+            "fromSide": "C",
+            "toSide": "B",
+            "ofFace": "2"
+          }
+        ],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": [
+              {
+                "fromSide": "A",
+                "toSide": "B",
+                "ofTilePosition": "1",
+                "onFace": "3"
+              },
+              {
+                "fromSide": "B",
+                "toSide": "B",
+                "ofTilePosition": "1",
+                "onFace": "4"
+              },
+              {
+                "fromSide": "C",
+                "toSide": "B",
+                "ofTilePosition": "1",
+                "onFace": "2"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "2",
+        "joins": [
+          {
+            "fromSide": "A",
+            "toSide": "C",
+            "ofFace": "3"
+          },
+          {
+            "fromSide": "B",
+            "toSide": "C",
+            "ofFace": "1"
+          },
+          {
+            "fromSide": "C",
+            "toSide": "A",
+            "ofFace": "4"
+          }
+        ],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": [
+              {
+                "fromSide": "A",
+                "toSide": "C",
+                "ofTilePosition": "1",
+                "onFace": "3"
+              },
+              {
+                "fromSide": "B",
+                "toSide": "C",
+                "ofTilePosition": "1",
+                "onFace": "1"
+              },
+              {
+                "fromSide": "C",
+                "toSide": "A",
+                "ofTilePosition": "1",
+                "onFace": "4"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "3",
+        "joins": [
+          {
+            "fromSide": "A",
+            "toSide": "C",
+            "ofFace": "4"
+          },
+          {
+            "fromSide": "B",
+            "toSide": "A",
+            "ofFace": "1"
+          },
+          {
+            "fromSide": "C",
+            "toSide": "A",
+            "ofFace": "2"
+          }
+        ],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": [
+              {
+                "fromSide": "A",
+                "toSide": "C",
+                "ofTilePosition": "1",
+                "onFace": "4"
+              },
+              {
+                "fromSide": "B",
+                "toSide": "A",
+                "ofTilePosition": "1",
+                "onFace": "1"
+              },
+              {
+                "fromSide": "C",
+                "toSide": "A",
+                "ofTilePosition": "1",
+                "onFace": "2"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "4",
+        "joins": [
+          {
+            "fromSide": "A",
+            "toSide": "C",
+            "ofFace": "2"
+          },
+          {
+            "fromSide": "B",
+            "toSide": "B",
+            "ofFace": "1"
+          },
+          {
+            "fromSide": "C",
+            "toSide": "A",
+            "ofFace": "3"
+          }
+        ],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": [
+              {
+                "fromSide": "A",
+                "toSide": "C",
+                "ofTilePosition": "1",
+                "onFace": "2"
+              },
+              {
+                "fromSide": "B",
+                "toSide": "B",
+                "ofTilePosition": "1",
+                "onFace": "1"
+              },
+              {
+                "fromSide": "C",
+                "toSide": "A",
+                "ofTilePosition": "1",
+                "onFace": "3"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
