@@ -21,7 +21,6 @@ pen title_label = fontsize(14pt);
 
 // Origin
 point origin = (0, 0);
-dot(origin);
 
 // Basic circle and triangle forms
 real radius = 1;
@@ -37,10 +36,6 @@ point C = point(a_triangle, 2);
 path sideA = (A--B);
 path sideB = (B--C);
 path sideC = (C--A);
-
-draw(Label("Side A"), sideA, NE, side);
-draw(Label("Side B"), sideB, S, side);
-draw(Label("Side C"), sideC, NW, side);
 
 // Medians
 path medianA = (A--(-A.x,-A.y/1.4));
@@ -107,6 +102,12 @@ fill(seg11, red);
 label("Seg11", label_down * label_down * (c2--c3), segment);
 
 label("Seg12", label_down * label_down * (origin--A), W, segment);
+
+// Overdraw with Tile peg and side labels
+dot(origin, linewidth(20) + mediumgray);
+draw(Label("Side A"), sideA, NE, side);
+draw(Label("Side B"), sideB, S, side);
+draw(Label("Side C"), sideC, NW, side);
 
 // Title
 label("The 12 segments on a tile.", (0, b3.y - 0.4), N, title_label);

@@ -45,30 +45,6 @@
 </defs>
 <g id='page1'>
 <g transform='matrix(0.996264 0 0 0.996264 197.976 195.675)'>
-<circle cx='0' cy='-0' r='1.50562' fill='#000000'/>
-</g>
-<g transform='matrix(0.996264 0 0 0.996264 197.976 195.675)'>
-<path d='M 8.68561e-15 -141.847L 122.843 70.9234' fill='none' stroke='#000000' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10.0375' stroke-width='1.00375'/>
-</g><use x='261.708' xlink:href='#g1-83' y='157.75'/>
-<use x='268.211' xlink:href='#g1-105' y='157.75'/>
-<use x='271.463' xlink:href='#g1-100' y='157.75'/>
-<use x='277.966' xlink:href='#g1-101' y='157.75'/>
-<use x='287.071' xlink:href='#g1-65' y='157.75'/>
-<g transform='matrix(0.996264 0 0 0.996264 197.976 195.675)'>
-<path d='M 122.843 70.9234L -122.843 70.9234' fill='none' stroke='#000000' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10.0375' stroke-width='1.00375'/>
-</g><use x='181.154' xlink:href='#g1-83' y='278.162'/>
-<use x='187.657' xlink:href='#g1-105' y='278.162'/>
-<use x='190.909' xlink:href='#g1-100' y='278.162'/>
-<use x='197.412' xlink:href='#g1-101' y='278.162'/>
-<use x='206.517' xlink:href='#g1-66' y='278.162'/>
-<g transform='matrix(0.996264 0 0 0.996264 197.976 195.675)'>
-<path d='M -122.843 70.9234L 8.68561e-15 -141.847' fill='none' stroke='#000000' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10.0375' stroke-width='1.00375'/>
-</g><use x='100.435' xlink:href='#g1-83' y='157.75'/>
-<use x='106.938' xlink:href='#g1-105' y='157.75'/>
-<use x='110.19' xlink:href='#g1-100' y='157.75'/>
-<use x='116.693' xlink:href='#g1-101' y='157.75'/>
-<use x='125.798' xlink:href='#g1-67' y='157.75'/>
-<g transform='matrix(0.996264 0 0 0.996264 197.976 195.675)'>
 <path d='M 8.68561e-15 -141.847L -8.68561e-15 101.319' fill='none' stroke='#808080' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10.0375' stroke-width='0.501875' stroke-dasharray='3.98633,3.98633'/>
 </g>
 <g transform='matrix(0.996264 0 0 0.996264 197.976 195.675)'>
@@ -149,6 +125,30 @@
 <use x='180.047' xlink:href='#g2-103' y='141.524'/>
 <use x='185.029' xlink:href='#g2-49' y='141.524'/>
 <use x='190.01' xlink:href='#g2-50' y='141.524'/>
+<g transform='matrix(0.996264 0 0 0.996264 197.976 195.675)'>
+<circle cx='0' cy='-0' r='10.0375' fill='#c0c0c0'/>
+</g>
+<g transform='matrix(0.996264 0 0 0.996264 197.976 195.675)'>
+<path d='M 8.68561e-15 -141.847L 122.843 70.9234' fill='none' stroke='#000000' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10.0375' stroke-width='1.00375'/>
+</g><use x='261.708' xlink:href='#g1-83' y='157.75'/>
+<use x='268.211' xlink:href='#g1-105' y='157.75'/>
+<use x='271.463' xlink:href='#g1-100' y='157.75'/>
+<use x='277.966' xlink:href='#g1-101' y='157.75'/>
+<use x='287.071' xlink:href='#g1-65' y='157.75'/>
+<g transform='matrix(0.996264 0 0 0.996264 197.976 195.675)'>
+<path d='M 122.843 70.9234L -122.843 70.9234' fill='none' stroke='#000000' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10.0375' stroke-width='1.00375'/>
+</g><use x='181.154' xlink:href='#g1-83' y='278.162'/>
+<use x='187.657' xlink:href='#g1-105' y='278.162'/>
+<use x='190.909' xlink:href='#g1-100' y='278.162'/>
+<use x='197.412' xlink:href='#g1-101' y='278.162'/>
+<use x='206.517' xlink:href='#g1-66' y='278.162'/>
+<g transform='matrix(0.996264 0 0 0.996264 197.976 195.675)'>
+<path d='M -122.843 70.9234L 8.68561e-15 -141.847' fill='none' stroke='#000000' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10.0375' stroke-width='1.00375'/>
+</g><use x='100.435' xlink:href='#g1-83' y='157.75'/>
+<use x='106.938' xlink:href='#g1-105' y='157.75'/>
+<use x='110.19' xlink:href='#g1-100' y='157.75'/>
+<use x='116.693' xlink:href='#g1-101' y='157.75'/>
+<use x='125.798' xlink:href='#g1-67' y='157.75'/>
 <use x='116.936' xlink:href='#g0-84' y='315.826'/>
 <use x='127.081' xlink:href='#g0-104' y='315.826'/>
 <use x='134.885' xlink:href='#g0-101' y='315.826'/>
