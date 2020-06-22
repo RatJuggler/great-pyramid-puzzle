@@ -6,17 +6,18 @@ import 'mocha';
 
 describe("Tetrahedron behaviour", () => {
 
-    describe("a new Tetrahedron", () => {
+    describe("if a new Tetrahedron is created", () => {
 
-        context("with a valid configuration file", () => {
+        context("with valid configuration data file 1", () => {
             it("should return a correctly initialised instance", () => {
                 const puzzleData = valid_config1.testPuzzleData;
-                const puzzle = new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
-                expect(puzzle.name).to.equal("test-valid");
+                const tetrahedron = new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
+                expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
+                expect(tetrahedron.name).to.equal("test-valid");
             });
         });
 
-        context("with an invalid configuration file 1", () => {
+        context("with invalid configuration data file 1", () => {
             it("should throw an error", () => {
                 const puzzleData = invalid_config1.testPuzzleData;
                 expect(() => {

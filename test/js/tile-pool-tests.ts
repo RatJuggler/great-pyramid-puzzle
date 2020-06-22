@@ -8,7 +8,7 @@ describe("TilePool behavior", () => {
 
     describe("if a new TilePool is created", () => {
 
-        context("with valid configuration data", () => {
+        context("with valid configuration data file 1", () => {
             it("should return a correctly initialised instance", () => {
                 const puzzleData = valid_config1.testPuzzleData;
                 const tilePool = new TilePool(puzzleData.totalNumberOfTiles, puzzleData.tiles);
@@ -16,7 +16,7 @@ describe("TilePool behavior", () => {
             });
         });
 
-        context("with invalid configuration data", () => {
+        context("with invalid configuration data file 1", () => {
             it("should throw an error", () => {
                 const puzzleData = invalid_config1.testPuzzleData;
                 expect(() => {

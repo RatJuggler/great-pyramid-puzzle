@@ -10,9 +10,9 @@ let faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
 
 describe("Face behavior", () => {
 
-    describe("if a new Face", () => {
+    describe("if a new Face is created", () => {
 
-        context("is created with a valid name and number of tiles", () => {
+        context("with a valid name and number of tiles", () => {
             it("should return a correctly initialised instance", () => {
                 const name = "1";
                 const face = new Face(name, 1, oneTilePositions);
@@ -21,7 +21,7 @@ describe("Face behavior", () => {
             });
         });
 
-        context("is created with an invalid name", () => {
+        context("with an invalid name", () => {
             it("should throw an error", () => {
                 expect(() => {
                     new Face("Z", 4, oneTilePositions);
@@ -29,7 +29,7 @@ describe("Face behavior", () => {
             });
         });
 
-        context("is created with an invalid number of tiles", () => {
+        context("with an invalid number of tiles", () => {
             it("should throw an error", () => {
                 expect(() => {
                     new Face("1", 25, oneTilePositions);
