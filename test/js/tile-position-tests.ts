@@ -1,9 +1,10 @@
 import { TilePosition } from '../../src/js/tile-position';
 import { Face } from "../../src/js/face";
+import { TilePositionData } from "../../src/js/puzzle-data-schema";
 import { expect } from 'chai';
 import 'mocha';
 
-let oneTilePositions = [
+let oneTilePositions: TilePositionData[]  = [
     {"position": "1", "joins": []}
 ];
 let faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
