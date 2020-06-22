@@ -39,4 +39,4 @@ interface PuzzleData {
     readonly tiles: TileData[];
 }
 
-export { PuzzleData, FaceData, FaceJoinData, TilePositionData, TilePositionJoinData };
+export { PuzzleData, FaceData, FaceJoinData, TilePositionData, TilePositionJoinData, TileData };
