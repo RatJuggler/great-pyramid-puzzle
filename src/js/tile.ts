@@ -8,11 +8,21 @@ export class Tile {
     private readonly _sideB: string;
     private readonly _sideC: string;
 
+    validateSegments(segments: string): string {
+        if (segments.length != 4) {
+            throw new Error(`Segment coding should be four characters, found '${segments}'!`);
+        }
+        if (!segments.match(/^[0|1]+$/)) {
+            throw new Error(`Segment coding can only contain '1' or '0', found '${segments}'!`);
+        }
+        return segments;
+    }
+
     constructor(tileDetails: TileData) {
         this._id = tileDetails.tile;
-        this._sideA = tileDetails.sideA;
-        this._sideB = tileDetails.sideB;
-        this._sideC = tileDetails.sideC;
+        this._sideA = this.validateSegments(tileDetails.sideA);
+        this._sideB = this.validateSegments(tileDetails.sideB);
+        this._sideC = this.validateSegments(tileDetails.sideC);
     }
 
     toString(): string {
