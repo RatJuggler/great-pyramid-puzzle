@@ -20,7 +20,7 @@ export class TilePosition {
     toString(): string {
         let tileString = `Tile: ${this._id}, Joins: `;
         this._joins.forEach((join, side) => tileString += `(${this._id}-${side}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
-        return tileString + '\n';
+        return tileString;
     }
 
     static joinTilePositions(faceData: FaceData[], faces: Map<string, Face>): void {
