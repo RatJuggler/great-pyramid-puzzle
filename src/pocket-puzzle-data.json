@@ -21,6 +21,100 @@
           "toSide": "B",
           "ofFace": "2"
         }
+      ],
+      "tilePositions": [
+        {
+          "position": "1",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "B",
+              "ofTilePosition": "2",
+              "onFace": "3"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "A",
+              "ofTilePosition": "3",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTilePosition": "4",
+              "onFace": "2"
+            }
+          ]
+        },
+        {
+          "position": "2",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTilePosition": "3",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "B",
+              "ofTilePosition": "4",
+              "onFace": "4"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTilePosition": "2",
+              "onFace": "2"
+            }
+          ]
+        },
+        {
+          "position": "3",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "B",
+              "ofTilePosition": "1",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "C",
+              "ofTilePosition": "4",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTilePosition": "2",
+              "onFace": "1"
+            }
+          ]
+        },
+        {
+          "position": "4",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "B",
+              "ofTilePosition": "4",
+              "onFace": "3"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "B",
+              "ofTilePosition": "2",
+              "onFace": "4"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTilePosition": "3",
+              "onFace": "1"
+            }
+          ]
+        }
       ]
     },
     {
@@ -40,6 +134,100 @@
           "fromSide": "C",
           "toSide": "A",
           "ofFace": "4"
+        }
+      ],
+      "tilePositions": [
+        {
+          "position": "1",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTilePosition": "1",
+              "onFace": "3"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "C",
+              "ofTilePosition": "3",
+              "onFace": "2"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTilePosition": "1",
+              "onFace": "4"
+            }
+          ]
+        },
+        {
+          "position": "2",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "B",
+              "ofTilePosition": "3",
+              "onFace": "2"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "C",
+              "ofTilePosition": "2",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTilePosition": "4",
+              "onFace": "4"
+            }
+          ]
+        },
+        {
+          "position": "3",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTilePosition": "4",
+              "onFace": "2"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "A",
+              "ofTilePosition": "2",
+              "onFace": "2"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTilePosition": "1",
+              "onFace": "2"
+            }
+          ]
+        },
+        {
+          "position": "4",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTilePosition": "2",
+              "onFace": "3"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "C",
+              "ofTilePosition": "1",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTilePosition": "3",
+              "onFace": "2"
+            }
+          ]
         }
       ]
     },
@@ -61,6 +249,100 @@
           "toSide": "A",
           "ofFace": "2"
         }
+      ],
+      "tilePositions": [
+        {
+          "position": "1",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTilePosition": "1",
+              "onFace": "4"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "C",
+              "ofTilePosition": "3",
+              "onFace": "3"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTilePosition": "1",
+              "onFace": "2"
+            }
+          ]
+        },
+        {
+          "position": "2",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "B",
+              "ofTilePosition": "3",
+              "onFace": "3"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "A",
+              "ofTilePosition": "1",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTilePosition": "4",
+              "onFace": "2"
+            }
+          ]
+        },
+        {
+          "position": "3",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTilePosition": "4",
+              "onFace": "3"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "A",
+              "ofTilePosition": "2",
+              "onFace": "3"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTilePosition": "1",
+              "onFace": "3"
+            }
+          ]
+        },
+        {
+          "position": "4",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTilePosition": "2",
+              "onFace": "4"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "A",
+              "ofTilePosition": "4",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTilePosition": "3",
+              "onFace": "3"
+            }
+          ]
+        }
       ]
     },
     {
@@ -80,6 +362,100 @@
           "fromSide": "C",
           "toSide": "A",
           "ofFace": "3"
+        }
+      ],
+      "tilePositions": [
+        {
+          "position": "1",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTilePosition": "1",
+              "onFace": "2"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "C",
+              "ofTilePosition": "3",
+              "onFace": "4"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTilePosition": "1",
+              "onFace": "3"
+            }
+          ]
+        },
+        {
+          "position": "2",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "B",
+              "ofTilePosition": "3",
+              "onFace": "4"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "B",
+              "ofTilePosition": "4",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTilePosition": "4",
+              "onFace": "3"
+            }
+          ]
+        },
+        {
+          "position": "3",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTilePosition": "4",
+              "onFace": "4"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "A",
+              "ofTilePosition": "2",
+              "onFace": "4"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTilePosition": "1",
+              "onFace": "4"
+            }
+          ]
+        },
+        {
+          "position": "4",
+          "joins": [
+            {
+              "fromSide": "A",
+              "toSide": "C",
+              "ofTilePosition": "2",
+              "onFace": "2"
+            },
+            {
+              "fromSide": "B",
+              "toSide": "B",
+              "ofTilePosition": "2",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "A",
+              "ofTilePosition": "3",
+              "onFace": "4"
+            }
+          ]
         }
       ]
     }
