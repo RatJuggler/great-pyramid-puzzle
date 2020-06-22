@@ -17,12 +17,15 @@ export class Face {
     private _joins = new Map<string, FaceJoinProperties>();
     private _tilePositions = new Map<string, TilePosition>();
 
-    constructor(private _name: string, private _numberOfTiles: number, tilePositions: TilePositionData[]) {
+    constructor(private _name: string, numberOfTiles: number, tilePositions: TilePositionData[]) {
         if (!(Face.FACE_NAMES.includes(_name))) {
-            throw new Error(`Face name must be one of ${Face.FACE_NAMES}!`)
+            throw new Error(`Face name must be one of ${Face.FACE_NAMES}!`);
         }
-        if (!(Face.VALID_TILE_COUNTS.includes(_numberOfTiles))) {
+        if (!(Face.VALID_TILE_COUNTS.includes(numberOfTiles))) {
             throw new Error(`Number of tiles on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
+        }
+        if (numberOfTiles != tilePositions.length) {
+            throw new Error(`Number of tile positions provided (${tilePositions.length}) does not match number expected (${numberOfTiles})!`);
         }
         // We can't join the tile positions until they've been created for every face.
         for (const tilePositionData of tilePositions) {
@@ -41,7 +44,7 @@ export class Face {
     }
 
     toString(): string {
-        let faceString = `Face: ${this._name}, Number of Tiles: ${this._numberOfTiles}, Joins: `;
+        let faceString = `Face: ${this._name}, Tile Positions: ${this.tilePositionCount}, Joins: `;
         this._joins.forEach((join, side) => faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
         faceString += '\n';
         this._tilePositions.forEach(tilePosition => faceString += tilePosition.toString());
@@ -52,13 +55,17 @@ export class Face {
         return this._name;
     }
 
+    get tilePositionCount() {
+        return this._tilePositions.size;
+    }
+
     getTilePosition(position: string): TilePosition {
         return this._tilePositions.get(position)!;
     }
 
     join(fromSide: string, toSide: string, ofFace: Face) : void {
-        if (this._numberOfTiles != ofFace._numberOfTiles) {
-            throw new Error("Cannot join Faces with different numbers of tiles!");
+        if (this.tilePositionCount != ofFace.tilePositionCount) {
+            throw new Error("Cannot join Faces which have differing numbers of tile positions!");
         }
         if (!(Face.SIDE_NAMES.includes(fromSide))) {
             throw new Error(`Side to join from must be one of ${Face.SIDE_NAMES}!`);
