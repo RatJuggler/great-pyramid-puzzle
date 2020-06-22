@@ -1,5 +1,12 @@
 // Interfaces defining the puzzle data configuration file format.
 
+interface TileData {
+    readonly tile: string;
+    readonly sideA: string;
+    readonly sideB: string;
+    readonly sideC: string;
+}
+
 interface TilePositionJoinData {
     readonly fromSide: string;
     readonly toSide: string;
@@ -29,6 +36,7 @@ interface PuzzleData {
     readonly numberOfTilesPerFace: number;
     readonly totalNumberOfTiles: number;
     readonly faces: FaceData[];
+    readonly tiles: TileData[];
 }
 
 export { PuzzleData, FaceData, FaceJoinData, TilePositionData, TilePositionJoinData };

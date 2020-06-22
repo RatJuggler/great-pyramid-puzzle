@@ -98,15 +98,15 @@
             "description": "A number to identify the individual tile.",
             "type": "number"
           },
-          "side1": {
+          "sideA": {
             "description": "A string representing the pattern on side one of the tile (Seg1, Seg2, Seg3, Seg4)",
             "type": "string"
           },
-          "side2": {
+          "sideB": {
             "description": "A string representing the pattern on side two of the tile (Seg5, Seg6, Seg7, Seg8).",
             "type": "string"
           },
-          "side3": {
+          "sideC": {
             "description": "A string representing the pattern on side three of the tile (Seg9, Seg10, Seg11, Seg12).",
             "type": "string"
           }
