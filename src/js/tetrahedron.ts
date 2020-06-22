@@ -23,7 +23,7 @@ export class Tetrahedron {
     }
 
     toString(): string {
-        let tetrahedronString = `Solving: ${this._name}\n`;
+        let tetrahedronString = `Puzzle Type: ${this._name}\n`;
         this._faces.forEach(face => tetrahedronString += face.toString());
         return tetrahedronString;
     }
