@@ -23,7 +23,7 @@ sides. The four segments along each side are either red or white.
 
 ![Image of Tile Positions for Test](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-positions-test.svg)
 
-![Image of Test Tile Layout](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/test-tile-layout.svg)
+![Image of Test Tile Layout](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-test-layout.svg)
 
 ![Image of Tile Positions for Pocket](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-positions-pocket.svg)
 
