@@ -1,3 +1,6 @@
+# Ignore PDFs used for testing diagrams
+images/*.pdf
+
 # Logs
 logs
 *.log
