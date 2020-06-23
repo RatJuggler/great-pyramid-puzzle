@@ -8,17 +8,18 @@ import 'mocha';
 
 describe("TilePool behavior", () => {
 
+    const puzzleData = valid_config1.testPuzzleData;
+
     describe("if a new TilePool is created", () => {
 
-        context("with valid configuration data file 1", () => {
+        context("with a valid configuration data file 1", () => {
             it("should return a correctly initialised instance", () => {
-                const puzzleData = valid_config1.testPuzzleData;
                 const tilePool = new TilePool(puzzleData.totalNumberOfTiles, puzzleData.tiles);
                 expect(tilePool).to.be.an.instanceOf(TilePool);
             });
         });
 
-        context("with invalid configuration data file 1", () => {
+        context("with an invalid configuration data file 1", () => {
             it("should throw an error", () => {
                 const puzzleData = invalid_config1.testPuzzleData;
                 expect(() => {
@@ -29,23 +30,21 @@ describe("TilePool behavior", () => {
 
     });
 
-    describe("selecting a random tile from the TilePool", () => {
+    describe("selecting a random Tile from the TilePool", () => {
 
-        context("when there are tiles remaining", () => {
-            it("should return a tile", () => {
-                const puzzleData = valid_config1.testPuzzleData;
+        context("when there are Tiles remaining in the TilePool", () => {
+            it("should return a random Tile", () => {
                 const tilePool = new TilePool(puzzleData.totalNumberOfTiles, puzzleData.tiles);
                 const tile = tilePool.randomTile;
                 expect(tile).to.be.an.instanceOf(Tile);
             });
         });
 
-        context("when there are no more tiles remaining", () => {
+        context("when there are no Tiles remaining in the TilePool", () => {
             it("should return undefined", () => {
-                const puzzleData = valid_config1.testPuzzleData;
                 const tilePool = new TilePool(puzzleData.totalNumberOfTiles, puzzleData.tiles);
                 for (let i = 0; i < puzzleData.totalNumberOfTiles; i++) {
-                    tilePool.randomTile;
+                    expect(tilePool.randomTile).to.be.an.instanceOf(Tile);
                 }
                 const tile = tilePool.randomTile;
                 expect(tile).to.be.undefined;
