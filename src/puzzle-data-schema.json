@@ -5,29 +5,34 @@
   "description": "Define the tile positions and tiles used in the Pyramid Puzzles.",
   "type": "object",
   "additionalProperties": true,
-  "required": [
-    "puzzle", "numberOfTilesPerFace", "totalNumberOfTiles", "faces", "tiles"
-  ],
+  "required": ["puzzle", "numberOfTilesPerFace", "totalNumberOfTiles", "faces", "tiles"],
   "properties": {
     "puzzle": {
       "description": "The name of this version of the Pyramid Puzzle.",
-      "type": "string"
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 12
     },
     "numberOfTilesPerFace": {
       "description": "The number of tiles used on each face of the puzzle.",
-      "type": "number"
+      "type": "integer",
+      "enum": [1, 4, 9]
     },
     "totalNumberOfTiles": {
       "description": "The total number of tiles used on the puzzle.",
-      "type": "number"
+      "type": "integer",
+      "enum": [4, 16, 36]
     },
     "faces": {
       "description": "The faces of the tetrahedron.",
       "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
       "uniqueItems": true,
       "items": {
         "type": "object",
-         "additionalProperties": false,
+        "additionalProperties": false,
+        "required": ["name", "joins"],
         "properties": {
           "name": {
             "description": "The name of a face on the tetrahedron.",
@@ -36,18 +41,23 @@
           "joins": {
             "description": "How a face joins with other faces on the tetrahedron.",
             "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
             "uniqueItems": true,
             "items": {
               "type": "object",
-               "additionalProperties": false,
+              "additionalProperties": false,
+              "required": ["fromSide", "toSide", "ofFace"],
               "properties": {
                 "fromSide": {
-                  "description": "The side of this face...",
-                  "type": "string"
+                  "description": "This side of the current face...",
+                  "type": "string",
+                  "enum": ["A", "B", "C"]
                 },
                 "toSide": {
                   "description": "Connects to this side...",
-                  "type": "string"
+                  "type": "string",
+                  "enum": ["A", "B", "C"]
                 },
                 "ofFace": {
                   "description": "Of this face.",
@@ -59,10 +69,13 @@
           "tilePositions": {
             "description": "How tiles are positioned on a face.",
             "type": "array",
+            "minItems": 1,
+            "maxItems": 9,
             "uniqueItems": true,
             "items": {
               "type": "object",
-               "additionalProperties": false,
+              "additionalProperties": false,
+              "required": ["position", "joins"],
               "properties": {
                 "position": {
                   "description": "Tile position identifier",
@@ -71,18 +84,23 @@
                 "joins": {
                   "description": "How a tile joins with other tiles on the tetrahedron.",
                   "type": "array",
+                  "minItems": 3,
+                  "maxItems": 3,
                   "uniqueItems": true,
                   "items": {
                     "type": "object",
-                     "additionalProperties": false,
+                    "additionalProperties": false,
+                    "required": ["fromSide", "toSide", "ofTilePosition", "onFace"],
                     "properties": {
                       "fromSide": {
-                        "description": "The side of the tile at this position...",
-                        "type": "string"
+                        "description": "This side of the tile at this position...",
+                        "type": "string",
+                        "enum": ["A", "B", "C"]
                       },
                       "toSide": {
                         "description": "Connects to this side...",
-                        "type": "string"
+                        "type": "string",
+                        "enum": ["A", "B", "C"]
                       },
                       "ofTilePosition": {
                         "description": "Of this tile position...",
@@ -104,10 +122,13 @@
     "tiles": {
       "description": "The tiles used by the version of the puzzle.",
       "type": "array",
+      "minItems": 4,
+      "maxItems": 36,
       "uniqueItems": true,
       "items": {
         "type": "object",
-         "additionalProperties": false,
+        "additionalProperties": false,
+        "required": ["tile", "sideA", "sideB", "sideC"],
         "properties": {
           "tile": {
             "description": "A number to identify the individual tile.",
@@ -115,15 +136,21 @@
           },
           "sideA": {
             "description": "A string representing the pattern on side one of the tile (Seg1, Seg2, Seg3, Seg4)",
-            "type": "string"
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 4
           },
           "sideB": {
             "description": "A string representing the pattern on side two of the tile (Seg5, Seg6, Seg7, Seg8).",
-            "type": "string"
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 4
           },
           "sideC": {
             "description": "A string representing the pattern on side three of the tile (Seg9, Seg10, Seg11, Seg12).",
-            "type": "string"
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 4
           }
         }
       }
