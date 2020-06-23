@@ -4,6 +4,7 @@ import { Tetrahedron } from '../../src/js/tetrahedron';
 import { expect } from 'chai';
 import 'mocha';
 
+
 describe("Tetrahedron behaviour", () => {
 
     describe("if a new Tetrahedron is created", () => {

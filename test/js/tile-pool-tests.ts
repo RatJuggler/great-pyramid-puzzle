@@ -4,6 +4,7 @@ import { TilePool } from '../../src/js/tile-pool';
 import { expect } from 'chai';
 import 'mocha';
 
+
 describe("TilePool behavior", () => {
 
     describe("if a new TilePool is created", () => {

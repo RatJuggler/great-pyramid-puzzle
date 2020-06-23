@@ -3,13 +3,13 @@ import { TilePositionData } from "../../src/js/puzzle-data-schema";
 import { expect } from 'chai';
 import 'mocha';
 
-let oneTilePositions: TilePositionData[] = [
-    {"position": "1", "joins": []}
-];
-let faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
-
 
 describe("Face behavior", () => {
+
+    let oneTilePositions: TilePositionData[] = [
+        {"position": "1", "joins": []}
+    ];
+    let faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
 
     describe("if a new Face is created", () => {
 
