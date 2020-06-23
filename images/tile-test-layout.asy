@@ -2,7 +2,7 @@
 
 // Settings for svg output (can also use pdf).
 settings.libgs="";
-settings.outformat="pdf";
+settings.outformat="svg";
 
 import geometry;
 
@@ -11,13 +11,21 @@ size(10cm);
 unitsize(3cm);
 real face_gap = 0.05;
 real tile_gap = 0.05;
+pen face_colour = palegray;
+pen peg_colour = linewidth(15) + mediumgray;
 pen side_label = fontsize(12pt);
 pen note_label = fontsize(8pt);
-pen face_colour = palegray;
 pen title_label = fontsize(14pt);
 
 
-void draw_tile(real tile_scale, point center, int rotateTo) {
+void draw_segment(transform toPosition, point sp1, point sp2, point sp3, point sp4, point sp5, string code) {
+    fill(toPosition * ((0, 0)--sp1--sp2--cycle), substr(code, 0, 1) == "0" ? white : red);
+    fill(toPosition * ((0, 0)--sp2--sp3--cycle), substr(code, 1, 1) == "0" ? white : red);
+    fill(toPosition * ((0, 0)--sp3--sp4--cycle), substr(code, 2, 1) == "0" ? white : red);
+    fill(toPosition * ((0, 0)--sp4--sp5--cycle), substr(code, 3, 1) == "0" ? white : red);
+}
+
+void draw_tile(real tile_scale, point center, int rotateTo, string codeA, string codeB, string codeC) {
     path tile = scale(tile_scale) * polygon(3);
     // Points
     point A = point(tile, 1);
@@ -47,22 +55,14 @@ void draw_tile(real tile_scale, point center, int rotateTo) {
     point seg11 = intersectionpoint(sideC, parallelB);
     // Shift and Draw
     transform toPosition = shift(center) * rotate(rotateTo);
-    fill(toPosition * ((0, 0)--A--seg1--cycle), red);
-    fill(toPosition * ((0, 0)--seg1--seg2--cycle), white);
-    fill(toPosition * ((0, 0)--seg2--seg3--cycle), red);
-    fill(toPosition * ((0, 0)--seg3--B--cycle), white);
-    fill(toPosition * ((0, 0)--B--seg5--cycle), red);
-    fill(toPosition * ((0, 0)--seg5--seg6--cycle), white);
-    fill(toPosition * ((0, 0)--seg6--seg7--cycle), red);
-    fill(toPosition * ((0, 0)--seg7--C--cycle), white);
-    fill(toPosition * ((0, 0)--C--seg9--cycle), red);
-    fill(toPosition * ((0, 0)--seg9--seg10--cycle), white);
-    fill(toPosition * ((0, 0)--seg10--seg11--cycle), red);
-    fill(toPosition * ((0, 0)--seg11--A--cycle), white);
+    draw_segment(toPosition, A, seg1, seg2, seg3, B, codeA);
+    draw_segment(toPosition, B, seg5, seg6, seg7, C, codeB);
+    draw_segment(toPosition, C, seg9, seg10, seg11, A, codeC);
     draw(toPosition * tile, black);
     label("A", toPosition * sideA, side_label);
     label("B", toPosition * sideB, side_label);
     label("C", toPosition * sideC, side_label);
+    dot(center, peg_colour);
 }
 
 // Tetrahedron triangle faces, outward facing surfaces will be shown so would fold down
@@ -85,19 +85,18 @@ real face_side = length(point(face_1, 0)--point(face_1, 1));
 real tile_scale = (face_side - (tile_gap * 2)) / face_side;
 
 // Face 1 tile
-draw_tile(tile_scale, face_1_center, -60);
+draw_tile(tile_scale, face_1_center, -60, "0100", "0100", "1001");
 
 // Face 2 tile
-draw_tile(tile_scale, face_2_center, 0);
+draw_tile(tile_scale, face_2_center, 0, "0101", "1001", "1010");
 
 // Face 3 tile
-draw_tile(tile_scale, face_3_center, 0);
+draw_tile(tile_scale, face_3_center, 0, "1010", "0010", "0010");
 
 // Face 4 tile
-draw_tile(tile_scale, face_4_center, 0);
+draw_tile(tile_scale, face_4_center, 0, "0010", "0100", "0101");
 
 label("*Outward facing surfaces shown.", (point(face_4, 2).x, point(face_2, 1).y), E, note_label);
-label("*Face-Tile-Side.", (point(face_4, 2).x, point(face_2, 1).y - 0.125), E, note_label);
 
 // Title
 label("Test puzzle tile layout.", (0, point(face_1, 2).y - 0.4), N, title_label);
