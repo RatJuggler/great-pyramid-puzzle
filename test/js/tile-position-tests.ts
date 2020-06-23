@@ -5,17 +5,17 @@ import { expect } from 'chai';
 import 'mocha';
 
 
-describe("TilePosition behaviour", () => {
+describe("TilePosition behaviour", function () {
 
     let oneTilePositions: TilePositionData[]  = [
         {"position": "1", "joins": []}
     ];
     let faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
 
-    describe("if a new TilePosition is created", () => {
+    describe("if a new TilePosition is created", function () {
 
-        context("with a valid identifier", () => {
-            it("should return a correctly initialised instance", () => {
+        context("with a valid identifier", function () {
+            it("should return a correctly initialised instance", function () {
                 const id = "XYZ";
                 let tile = new TilePosition(id);
                 expect(tile).to.be.an.instanceOf(TilePosition);
@@ -25,31 +25,31 @@ describe("TilePosition behaviour", () => {
 
     });
 
-    describe("if a TilePosition is joined to another TilePosition", () => {
+    describe("if a TilePosition is joined to another TilePosition", function () {
 
-        context("with valid side names for both Tiles", () => {
-            it("should be accepted", () => {
+        context("with valid side names for both Tiles", function () {
+            it("should be accepted", function () {
                 const tile1 = new TilePosition("Tile1");
                 const tile2 = new TilePosition("Tile2");
                 tile1.join("A", "A", tile2, faceWithOneTilePosition);
             });
         });
 
-        context("where the side to join from is invalid", () => {
-            it("should throw an error", () => {
+        context("where the side to join from is invalid", function () {
+            it("should throw an error", function () {
                 const tile1 = new TilePosition("Tile1");
                 const tile2 = new TilePosition("Tile2");
-                expect(() => {
+                expect(function () {
                     tile1.join("1", "A", tile2, faceWithOneTilePosition);
                 }).to.throw(Error, "Side to join from must be one of A,B,C!");
             });
         });
 
-        context("where the side name to join to is invalid", () => {
-            it("should throw an error", () => {
+        context("where the side name to join to is invalid", function () {
+            it("should throw an error", function () {
                 const tile1 = new TilePosition("Tile1");
                 const tile2 = new TilePosition("Tile2");
-                expect(() => {
+                expect(function () {
                     tile1.join("A", "X", tile2, faceWithOneTilePosition);
                 }).to.throw(Error, "Side to join to must be one of A,B,C!");
             });
@@ -57,16 +57,16 @@ describe("TilePosition behaviour", () => {
 
     });
 
-    describe("if a Tile is placed at a position (without using matching)", () => {
+    describe("if a Tile is placed at a position (without using matching)", function () {
 
-        context("and the position is empty", () => {
-            it("should be placed accepted", () => {
+        context("and the position is empty", function () {
+            it("should be placed accepted", function () {
 
             });
         });
 
-        context("and the position is already occupied by a Tile", () => {
-            it("should return an error", () => {
+        context("and the position is already occupied by a Tile", function () {
+            it("should return an error", function () {
 
             });
         });

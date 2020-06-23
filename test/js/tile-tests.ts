@@ -4,12 +4,12 @@ import { expect } from 'chai';
 import 'mocha';
 
 
-describe("Tile behaviour", () => {
+describe("Tile behaviour", function () {
 
-    describe("if a new Tile is created", () => {
+    describe("if a new Tile is created", function () {
 
-        context("with valid Tile data", () => {
-            it("should return a correctly initialised instance", () => {
+        context("with valid Tile data", function () {
+            it("should return a correctly initialised instance", function () {
                 const tileData: TileData = {
                     "tile": "TestTile",
                     "sideA": "0001",
@@ -22,29 +22,29 @@ describe("Tile behaviour", () => {
             });
         });
 
-        context("with an invalid Tile segment data length", () => {
-            it("should throw an error", () => {
+        context("with an invalid Tile segment data length", function () {
+            it("should throw an error", function () {
                 const tileData: TileData = {
                     "tile": "TestTile",
                     "sideA": "0001",
                     "sideB": "00010",
                     "sideC": "0100"
                 };
-                expect(() => {
+                expect(function () {
                     new Tile(tileData);
                 }).to.throw(Error, "Segment coding should be four characters, found '00010'!");
             });
         });
 
-        context("with an invalid Tile segment data coding", () => {
-            it("should throw an error", () => {
+        context("with an invalid Tile segment data coding", function () {
+            it("should throw an error", function () {
                 const tileData: TileData = {
                     "tile": "TestTile",
                     "sideA": "0001",
                     "sideB": "0010",
                     "sideC": "01A0"
                 };
-                expect(() => {
+                expect(function () {
                     new Tile(tileData);
                 }).to.throw(Error, "Segment coding can only contain '1' or '0', found '01A0'!");
             });

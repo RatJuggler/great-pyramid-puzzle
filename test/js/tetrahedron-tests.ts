@@ -5,12 +5,12 @@ import { expect } from 'chai';
 import 'mocha';
 
 
-describe("Tetrahedron behaviour", () => {
+describe("Tetrahedron behaviour", function () {
 
-    describe("if a new Tetrahedron is created", () => {
+    describe("if a new Tetrahedron is created", function () {
 
-        context("with valid configuration data file 1", () => {
-            it("should return a correctly initialised instance", () => {
+        context("with valid configuration data file 1", function () {
+            it("should return a correctly initialised instance", function () {
                 const puzzleData = valid_config1.testPuzzleData;
                 const tetrahedron = new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
                 expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
@@ -18,10 +18,10 @@ describe("Tetrahedron behaviour", () => {
             });
         });
 
-        context("with invalid configuration data file 1", () => {
-            it("should throw an error", () => {
+        context("with invalid configuration data file 1", function () {
+            it("should throw an error", function () {
                 const puzzleData = invalid_config1.testPuzzleData;
-                expect(() => {
+                expect(function () {
                     new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
                 }).to.throw(Error, "Tetrahedron must always have configuration data for 4 Faces!");
             });
@@ -29,22 +29,22 @@ describe("Tetrahedron behaviour", () => {
 
     });
 
-    describe("if a Tile is placed on a Tetrahedron (without using matching)", () => {
+    describe("if a Tile is placed on a Tetrahedron (without using matching)", function () {
 
-        context("and the Tetrahedron has no Tiles on it", () => {
-            it("should be placed in a random position", () => {
-
-            });
-        });
-
-        context("and the Tetrahedron already has Tiles on it", () => {
-            it("should be placed in a random empty position", () => {
+        context("and the Tetrahedron has no Tiles on it", function () {
+            it("should be placed in a random position", function () {
 
             });
         });
 
-        context("and the Tetrahedron has no remaining empty positions", () => {
-            it("should return undefined", () => {
+        context("and the Tetrahedron already has Tiles on it", function () {
+            it("should be placed in a random empty position", function () {
+
+            });
+        });
+
+        context("and the Tetrahedron has no remaining empty positions", function () {
+            it("should return undefined", function () {
 
             });
         });

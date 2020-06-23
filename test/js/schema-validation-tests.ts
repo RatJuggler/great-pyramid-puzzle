@@ -7,12 +7,12 @@ import { expect } from 'chai';
 import 'mocha';
 
 
-describe("Validate puzzle definition files", () => {
+describe("Validate puzzle definition files", function () {
 
-    describe("the puzzle definition file schema", () => {
+    describe("the puzzle definition file schema", function () {
 
-        context("when loaded", () => {
-            it("should be valid", () => {
+        context("when loaded", function () {
+            it("should be valid", function () {
                 let ajv = new Ajv();
                 let valid = ajv.validateSchema(puzzle_schema);
                 console.log(ajv.errorsText());
@@ -22,10 +22,10 @@ describe("Validate puzzle definition files", () => {
 
     });
 
-    describe("the valid test puzzle definition", () => {
+    describe("the valid test puzzle definition", function () {
 
-        context("when loaded", () => {
-            it("should validate", () => {
+        context("when loaded", function () {
+            it("should validate", function () {
                 let ajv = new Ajv();
                 let valid = ajv.validate(puzzle_schema, test_puzzle.testPuzzleData);
                 console.log(ajv.errorsText());
@@ -35,10 +35,10 @@ describe("Validate puzzle definition files", () => {
 
     });
 
-    describe("the pocket puzzle definition", () => {
+    describe("the pocket puzzle definition", function () {
 
-        context("when loaded", () => {
-            it("should validate", () => {
+        context("when loaded", function () {
+            it("should validate", function () {
                 let ajv = new Ajv();
                 let valid = ajv.validate(puzzle_schema, pocket_puzzle);
                 console.log(ajv.errorsText());
@@ -48,10 +48,10 @@ describe("Validate puzzle definition files", () => {
 
     });
 
-    describe("the great puzzle definition", () => {
+    describe("the great puzzle definition", function () {
 
-        context("when loaded", () => {
-            it("should validate", () => {
+        context("when loaded", function () {
+            it("should validate", function () {
                 let ajv = new Ajv();
                 let valid = ajv.validate(puzzle_schema, great_puzzle);
                 console.log(ajv.errorsText());
