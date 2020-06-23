@@ -96,7 +96,7 @@
         "properties": {
           "tile": {
             "description": "A number to identify the individual tile.",
-            "type": "number"
+            "type": "string"
           },
           "sideA": {
             "description": "A string representing the pattern on side one of the tile (Seg1, Seg2, Seg3, Seg4)",
