@@ -1,8 +1,13 @@
 {
   "$id": "https://pyramid.puzzle/pyramid-puzzle-data-schema.json",
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
-  "description": "Define the layouts and tiles used in the Pyramid Puzzles.",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "The Great Pyramid Puzzle",
+  "description": "Define the tile positions and tiles used in the Pyramid Puzzles.",
   "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "puzzle", "numberOfTilesPerFace", "totalNumberOfTiles", "faces", "tiles"
+  ],
   "properties": {
     "puzzle": {
       "description": "The name of this version of the Pyramid Puzzle.",
@@ -19,8 +24,10 @@
     "faces": {
       "description": "The faces of the tetrahedron.",
       "type": "array",
+      "uniqueItems": true,
       "items": {
         "type": "object",
+         "additionalProperties": false,
         "properties": {
           "name": {
             "description": "The name of a face on the tetrahedron.",
@@ -29,8 +36,10 @@
           "joins": {
             "description": "How a face joins with other faces on the tetrahedron.",
             "type": "array",
+            "uniqueItems": true,
             "items": {
               "type": "object",
+               "additionalProperties": false,
               "properties": {
                 "fromSide": {
                   "description": "The side of this face...",
@@ -50,8 +59,10 @@
           "tilePositions": {
             "description": "How tiles are positioned on a face.",
             "type": "array",
+            "uniqueItems": true,
             "items": {
               "type": "object",
+               "additionalProperties": false,
               "properties": {
                 "position": {
                   "description": "Tile position identifier",
@@ -60,8 +71,10 @@
                 "joins": {
                   "description": "How a tile joins with other tiles on the tetrahedron.",
                   "type": "array",
+                  "uniqueItems": true,
                   "items": {
                     "type": "object",
+                     "additionalProperties": false,
                     "properties": {
                       "fromSide": {
                         "description": "The side of the tile at this position...",
@@ -91,8 +104,10 @@
     "tiles": {
       "description": "The tiles used by the version of the puzzle.",
       "type": "array",
+      "uniqueItems": true,
       "items": {
         "type": "object",
+         "additionalProperties": false,
         "properties": {
           "tile": {
             "description": "A number to identify the individual tile.",
