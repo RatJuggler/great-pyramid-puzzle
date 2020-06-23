@@ -35,20 +35,20 @@ describe("TilePool behavior", () => {
             it("should return a tile", () => {
                 const puzzleData = valid_config1.testPuzzleData;
                 const tilePool = new TilePool(puzzleData.totalNumberOfTiles, puzzleData.tiles);
-                const tile = tilePool.getRandomTile();
+                const tile = tilePool.randomTile;
                 expect(tile).to.be.an.instanceOf(Tile);
             });
         });
 
         context("when there are no more tiles remaining", () => {
-            it("should return null", () => {
+            it("should return undefined", () => {
                 const puzzleData = valid_config1.testPuzzleData;
                 const tilePool = new TilePool(puzzleData.totalNumberOfTiles, puzzleData.tiles);
                 for (let i = 0; i < puzzleData.totalNumberOfTiles; i++) {
-                    tilePool.getRandomTile();
+                    tilePool.randomTile;
                 }
-                const tile = tilePool.getRandomTile();
-                expect(tile).to.be.null;
+                const tile = tilePool.randomTile;
+                expect(tile).to.be.undefined;
             });
         });
 

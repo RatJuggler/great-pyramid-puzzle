@@ -1,5 +1,6 @@
 import { Tile } from "./tile";
 import { TileData } from "./puzzle-data-schema";
+import { getRandomIntInclusive } from "./utils";
 
 export class TilePool {
 
@@ -16,13 +17,21 @@ export class TilePool {
     }
 
     getTile(id: string): Tile {
-        return this._tiles.get(id)!;
+        let tile = this._tiles.get(id)!;
+        if (tile) {
+            this._tiles.delete(id);
+        }
+        return tile;
     }
 
     toString(): string {
         let tilesString = "Tile Pool:\n";
         this._tiles.forEach((tile) => tilesString += tile.toString() + '\n');
         return tilesString;
+    }
+
+    get randomTile(): Tile {
+        return this.getTile(getRandomIntInclusive(this._tiles.size).toString());
     }
 
 }
