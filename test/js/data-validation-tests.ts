@@ -9,6 +9,18 @@ import 'mocha';
 
 describe("Validate puzzle definition files", () => {
 
+    describe("the puzzle definition file schema", () => {
+
+        context("when loaded", () => {
+            it("should be valid", () => {
+                let valid = ajv.validateSchema(puzzle_schema);
+                if (!valid) console.log(validate.errors);
+                expect(valid).to.be.true;
+            });
+        });
+
+    });
+
     let ajv = new Ajv();
     let validate = ajv.compile(puzzle_schema);
 
@@ -16,8 +28,8 @@ describe("Validate puzzle definition files", () => {
 
         context("when loaded", () => {
             it("should validate", () => {
-                let valid = validate(test_puzzle);
-                console.log(ajv.errorsText());
+                let valid = validate(test_puzzle.testPuzzleData);
+                if (!valid) console.log(validate.errors);
                 expect(valid).to.be.true;
             });
         });
@@ -29,7 +41,7 @@ describe("Validate puzzle definition files", () => {
         context("when loaded", () => {
             it("should validate", () => {
                 let valid = validate(pocket_puzzle);
-                console.log(ajv.errorsText());
+                if (!valid) console.log(validate.errors);
                 expect(valid).to.be.true;
             });
         });
@@ -41,7 +53,7 @@ describe("Validate puzzle definition files", () => {
         context("when loaded", () => {
             it("should validate", () => {
                 let valid = validate(great_puzzle);
-                console.log(ajv.errorsText());
+                if (!valid) console.log(validate.errors);
                 expect(valid).to.be.true;
             });
         });
