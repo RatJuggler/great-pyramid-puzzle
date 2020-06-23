@@ -21,8 +21,8 @@ pen title_label = fontsize(14pt);
 pen divider = dashed + gray;
 
 
-void draw_tile(real tile_scale, int idxA, int idxB, int idxC, transform toPosition) {
-    path tile = scale(tile_scale) * polygon(3);
+void draw_tile(real tile_scale, int idxA, int idxB, int idxC, point center, int rotateTo) {
+    path tile = scale(tile_scale) * rotate(rotateTo) * polygon(3);
     // Points
     point A = point(tile, idxA);
     point B = point(tile, idxB);
@@ -39,17 +39,36 @@ void draw_tile(real tile_scale, int idxA, int idxB, int idxC, transform toPositi
     path parallelA = ((-A.y,-A.x)--(A.y,A.x));
     path parallelB = ((-B.y,-B.x)--(B.y,B.x));
     path parallelC = ((-C.y,-C.x)--(C.y,C.x));
+    // Segment Points
+    point seg1 = intersectionpoint(sideA, parallelC);
+    point seg2 = intersectionpoint(sideA, medianC);
+//    point seg3 = rotate(rotateTo) * intersectionpoint(sideA, parallelA);
+//    point seg5 = intersectionpoint(sideB, parallelB);
+//    point seg6 = intersectionpoint(sideB, medianA);
+//    point seg7 = intersectionpoint(sideB, parallelC);
+//    point seg9 = intersectionpoint(sideC, parallelA);
+//    point seg10 = intersectionpoint(sideC, medianB);
+//    point seg11 = intersectionpoint(sideC, parallelB);
     // Shift and Draw
+    transform toPosition = shift(center);
     filldraw(toPosition * tile, tile_colour);
     label("A", toPosition * sideA, side_label);
     label("B", toPosition * sideB, side_label);
     label("C", toPosition * sideC, side_label);
-    draw(toPosition * medianA, divider);
-    draw(toPosition * medianB, divider);
-    draw(toPosition * medianC, divider);
-    draw(toPosition * parallelA, divider);
-    draw(toPosition * parallelB, divider);
+//    draw(toPosition * medianA, divider);
+//    draw(toPosition * medianB, divider);
+//    draw(toPosition * medianC, divider);
+//    draw(toPosition * parallelA, divider);
+//    draw(toPosition * parallelB, divider);
     draw(toPosition * parallelC, divider);
+    fill(toPosition * ((0, 0)--A--seg1--cycle), red);
+    fill(toPosition * ((0, 0)--seg1--seg2--cycle), white);
+//    fill((origin--seg2--seg3--cycle), red);
+//    fill((origin--seg3--seg4--cycle), red);
+//    fill((origin--B--b1--cycle), red);
+//    fill((origin--b2--b3--cycle), red);
+//    fill((origin--C--c1--cycle), red);
+//    fill((origin--c2--c3--cycle), red);
 }
 
 // Tetrahedron triangle faces, outward facing surfaces will be shown so would fold down
@@ -72,16 +91,16 @@ real face_side = length(point(face_1, 0)--point(face_1, 1));
 real tile_scale = (face_side - (tile_gap * 2)) / face_side;
 
 // Face 1 tile
-draw_tile(tile_scale, 0, 2, 1, shift(face_1_center) * rotate(60));
+draw_tile(tile_scale, 1, 0, 2, face_1_center, 0);
 
 // Face 2 tile
-draw_tile(tile_scale, 1, 0, 2, shift(face_2_center));
+draw_tile(tile_scale, 1, 0, 2, face_2_center, 0);
 
 // Face 3 tile
-draw_tile(tile_scale, 1, 0, 2, shift(face_3_center));
+draw_tile(tile_scale, 1, 0, 2, face_3_center, 0);
 
 // Face 4 tile
-draw_tile(tile_scale, 1, 0, 2, shift(face_4_center));
+draw_tile(tile_scale, 1, 0, 2, face_4_center, 0);
 
 label("*Outward facing surfaces shown.", (point(face_4, 2).x, point(face_2, 1).y), E, note_label);
 label("*Face-Tile-Side.", (point(face_4, 2).x, point(face_2, 1).y - 0.125), E, note_label);
