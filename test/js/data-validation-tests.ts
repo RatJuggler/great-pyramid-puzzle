@@ -13,23 +13,22 @@ describe("Validate puzzle definition files", () => {
 
         context("when loaded", () => {
             it("should be valid", () => {
+                let ajv = new Ajv();
                 let valid = ajv.validateSchema(puzzle_schema);
-                if (!valid) console.log(validate.errors);
+                console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });
         });
 
     });
 
-    let ajv = new Ajv();
-    let validate = ajv.compile(puzzle_schema);
-
     describe("the valid test puzzle definition", () => {
 
         context("when loaded", () => {
             it("should validate", () => {
-                let valid = validate(test_puzzle.testPuzzleData);
-                if (!valid) console.log(validate.errors);
+                let ajv = new Ajv();
+                let valid = ajv.validate(puzzle_schema, test_puzzle.testPuzzleData);
+                console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });
         });
@@ -40,8 +39,9 @@ describe("Validate puzzle definition files", () => {
 
         context("when loaded", () => {
             it("should validate", () => {
-                let valid = validate(pocket_puzzle);
-                if (!valid) console.log(validate.errors);
+                let ajv = new Ajv();
+                let valid = ajv.validate(puzzle_schema, pocket_puzzle);
+                console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });
         });
@@ -52,8 +52,9 @@ describe("Validate puzzle definition files", () => {
 
         context("when loaded", () => {
             it("should validate", () => {
-                let valid = validate(great_puzzle);
-                if (!valid) console.log(validate.errors);
+                let ajv = new Ajv();
+                let valid = ajv.validate(puzzle_schema, great_puzzle);
+                console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });
         });
