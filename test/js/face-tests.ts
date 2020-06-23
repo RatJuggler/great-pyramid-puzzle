@@ -81,4 +81,26 @@ describe("Face behavior", () => {
 
     });
 
+    describe("if a Tile is placed on a Face (without using matching)", () => {
+
+        context("and the Face has no Tiles on it", () => {
+            it("should be placed in a random position", () => {
+
+            });
+        });
+
+        context("and the Face already has Tiles on it", () => {
+            it("should be placed in a random empty position", () => {
+
+            });
+        });
+
+        context("and the Face has no remaining empty positions", () => {
+            it("should return undefined", () => {
+
+            });
+        });
+
+    });
+
 });

@@ -57,4 +57,20 @@ describe("TilePosition behaviour", () => {
 
     });
 
+    describe("if a Tile is placed at a position (without using matching)", () => {
+
+        context("and the position is empty", () => {
+            it("should be placed accepted", () => {
+
+            });
+        });
+
+        context("and the position is already occupied by a Tile", () => {
+            it("should return an error", () => {
+
+            });
+        });
+
+    });
+
 });

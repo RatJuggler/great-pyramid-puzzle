@@ -29,4 +29,26 @@ describe("Tetrahedron behaviour", () => {
 
     });
 
+    describe("if a Tile is placed on a Tetrahedron (without using matching)", () => {
+
+        context("and the Tetrahedron has no Tiles on it", () => {
+            it("should be placed in a random position", () => {
+
+            });
+        });
+
+        context("and the Tetrahedron already has Tiles on it", () => {
+            it("should be placed in a random empty position", () => {
+
+            });
+        });
+
+        context("and the Tetrahedron has no remaining empty positions", () => {
+            it("should return undefined", () => {
+
+            });
+        });
+
+    });
+
 });
