@@ -9,15 +9,17 @@ describe("Tile behaviour", function () {
     describe("if a new Tile is created", function () {
 
         context("with valid Tile data", function () {
+            const tileData: TileData = {
+                "tile": "TestTile",
+                "sideA": "0001",
+                "sideB": "0010",
+                "sideC": "0100"
+            };
+            let tile = new Tile(tileData);
             it("should return a correctly initialised instance", function () {
-                const tileData: TileData = {
-                    "tile": "TestTile",
-                    "sideA": "0001",
-                    "sideB": "0010",
-                    "sideC": "0100"
-                };
-                let tile = new Tile(tileData);
                 expect(tile).to.be.an.instanceOf(Tile);
+            });
+            it("should also return the correct toString result from this instance", function () {
                 const expectedToString = "Id: TestTile, Side-A: 0001, Side-B: 0010, Side-C: 0100";
                 expect(tile.toString()).to.equal(expectedToString);
             });

@@ -4,7 +4,7 @@ import * as invalid_config2 from "../invalid-tile-puzzle-data2.json";
 import { Tile } from "../../src/js/tile";
 import { TileData } from "../../src/js/puzzle-data-schema";
 import { TilePool } from '../../src/js/tile-pool';
-import { expect} from 'chai';
+import { assert, expect } from 'chai';
 import 'mocha';
 
 
@@ -16,21 +16,23 @@ describe("TilePool behavior", function () {
         "Id: 2, Side-A: 0100, Side-B: 0100, Side-C: 1001\n" +
         "Id: 3, Side-A: 0101, Side-B: 1001, Side-C: 1010\n" +
         "Id: 4, Side-A: 0010, Side-B: 0100, Side-C: 0101\n";
-    const tileData: TileData = {
-        "tile": "TestTile",
+    const tile1Data: TileData = {
+        "tile": "TestTile1",
         "sideA": "0001",
         "sideB": "0010",
         "sideC": "0100"
     };
-    const validTileToString = "Id: TestTile, Side-A: 0001, Side-B: 0010, Side-C: 0100";
+    const tile1 = new Tile(tile1Data);
 
 
     describe("if a new TilePool is created", function () {
 
         context("with valid configuration data file 1", function () {
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
             it("should return a correctly initialised instance", function () {
-                const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
                 expect(tilePool).to.be.an.instanceOf(TilePool);
+            });
+            it("should also return the correct toString result from this instance", function () {
                 expect(tilePool.toString()).to.equal(validTilePoolToString);
             });
         });
@@ -58,31 +60,36 @@ describe("TilePool behavior", function () {
     describe("if #addTile() is called with details of a Tile to add to the TilePool", function () {
 
         context("when the TilePool is empty", function () {
-            it("should add the Tile and return True", function () {
-                const tilePool = new TilePool(0, []);
-                const result = tilePool.addTile(tileData);
+            const tilePool = new TilePool(0, []);
+            const result = tilePool.addTile(tile1Data);
+            it("should add the Tile", function () {
+                expect(tilePool.toString()).to.contain(tile1.toString());
+            });
+            it("should return True", function () {
                 expect(result).to.be.true;
-                expect(tilePool.toString()).to.equal("TilePool:\n" + validTileToString + '\n');
             });
         });
 
         context("when the TilePool already has Tiles in it but not one with the same id", function () {
-            it("should add the Tile and return True", function () {
-                const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
-                const result = tilePool.addTile(tileData);
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+            const result = tilePool.addTile(tile1Data);
+            it("should add the Tile", function () {
+                expect(tilePool.toString()).to.contain(tile1.toString());
+            });
+            it("should return True", function () {
                 expect(result).to.be.true;
-                expect(tilePool.toString()).to.equal(validTilePoolToString + validTileToString + '\n');
             });
         });
 
         context("when the TilePool already contains a Tile with the same id as the one being added", function () {
-            it("should not add the Tile and return False", function () {
-                const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
-                const result1 = tilePool.addTile(tileData);
-                expect(result1).to.be.true;
-                const result2 = tilePool.addTile(tileData);
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+            assert.isTrue(tilePool.addTile(tile1Data));
+            const result2 = tilePool.addTile(tile1Data);
+            it("should not add the Tile", function () {
+                expect(tilePool.toString()).to.equal(validTilePoolToString + tile1.toString() + '\n');
+            });
+            it("should return False", function () {
                 expect(result2).to.be.false;
-                expect(tilePool.toString()).to.equal(validTilePoolToString + validTileToString + '\n');
             });
         });
 
@@ -91,14 +98,15 @@ describe("TilePool behavior", function () {
     describe("if #getTile() is called with the id of a Tile to obtain from the TilePool", function () {
 
         context("when there is a Tile with the given id already in the TilePool", function () {
-            it("should remove the Tile from the pool and return the Tile details", function () {
-                const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
-                const result1 = tilePool.addTile(tileData);
-                expect(result1).to.be.true;
-                const tile = tilePool.getTile("TestTile");
-                expect(tile).to.be.an.instanceOf(Tile);
-                expect(tile.toString()).to.equal(validTileToString);
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+            assert.isTrue(tilePool.addTile(tile1Data));
+            const tile = tilePool.getTile(tile1Data.tile);
+            it("should remove the Tile from the pool", function () {
                 expect(tilePool.toString()).to.equal(validTilePoolToString);
+            });
+            it("should return the Tile details", function () {
+                expect(tile).to.be.an.instanceOf(Tile);
+                expect(tile.toString()).to.equal(tile1.toString());
             });
         });
 
@@ -127,7 +135,11 @@ describe("TilePool behavior", function () {
         context("when there are Tiles remaining in the TilePool", function () {
             it("should return a random Tile from those remaining", function () {
                 const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
-                expect(tilePool.randomTile).to.be.an.instanceOf(Tile);
+                const oldPoolToString = tilePool.toString();
+                const tile = tilePool.randomTile;
+                expect(tile).to.be.an.instanceOf(Tile);
+                expect(oldPoolToString).to.contain(tile!.toString());
+                expect(tilePool.toString()).to.not.contain(tile!.toString());
             });
         });
 
