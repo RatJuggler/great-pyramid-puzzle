@@ -1,4 +1,5 @@
-import {Face} from "./face";
+import { Face } from "./face";
+import { Tile } from "./tile";
 
 
 interface TilePositionJoinProperties {
@@ -13,11 +14,12 @@ export class TilePosition {
     private static SIDE_NAMES = ["A", "B", "C"];
 
     private _joins = new Map<string, TilePositionJoinProperties>();
+    private _tile: Tile | null = null;
 
     constructor(private _id: string) {}
 
     toString(): string {
-        let tileString = `TilePosition: ${this._id}, Joins: `;
+        let tileString = `TilePosition: ${this._id}, Contains Tile: [${this._tile}], Joins: `;
         this._joins.forEach((join, side) =>
             tileString += `(${this._id}-${side}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
         return tileString;
@@ -42,6 +44,14 @@ export class TilePosition {
             ofTilePosition: ofTilePosition,
             onFace: onFace
         });
+    }
+
+    placeTile(tile: Tile): boolean {
+        if (this._tile) {
+            return false;
+        }
+        this._tile = tile;
+        return true;
     }
 
 }

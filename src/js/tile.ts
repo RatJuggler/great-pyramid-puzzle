@@ -26,7 +26,7 @@ export class Tile {
     }
 
     toString(): string {
-        return `Tile: ${this._id}, Side-A: ${this._sideA}, Side-B: ${this._sideB}, Side-C: ${this._sideC}`;
+        return `Id: ${this._id}, Side-A: ${this._sideA}, Side-B: ${this._sideB}, Side-C: ${this._sideC}`;
     }
 
     get id(): string {
