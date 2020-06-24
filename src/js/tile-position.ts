@@ -17,7 +17,7 @@ export class TilePosition {
     constructor(private _id: string) {}
 
     toString(): string {
-        let tileString = `Tile: ${this._id}, Joins: `;
+        let tileString = `Tile Position: ${this._id}, Joins: `;
         this._joins.forEach((join, side) =>
             tileString += `(${this._id}-${side}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
         return tileString;
@@ -28,6 +28,9 @@ export class TilePosition {
     }
 
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition, onFace: Face) : void {
+        if (this === ofTilePosition) {
+            throw new Error("Cannot join a TilePosition to itself!");
+        }
         if (!(TilePosition.SIDE_NAMES.includes(fromSide))) {
             throw new Error(`Side to join from must be one of ${TilePosition.SIDE_NAMES}!`);
         }
