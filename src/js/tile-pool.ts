@@ -27,11 +27,12 @@ export class TilePool {
     }
 
     getTile(id: string): Tile {
-        let tile = this._tiles.get(id)!;
-        if (tile) {
+        if (this._tiles.has(id)) {
+            let tile = this._tiles.get(id)!;
             this._tiles.delete(id);
+            return tile;
         }
-        return tile;
+        throw new Error(`Tile (${id}) not found in pool!`);
     }
 
     toString(): string {
