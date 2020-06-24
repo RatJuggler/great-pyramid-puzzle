@@ -16,12 +16,17 @@ describe("TilePosition behaviour", function () {
     describe("if a new TilePosition is created", function () {
 
         context("with a valid identifier", function () {
+            const tilePosition = new TilePosition("XYZ");
             it("should return a correctly initialised instance", function () {
-                const tilePosition = new TilePosition("XYZ");
                 expect(tilePosition).to.be.an.instanceOf(TilePosition);
+            });
+            it("should not be holding a Tile", function () {
+                expect(tilePosition.isEmpty());
+            })
+            it("should return the correct toString result", function () {
                 const expectedToString = "TilePosition: XYZ, Contains Tile: [null], Joins: ";
                 expect(tilePosition.toString()).to.equal(expectedToString);
-            });
+            })
         });
 
     });
@@ -69,6 +74,34 @@ describe("TilePosition behaviour", function () {
 
     });
 
+    describe("if #isEmpty() is called to test if there is already a Tile at this position", function () {
+
+        const tile1Data: TileData = {
+            "tile": "TestTile1",
+            "sideA": "0001",
+            "sideB": "0010",
+            "sideC": "0100"
+        };
+        const tile1 = new Tile(tile1Data);
+
+        context("and the Position is empty", function () {
+            it("should return True", function () {
+                const tilePosition = new TilePosition("TP");
+                expect(tilePosition.isEmpty()).to.be.true;
+            });
+        });
+
+        context("and the Position is already occupied by a Tile", function () {
+            it("should return False", function () {
+                const tilePosition = new TilePosition("TP");
+                const result = tilePosition.placeTile(tile1);
+                expect(result).to.be.true;
+                expect(tilePosition.isEmpty()).to.be.false;
+            });
+        });
+
+    });
+
     describe("if #placeTile() is called to place a Tile (without using matching)", function () {
 
         const tile1Data: TileData = {
@@ -98,7 +131,7 @@ describe("TilePosition behaviour", function () {
         });
 
         context("and the Position is already occupied by a Tile", function () {
-            it("should not be place and return False", function () {
+            it("should not be placed and return False", function () {
                 const tilePosition = new TilePosition("TP");
                 const result1 = tilePosition.placeTile(tile1);
                 expect(result1).to.be.true;

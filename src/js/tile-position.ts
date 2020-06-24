@@ -46,12 +46,16 @@ export class TilePosition {
         });
     }
 
+    isEmpty(): boolean {
+        return !this._tile;
+    }
+
     placeTile(tile: Tile): boolean {
-        if (this._tile) {
-            return false;
+        if (this.isEmpty()) {
+            this._tile = tile;
+            return true;
         }
-        this._tile = tile;
-        return true;
+        return false;
     }
 
 }
