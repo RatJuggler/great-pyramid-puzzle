@@ -1,6 +1,6 @@
 import { Tile } from "./tile";
 import { TileData } from "./puzzle-data-schema";
-import { getRandomIntInclusive } from "./utils";
+import { getRandomInt } from "./utils";
 
 export class TilePool {
 
@@ -21,14 +21,14 @@ export class TilePool {
         if (this._tiles.has(tileDetails.tile)) {
             return false;
         }
-        let newTile = new Tile(tileDetails);
+        const newTile = new Tile(tileDetails);
         this._tiles.set(newTile.id, newTile);
         return true;
     }
 
     getTile(id: string): Tile {
         if (this._tiles.has(id)) {
-            let tile = this._tiles.get(id)!;
+            const tile = this._tiles.get(id)!;
             this._tiles.delete(id);
             return tile;
         }
@@ -42,7 +42,12 @@ export class TilePool {
     }
 
     get randomTile(): Tile {
-        return this.getTile(getRandomIntInclusive(this._tiles.size).toString());
+        if (this._tiles.size == 0) {
+            return null!;
+        }
+        const keys = Array.from(this._tiles.keys());
+        const id = keys[getRandomInt(keys.length)];
+        return this.getTile(id);
     }
 
 }

@@ -1,3 +1,3 @@
-export function getRandomIntInclusive(max: number): number {
-    return Math.floor(Math.random() * (Math.floor(max) + 1));
+export function getRandomInt(n: number): number {
+    return Math.floor(Math.random() * Math.floor(n));
 }
