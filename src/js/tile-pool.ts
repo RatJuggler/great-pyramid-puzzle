@@ -11,9 +11,19 @@ export class TilePool {
             throw new Error(`Number of tiles provided (${tileData.length}) does not match number expected (${numberOfTiles})!`);
         }
         for (const tileDetails of tileData) {
-            let newTile = new Tile(tileDetails);
-            this._tiles.set(newTile.id, newTile);
+            if (!this.addTile(tileDetails)) {
+                throw new Error(`Duplicate Tile found in pool for (${tileDetails.tile})!`);
+            }
         }
+    }
+
+    addTile(tileDetails: TileData): boolean {
+        if (this._tiles.has(tileDetails.tile)) {
+            return false;
+        }
+        let newTile = new Tile(tileDetails);
+        this._tiles.set(newTile.id, newTile);
+        return true;
     }
 
     getTile(id: string): Tile {
