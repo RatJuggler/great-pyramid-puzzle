@@ -16,7 +16,7 @@ describe("Face behavior", function () {
             it("should return a correctly initialised instance", function () {
                 const face = new Face("1", 1, oneTilePositions);
                 expect(face).to.be.an.instanceOf(Face);
-                const expectedToString = "Face: 1, Tile Positions: 1, Joins: \n";
+                const expectedToString = "Face: 1, Tile Positions: 1, Joins: \nTilePosition: 1, Joins: \n";
                 expect(face.toString()).to.equal(expectedToString);
             });
         });
@@ -55,11 +55,11 @@ describe("Face behavior", function () {
         context("with valid side names for the two different Faces to be joined", function () {
             face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
             it("should join the Faces in the direction given", function () {
-                const face1ExpectedToString = "Face: 1, Tile Positions: 1, Joins: (1-A->1-B)\n";
+                const face1ExpectedToString = "Face: 1, Tile Positions: 1, Joins: (1-A->1-B)\nTilePosition: 1, Joins: \n";
                 expect(face1WithOneTilePosition.toString()).to.equal(face1ExpectedToString);
             });
             it("should not join the Faces in the opposite direction", function () {
-                const face2ExpectedToString = "Face: 1, Tile Positions: 1, Joins: \n";
+                const face2ExpectedToString = "Face: 1, Tile Positions: 1, Joins: \nTilePosition: 1, Joins: \n";
                 expect(face2WithOneTilePosition.toString()).to.equal(face2ExpectedToString);
             });
         });

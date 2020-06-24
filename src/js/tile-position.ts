@@ -17,7 +17,7 @@ export class TilePosition {
     constructor(private _id: string) {}
 
     toString(): string {
-        let tileString = `Tile Position: ${this._id}, Joins: `;
+        let tileString = `TilePosition: ${this._id}, Joins: `;
         this._joins.forEach((join, side) =>
             tileString += `(${this._id}-${side}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
         return tileString;

@@ -18,7 +18,7 @@ describe("TilePosition behaviour", function () {
             it("should return a correctly initialised instance", function () {
                 const tilePosition = new TilePosition("XYZ");
                 expect(tilePosition).to.be.an.instanceOf(TilePosition);
-                const expectedToString = "Tile Position: XYZ, Joins: ";
+                const expectedToString = "TilePosition: XYZ, Joins: ";
                 expect(tilePosition.toString()).to.equal(expectedToString);
             });
         });
@@ -33,11 +33,11 @@ describe("TilePosition behaviour", function () {
         context("with valid side names for the two different TilePositions to be joined", function () {
             tile1.join("A", "B", tile2, faceWithOneTilePosition);
             it("should join the TilePositions in the direction given", function () {
-                const tile1ExpectedToString = "Tile Position: Tile1, Joins: (Tile1-A->1-Tile2-B)";
+                const tile1ExpectedToString = "TilePosition: Tile1, Joins: (Tile1-A->1-Tile2-B)";
                 expect(tile1.toString()).to.equal(tile1ExpectedToString);
             });
             it("should not join the TilePositions in the opposite direction", function () {
-                const tile2ExpectedToString = "Tile Position: Tile2, Joins: ";
+                const tile2ExpectedToString = "TilePosition: Tile2, Joins: ";
                 expect(tile2.toString()).to.equal(tile2ExpectedToString);
             });
         });
