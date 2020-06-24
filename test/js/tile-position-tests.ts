@@ -2,7 +2,7 @@ import { TilePosition } from '../../src/js/tile-position';
 import { TileData, TilePositionData } from "../../src/js/puzzle-data-schema";
 import { Tile } from "../../src/js/tile";
 import { Face } from "../../src/js/face";
-import { expect} from 'chai';
+import { assert, expect} from 'chai';
 import 'mocha';
 
 
@@ -92,10 +92,9 @@ describe("TilePosition behaviour", function () {
         });
 
         context("and the Position is already occupied by a Tile", function () {
+            const tilePosition = new TilePosition("TP");
+            assert.isTrue(tilePosition.placeTile(tile1));
             it("should return False", function () {
-                const tilePosition = new TilePosition("TP");
-                const result = tilePosition.placeTile(tile1);
-                expect(result).to.be.true;
                 expect(tilePosition.isEmpty()).to.be.false;
             });
         });
@@ -111,8 +110,6 @@ describe("TilePosition behaviour", function () {
             "sideC": "0100"
         };
         const tile1 = new Tile(tile1Data);
-        const tile1ToString =
-            "TilePosition: TP, Contains Tile: [Id: TestTile1, Side-A: 0001, Side-B: 0010, Side-C: 0100], Joins: ";
         const tile2Data: TileData = {
             "tile": "TestTile2",
             "sideA": "0011",
@@ -122,22 +119,26 @@ describe("TilePosition behaviour", function () {
         const tile2 = new Tile(tile2Data);
 
         context("and the Position is empty", function () {
-            it("should be placed and return True", function () {
-                const tilePosition = new TilePosition("TP");
-                const result = tilePosition.placeTile(tile1);
+            const tilePosition = new TilePosition("TP");
+            const result = tilePosition.placeTile(tile1);
+            it("should be placed", function () {
+                expect(tilePosition.toString()).to.contain(tile1.toString());
+            });
+            it("should return True", function () {
                 expect(result).to.be.true;
-                expect(tilePosition.toString()).to.equal(tile1ToString);
             });
         });
 
         context("and the Position is already occupied by a Tile", function () {
-            it("should not be placed and return False", function () {
-                const tilePosition = new TilePosition("TP");
-                const result1 = tilePosition.placeTile(tile1);
-                expect(result1).to.be.true;
-                const result2 = tilePosition.placeTile(tile2);
-                expect(result2).to.be.false;
-                expect(tilePosition.toString()).to.equal(tile1ToString);
+            const tilePosition = new TilePosition("TP");
+            assert.isTrue(tilePosition.placeTile(tile1));
+            assert.isTrue(tilePosition.toString().includes(tile1.toString()));
+            const result = tilePosition.placeTile(tile2);
+            it("should not be placed", function () {
+                expect(tilePosition.toString()).to.not.contain(tile2.toString());
+            });
+            it("should return False", function () {
+                expect(result).to.be.false;
             });
         });
 

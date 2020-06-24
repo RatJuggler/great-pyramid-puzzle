@@ -1,7 +1,7 @@
 import { Face } from '../../src/js/face';
 import { Tile } from "../../src/js/tile";
 import { TileData, TilePositionData } from "../../src/js/puzzle-data-schema";
-import { expect} from 'chai';
+import { assert, expect} from 'chai';
 import 'mocha';
 
 
@@ -14,9 +14,11 @@ describe("Face behavior", function () {
     describe("if a new Face is created", function () {
 
         context("with a valid Face name and Tile Position details", function () {
+            const face = new Face("1", 1, oneTilePositions);
             it("should return a correctly initialised instance", function () {
-                const face = new Face("1", 1, oneTilePositions);
                 expect(face).to.be.an.instanceOf(Face);
+            });
+            it("should return the correct toString result", function () {
                 const expectedToString =
                     "Face: 1, Tile Positions: 1, Joins: \nTilePosition: 1, Contains Tile: [null], Joins: \n";
                 expect(face.toString()).to.equal(expectedToString);
@@ -127,41 +129,45 @@ describe("Face behavior", function () {
         const tile2 = new Tile(tile2Data);
 
         context("and all the Tile Positions on the Face are empty", function () {
-            it("should place the Tile in a random Position and return True", function () {
-                const face = new Face("1", 1, oneTilePositions);
-                const result = face.placeTileWithoutMatching(tile1);
+            const faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
+            const result = faceWithOneTilePosition.placeTileWithoutMatching(tile1);
+            it("should place the Tile in a random Position", function () {
+                expect(faceWithOneTilePosition.toString()).to.contain(tile1.toString());
+            });
+            it("should return True", function () {
                 expect(result).to.be.true;
-                expect(face.toString()).to.contain(tile1.toString());
             });
         });
 
         context("and the Face already has filled Tile Positions on it", function () {
-            it("should place the Tile in a random empty Position and return True", function () {
-                const fourTilePositions = [
-                    {"position": "1", "joins": []},
-                    {"position": "2", "joins": []},
-                    {"position": "3", "joins": []},
-                    {"position": "4", "joins": []}
-                ];
-                const faceWithFourTilePositions = new Face("2", 4, fourTilePositions);
-                const result1 = faceWithFourTilePositions.placeTileWithoutMatching(tile1);
-                expect(result1).to.be.true;
-                const result2 = faceWithFourTilePositions.placeTileWithoutMatching(tile2);
-                expect(result2).to.be.true;
-                expect(faceWithFourTilePositions.toString()).to.contain(tile1.toString());
+            const fourTilePositions = [
+                {"position": "1", "joins": []},
+                {"position": "2", "joins": []},
+                {"position": "3", "joins": []},
+                {"position": "4", "joins": []}
+            ];
+            const faceWithFourTilePositions = new Face("2", 4, fourTilePositions);
+            assert.isTrue(faceWithFourTilePositions.placeTileWithoutMatching(tile1));
+            assert.isTrue(faceWithFourTilePositions.toString().includes(tile1.toString()));
+            const result = faceWithFourTilePositions.placeTileWithoutMatching(tile2);
+            it("should place the Tile in a random empty Position", function () {
                 expect(faceWithFourTilePositions.toString()).to.contain(tile2.toString());
+            });
+            it("should return True", function () {
+                expect(result).to.be.true;
             });
         });
 
         context("and the Face has no remaining empty Tile Positions", function () {
+            const faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
+            assert.isTrue(faceWithOneTilePosition.placeTileWithoutMatching(tile1));
+            assert.isTrue(faceWithOneTilePosition.toString().includes(tile1.toString()));
+            const result = faceWithOneTilePosition.placeTileWithoutMatching(tile2);
+            it("should not be placed", function () {
+                expect(faceWithOneTilePosition.toString()).to.not.contain(tile2.toString());
+            });
             it("should return False", function () {
-                const face = new Face("1", 1, oneTilePositions);
-                const result1 = face.placeTileWithoutMatching(tile1);
-                expect(result1).to.be.true;
-                const result2 = face.placeTileWithoutMatching(tile2);
-                expect(result2).to.be.false;
-                expect(face.toString()).to.contain(tile1.toString());
-                expect(face.toString()).to.not.contain(tile2.toString());
+                expect(result).to.be.false;
             });
         });
 

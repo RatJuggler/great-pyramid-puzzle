@@ -133,11 +133,13 @@ describe("TilePool behavior", function () {
     describe("if #getRandomTile() is called to select a random Tile from the TilePool", function () {
 
         context("when there are Tiles remaining in the TilePool", function () {
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+            const oldPoolToString = tilePool.toString();
+            const tile = tilePool.randomTile;
             it("should return a random Tile from those remaining", function () {
-                const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
-                const oldPoolToString = tilePool.toString();
-                const tile = tilePool.randomTile;
                 expect(tile).to.be.an.instanceOf(Tile);
+            });
+            it("should remove the random Tile from the pool", function () {
                 expect(oldPoolToString).to.contain(tile!.toString());
                 expect(tilePool.toString()).to.not.contain(tile!.toString());
             });
