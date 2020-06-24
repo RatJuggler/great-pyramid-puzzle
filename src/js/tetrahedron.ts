@@ -44,9 +44,11 @@ export class Tetrahedron {
         return this._name;
     }
 
-    getFace(name: string) {
-        // Do we want to throw an error if we don't find anything?
-        return this._faces.get(name)!;
+    getFace(name: string): Face {
+        if (this._faces.has(name)) {
+            return this._faces.get(name)!;
+        }
+        throw new Error(`Face (${name}) not found on Tetrahedron!`);
     }
 
 }

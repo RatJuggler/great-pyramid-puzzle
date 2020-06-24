@@ -1,18 +1,21 @@
 import * as valid_config1 from "../valid-test-puzzle-data1.json";
 import * as invalid_config1 from "../invalid-face-puzzle-data1.json";
 import { Tetrahedron } from '../../src/js/tetrahedron';
+import { Face } from "../../src/js/face";
 import { assert, expect } from 'chai';
 import 'mocha';
 
 
 describe("Tetrahedron behaviour", function () {
 
+    const validPuzzleData = valid_config1.testPuzzleData;
+
     describe("if a new Tetrahedron is created", function () {
 
         context("with valid configuration data file 1", function () {
             it("should return a correctly initialised instance", function () {
-                const puzzleData = valid_config1.testPuzzleData;
-                const tetrahedron = new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
+                const tetrahedron =
+                    new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
                 expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
                 const expectedToString = "Puzzle Type: test-valid\n" +
                     "Face: 1, Tile Positions: 1, Joins: (1-A->3-B)(1-B->4-B)(1-C->2-B)\n" +
@@ -33,6 +36,31 @@ describe("Tetrahedron behaviour", function () {
                 expect(function () {
                     new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
                 }).to.throw(Error, "Tetrahedron must always have configuration data for 4 Faces!");
+            });
+        });
+
+    });
+
+    describe("if #getFace() is called with the name of a Face on the Tetrahedron", function () {
+
+        context("when there is a Face with the given name already on the Tetrahedron", function () {
+            it("should return the Face details", function () {
+                const tetrahedron =
+                    new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+                const face = tetrahedron.getFace("3");
+                expect(face).to.be.an.instanceOf(Face);
+                const expectedToString = "";
+                expect(face.toString()).to.equal(expectedToString);
+            });
+        });
+
+        context("when there isn't a Face with the given name on the Tetrahedron", function () {
+            it("should throw an error", function () {
+                const tetrahedron =
+                    new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+                expect(function () {
+                    tetrahedron.getFace("A");
+                }).to.throw(Error, "Face (A) not found on Tetrahedron!");
             });
         });
 
