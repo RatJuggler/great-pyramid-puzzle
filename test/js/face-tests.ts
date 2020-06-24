@@ -1,12 +1,12 @@
 import { Face } from '../../src/js/face';
 import { TilePositionData } from "../../src/js/puzzle-data-schema";
-import { expect } from 'chai';
+import {assert, expect} from 'chai';
 import 'mocha';
 
 
 describe("Face behavior", function () {
 
-    let oneTilePositions: TilePositionData[] = [
+    const oneTilePositions: TilePositionData[] = [
         {"position": "1", "joins": []}
     ];
 
@@ -14,10 +14,9 @@ describe("Face behavior", function () {
 
         context("with a valid Face name and Tile Position details", function () {
             it("should return a correctly initialised instance", function () {
-                const name = "1";
-                const face = new Face(name, 1, oneTilePositions);
+                const face = new Face("1", 1, oneTilePositions);
                 expect(face).to.be.an.instanceOf(Face);
-                let expectedToString = "Face: 1, Tile Positions: 1, Joins: \nTile: 1, Joins: \n";
+                const expectedToString = "Face: 1, Tile Positions: 1, Joins: \n";
                 expect(face.toString()).to.equal(expectedToString);
             });
         });
@@ -50,12 +49,18 @@ describe("Face behavior", function () {
 
     describe("if #join() is called to join one Face to another", function () {
 
-        let face1WithOneTilePosition = new Face("1", 1, oneTilePositions);
-        let face2WithOneTilePosition = new Face("1", 1, oneTilePositions);
+        const face1WithOneTilePosition = new Face("1", 1, oneTilePositions);
+        const face2WithOneTilePosition = new Face("1", 1, oneTilePositions);
 
         context("with valid side names for the two different Faces to be joined", function () {
-            it("should be accepted", function () {
-                face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
+            face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
+            it("should join the Faces in the direction given", function () {
+                const face1ExpectedToString = "Face: 1, Tile Positions: 1, Joins: (1-A->1-B)\n";
+                expect(face1WithOneTilePosition.toString()).to.equal(face1ExpectedToString);
+            });
+            it("should not join the Faces in the opposite direction", function () {
+                const face2ExpectedToString = "Face: 1, Tile Positions: 1, Joins: \n";
+                expect(face2WithOneTilePosition.toString()).to.equal(face2ExpectedToString);
             });
         });
 
@@ -104,19 +109,19 @@ describe("Face behavior", function () {
 
         context("and all the Tile Positions on the Face are empty", function () {
             it("should place the Tile in a random Position and return True", function () {
-
+                assert.fail("Test not implemented!");
             });
         });
 
         context("and the Face already has filled Tile Positions on it", function () {
             it("should place the Tile in a random empty Position and return True", function () {
-
+                assert.fail("Test not implemented!");
             });
         });
 
         context("and the Face has no remaining empty Tile Positions", function () {
             it("should return False", function () {
-
+                assert.fail("Test not implemented!");
             });
         });
 

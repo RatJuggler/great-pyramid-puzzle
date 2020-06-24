@@ -1,7 +1,7 @@
 import * as valid_config1 from "../valid-test-puzzle-data1.json";
 import * as invalid_config1 from "../invalid-test-puzzle-data1.json";
 import { Tetrahedron } from '../../src/js/tetrahedron';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import 'mocha';
 
 
@@ -16,13 +16,13 @@ describe("Tetrahedron behaviour", function () {
                 expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
                 const expectedToString = "Puzzle Type: test-valid\n" +
                     "Face: 1, Tile Positions: 1, Joins: (1-A->3-B)(1-B->4-B)(1-C->2-B)\n" +
-                    "Tile: 1, Joins: (1-A->3-1-B)(1-B->4-1-B)(1-C->2-1-B)\n" +
+                    "Tile Position: 1, Joins: (1-A->3-1-B)(1-B->4-1-B)(1-C->2-1-B)\n" +
                     "Face: 2, Tile Positions: 1, Joins: (2-A->3-C)(2-B->1-C)(2-C->4-A)\n" +
-                    "Tile: 1, Joins: (1-A->3-1-C)(1-B->1-1-C)(1-C->4-1-A)\n" +
+                    "Tile Position: 1, Joins: (1-A->3-1-C)(1-B->1-1-C)(1-C->4-1-A)\n" +
                     "Face: 3, Tile Positions: 1, Joins: (3-A->4-C)(3-B->1-A)(3-C->2-A)\n" +
-                    "Tile: 1, Joins: (1-A->4-1-C)(1-B->1-1-A)(1-C->2-1-A)\n" +
+                    "Tile Position: 1, Joins: (1-A->4-1-C)(1-B->1-1-A)(1-C->2-1-A)\n" +
                     "Face: 4, Tile Positions: 1, Joins: (4-A->2-C)(4-B->1-B)(4-C->3-A)\n" +
-                    "Tile: 1, Joins: (1-A->2-1-C)(1-B->1-1-B)(1-C->3-1-A)\n";
+                    "Tile Position: 1, Joins: (1-A->2-1-C)(1-B->1-1-B)(1-C->3-1-A)\n";
                 expect(tetrahedron.toString()).to.equal(expectedToString);
             });
         });
@@ -42,19 +42,19 @@ describe("Tetrahedron behaviour", function () {
 
         context("and the Tetrahedron has no Tiles on it", function () {
             it("should place the Tile in a random Position on a random Face and return True", function () {
-
+                assert.fail("Test not implemented!");
             });
         });
 
         context("and the Tetrahedron already has Tiles on it", function () {
             it("should place the Tile in a random empty Position on a random Face and return True", function () {
-
+                assert.fail("Test not implemented!");
             });
         });
 
         context("and the Tetrahedron has no remaining empty positions", function () {
             it("should return False", function () {
-
+                assert.fail("Test not implemented!");
             });
         });
 
