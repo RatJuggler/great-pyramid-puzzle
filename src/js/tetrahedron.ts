@@ -14,20 +14,20 @@ export class Tetrahedron {
         }
         // We have to create all of the face and tile positions before we can join them together.
         for (const faceDetails of faceData) {
-            let newFace = new Face(faceDetails.name, numberOfTilesPerFace, faceDetails.tilePositions);
+            const newFace = new Face(faceDetails.name, numberOfTilesPerFace, faceDetails.tilePositions);
             this._faces.set(newFace.name, newFace);
         }
         for (const faceDetails of faceData) {
-            let fromFace = this.getFace(faceDetails.name);
+            const fromFace = this.getFace(faceDetails.name);
             // Join the faces...
             for (const joinData of faceDetails.joins) {
                 fromFace.join(joinData.fromSide, joinData.toSide, this.getFace(joinData.ofFace));
             }
             // Join all the tile positions...
             for (const tilePositionDetails of faceDetails.tilePositions) {
-                let fromTilePosition = this.getFace(faceDetails.name).getTilePosition(tilePositionDetails.position);
+                const fromTilePosition = this.getFace(faceDetails.name).getTilePosition(tilePositionDetails.position);
                 for (const joinData of tilePositionDetails.joins) {
-                    let onFace = this.getFace(joinData.onFace);
+                    const onFace = this.getFace(joinData.onFace);
                     fromTilePosition.join(joinData.fromSide, joinData.toSide, onFace.getTilePosition(joinData.ofTilePosition), onFace);
                 }
             }

@@ -29,7 +29,7 @@ export class Face {
         }
         // We can't join the tile positions until they've been created for every face.
         for (const tilePositionData of tilePositions) {
-            let newTilePosition = new TilePosition(tilePositionData.position);
+            const newTilePosition = new TilePosition(tilePositionData.position);
             this._tilePositions.set(newTilePosition.id, newTilePosition);
         }
     }
