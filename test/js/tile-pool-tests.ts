@@ -1,5 +1,6 @@
 import * as valid_config1 from "../valid-test-puzzle-data1.json";
-import * as invalid_config1 from "../invalid-test-puzzle-data1.json";
+import * as invalid_config1 from "../invalid-tile-puzzle-data1.json";
+import * as invalid_config2 from "../invalid-tile-puzzle-data2.json";
 import { Tile } from "../../src/js/tile";
 import { TilePool } from '../../src/js/tile-pool';
 import {assert, expect} from 'chai';
@@ -25,12 +26,21 @@ describe("TilePool behavior", function () {
             });
         });
 
-        context("with invalid configuration data file 1", function () {
+        context("with invalid tile configuration data file 1", function () {
             it("should throw an error", function () {
                 const puzzleData = invalid_config1.testPuzzleData;
                 expect(function () {
                     new TilePool(puzzleData.totalNumberOfTiles, puzzleData.tiles);
-                }).to.throw(Error, "Number of tiles provided (0) does not match number expected (64)!");
+                }).to.throw(Error, "Number of tiles provided (4) does not match number expected (64)!");
+            });
+        });
+
+        context("with invalid tile configuration data file 2", function () {
+            it("should throw an error", function () {
+                const puzzleData = invalid_config2.testPuzzleData;
+                expect(function () {
+                    new TilePool(puzzleData.totalNumberOfTiles, puzzleData.tiles);
+                }).to.throw(Error, "Duplicate Tile found in pool for (3)!");
             });
         });
 

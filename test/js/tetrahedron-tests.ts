@@ -1,5 +1,5 @@
 import * as valid_config1 from "../valid-test-puzzle-data1.json";
-import * as invalid_config1 from "../invalid-test-puzzle-data1.json";
+import * as invalid_config1 from "../invalid-face-puzzle-data1.json";
 import { Tetrahedron } from '../../src/js/tetrahedron';
 import { assert, expect } from 'chai';
 import 'mocha';
@@ -27,7 +27,7 @@ describe("Tetrahedron behaviour", function () {
             });
         });
 
-        context("with invalid configuration data file 1", function () {
+        context("with invalid face configuration data file 1", function () {
             it("should throw an error", function () {
                 const puzzleData = invalid_config1.testPuzzleData;
                 expect(function () {

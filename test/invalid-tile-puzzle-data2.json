@@ -1,0 +1,76 @@
+{
+  "tesDescription": "The tile data details contain a duplicate id",
+  "testPuzzleData": {
+    "puzzle": "tiles-invalid",
+    "numberOfTilesPerFace": 1,
+    "totalNumberOfTiles": 4,
+    "faces": [
+      {
+        "name": "1",
+        "joins": [],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": []
+          }
+        ]
+      },
+      {
+        "name": "2",
+        "joins": [],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": []
+          }
+        ]
+      },
+      {
+        "name": "3",
+        "joins": [],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": []
+          }
+        ]
+      },
+      {
+        "name": "4",
+        "joins": [],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": []
+          }
+        ]
+      }
+    ],
+    "tiles": [
+      {
+        "tile": "1",
+        "sideA": "1010",
+        "sideB": "0010",
+        "sideC": "0010"
+      },
+      {
+        "tile": "2",
+        "sideA": "0100",
+        "sideB": "0100",
+        "sideC": "1001"
+      },
+      {
+        "tile": "3",
+        "sideA": "0101",
+        "sideB": "1001",
+        "sideC": "1010"
+      },
+      {
+        "tile": "3",
+        "sideA": "0010",
+        "sideB": "0100",
+        "sideC": "0101"
+      }
+    ]
+  }
+}
