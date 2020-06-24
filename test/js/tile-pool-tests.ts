@@ -12,17 +12,17 @@ describe("TilePool behavior", function () {
 
     const validPuzzleData = valid_config1.testPuzzleData;
     const validTilePoolToString = "TilePool:\n" +
-        "Tile: 1, Side-A: 1010, Side-B: 0010, Side-C: 0010\n" +
-        "Tile: 2, Side-A: 0100, Side-B: 0100, Side-C: 1001\n" +
-        "Tile: 3, Side-A: 0101, Side-B: 1001, Side-C: 1010\n" +
-        "Tile: 4, Side-A: 0010, Side-B: 0100, Side-C: 0101\n";
+        "Id: 1, Side-A: 1010, Side-B: 0010, Side-C: 0010\n" +
+        "Id: 2, Side-A: 0100, Side-B: 0100, Side-C: 1001\n" +
+        "Id: 3, Side-A: 0101, Side-B: 1001, Side-C: 1010\n" +
+        "Id: 4, Side-A: 0010, Side-B: 0100, Side-C: 0101\n";
     const tileData: TileData = {
         "tile": "TestTile",
         "sideA": "0001",
         "sideB": "0010",
         "sideC": "0100"
     };
-    const validTileToString = "Tile: TestTile, Side-A: 0001, Side-B: 0010, Side-C: 0100";
+    const validTileToString = "Id: TestTile, Side-A: 0001, Side-B: 0010, Side-C: 0100";
 
 
     describe("if a new TilePool is created", function () {
@@ -107,7 +107,7 @@ describe("TilePool behavior", function () {
                 const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
                 expect(function () {
                     tilePool.getTile("TestTile");
-                }).to.throw(Error, "Tile (TestTile) not found in pool!");
+                }).to.throw(Error, "Tile (TestTile) not found in the tile pool!");
             });
         });
 
