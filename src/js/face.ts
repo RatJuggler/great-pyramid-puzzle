@@ -73,8 +73,16 @@ export class Face {
         this._joins.set(fromSide, {toSide: toSide, ofFace: ofFace});
     }
 
+    private get emptyTilePositions() {
+        return Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.isEmpty());
+    }
+
+    hasEmptyTilePositions(): boolean {
+        return this.emptyTilePositions.length > 0;
+    }
+
     placeTileWithoutMatching(tile: Tile): boolean {
-        const emptyPositions = Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.isEmpty());
+        const emptyPositions = this.emptyTilePositions;
         if (emptyPositions.length == 0) {
             return false;
         }
