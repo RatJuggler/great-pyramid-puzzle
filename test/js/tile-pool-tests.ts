@@ -116,7 +116,7 @@ describe("TilePool behavior", function () {
                 const tilePool = new TilePool(0, []);
                 expect(function () {
                     tilePool.getTile("TestTile");
-                }).to.throw(Error, "Tile (TestTile) not found in pool!");
+                }).to.throw(Error, "Tile (TestTile) not found in the tile pool!");
             });
         });
 

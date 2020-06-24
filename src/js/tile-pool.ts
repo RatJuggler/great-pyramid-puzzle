@@ -32,7 +32,7 @@ export class TilePool {
             this._tiles.delete(id);
             return tile;
         }
-        throw new Error(`Tile (${id}) not found in pool!`);
+        throw new Error(`Tile (${id}) not found in the tile pool!`);
     }
 
     toString(): string {
@@ -41,9 +41,9 @@ export class TilePool {
         return tilesString;
     }
 
-    get randomTile(): Tile {
+    get randomTile(): Tile | null {
         if (this._tiles.size == 0) {
-            return null!;
+            return null;
         }
         const keys = Array.from(this._tiles.keys());
         const id = keys[getRandomInt(keys.length)];
