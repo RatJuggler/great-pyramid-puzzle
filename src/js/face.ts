@@ -1,5 +1,7 @@
 import { TilePositionData} from "./puzzle-data-schema";
 import { TilePosition } from "./tile-position";
+import { Tile } from "./tile";
+import {getRandomInt} from "./utils";
 
 
 interface FaceJoinProperties {
@@ -69,6 +71,15 @@ export class Face {
             throw new Error(`Side to join to must be one of ${Face.SIDE_NAMES}!`);
         }
         this._joins.set(fromSide, {toSide: toSide, ofFace: ofFace});
+    }
+
+    placeTileWithoutMatching(tile: Tile): boolean {
+        const emptyPositions = Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.isEmpty());
+        if (emptyPositions.length == 0) {
+            return false;
+        }
+        const tilePosition = emptyPositions[getRandomInt(emptyPositions.length)];
+        return tilePosition.placeTile(tile);
     }
 
 }

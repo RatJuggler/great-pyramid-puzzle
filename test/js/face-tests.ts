@@ -1,6 +1,7 @@
 import { Face } from '../../src/js/face';
-import { TilePositionData } from "../../src/js/puzzle-data-schema";
-import {assert, expect} from 'chai';
+import { Tile } from "../../src/js/tile";
+import { TileData, TilePositionData } from "../../src/js/puzzle-data-schema";
+import { expect} from 'chai';
 import 'mocha';
 
 
@@ -110,21 +111,57 @@ describe("Face behavior", function () {
 
     describe("if #placeTileWithoutMatching() is called to place a Tile (without using matching)", function () {
 
+        const tile1Data: TileData = {
+            "tile": "TestTile1",
+            "sideA": "0001",
+            "sideB": "0010",
+            "sideC": "0100"
+        };
+        const tile1 = new Tile(tile1Data);
+        const tile2Data: TileData = {
+            "tile": "TestTile2",
+            "sideA": "0011",
+            "sideB": "0100",
+            "sideC": "1001"
+        };
+        const tile2 = new Tile(tile2Data);
+
         context("and all the Tile Positions on the Face are empty", function () {
             it("should place the Tile in a random Position and return True", function () {
-                assert.fail("Test not implemented!");
+                const face = new Face("1", 1, oneTilePositions);
+                const result = face.placeTileWithoutMatching(tile1);
+                expect(result).to.be.true;
+                expect(face.toString()).to.contain(tile1.toString());
             });
         });
 
         context("and the Face already has filled Tile Positions on it", function () {
             it("should place the Tile in a random empty Position and return True", function () {
-                assert.fail("Test not implemented!");
+                const fourTilePositions = [
+                    {"position": "1", "joins": []},
+                    {"position": "2", "joins": []},
+                    {"position": "3", "joins": []},
+                    {"position": "4", "joins": []}
+                ];
+                const faceWithFourTilePositions = new Face("2", 4, fourTilePositions);
+                const result1 = faceWithFourTilePositions.placeTileWithoutMatching(tile1);
+                expect(result1).to.be.true;
+                const result2 = faceWithFourTilePositions.placeTileWithoutMatching(tile2);
+                expect(result2).to.be.true;
+                expect(faceWithFourTilePositions.toString()).to.contain(tile1.toString());
+                expect(faceWithFourTilePositions.toString()).to.contain(tile2.toString());
             });
         });
 
         context("and the Face has no remaining empty Tile Positions", function () {
             it("should return False", function () {
-                assert.fail("Test not implemented!");
+                const face = new Face("1", 1, oneTilePositions);
+                const result1 = face.placeTileWithoutMatching(tile1);
+                expect(result1).to.be.true;
+                const result2 = face.placeTileWithoutMatching(tile2);
+                expect(result2).to.be.false;
+                expect(face.toString()).to.contain(tile1.toString());
+                expect(face.toString()).to.not.contain(tile2.toString());
             });
         });
 
