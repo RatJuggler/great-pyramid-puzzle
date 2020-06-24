@@ -22,10 +22,10 @@ export class Face {
             throw new Error(`Face name must be one of ${Face.FACE_NAMES}!`);
         }
         if (!(Face.VALID_TILE_COUNTS.includes(numberOfTiles))) {
-            throw new Error(`Number of tiles on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
+            throw new Error(`Number of Tile Positions on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
         }
         if (numberOfTiles != tilePositions.length) {
-            throw new Error(`Number of tile positions provided (${tilePositions.length}) does not match number expected (${numberOfTiles})!`);
+            throw new Error(`Number of Tile Positions provided (${tilePositions.length}) does not match number expected (${numberOfTiles})!`);
         }
         // We can't join the tile positions until they've been created for every face.
         for (const tilePositionData of tilePositions) {
@@ -56,8 +56,11 @@ export class Face {
     }
 
     join(fromSide: string, toSide: string, ofFace: Face) : void {
+        if (this === ofFace) {
+            throw new Error("Cannot join a Face to itself!");
+        }
         if (this.tilePositionCount != ofFace.tilePositionCount) {
-            throw new Error("Cannot join Faces which have differing numbers of tile positions!");
+            throw new Error("Cannot join Faces which have differing numbers of Tile Positions!");
         }
         if (!(Face.SIDE_NAMES.includes(fromSide))) {
             throw new Error(`Side to join from must be one of ${Face.SIDE_NAMES}!`);
