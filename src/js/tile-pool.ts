@@ -25,7 +25,7 @@ export class TilePool {
     }
 
     toString(): string {
-        let tilesString = "Tile Pool:\n";
+        let tilesString = "TilePool:\n";
         this._tiles.forEach((tile) => tilesString += tile.toString() + '\n');
         return tilesString;
     }
