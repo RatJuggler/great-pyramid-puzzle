@@ -14,7 +14,7 @@ describe("Tetrahedron behaviour", function () {
                 const puzzleData = valid_config1.testPuzzleData;
                 const tetrahedron = new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
                 expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
-                let expectedToString = "Puzzle Type: test-valid\n" +
+                const expectedToString = "Puzzle Type: test-valid\n" +
                     "Face: 1, Tile Positions: 1, Joins: (1-A->3-B)(1-B->4-B)(1-C->2-B)\n" +
                     "Tile: 1, Joins: (1-A->3-1-B)(1-B->4-1-B)(1-C->2-1-B)\n" +
                     "Face: 2, Tile Positions: 1, Joins: (2-A->3-C)(2-B->1-C)(2-C->4-A)\n" +
