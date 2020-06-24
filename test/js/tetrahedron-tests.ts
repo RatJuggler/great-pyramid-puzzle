@@ -38,16 +38,16 @@ describe("Tetrahedron behaviour", function () {
 
     });
 
-    describe("if #addTileWithoutMatching() is called to place a Tile (without using matching)", function () {
+    describe("if #placeTileWithoutMatching() is called to place a Tile (without using matching)", function () {
 
         context("and the Tetrahedron has no Tiles on it", function () {
-            it("should place it in a random position and return True", function () {
+            it("should place the Tile in a random Position on a random Face and return True", function () {
 
             });
         });
 
         context("and the Tetrahedron already has Tiles on it", function () {
-            it("should place it in a random empty position and return True", function () {
+            it("should place the Tile in a random empty Position on a random Face and return True", function () {
 
             });
         });
