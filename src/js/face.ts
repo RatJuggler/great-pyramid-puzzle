@@ -47,7 +47,7 @@ export class Face {
         return this._name;
     }
 
-    get tilePositionCount() {
+    get tilePositionCount(): number {
         return this._tilePositions.size;
     }
 
