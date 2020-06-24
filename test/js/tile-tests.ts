@@ -18,7 +18,8 @@ describe("Tile behaviour", function () {
                 };
                 let tile = new Tile(tileData);
                 expect(tile).to.be.an.instanceOf(Tile);
-                expect(tile.id).to.equal(tileData.tile);
+                const expectedToString = "Id: TestTile, Side-A: 0001, Side-B: 0010, Side-C: 0100";
+                expect(tile.toString()).to.equal(expectedToString);
             });
         });
 
