@@ -1,6 +1,6 @@
-import * as testdata from "../test-puzzle-data.json";
-import * as pocketdata from "../pocket-puzzle-data.json";
-import * as greatdata from "../great-puzzle-data.json";
+import testdata from "../test-puzzle-data.json";
+import pocketdata from "../pocket-puzzle-data.json";
+import greatdata from "../great-puzzle-data.json";
 import { PuzzleData } from "./puzzle-data-schema";
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
