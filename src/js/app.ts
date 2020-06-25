@@ -3,12 +3,11 @@ import * as pocketdata from "../pocket-puzzle-data.json";
 import * as greatdata from "../great-puzzle-data.json";
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
-import {assert} from "chai";
 
 function placeAllTiles(tilePool: TilePool, tetrahedron: Tetrahedron): void {
     let tile = tilePool.randomTile;
     while (tile) {
-        assert.isTrue(tetrahedron.placeTileWithoutMatching(tile));
+        console.assert(tetrahedron.placeTileWithoutMatching(tile));
         tile = tilePool.randomTile;
     }
 }
