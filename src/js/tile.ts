@@ -9,7 +9,7 @@ export class Tile {
     private readonly _sideC: string;
 
     validateSegments(segments: string): string {
-        if (segments.length != 4) {
+        if (segments.length !== 4) {
             throw new Error(`Segment coding should be four characters, found '${segments}'!`);
         }
         if (!segments.match(/^[0|1]+$/)) {

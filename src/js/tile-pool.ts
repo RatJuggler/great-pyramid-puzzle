@@ -7,7 +7,7 @@ export class TilePool {
     private readonly _tiles = new Map<string, Tile>();
 
     constructor(numberOfTiles: number, tileData: TileData[]) {
-        if (numberOfTiles != tileData.length) {
+        if (numberOfTiles !== tileData.length) {
             throw new Error(`Number of tiles provided (${tileData.length}) does not match number expected (${numberOfTiles})!`);
         }
         for (const tileDetails of tileData) {

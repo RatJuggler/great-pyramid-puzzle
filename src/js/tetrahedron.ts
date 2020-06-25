@@ -11,7 +11,7 @@ export class Tetrahedron {
     private readonly _faces = new Map<string, Face>();
 
     constructor(private _name: string, numberOfTilesPerFace: number, faceData: FaceData[]) {
-        if (faceData.length != this.FACES) {
+        if (faceData.length !== this.FACES) {
             throw new Error(`Tetrahedron must always have configuration data for ${this.FACES} Faces!`)
         }
         // We have to create all of the face and tile positions before we can join them together.
