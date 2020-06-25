@@ -1,20 +1,16 @@
 import { Face } from '../../src/js/face';
-import { Tile } from "../../src/js/tile";
-import { TileData, TilePositionData } from "../../src/js/puzzle-data-schema";
-import { assert, expect} from 'chai';
+import { assert, expect } from 'chai';
 import 'mocha';
+// @ts-ignore
+import { TILE_1, TILE_2, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA } from "./common-test-data";
 
 
 describe("Face behavior", function () {
 
-    const oneTilePositions: TilePositionData[] = [
-        {"position": "1", "joins": []}
-    ];
-
     describe("if a new Face is created", function () {
 
         context("with a valid Face name and Tile Position details", function () {
-            const face = new Face("1", 1, oneTilePositions);
+            const face = new Face("1", 1, ONE_TILE_POSITION_DATA);
             it("should return a correctly initialised instance", function () {
                 expect(face).to.be.an.instanceOf(Face);
             });
@@ -28,7 +24,7 @@ describe("Face behavior", function () {
         context("with an invalid Face name", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    new Face("Z", 1, oneTilePositions);
+                    new Face("Z", 1, ONE_TILE_POSITION_DATA);
                 }).to.throw(Error, "Face name must be one of 1,2,3,4!");
             });
         });
@@ -36,7 +32,7 @@ describe("Face behavior", function () {
         context("with an invalid number of Tiles Positions", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    new Face("1", 25, oneTilePositions);
+                    new Face("1", 25, ONE_TILE_POSITION_DATA);
                 }).to.throw(Error, "Number of Tile Positions on a Face must be one of 1,4,9!");
             });
         });
@@ -44,7 +40,7 @@ describe("Face behavior", function () {
         context("where the number of Tile Positions provided does not match the number indicated", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    new Face("1", 4, oneTilePositions);
+                    new Face("1", 4, ONE_TILE_POSITION_DATA);
                 }).to.throw(Error, "Number of Tile Positions provided (1) does not match number expected (4)!");
             });
         });
@@ -53,8 +49,8 @@ describe("Face behavior", function () {
 
     describe("if #join() is called to join one Face to another", function () {
 
-        const face1WithOneTilePosition = new Face("1", 1, oneTilePositions);
-        const face2WithOneTilePosition = new Face("1", 1, oneTilePositions);
+        const face1WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+        const face2WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
 
         context("with valid side names for the two different Faces to be joined", function () {
             face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
@@ -80,13 +76,7 @@ describe("Face behavior", function () {
 
         context("where the two Faces to be joined have differing numbers of Tile Positions", function () {
             it("should throw an error", function () {
-                const fourTilePositions = [
-                    {"position": "1", "joins": []},
-                    {"position": "2", "joins": []},
-                    {"position": "3", "joins": []},
-                    {"position": "4", "joins": []}
-                ];
-                const faceWithFourTilePositions = new Face("2", 4, fourTilePositions);
+                const faceWithFourTilePositions = new Face("2", 4, FOUR_TILE_POSITION_DATA);
                 expect(function () {
                     face1WithOneTilePosition.join("A", "B", faceWithFourTilePositions);
                 }).to.throw(Error, "Cannot join Faces which have differing numbers of Tile Positions!");
@@ -113,25 +103,17 @@ describe("Face behavior", function () {
 
     describe("if #hasEmptyTilePositions() is called to test if there are any empty Tile Positions on this Face", function () {
 
-        const tile1Data: TileData = {
-            "tile": "TestTile1",
-            "sideA": "0001",
-            "sideB": "0010",
-            "sideC": "0100"
-        };
-        const tile1 = new Tile(tile1Data);
-
         context("and there are empty Tile Positions", function () {
             it("should return True", function () {
-                const faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
+                const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
                 expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.true;
             });
         });
 
         context("and there aren't any empty Tile Positions", function () {
             it("should return False", function () {
-                const faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
-                faceWithOneTilePosition.placeTileWithoutMatching(tile1);
+                const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+                faceWithOneTilePosition.placeTileWithoutMatching(TILE_1);
                 expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.false;
             });
         });
@@ -140,27 +122,12 @@ describe("Face behavior", function () {
 
     describe("if #placeTileWithoutMatching() is called to place a Tile (without using matching)", function () {
 
-        const tile1Data: TileData = {
-            "tile": "TestTile1",
-            "sideA": "0001",
-            "sideB": "0010",
-            "sideC": "0100"
-        };
-        const tile1 = new Tile(tile1Data);
-        const tile2Data: TileData = {
-            "tile": "TestTile2",
-            "sideA": "0011",
-            "sideB": "0100",
-            "sideC": "1001"
-        };
-        const tile2 = new Tile(tile2Data);
-
         context("and all the Tile Positions on the Face are empty", function () {
-            const faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
+            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
             assert.isTrue(faceWithOneTilePosition.hasEmptyTilePositions());
-            const result = faceWithOneTilePosition.placeTileWithoutMatching(tile1);
+            const result = faceWithOneTilePosition.placeTileWithoutMatching(TILE_1);
             it("should place the Tile in a random Position", function () {
-                expect(faceWithOneTilePosition.toString()).to.contain(tile1.toString());
+                expect(faceWithOneTilePosition.toString()).to.contain(TILE_1.toString());
             });
             it("should return True", function () {
                 expect(result).to.be.true;
@@ -168,18 +135,12 @@ describe("Face behavior", function () {
         });
 
         context("and the Face already has some filled Tile Positions on it", function () {
-            const fourTilePositions = [
-                {"position": "1", "joins": []},
-                {"position": "2", "joins": []},
-                {"position": "3", "joins": []},
-                {"position": "4", "joins": []}
-            ];
-            const faceWithFourTilePositions = new Face("2", 4, fourTilePositions);
-            assert.isTrue(faceWithFourTilePositions.placeTileWithoutMatching(tile1));
+            const faceWithFourTilePositions = new Face("2", 4, FOUR_TILE_POSITION_DATA);
+            assert.isTrue(faceWithFourTilePositions.placeTileWithoutMatching(TILE_1));
             assert.isTrue(faceWithFourTilePositions.hasEmptyTilePositions());
-            const result = faceWithFourTilePositions.placeTileWithoutMatching(tile2);
+            const result = faceWithFourTilePositions.placeTileWithoutMatching(TILE_2);
             it("should place the Tile in a random empty Position", function () {
-                expect(faceWithFourTilePositions.toString()).to.contain(tile2.toString());
+                expect(faceWithFourTilePositions.toString()).to.contain(TILE_2.toString());
             });
             it("should return True", function () {
                 expect(result).to.be.true;
@@ -187,12 +148,12 @@ describe("Face behavior", function () {
         });
 
         context("and the Face has no remaining empty Tile Positions", function () {
-            const faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
-            assert.isTrue(faceWithOneTilePosition.placeTileWithoutMatching(tile1));
+            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            assert.isTrue(faceWithOneTilePosition.placeTileWithoutMatching(TILE_1));
             assert.isFalse(faceWithOneTilePosition.hasEmptyTilePositions());
-            const result = faceWithOneTilePosition.placeTileWithoutMatching(tile2);
+            const result = faceWithOneTilePosition.placeTileWithoutMatching(TILE_2);
             it("should not be placed", function () {
-                expect(faceWithOneTilePosition.toString()).to.not.contain(tile2.toString());
+                expect(faceWithOneTilePosition.toString()).to.not.contain(TILE_2.toString());
             });
             it("should return False", function () {
                 expect(result).to.be.false;

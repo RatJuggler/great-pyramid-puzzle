@@ -1,17 +1,12 @@
 import { TilePosition } from '../../src/js/tile-position';
-import { TileData, TilePositionData } from "../../src/js/puzzle-data-schema";
-import { Tile } from "../../src/js/tile";
 import { Face } from "../../src/js/face";
 import { assert, expect} from 'chai';
 import 'mocha';
+// @ts-ignore
+import { TILE_1, TILE_2, ONE_TILE_POSITION_DATA } from "./common-test-data";
 
 
 describe("TilePosition behaviour", function () {
-
-    const oneTilePositions: TilePositionData[]  = [
-        {"position": "1", "joins": []}
-    ];
-    const faceWithOneTilePosition = new Face("1", 1, oneTilePositions);
 
     describe("if a new TilePosition is created", function () {
 
@@ -35,6 +30,7 @@ describe("TilePosition behaviour", function () {
 
         const tilePosition1 = new TilePosition("TP1");
         const tilePosition2 = new TilePosition("TP2");
+        const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
 
         context("with valid side names for the two different TilePositions to be joined", function () {
             tilePosition1.join("A", "B", tilePosition2, faceWithOneTilePosition);
@@ -76,14 +72,6 @@ describe("TilePosition behaviour", function () {
 
     describe("if #isEmpty() is called to test if there is already a Tile at this position", function () {
 
-        const tile1Data: TileData = {
-            "tile": "TestTile1",
-            "sideA": "0001",
-            "sideB": "0010",
-            "sideC": "0100"
-        };
-        const tile1 = new Tile(tile1Data);
-
         context("and the Position is empty", function () {
             it("should return True", function () {
                 const tilePosition = new TilePosition("TP");
@@ -93,7 +81,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position is already occupied by a Tile", function () {
             const tilePosition = new TilePosition("TP");
-            assert.isTrue(tilePosition.placeTile(tile1));
+            assert.isTrue(tilePosition.placeTile(TILE_1));
             it("should return False", function () {
                 expect(tilePosition.isEmpty()).to.be.false;
             });
@@ -103,26 +91,11 @@ describe("TilePosition behaviour", function () {
 
     describe("if #placeTile() is called to place a Tile (without using matching)", function () {
 
-        const tile1Data: TileData = {
-            "tile": "TestTile1",
-            "sideA": "0001",
-            "sideB": "0010",
-            "sideC": "0100"
-        };
-        const tile1 = new Tile(tile1Data);
-        const tile2Data: TileData = {
-            "tile": "TestTile2",
-            "sideA": "0011",
-            "sideB": "0100",
-            "sideC": "1001"
-        };
-        const tile2 = new Tile(tile2Data);
-
         context("and the Position is empty", function () {
             const tilePosition = new TilePosition("TP");
-            const result = tilePosition.placeTile(tile1);
+            const result = tilePosition.placeTile(TILE_1);
             it("should be placed", function () {
-                expect(tilePosition.toString()).to.contain(tile1.toString());
+                expect(tilePosition.toString()).to.contain(TILE_1.toString());
             });
             it("should return True", function () {
                 expect(result).to.be.true;
@@ -131,11 +104,11 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position is already occupied by a Tile", function () {
             const tilePosition = new TilePosition("TP");
-            assert.isTrue(tilePosition.placeTile(tile1));
-            assert.isTrue(tilePosition.toString().includes(tile1.toString()));
-            const result = tilePosition.placeTile(tile2);
+            assert.isTrue(tilePosition.placeTile(TILE_1));
+            assert.isTrue(tilePosition.toString().includes(TILE_1.toString()));
+            const result = tilePosition.placeTile(TILE_2);
             it("should not be placed", function () {
-                expect(tilePosition.toString()).to.not.contain(tile2.toString());
+                expect(tilePosition.toString()).to.not.contain(TILE_2.toString());
             });
             it("should return False", function () {
                 expect(result).to.be.false;
