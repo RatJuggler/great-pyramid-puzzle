@@ -1,7 +1,7 @@
-import { TilePositionData} from "./puzzle-data-schema";
-import { TilePosition } from "./tile-position";
 import { Tile } from "./tile";
-import {getRandomInt} from "./utils";
+import { TilePosition } from "./tile-position";
+import { TilePositionData} from "./puzzle-data-schema";
+import { getRandomInt } from "./utils";
 
 
 interface FaceJoinProperties {

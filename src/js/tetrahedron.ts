@@ -1,7 +1,7 @@
 import { Face } from "./face";
 import { FaceData } from "./puzzle-data-schema";
-import {Tile} from "./tile";
-import {getRandomInt} from "./utils";
+import { Tile } from "./tile";
+import { getRandomInt } from "./utils";
 
 
 export class Tetrahedron {
