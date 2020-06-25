@@ -12,7 +12,7 @@
     "mkdist": "make-dir dist",
     "run": "node dist/js/app.js",
     "start": "browser-sync ./dist --watch",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.ts'"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
