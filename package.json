@@ -6,11 +6,8 @@
   "description": "Solving The Great Pyramid Puzzle.",
   "main": "app.js",
   "scripts": {
-    "build": "npm run clean && npm run mkdist && npm run cpstatic && webpack",
-    "clean": "del-cli dist/** dist",
-    "cpstatic": "copyfiles -u 1 src/index.html src/css/styles.css dist",
-    "mkdist": "make-dir dist",
-    "start": "webpack-dev-server",
+    "build": "parcel build src/index.html",
+    "start": "parcel serve -p 8080 src/index.html",
     "test": "mocha"
   },
   "repository": {
@@ -29,15 +26,9 @@
     "@types/mocha": "^7.0.2",
     "ajv": "^6.12.2",
     "chai": "^4.2.0",
-    "copyfiles": "^2.3.0",
-    "del-cli": "^3.0.1",
-    "make-dir-cli": "^2.0.0",
     "mocha": "^8.0.1",
-    "ts-loader": "^7.0.5",
+    "parcel-bundler": "^1.12.4",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.5",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "typescript": "^3.9.5"
   }
 }
