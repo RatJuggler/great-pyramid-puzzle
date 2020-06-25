@@ -20,10 +20,16 @@ function loadPuzzleAndPlaceTiles(puzzleType: PuzzleData): void {
 
 
 const canvas = SVG().addTo("body").size("100%", "100%");
-const path = canvas.path("M 73.9224 -42.6791L -73.9224 -42.6791L 0 85.3583L 73.9224 -42.6791 Z");
+//<g transform='matrix(0.996264 0 0 0.996264 208.204 228.439)'>
+const face1 = canvas.path('M  73.9224  -42.6791 L -73.9224  -42.6791 L    0        85.3583 L  73.9224  -42.6791 Z');
+const face2 = canvas.path('M  73.9224  -46.947  L   0      -174.984  L  -73.9224  -46.947  L  73.9224  -46.947  Z');
+const face3 = canvas.path('M 152.113    87.4922 L  78.1903  -40.5452 L    4.26791  87.4922 L 152.113    87.4922 Z');
+const face4 = canvas.path('M  -4.26791  87.4922 L -78.1903  -40.5452 L -152.113    87.4922 L  -4.26791  87.4922 Z');
 
-path.fill('none').stroke({width: 2, color: '#000'}).move(10,10).scale(0.5);
-path.animate(5000).rotate(365).loop();
+face1.fill('none').stroke({width: 2, color: '#000'}).move(200,200);
+face2.fill('none').stroke({width: 2, color: '#000'}).move(200,200);
+face3.fill('none').stroke({width: 2, color: '#000'}).move(200,200);
+face4.fill('none').stroke({width: 2, color: '#000'}).move(200,200);
 
 
 loadPuzzleAndPlaceTiles(testdata);
