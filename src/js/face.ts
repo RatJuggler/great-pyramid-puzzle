@@ -83,7 +83,7 @@ export class Face {
 
     placeTileWithoutMatching(tile: Tile): boolean {
         const emptyPositions = this.emptyTilePositions;
-        if (emptyPositions.length == 0) {
+        if (emptyPositions.length === 0) {
             return false;
         }
         const tilePosition = emptyPositions[getRandomInt(emptyPositions.length)];

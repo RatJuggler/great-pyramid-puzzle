@@ -55,7 +55,7 @@ export class Tetrahedron {
 
     placeTileWithoutMatching(tile: Tile): boolean {
         const facesWithEmptyPositions = Array.from(this._faces.values()).filter(face => face.hasEmptyTilePositions());
-        if (facesWithEmptyPositions.length == 0) {
+        if (facesWithEmptyPositions.length === 0) {
             return false;
         }
         const faceToUse = facesWithEmptyPositions[getRandomInt(facesWithEmptyPositions.length)];

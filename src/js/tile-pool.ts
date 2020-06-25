@@ -42,7 +42,7 @@ export class TilePool {
     }
 
     get randomTile(): Tile | null {
-        if (this._tiles.size == 0) {
+        if (this._tiles.size === 0) {
             return null;
         }
         const keys = Array.from(this._tiles.keys());
