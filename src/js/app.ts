@@ -4,9 +4,38 @@ import {SVG, Matrix, G, Path} from "@svgdotjs/svg.js";
 // dumpPuzzles();
 
 const up_triangle = 'M 0 -1 L -0.866025 0.5 L 0.866025,0.5 L 0 -1 Z';
-const down_triangle = 'M 0 1 L 0.866025 -0.55 L -0.866025 -0.55 L 0 1 Z';
+const up_segments = [
+    'M 0 0 L 0 -1            L 0.288675 -0.5   L 0 0 Z',
+    'M 0 0 L 0.288675 -0.5   L 0.433013 -0.25  L 0 0 Z',
+    'M 0 0 L 0.433013 -0.25  L 0.577350 0      L 0 0 Z',
+    'M 0 0 L 0.577350 0      L 0.866025 0.5    L 0 0 Z',
+    'M 0 0 L 0.866025 0.5    L 0.288675 0.5    L 0 0 Z',
+    'M 0 0 L 0.288675 0.5    L 0 0.5           L 0 0 Z',
+    'M 0 0 L 0 0.5           L -0.288675 0.5   L 0 0 Z',
+    'M 0 0 L -0.288675 0.5   L -0.866025 0.5   L 0 0 Z',
+    'M 0 0 L -0.866025 0.5   L -0.577350 0     L 0 0 Z',
+    'M 0 0 L -0.577350 0     L -0.433013 -0.25 L 0 0 Z',
+    'M 0 0 L -0.433013 -0.25 L -0.288675 -0.5  L 0 0 Z',
+    'M 0 0 L -0.288675 -0.5  L 0 -1            L 0 0 Z'
+]
 
-const black_line = {width: 0.005, color: '#000000'};
+const down_triangle = 'M 0 1 L 0.866025 -0.55 L -0.866025 -0.55 L 0 1 Z';
+const down_segments = [
+    'M 0 0 L 0 1            L 0.288675 0.5   L 0 0 Z',
+    'M 0 0 L 0.288675 0.5   L 0.433013 0.25  L 0 0 Z',
+    'M 0 0 L 0.433013 0.25  L 0.577350 0     L 0 0 Z',
+    'M 0 0 L 0.577350 0     L 0.866025 -0.5  L 0 0 Z',
+    'M 0 0 L 0.866025 -0.5  L 0.288675 -0.5  L 0 0 Z',
+    'M 0 0 L 0.288675 -0.5  L 0,-0.5         L 0 0 Z',
+    'M 0 0 L 0 -0.5         L -0.288675,-0.5 L 0 0 Z',
+    'M 0 0 L -0.288675 -0.5 L -0.866025 -0.5 L 0 0 Z',
+    'M 0 0 L -0.866025 -0.5 L -0.577350 0    L 0 0 Z',
+    'M 0 0 L -0.577350 0    L -0.433013 0.25 L 0 0 Z',
+    'M 0 0 L -0.433013 0.25 L -0.288675 0.5  L 0 0 Z',
+    'M 0 0 L -0.288675 0.5  L 0 1            L 0 0 Z'
+]
+
+const black_line = {width: 0.01, color: '#000000'};
 
 interface TriangleData {
     readonly x: number,
@@ -68,28 +97,17 @@ const greatPuzzle = {
     ]
 }
 
-const segments = [
-    'M 0 0 L 0 -1            L 0.288675 -0.5   L 0 0 Z',
-    'M 0 0 L 0.288675 -0.5   L 0.433013 -0.25  L 0 0 Z',
-    'M 0 0 L 0.433013 -0.25  L 0.577350 0     L 0 0 Z',
-    'M 0 0 L 0.577350 0      L 0.866025 0.5  L 0 0 Z',
-    'M 0 0 L 0.866025 0.5    L 0.288675 0.5  L 0 0 Z',
-    'M 0 0 L 0.288675 0.5    L 0 0.5         L 0 0 Z',
-    'M 0 0 L 0 0.5           L -0.288675 0.5 L 0 0 Z',
-    'M 0 0 L -0.288675 0.5   L -0.866025 0.5 L 0 0 Z',
-    'M 0 0 L -0.866025 0.5   L -0.577350 0    L 0 0 Z',
-    'M 0 0 L -0.577350 0     L -0.433013 -0.25 L 0 0 Z',
-    'M 0 0 L -0.433013 -0.25 L -0.288675 -0.5  L 0 0 Z',
-    'M 0 0 L -0.288675 -0.5  L 0 -1            L 0 0 Z'
-]
-
 function createTilePosition(fData: TriangleData, faceScale: number, tpData: TriangleData, tpScale: number): G {
     const tTilePosition = new Matrix(tpScale, 0, 0, tpScale, (fData.x + tpData.x) * faceScale, (fData.y + tpData.y) * faceScale);
     const tile = canvas.group();
-    segments.forEach((segment) => tile.add(canvas.path(segment)));
-    return tile.transform(tTilePosition).fill('#e6e6e6').stroke(black_line);
-    // return canvas.path(tpData.r === 0 ? up_triangle : down_triangle).transform(tTilePosition)
-    //     .fill('#e6e6e6').stroke(black_line);
+    if (tpData.r === 0) {
+        up_segments.forEach((segment) => tile.add(canvas.path(segment).fill(Math.random() > 0.5 ? '#ff0000' : '#ffffff').stroke('none')));
+        tile.add(canvas.path(up_triangle).fill('none').stroke(black_line));
+    } else {
+        down_segments.forEach((segment) => tile.add(canvas.path(segment).fill(Math.random() > 0.5 ? '#ff0000' : '#ffffff').stroke('none')));
+        tile.add(canvas.path(down_triangle).fill('none').stroke(black_line));
+    }
+    return tile.transform(tTilePosition).stroke(black_line);
 }
 
 function drawFace(fData: TriangleData, faceScale: number, tilePositions: TriangleData[], tpScale: number) {
@@ -103,9 +121,9 @@ function drawFace(fData: TriangleData, faceScale: number, tilePositions: Triangl
 }
 
 const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-200 -200 400 400");
-tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
-    testPuzzle.tilePositions, testPuzzle.tilePositionScale));
+// tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
+//     testPuzzle.tilePositions, testPuzzle.tilePositionScale));
 // tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
 //     pocketPuzzle.tilePositions, pocketPuzzle.tilePositionScale));
-// tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
-//     greatPuzzle.tilePositions, greatPuzzle.tilePositionScale));
+tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
+    greatPuzzle.tilePositions, greatPuzzle.tilePositionScale));
