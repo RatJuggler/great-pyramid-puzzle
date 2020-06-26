@@ -22,9 +22,7 @@ pen title_label = fontsize(14pt);
 // Origin
 point origin = (0, 0);
 
-// Basic circle and triangle forms
-real radius = 1;
-circle a_circle = circle(origin, radius);
+// Basic triangle shape
 path a_triangle = polygon(3);
 
 // Points
