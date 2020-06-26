@@ -15,29 +15,30 @@ const tetrahedron = [
         },
         {
             name: 2,
-            center: {x: 0, y: -89.6262},
+            center: {x: 0, y: -29.8754},
             rotate: 0
         },
         {
             name: 3,
-            center: {x: 78.1903, y: 44.8131},
+            center: {x: 26.0634, y: 14.9377},
             rotate: 0
         },
         {
             name: 4,
-            center: {x: -78.1903, y: 44.8131},
+            center: {x: -26.0634, y: 14.9377},
             rotate: 0
         }
     ]
 
 function drawFace(center: {x: number, y: number}, rotate: number) {
-    const tFace = new Matrix(3, 0, 0, 3, center.x, center.y);
-    const face = canvas.path(unit_triangle).transform(tFace).rotate(rotate, center.x, center.y);
+    const sCenter = {x: center.x * 3, y: center.y * 3};
+    const tFace = new Matrix(3, 0, 0, 3, sCenter.x, sCenter.y);
+    const face = canvas.path(unit_triangle).transform(tFace).rotate(rotate, sCenter.x, sCenter.y);
     face.fill('#f3f3f3').stroke(black_line);
-    const tTilePosition = new Matrix(2.8, 0, 0, 2.8, center.x, center.y);
-    const tilePosition = canvas.path(unit_triangle).transform(tTilePosition).rotate(rotate, center.x, center.y);
+    const tTilePosition = new Matrix(2.8, 0, 0, 2.8, sCenter.x, sCenter.y);
+    const tilePosition = canvas.path(unit_triangle).transform(tTilePosition).rotate(rotate, sCenter.x, sCenter.y);
     tilePosition.fill('#e6e6e6').stroke(black_line);
-    canvas.circle(1).translate(center.x, center.y).fill('#000').stroke(black_line);
+    canvas.circle(1).translate(sCenter.x, sCenter.y).fill('#000').stroke(black_line);
 }
 
 const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-200 -200 400 400");
