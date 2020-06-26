@@ -53,6 +53,21 @@ const pocketPuzzle = {
     ]
 }
 
+const greatPuzzle = {
+    tilePositionScale: 0.2667,
+    tilePositions: [
+        {x: 0, y: -29.1667 * 2, r: 0},
+        {x: -25.5940, y: -15.8333, r: 0},
+        {x: 0, y: -29.1667, r: 60},
+        {x: 25.5940, y: -15.8333, r: 0},
+        {x: -25.5940 * 2, y: 29.1667, r: 0},
+        {x: -25.5940, y: 15.8333, r: 60},
+        {x: 0, y: 29.1667, r: 0},
+        {x: 25.5940, y: 15.8333, r: 60},
+        {x: 25.5940 * 2, y: 29.1667, r: 0}
+    ]
+}
+
 function createTilePosition(fCenter: TriangleData, tpData: TriangleData, tpScale: number): Path {
     const tTilePosition = new Matrix(tpScale, 0, 0, tpScale, fCenter.x + tpData.x, fCenter.y + tpData.y);
     return canvas.path(tpData.r === 0 ? up_triangle : down_triangle).transform(tTilePosition)
@@ -74,5 +89,7 @@ const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-200 -200 400 4
 
 // tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
 //     testPuzzle.tilePositions, testPuzzle.tilePositionScale));
+// tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
+//     pocketPuzzle.tilePositions, pocketPuzzle.tilePositionScale));
 tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
-    pocketPuzzle.tilePositions, pocketPuzzle.tilePositionScale));
+    greatPuzzle.tilePositions, greatPuzzle.tilePositionScale));
