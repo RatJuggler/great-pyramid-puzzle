@@ -1,5 +1,5 @@
 // import { dumpPuzzles } from "./puzzle-console-dump";
-import {SVG, Matrix, Path} from "@svgdotjs/svg.js";
+import {SVG, Matrix, G, Path} from "@svgdotjs/svg.js";
 
 // dumpPuzzles();
 
@@ -68,10 +68,28 @@ const greatPuzzle = {
     ]
 }
 
-function createTilePosition(fData: TriangleData, faceScale: number, tpData: TriangleData, tpScale: number): Path {
+const segments = [
+    'M 0 0 L 0 -1            L 0.288675 -0.5   L 0 0 Z',
+    'M 0 0 L 0.288675 -0.5   L 0.433013 -0.25  L 0 0 Z',
+    'M 0 0 L 0.433013 -0.25  L 0.577350 0     L 0 0 Z',
+    'M 0 0 L 0.577350 0      L 0.866025 0.5  L 0 0 Z',
+    'M 0 0 L 0.866025 0.5    L 0.288675 0.5  L 0 0 Z',
+    'M 0 0 L 0.288675 0.5    L 0 0.5         L 0 0 Z',
+    'M 0 0 L 0 0.5           L -0.288675 0.5 L 0 0 Z',
+    'M 0 0 L -0.288675 0.5   L -0.866025 0.5 L 0 0 Z',
+    'M 0 0 L -0.866025 0.5   L -0.577350 0    L 0 0 Z',
+    'M 0 0 L -0.577350 0     L -0.433013 -0.25 L 0 0 Z',
+    'M 0 0 L -0.433013 -0.25 L -0.288675 -0.5  L 0 0 Z',
+    'M 0 0 L -0.288675 -0.5  L 0 -1            L 0 0 Z'
+]
+
+function createTilePosition(fData: TriangleData, faceScale: number, tpData: TriangleData, tpScale: number): G {
     const tTilePosition = new Matrix(tpScale, 0, 0, tpScale, (fData.x + tpData.x) * faceScale, (fData.y + tpData.y) * faceScale);
-    return canvas.path(tpData.r === 0 ? up_triangle : down_triangle).transform(tTilePosition)
-        .fill('#e6e6e6').stroke(black_line);
+    const tile = canvas.group();
+    segments.forEach((segment) => tile.add(canvas.path(segment)));
+    return tile.transform(tTilePosition).fill('#e6e6e6').stroke(black_line);
+    // return canvas.path(tpData.r === 0 ? up_triangle : down_triangle).transform(tTilePosition)
+    //     .fill('#e6e6e6').stroke(black_line);
 }
 
 function drawFace(fData: TriangleData, faceScale: number, tilePositions: TriangleData[], tpScale: number) {
@@ -85,9 +103,9 @@ function drawFace(fData: TriangleData, faceScale: number, tilePositions: Triangl
 }
 
 const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-200 -200 400 400");
-// tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
-//     testPuzzle.tilePositions, testPuzzle.tilePositionScale));
+tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
+    testPuzzle.tilePositions, testPuzzle.tilePositionScale));
 // tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
 //     pocketPuzzle.tilePositions, pocketPuzzle.tilePositionScale));
-tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
-    greatPuzzle.tilePositions, greatPuzzle.tilePositionScale));
+// tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
+//     greatPuzzle.tilePositions, greatPuzzle.tilePositionScale));
