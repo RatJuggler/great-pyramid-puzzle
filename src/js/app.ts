@@ -1,6 +1,7 @@
 import { SVG, Matrix, G } from "@svgdotjs/svg.js";
 import { loadTestPuzzleAndPlaceTiles } from "./puzzle-loader";
 import { Face } from "./face";
+import { Tile } from "./tile";
 
 
 const up_triangle = 'M 0 -1 L -0.866025 0.5 L 0.866025,0.5 L 0 -1 Z';
@@ -43,6 +44,11 @@ interface TriangleData {
     readonly r: number,
 }
 
+interface PositionData {
+    readonly name: string,
+    readonly center: TriangleData
+}
+
 const tetrahedron = {
     faceScale: 90,
     faces: [
@@ -68,59 +74,104 @@ const tetrahedron = {
 const testPuzzle = {
     tilePositionScale: 1,
     tilePositions: [
-        {x: 0, y: 0, r: 0}
+        {
+            name: "1",
+            center: {x: 0, y: 0, r: 0}
+        }
     ]
 }
 
 const pocketPuzzle = {
     tilePositionScale: 0.5,
     tilePositions: [
-        {x: 0, y: -0.5, r: 0},
-        {x: -0.433013, y: 0.25, r: 0},
-        {x: 0, y: 0.015, r: 60},
-        {x: 0.433013, y: 0.25, r: 0}
+        {
+            name: "1",
+            center: {x: 0, y: -0.5, r: 0}
+        },
+        {
+            name: "2",
+            center: {x: -0.433013, y: 0.25, r: 0}
+        },
+        {
+            name: "3",
+            center: {x: 0, y: 0.015, r: 60}
+        },
+        {
+            name: "4",
+            center: {x: 0.433013, y: 0.25, r: 0}
+        }
     ]
 }
 
 const greatPuzzle = {
     tilePositionScale: 0.32,
     tilePositions: [
-        {x: 0, y: -0.333333 * 2, r: 0},
-        {x: -0.288675, y: -0.166667, r: 0},
-        {x: 0, y: -0.333333, r: 60},
-        {x: 0.288675, y: -0.166667, r: 0},
-        {x: -0.288675 * 2, y: 0.333333, r: 0},
-        {x: -0.288675, y: 0.166667, r: 60},
-        {x: 0, y: 0.333333, r: 0},
-        {x: 0.288675, y: 0.166667, r: 60},
-        {x: 0.288675 * 2, y: 0.333333, r: 0}
+        {
+            name: "1",
+            center: {x: 0, y: -0.333333 * 2, r: 0}
+        },
+        {
+            name: "2",
+            center: {x: -0.288675, y: -0.166667, r: 0}
+        },
+        {
+            name: "3",
+            center: {x: 0, y: -0.333333, r: 60}
+        },
+        {
+            name: "4",
+            center: {x: 0.288675, y: -0.166667, r: 0}
+        },
+        {
+            name: "5",
+            center: {x: -0.288675 * 2, y: 0.333333, r: 0}
+        },
+        {
+            name: "6",
+            center: {x: -0.288675, y: 0.166667, r: 60}
+        },
+        {
+            name: "7",
+            center: {x: 0, y: 0.333333, r: 0}
+        },
+        {
+            name: "8",
+            center: {x: 0.288675, y: 0.166667, r: 60}
+        },
+        {
+            name: "9",
+            center: {x: 0.288675 * 2, y: 0.333333, r: 0}
+        }
     ]
 }
 
-function createTilePosition(fData: TriangleData, faceScale: number, tpData: TriangleData, tpScale: number): G {
+function createTilePosition(fData: TriangleData, faceScale: number, tpData: TriangleData, tpScale: number, tile: Tile | null): G {
     const tTilePosition =
         new Matrix(tpScale, 0, 0, tpScale, (fData.x + tpData.x) * faceScale, (fData.y + tpData.y) * faceScale);
-    const tile = canvas.group();
-    if (tpData.r === 0) {
-        up_segments.forEach((segment) => tile.add(canvas.path(segment)
-            .fill(Math.random() > 0.5 ? '#ff0000' : '#ffffff').stroke('none')));
-        tile.add(canvas.path(up_triangle).fill('none').stroke(black_line));
+    const tileSegments = canvas.group();
+    if (tile == null) {
+        const drawTriangle = tpData.r === 0 ? up_triangle : down_triangle;
+        tileSegments.add(canvas.path(drawTriangle).fill('#e6e6e6').stroke(black_line));
     } else {
-        down_segments.forEach((segment) => tile.add(canvas.path(segment)
-            .fill(Math.random() > 0.5 ? '#ff0000' : '#ffffff').stroke('none')));
-        tile.add(canvas.path(down_triangle).fill('none').stroke(black_line));
+        const drawSegments = tpData.r === 0 ? up_segments : down_segments;
+        const segments = tile.segments;
+        for (let segN = 0; segN < drawSegments.length; segN++) {
+            tileSegments.add(canvas.path(drawSegments[segN])
+                .fill(segments.charAt(segN) === '1' ? '#ff0000' : '#ffffff').stroke('none'));
+        }
     }
-    return tile.transform(tTilePosition);
+    return tileSegments.transform(tTilePosition);
 }
 
-function drawFace(fData: TriangleData, faceScale: number, puzzleFace: Face, tilePositions: TriangleData[], tpScale: number) {
-    console.log(puzzleFace.toString());
+function drawFace(fData: TriangleData, faceScale: number, puzzleFace: Face, tilePositions: PositionData[], tpScale: number) {
     const fCenter = {x: fData.x * faceScale, y: fData.y * faceScale, r: fData.r};
     const tFace = new Matrix(faceScale, 0, 0, faceScale, fCenter.x, fCenter.y);
     const face = canvas.group();
     face.path(up_triangle).transform(tFace).fill('#f3f3f3').stroke(black_line);
-    tilePositions.forEach((tpData) =>
-        face.add(createTilePosition(fData, faceScale, tpData, faceScale * tpScale)));
+    tilePositions.forEach((tpData) => {
+        const tile = puzzleFace.getTileAtPosition(tpData.name);
+        face.add(createTilePosition(fData, faceScale, tpData.center, faceScale * tpScale, tile))
+    });
     face.rotate(fData.r, fCenter.x, fCenter.y);
     canvas.circle(1).translate(fCenter.x, fCenter.y).fill('#000').stroke(black_line);
 }
