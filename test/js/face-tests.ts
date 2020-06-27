@@ -1,4 +1,5 @@
 import { Face } from '../../src/js/face';
+import { TilePosition } from "../../src/js/tile-position";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -42,6 +43,54 @@ describe("Face behavior", function () {
                 expect(function () {
                     new Face("1", 4, ONE_TILE_POSITION_DATA);
                 }).to.throw(Error, "Number of Tile Positions provided (1) does not match number expected (4)!");
+            });
+        });
+
+    });
+
+    describe("if #getTilePosition is called to get the details of a TilePosition", function () {
+
+        const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+
+        context("with the id of an existing TilePosition", function () {
+            it("should return the TilePosition", function () {
+                expect(faceWithOneTilePosition.getTilePosition("1")).to.be.an.instanceOf(TilePosition);
+            });
+        });
+
+        context("with the id of a nonexistent TilePosition", function () {
+            it("should throw an error", function () {
+                expect(function () {
+                    faceWithOneTilePosition.getTilePosition("19");
+                }).to.throw(Error, "TilePosition (19) not found on Face (1)!");
+            });
+        });
+
+    });
+
+    describe("if #getTileAtPosition is called to get the details of a Tile at a given Position", function () {
+
+        context("with the id of an existing TilePosition which has a Tile in it", function () {
+            it("should return the Tile", function () {
+                const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+                faceWithOneTilePosition.placeTileWithoutMatching(TILE_1);
+                expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
+            });
+        });
+
+        context("with the id of an existing TilePosition which doesn't have a Tile in it", function () {
+            it("should return the Tile", function () {
+                const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+                expect(faceWithOneTilePosition.getTileAtPosition("1")).to.be.null;
+            });
+        });
+
+        context("with the id of a nonexistent TilePosition", function () {
+            it("should throw an error", function () {
+                const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+                expect(function () {
+                    faceWithOneTilePosition.getTilePosition("1-1");
+                }).to.throw(Error, "TilePosition (1-1) not found on Face (1)!");
             });
         });
 

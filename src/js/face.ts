@@ -54,7 +54,14 @@ export class Face {
     }
 
     getTilePosition(position: string): TilePosition {
-        return this._tilePositions.get(position)!;
+        if (this._tilePositions.has(position)) {
+            return this._tilePositions.get(position)!;
+        }
+        throw new Error(`TilePosition (${position}) not found on Face (${this.name})!`);
+    }
+
+    getTileAtPosition(position: string): Tile | null {
+        return this.getTilePosition(position).tile;
     }
 
     join(fromSide: string, toSide: string, ofFace: Face) : void {
