@@ -26,6 +26,25 @@ describe("TilePosition behaviour", function () {
 
     });
 
+    describe("if #getTile is called to get the details of a Tile", function () {
+
+        context("on a TilePosition which has a Tile in it", function () {
+            const tilePosition = new TilePosition("TP");
+            assert.isTrue(tilePosition.placeTile(TILE_1));
+            it("should return the Tile", function () {
+                expect(tilePosition.tile).to.equal(TILE_1);
+            });
+        });
+
+        context("on a TilePosition which doesn't have a Tile in it", function () {
+            it("should return null", function () {
+                const tilePosition = new TilePosition("TP");
+                expect(tilePosition.tile).to.be.null;
+            });
+        });
+
+    });
+
     describe("if #join() is called to join one TilePosition to another", function () {
 
         const tilePosition1 = new TilePosition("TP1");

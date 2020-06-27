@@ -29,6 +29,10 @@ export class TilePosition {
         return this._id;
     }
 
+    get tile(): Tile | null {
+        return this._tile;
+    }
+
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition, onFace: Face) : void {
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
