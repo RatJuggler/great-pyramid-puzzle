@@ -33,4 +33,8 @@ export class Tile {
         return this._id;
     }
 
+    get segments(): string {
+        return this._sideA + this._sideB + this._sideC;
+    }
+
 }
