@@ -1,5 +1,5 @@
 import display_data from "../display-data.json";
-import { loadGreatPuzzleAndPlaceTiles, loadPocketPuzzleAndPlaceTiles, loadTestPuzzleAndPlaceTiles } from "./puzzle-loader";
+import { loadTestPuzzleAndPlaceTiles, loadPocketPuzzleAndPlaceTiles, loadGreatPuzzleAndPlaceTiles } from "./puzzle-loader";
 import { Face } from "./face";
 import { Tile } from "./tile";
 import { Tetrahedron } from "./tetrahedron";
@@ -98,6 +98,8 @@ const greatPuzzleDisplayData = {
     ]
 }
 
+const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-200 -200 400 400");
+
 function createTilePosition(fData: TriangleDisplayData, faceScale: number, tpData: TriangleDisplayData, tpScale: number, tile: Tile | null): G {
     const tTilePosition =
         new Matrix(tpScale, 0, 0, tpScale, (fData.x + tpData.x) * faceScale, (fData.y + tpData.y) * faceScale);
@@ -112,11 +114,10 @@ function createTilePosition(fData: TriangleDisplayData, faceScale: number, tpDat
             tileSegments.add(canvas.path(drawSegments[segN])
                 .fill(segments.charAt(segN) === '1' ? '#ff0000' : '#ffffff').stroke('none'));
         }
+        tileSegments.add(canvas.circle(0.2).center(0, 0).fill('#bebebe').stroke('none'));
     }
     return tileSegments.transform(tTilePosition);
 }
-
-const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-200 -200 400 400");
 
 function drawFace(faceScale: number, fData: TriangleDisplayData, puzzleFace: Face, tileDisplayData: TileDisplayData) {
     const fCenter = {x: fData.x * faceScale, y: fData.y * faceScale, r: fData.r};
@@ -128,7 +129,7 @@ function drawFace(faceScale: number, fData: TriangleDisplayData, puzzleFace: Fac
         face.add(createTilePosition(fData, faceScale, tpData.center, faceScale * tileDisplayData.tileScale, tile))
     });
     face.rotate(fData.r, fCenter.x, fCenter.y);
-    canvas.circle(1).translate(fCenter.x, fCenter.y).fill('#000000').stroke(black_line);
+    canvas.circle(4).center(fCenter.x, fCenter.y).fill('#000000').stroke(black_line);
 }
 
 function displayPuzzle(puzzleToDisplay: Tetrahedron, tileDisplayData: TileDisplayData) {
@@ -137,6 +138,6 @@ function displayPuzzle(puzzleToDisplay: Tetrahedron, tileDisplayData: TileDispla
     );
 }
 
-// displayPuzzle(loadTestPuzzleAndPlaceTiles(), testPuzzleDisplayData);
+displayPuzzle(loadTestPuzzleAndPlaceTiles(), testPuzzleDisplayData);
 // displayPuzzle(loadPocketPuzzleAndPlaceTiles(), pocketPuzzleDisplayData);
-displayPuzzle(loadGreatPuzzleAndPlaceTiles(), greatPuzzleDisplayData);
+// displayPuzzle(loadGreatPuzzleAndPlaceTiles(), greatPuzzleDisplayData);
