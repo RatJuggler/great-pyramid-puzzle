@@ -1,7 +1,7 @@
-// import { dumpPuzzles } from "./puzzle-console-dump";
-import {SVG, Matrix, G, Path} from "@svgdotjs/svg.js";
+import { SVG, Matrix, G } from "@svgdotjs/svg.js";
+import { loadTestPuzzleAndPlaceTiles } from "./puzzle-loader";
+import { Face } from "./face";
 
-// dumpPuzzles();
 
 const up_triangle = 'M 0 -1 L -0.866025 0.5 L 0.866025,0.5 L 0 -1 Z';
 const up_segments = [
@@ -47,19 +47,19 @@ const tetrahedron = {
     faceScale: 90,
     faces: [
         {
-            name: 1,
+            name: "1",
             center: {x: 0, y: 0, r: 60}
         },
         {
-            name: 2,
+            name: "2",
             center: {x: 0, y: -1.05, r: 0}
         },
         {
-            name: 3,
+            name: "3",
             center: {x: 0.916025, y: 0.525, r: 0}
         },
         {
-            name: 4,
+            name: "4",
             center: {x: -0.916025, y: 0.525, r: 0}
         }
     ]
@@ -83,7 +83,7 @@ const pocketPuzzle = {
 }
 
 const greatPuzzle = {
-    tilePositionScale: 0.333333,
+    tilePositionScale: 0.32,
     tilePositions: [
         {x: 0, y: -0.333333 * 2, r: 0},
         {x: -0.288675, y: -0.166667, r: 0},
@@ -98,32 +98,40 @@ const greatPuzzle = {
 }
 
 function createTilePosition(fData: TriangleData, faceScale: number, tpData: TriangleData, tpScale: number): G {
-    const tTilePosition = new Matrix(tpScale, 0, 0, tpScale, (fData.x + tpData.x) * faceScale, (fData.y + tpData.y) * faceScale);
+    const tTilePosition =
+        new Matrix(tpScale, 0, 0, tpScale, (fData.x + tpData.x) * faceScale, (fData.y + tpData.y) * faceScale);
     const tile = canvas.group();
     if (tpData.r === 0) {
-        up_segments.forEach((segment) => tile.add(canvas.path(segment).fill(Math.random() > 0.5 ? '#ff0000' : '#ffffff').stroke('none')));
+        up_segments.forEach((segment) => tile.add(canvas.path(segment)
+            .fill(Math.random() > 0.5 ? '#ff0000' : '#ffffff').stroke('none')));
         tile.add(canvas.path(up_triangle).fill('none').stroke(black_line));
     } else {
-        down_segments.forEach((segment) => tile.add(canvas.path(segment).fill(Math.random() > 0.5 ? '#ff0000' : '#ffffff').stroke('none')));
+        down_segments.forEach((segment) => tile.add(canvas.path(segment)
+            .fill(Math.random() > 0.5 ? '#ff0000' : '#ffffff').stroke('none')));
         tile.add(canvas.path(down_triangle).fill('none').stroke(black_line));
     }
-    return tile.transform(tTilePosition).stroke(black_line);
+    return tile.transform(tTilePosition);
 }
 
-function drawFace(fData: TriangleData, faceScale: number, tilePositions: TriangleData[], tpScale: number) {
+function drawFace(fData: TriangleData, faceScale: number, puzzleFace: Face, tilePositions: TriangleData[], tpScale: number) {
+    console.log(puzzleFace.toString());
     const fCenter = {x: fData.x * faceScale, y: fData.y * faceScale, r: fData.r};
     const tFace = new Matrix(faceScale, 0, 0, faceScale, fCenter.x, fCenter.y);
     const face = canvas.group();
     face.path(up_triangle).transform(tFace).fill('#f3f3f3').stroke(black_line);
-    tilePositions.forEach((tpData) => face.add(createTilePosition(fData, faceScale, tpData, faceScale * tpScale)));
+    tilePositions.forEach((tpData) =>
+        face.add(createTilePosition(fData, faceScale, tpData, faceScale * tpScale)));
     face.rotate(fData.r, fCenter.x, fCenter.y);
     canvas.circle(1).translate(fCenter.x, fCenter.y).fill('#000').stroke(black_line);
 }
 
+const puzzle = loadTestPuzzleAndPlaceTiles();
 const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-200 -200 400 400");
-// tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
-//     testPuzzle.tilePositions, testPuzzle.tilePositionScale));
+tetrahedron.faces.forEach((face) => {
+    const puzzleFace = puzzle.getFace(face.name);
+    drawFace(face.center, tetrahedron.faceScale, puzzleFace, testPuzzle.tilePositions, testPuzzle.tilePositionScale)
+});
 // tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
 //     pocketPuzzle.tilePositions, pocketPuzzle.tilePositionScale));
-tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
-    greatPuzzle.tilePositions, greatPuzzle.tilePositionScale));
+// tetrahedron.faces.forEach((face) => drawFace(face.center, tetrahedron.faceScale,
+//     greatPuzzle.tilePositions, greatPuzzle.tilePositionScale));
