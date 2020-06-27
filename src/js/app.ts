@@ -100,17 +100,16 @@ const greatPuzzleDisplayData = {
 
 const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-200 -200 400 400");
 
-function createTilePosition(tpData: TriangleDisplayData, tile: Tile | null): G {
+function drawTile(tile: Tile | null, rotate: boolean): G {
     const tileSegments = canvas.group();
     if (tile == null) {
-        const drawTriangle = tpData.r === 0 ? display_data.up_triangle : display_data.down_triangle;
+        const drawTriangle = rotate ? display_data.down_triangle : display_data.up_triangle;
         tileSegments.add(canvas.path(drawTriangle).fill('#e6e6e6').stroke(black_line));
     } else {
-        const drawSegments = tpData.r === 0 ? display_data.up_segments : display_data.down_segments;
-        const segments = tile.segments;
+        const drawSegments = rotate ? display_data.down_segments : display_data.up_segments;
         for (let segN = 0; segN < drawSegments.length; segN++) {
             tileSegments.add(canvas.path(drawSegments[segN])
-                .fill(segments.charAt(segN) === '1' ? '#ff0000' : '#ffffff').stroke('none'));
+                .fill(tile.segments.charAt(segN) === '1' ? '#ff0000' : '#ffffff').stroke('none'));
         }
         tileSegments.add(canvas.circle(0.2).center(0, 0).fill('#bebebe').stroke('none'));
     }
@@ -119,15 +118,15 @@ function createTilePosition(tpData: TriangleDisplayData, tile: Tile | null): G {
 
 function drawFace(faceScale: number, fData: TriangleDisplayData, puzzleFace: Face, tileDisplayData: TileDisplayData) {
     const fCenter = {x: fData.x * faceScale, y: fData.y * faceScale, r: fData.r};
-    const tFace = new Matrix(faceScale, 0, 0, faceScale, fCenter.x, fCenter.y);
+    const faceTransform = new Matrix(faceScale, 0, 0, faceScale, fCenter.x, fCenter.y);
     const face = canvas.group();
-    face.path(display_data.up_triangle).transform(tFace).fill('#f3f3f3').stroke(black_line);
-    let tpScale = faceScale * tileDisplayData.tileScale;
+    face.path(display_data.up_triangle).transform(faceTransform).fill('#f3f3f3').stroke(black_line);
+    const tileScale = faceScale * tileDisplayData.tileScale;
     tileDisplayData.tilePositions.forEach((tpData) => {
         const tile = puzzleFace.getTileAtPosition(tpData.name);
         const tTilePosition =
-            new Matrix(tpScale, 0, 0, tpScale, (fData.x + tpData.center.x) * faceScale, (fData.y + tpData.center.y) * faceScale);
-        face.add(createTilePosition(tpData.center, tile).transform(tTilePosition));
+            new Matrix(tileScale, 0, 0, tileScale, (fData.x + tpData.center.x) * faceScale, (fData.y + tpData.center.y) * faceScale);
+        face.add(drawTile(tile, tpData.center.r === 60).transform(tTilePosition));
     });
     face.rotate(fData.r, fCenter.x, fCenter.y);
     canvas.circle(4).center(fCenter.x, fCenter.y).fill('#000000').stroke(black_line);
