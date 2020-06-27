@@ -100,9 +100,7 @@ const greatPuzzleDisplayData = {
 
 const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-200 -200 400 400");
 
-function createTilePosition(fData: TriangleDisplayData, faceScale: number, tpData: TriangleDisplayData, tpScale: number, tile: Tile | null): G {
-    const tTilePosition =
-        new Matrix(tpScale, 0, 0, tpScale, (fData.x + tpData.x) * faceScale, (fData.y + tpData.y) * faceScale);
+function createTilePosition(tpData: TriangleDisplayData, tile: Tile | null): G {
     const tileSegments = canvas.group();
     if (tile == null) {
         const drawTriangle = tpData.r === 0 ? display_data.up_triangle : display_data.down_triangle;
@@ -116,7 +114,7 @@ function createTilePosition(fData: TriangleDisplayData, faceScale: number, tpDat
         }
         tileSegments.add(canvas.circle(0.2).center(0, 0).fill('#bebebe').stroke('none'));
     }
-    return tileSegments.transform(tTilePosition);
+    return tileSegments;
 }
 
 function drawFace(faceScale: number, fData: TriangleDisplayData, puzzleFace: Face, tileDisplayData: TileDisplayData) {
@@ -124,9 +122,12 @@ function drawFace(faceScale: number, fData: TriangleDisplayData, puzzleFace: Fac
     const tFace = new Matrix(faceScale, 0, 0, faceScale, fCenter.x, fCenter.y);
     const face = canvas.group();
     face.path(display_data.up_triangle).transform(tFace).fill('#f3f3f3').stroke(black_line);
+    let tpScale = faceScale * tileDisplayData.tileScale;
     tileDisplayData.tilePositions.forEach((tpData) => {
         const tile = puzzleFace.getTileAtPosition(tpData.name);
-        face.add(createTilePosition(fData, faceScale, tpData.center, faceScale * tileDisplayData.tileScale, tile))
+        const tTilePosition =
+            new Matrix(tpScale, 0, 0, tpScale, (fData.x + tpData.center.x) * faceScale, (fData.y + tpData.center.y) * faceScale);
+        face.add(createTilePosition(tpData.center, tile).transform(tTilePosition));
     });
     face.rotate(fData.r, fCenter.x, fCenter.y);
     canvas.circle(4).center(fCenter.x, fCenter.y).fill('#000000').stroke(black_line);
