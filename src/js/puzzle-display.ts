@@ -22,13 +22,11 @@ interface TileDisplayData {
 }
 
 
-const black_line = {width: 0.01, color: '#000000'};
-
 function drawTile(svg: Svg, tile: Tile | null, rotate: boolean): G {
     const tileSegments = svg.group();
     if (tile == null) {
         const drawTriangle = rotate ? display_data.down_triangle : display_data.up_triangle;
-        tileSegments.add(svg.path(drawTriangle).fill('#e6e6e6').stroke(black_line));
+        tileSegments.add(svg.path(drawTriangle).fill('#e6e6e6').stroke('none'));
     } else {
         const drawSegments = rotate ? display_data.down_segments : display_data.up_segments;
         for (let segN = 0; segN < drawSegments.length; segN++) {
@@ -44,7 +42,7 @@ function drawFace(svg: Svg, fScale: number, fData: TriangleDisplayData, puzzleFa
     const fCenter = {x: fData.x * fScale, y: fData.y * fScale};
     const fPosition = new Matrix(fScale, 0, 0, fScale, fCenter.x, fCenter.y);
     const face = svg.group();
-    face.path(display_data.up_triangle).transform(fPosition).fill('#f3f3f3').stroke(black_line);
+    face.path(display_data.up_triangle).transform(fPosition).fill('#f3f3f3').stroke({width: 0.01, color: '#000000'});
     const tScale = fScale * tileDisplayData.tileScale;
     tileDisplayData.tilePositions.forEach((tpData) => {
         const tile = puzzleFace.getTileAtPosition(tpData.name);
@@ -53,7 +51,7 @@ function drawFace(svg: Svg, fScale: number, fData: TriangleDisplayData, puzzleFa
         face.add(drawTile(svg, tile, tpData.center.r === 60).transform(tPosition));
     });
     face.rotate(fData.r, fCenter.x, fCenter.y);
-    svg.circle(1).center(fCenter.x, fCenter.y).fill('#000000').stroke(black_line);
+    svg.circle(1).center(fCenter.x, fCenter.y).fill('#000000').stroke('none');
 }
 
 function displayPuzzle(puzzleToDisplay: Tetrahedron, tileDisplayData: TileDisplayData) {
