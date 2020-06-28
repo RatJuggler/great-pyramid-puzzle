@@ -4,3 +4,11 @@ html, body {
   overflow: hidden;
   height: 100%;
 }
+
+.home-menu {
+  text-align: left;
+}
+
+.home-menu ul {
+  float: right;
+}

@@ -7,7 +7,7 @@
   "main": "app.js",
   "scripts": {
     "build": "parcel build src/index.html",
-    "start": "parcel serve -p 8080 src/index.html",
+    "start": "parcel serve -p 8080 src/index.html --open",
     "test": "mocha"
   },
   "repository": {
@@ -21,7 +21,8 @@
     "url": "https://github.com/RatJuggler/great-pyramid-puzzle/issues"
   },
   "dependencies": {
-    "@svgdotjs/svg.js": "^3.0.16"
+    "@svgdotjs/svg.js": "^3.0.16",
+    "purecss": "^2.0.3"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
