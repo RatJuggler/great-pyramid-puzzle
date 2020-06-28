@@ -1,7 +1,13 @@
 # great-pyramid-puzzle
-The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I tried solving it way back then on my 
-[ZX80](https://en.wikipedia.org/wiki/ZX80), but didn't make much progress, so nearly 40 years later I'm going to try again.
 
+![Build & Test](https://github.com/RatJuggler/great-pyramid-puzzle/workflows/Build%20&%20Test/badge.svg)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/RatJuggler/great-pyramid-puzzle)
+
+The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I tried solving it way back then on my 
+[ZX80](https://en.wikipedia.org/wiki/ZX80), but didn't make much progress, so nearly 40 years later I'm trying again.
+
+
+## Puzzle Overview
 There's an excellent overview of the puzzle on [Jaap's Puzzle Page](https://www.jaapsch.net/puzzles/pyramid.htm) but I'll repeat a
 few of the details here.
 
@@ -19,6 +25,10 @@ sides. The four segments along each side are either red or white.
 
 ![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-segments.svg)
 
+## Diagrams
+These are some diagrams I made while trying to get my head round the problem. They include the layout of a simple test puzzle with
+only one tile per side that I'm using to help with testing.
+
 ![Image of Tetrahedron Faces](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tetrahedron-faces.svg)
 
 ![Image of Tile Positions for Test](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-positions-test.svg)
@@ -31,4 +41,4 @@ sides. The four segments along each side are either red or white.
 
 ### Resources
 - A quick overview on [equilateral triangle](https://en.wikipedia.org/wiki/Equilateral_triangle) geometry.
-- [Asymptote](https://asymptote.sourceforge.io/), used to generate the segment and tetrahedron face/side and tile position diagrams.
+- [Asymptote](https://asymptote.sourceforge.io/), used to generate the segment, tetrahedron face/side and tile position diagrams.
