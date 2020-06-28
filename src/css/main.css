@@ -21,7 +21,7 @@ html, body {
 #puzzle-selection {
   position: fixed;
   overflow: hidden;
-  width: 450px;
+  width: 500px;
   height: 100%;
   padding-top: 100px;
   top: 0;
