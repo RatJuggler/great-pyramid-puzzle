@@ -24,7 +24,7 @@ interface TileDisplayData {
 
 const black_line = {width: 0.01, color: '#000000'};
 
-const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-50 -100 100 150");
+const canvas = SVG().addTo("#puzzle-display").size("100%", "100%").viewbox("-50 -100 100 150");
 
 function drawTile(tile: Tile | null, rotate: boolean): G {
     const tileSegments = canvas.group();
