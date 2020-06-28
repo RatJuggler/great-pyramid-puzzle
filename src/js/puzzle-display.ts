@@ -24,7 +24,7 @@ interface TileDisplayData {
 
 const black_line = {width: 0.01, color: '#000000'};
 
-const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-200 -200 400 400");
+const canvas = SVG().addTo("body").size("100%", "100%").viewbox("-50 -100 100 150");
 
 function drawTile(tile: Tile | null, rotate: boolean): G {
     const tileSegments = canvas.group();
@@ -55,7 +55,7 @@ function drawFace(fScale: number, fData: TriangleDisplayData, puzzleFace: Face, 
         face.add(drawTile(tile, tpData.center.r === 60).transform(tPosition));
     });
     face.rotate(fData.r, fCenter.x, fCenter.y);
-    canvas.circle(4).center(fCenter.x, fCenter.y).fill('#000000').stroke(black_line);
+    canvas.circle(1).center(fCenter.x, fCenter.y).fill('#000000').stroke(black_line);
 }
 
 function displayPuzzle(puzzleToDisplay: Tetrahedron, tileDisplayData: TileDisplayData) {
