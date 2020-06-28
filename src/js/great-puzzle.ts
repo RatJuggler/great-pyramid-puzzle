@@ -4,7 +4,7 @@ import { loadPuzzleAndPlaceTiles } from "./puzzle-loader";
 
 
 const greatPuzzleDisplayData = {
-    tileScale: 0.32,
+    tileScale: 0.34,
     tilePositions: [
         {
             name: "1",

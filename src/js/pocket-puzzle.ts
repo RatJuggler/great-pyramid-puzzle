@@ -16,7 +16,7 @@ const pocketPuzzleDisplayData = {
         },
         {
             name: "3",
-            center: {x: 0, y: 0.015, r: 60}
+            center: {x: 0.0, y: 0.0, r: 60}
         },
         {
             name: "4",

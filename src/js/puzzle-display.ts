@@ -24,10 +24,7 @@ interface TileDisplayData {
 
 function drawTile(svg: Svg, tile: Tile | null, rotate: boolean): G {
     const tileSegments = svg.group();
-    if (tile == null) {
-        const drawTriangle = rotate ? display_data.down_triangle : display_data.up_triangle;
-        tileSegments.add(svg.path(drawTriangle).fill('#e6e6e6').stroke('none'));
-    } else {
+    if (tile !== null) {
         const drawSegments = rotate ? display_data.down_segments : display_data.up_segments;
         for (let segN = 0; segN < drawSegments.length; segN++) {
             tileSegments.add(svg.path(drawSegments[segN])
@@ -35,6 +32,8 @@ function drawTile(svg: Svg, tile: Tile | null, rotate: boolean): G {
         }
         tileSegments.add(svg.circle(0.2).center(0, 0).fill('#bebebe').stroke('none'));
     }
+    const drawTriangle = rotate ? display_data.down_triangle : display_data.up_triangle;
+    tileSegments.add(svg.path(drawTriangle).fill(tile == null ? '#e6e6e6' : 'none').stroke({width: 0.005, color: '#000000'}));
     return tileSegments;
 }
 
