@@ -6,6 +6,10 @@
 The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I tried solving it way back then on my 
 [ZX80](https://en.wikipedia.org/wiki/ZX80), but didn't make much progress, so nearly 40 years later I'm trying again.
 
+##### Progress
+- Captured data relevant to the puzzle.
+- Built basic data structures to represent the puzzle.
+- Buiilt a simple display mechanism to show the puzzle in a given state. 
 
 ## Puzzle Overview
 There's an excellent overview of the puzzle on [Jaap's Puzzle Page](https://www.jaapsch.net/puzzles/pyramid.htm) but I'll repeat a
