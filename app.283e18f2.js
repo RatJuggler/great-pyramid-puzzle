@@ -36,4 +36,4 @@ module.exports={puzzle:"great",numberOfTilesPerFace:9,totalNumberOfTiles:36,face
 },{"../great-puzzle-data.json":"WUcg","./puzzle-display":"Jtcb","./puzzle-loader":"mQh4"}],"IntY":[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0});var e=require("./test-puzzle"),t=require("./pocket-puzzle"),n=require("./great-puzzle"),r=document.getElementById("test");r.addEventListener("click",function(){e.testPuzzle()});var u=document.getElementById("pocket");u.addEventListener("click",function(){t.pocketPuzzle()});var c=document.getElementById("great");c.addEventListener("click",function(){n.greatPuzzle()});
 },{"./test-puzzle":"thqZ","./pocket-puzzle":"tc7v","./great-puzzle":"yNPs"}]},{},["IntY"], null)
-//# sourceMappingURL=/app.283e18f2.js.map
+//# sourceMappingURL=app.283e18f2.js.map
