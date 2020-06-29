@@ -7,7 +7,7 @@
   "main": "app.js",
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "parcel build src/index.html",
+    "build": "parcel build src/index.html --public-url .",
     "start": "parcel -p 8080 src/index.html --open",
     "test": "mocha"
   },
