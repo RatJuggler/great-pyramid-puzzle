@@ -3,15 +3,12 @@ import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
 
 
-function loadPuzzleAndPlaceTiles(puzzleType: PuzzleData): Tetrahedron {
-    const tetrahedron = new Tetrahedron(puzzleType.puzzle, puzzleType.numberOfTilesPerFace, puzzleType.faces);
-    const tiles = new TilePool(puzzleType.totalNumberOfTiles, puzzleType.tiles);
-    let tile = tiles.randomTile;
-    while (tile) {
-        console.assert(tetrahedron.placeTileWithoutMatching(tile));
-        tile = tiles.randomTile;
-    }
-    return tetrahedron;
+function getTetrahedron(puzzleType: PuzzleData): Tetrahedron {
+    return new Tetrahedron(puzzleType.puzzle, puzzleType.numberOfTilesPerFace, puzzleType.faces);
+}
+
+function getTilePool(puzzleType: PuzzleData): TilePool {
+    return new TilePool(puzzleType.totalNumberOfTiles, puzzleType.tiles);
 }
 
 function dumpPuzzle(puzzle: Tetrahedron) {
@@ -19,4 +16,4 @@ function dumpPuzzle(puzzle: Tetrahedron) {
     console.log("-".repeat(80) + '\n');
 }
 
-export { loadPuzzleAndPlaceTiles, dumpPuzzle }
+export { getTetrahedron, getTilePool, dumpPuzzle }

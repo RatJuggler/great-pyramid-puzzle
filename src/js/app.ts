@@ -1,11 +1,15 @@
 import { PuzzleData } from "./puzzle-data-schema";
 import { TileDisplayData } from "./puzzle-display-schema";
+import { getTetrahedron, getTilePool } from "./puzzle-loader";
+import { placeTilesRandomly } from "./place-tiles.js";
 import { displayPuzzle } from "./puzzle-display";
-import { loadPuzzleAndPlaceTiles } from "./puzzle-loader";
 
 
 function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData; }) {
-    displayPuzzle("#puzzle-display", loadPuzzleAndPlaceTiles(puzzle.puzzleData), puzzle.displayData);
+    const tetrahedron = getTetrahedron(puzzle.puzzleData);
+    const tilePool = getTilePool(puzzle.puzzleData);
+    placeTilesRandomly(tetrahedron, tilePool);
+    displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
 }
 
 let testButton = document.getElementById("test")!;
