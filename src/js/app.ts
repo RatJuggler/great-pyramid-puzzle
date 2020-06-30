@@ -5,7 +5,7 @@ import { loadPuzzleAndPlaceTiles } from "./puzzle-loader";
 
 
 function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData; }) {
-    displayPuzzle(loadPuzzleAndPlaceTiles(puzzle.puzzleData), puzzle.displayData);
+    displayPuzzle("#puzzle-display", loadPuzzleAndPlaceTiles(puzzle.puzzleData), puzzle.displayData);
 }
 
 let testButton = document.getElementById("test")!;

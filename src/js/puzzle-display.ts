@@ -37,13 +37,15 @@ function drawFace(svg: Svg, fScale: number, fData: TriangleDisplayData, puzzleFa
     svg.circle(1).center(fCenter.x, fCenter.y).fill('#000000').stroke('none');
 }
 
-function displayPuzzle(puzzleToDisplay: Tetrahedron, tileDisplayData: TileDisplayData) {
-    // Select the existing root SVG element and clear it.
-    const svg = SVG("#puzzle-display") as Svg;
+function displayPuzzle(rootElement: string | HTMLElement, puzzleToDisplay: Tetrahedron, tileDisplayData: TileDisplayData): Svg {
+    // Use an existing root SVG element and clear it.
+    const svg = SVG(rootElement) as Svg;
     svg.clear();
+    // Then display each face of the puzzle,
     display_data.faceDisplay.faces.forEach((displayFace) =>
         drawFace(svg, display_data.faceDisplay.faceScale, displayFace.center, puzzleToDisplay.getFace(displayFace.name), tileDisplayData)
     );
+    return svg;
 }
 
 export { displayPuzzle }
