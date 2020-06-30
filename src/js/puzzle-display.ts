@@ -6,37 +6,48 @@ import { Tetrahedron } from "./tetrahedron";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
 
-function drawTile(svg: Svg, tpName: string, tile: Tile | null, rotate: boolean): G {
-    const tileSegments = svg.group().id(tpName);
-    tileSegments.element('title').words(tpName);
-    if (tile !== null) {
-        const drawSegments = rotate ? display_data.down_segments : display_data.up_segments;
-        for (let segN = 0; segN < drawSegments.length; segN++) {
-            tileSegments.add(
-                svg.path(drawSegments[segN])
-                    .fill(tile.segments.charAt(segN) === '1' ? '#ff0000' : '#ffffff')
-                    .stroke('none'));
-        }
-        tileSegments.add(
-            svg.circle(0.2)
-                .center(0, 0)
-                .fill('#bebebe')
+function drawTile(svg: Svg, tileDisplay: G, segments: string[], tile: Tile) {
+    // Draw the individual segments.
+    for (let segN = 0; segN < segments.length; segN++) {
+        tileDisplay.add(
+            svg.path(segments[segN])
+                .fill(tile.segments.charAt(segN) === '1' ? '#ff0000' : '#ffffff')
                 .stroke('none'));
     }
+    // Draw the peg in the middle.
+    tileDisplay.add(
+        svg.circle(0.2)
+            .center(0, 0)
+            .fill('#bebebe')
+            .stroke('none'));
+}
+
+function drawTilePosition(svg: Svg, tpName: string, tile: Tile | null, rotate: boolean): G {
+    // Group and identify the elements showing at a tile position.
+    const tileDisplay = svg.group().id(tpName);
+    tileDisplay.element('title').words(tpName);
+    // Draw the tile if present.
+    if (tile !== null) {
+        const segments = rotate ? display_data.down_segments : display_data.up_segments;
+        drawTile(svg, tileDisplay, segments, tile);
+    }
+    // Draw the tile position outline.
     const drawTriangle = rotate ? display_data.down_triangle : display_data.up_triangle;
-    tileSegments.add(
+    tileDisplay.add(
         svg.path(drawTriangle)
             .fill(tile == null ? '#e6e6e6' : 'none')
             .stroke({width: 0.005, color: '#000000'}));
-    return tileSegments;
+    return tileDisplay;
 }
 
 function drawFace(svg: Svg, fScale: number, fData: TriangleDisplayData, puzzleFace: Face, tileDisplayData: TileDisplayData) {
     const fCenter = {x: fData.x * fScale, y: fData.y * fScale};
     const fPosition = new Matrix(fScale, 0, 0, fScale, fCenter.x, fCenter.y);
-    const face = svg.group().id("Face " + puzzleFace.name);
-    face.element('title').words("Face " + puzzleFace.name);
-    face.path(display_data.up_triangle)
+    // Group and identify the elements showing on a face.
+    const faceDisplay = svg.group().id("face" + puzzleFace.name);
+    faceDisplay.element('title').words("Face " + puzzleFace.name);
+    // The underlying face.
+    faceDisplay.path(display_data.up_triangle)
         .transform(fPosition)
         .fill('#f3f3f3')
         .stroke({width: 0.01, color: '#000000'});
@@ -46,11 +57,11 @@ function drawFace(svg: Svg, fScale: number, fData: TriangleDisplayData, puzzleFa
         const tpName = puzzleFace.name + "-" + tpData.name;
         const tPosition =
             new Matrix(tScale, 0, 0, tScale, (fData.x + tpData.center.x) * fScale, (fData.y + tpData.center.y) * fScale);
-        face.add(
-            drawTile(svg, tpName, tile, tpData.center.r === 60)
+        faceDisplay.add(
+            drawTilePosition(svg, tpName, tile, tpData.center.r === 60)
                 .transform(tPosition));
     });
-    face.rotate(fData.r, fCenter.x, fCenter.y);
+    faceDisplay.rotate(fData.r, fCenter.x, fCenter.y);
     svg.circle(1)
         .id("center" + puzzleFace.name)
         .center(fCenter.x, fCenter.y)

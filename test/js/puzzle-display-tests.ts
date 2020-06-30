@@ -30,14 +30,13 @@ describe("Puzzle display functionality", function () {
             const document = window.document;
             registerWindow(window, document);
             const tetrahedron = getTetrahedron(valid_config1.testPuzzleData);
-            displayPuzzle(document.documentElement, tetrahedron, testDisplayData);
+            const canvas = displayPuzzle(document.documentElement, tetrahedron, testDisplayData);
+            console.log(canvas.svg());
             it("should have 4 faces and 4 empty tiles", function () {
-                const groups = document.getElementsByTagName("g");
-                expect(groups.length).to.equal(8);
+                expect(document.getElementsByTagName("g")).to.have.length(8);
             });
             it("should have 4 face center points", function () {
-                const circles = document.getElementsByTagName("circle");
-                expect(circles.length).to.equal(4);
+                expect(document.getElementsByTagName("circle")).to.have.length(4);
             });
         });
 
@@ -48,14 +47,13 @@ describe("Puzzle display functionality", function () {
             const tetrahedron = getTetrahedron(valid_config1.testPuzzleData);
             const tilePool = getTilePool(valid_config1.testPuzzleData);
             placeTilesRandomly(tetrahedron, tilePool);
-            displayPuzzle(document.documentElement, tetrahedron, testDisplayData);
+            const canvas = displayPuzzle(document.documentElement, tetrahedron, testDisplayData);
+            console.log(canvas.svg());
             it("should have 4 faces and 4 tiles", function () {
-                const groups = document.getElementsByTagName("g");
-                expect(groups.length).to.equal(8);
+                expect(document.getElementsByTagName("g")).to.have.length(8);
             });
             it("should have 4 face center and 4 tile center points", function () {
-                const circles = document.getElementsByTagName("circle");
-                expect(circles.length).to.equal(8);
+                expect(document.getElementsByTagName("circle")).to.have.length(8);
             });
         });
 
