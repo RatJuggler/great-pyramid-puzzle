@@ -1,6 +1,6 @@
-import * as valid_config1 from "../valid-test-puzzle-data1.json";
-import * as invalid_config1 from "../invalid-tile-puzzle-data1.json";
-import * as invalid_config2 from "../invalid-tile-puzzle-data2.json";
+import valid_config1 from "../valid-test-puzzle-data1.json";
+import invalid_config1 from "../invalid-tile-puzzle-data1.json";
+import invalid_config2 from "../invalid-tile-puzzle-data2.json";
 import { Tile } from "../../src/js/tile";
 import { TilePool } from '../../src/js/tile-pool';
 import { assert, expect } from 'chai';

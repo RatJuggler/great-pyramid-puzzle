@@ -1,5 +1,5 @@
-import * as valid_config1 from "../valid-test-puzzle-data1.json";
-import * as invalid_config1 from "../invalid-face-puzzle-data1.json";
+import valid_config1 from "../valid-test-puzzle-data1.json";
+import invalid_config1 from "../invalid-face-puzzle-data1.json";
 import { Face } from "../../src/js/face";
 import { Tetrahedron } from '../../src/js/tetrahedron';
 import { TilePool } from "../../src/js/tile-pool";

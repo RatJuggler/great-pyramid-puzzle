@@ -1,7 +1,7 @@
-import * as puzzle_schema from "../../src/puzzle-data-schema.json";
-import * as test_puzzle from "../valid-test-puzzle-data1.json";
-import * as pocket_puzzle from "../../src/pocket-puzzle-data.json";
-import * as great_puzzle from "../../src/great-puzzle-data.json";
+import puzzle_schema from "../../src/puzzle-data-schema.json";
+import test_puzzle from "../valid-test-puzzle-data1.json";
+import pocket_puzzle from "../../src/pocket-puzzle-data.json";
+import great_puzzle from "../../src/great-puzzle-data.json";
 import Ajv from 'ajv';
 import { expect } from 'chai';
 import 'mocha';
