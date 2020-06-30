@@ -1,4 +1,4 @@
-// Interfaces defining the puzzle data configuration file format.
+// Interfaces defining the puzzle data structure configuration.
 
 interface TileData {
     readonly tile: string;

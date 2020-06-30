@@ -1,23 +1,28 @@
-import {testPuzzle} from "./test-puzzle";
-import {pocketPuzzle} from "./pocket-puzzle";
-import {greatPuzzle} from "./great-puzzle";
-import {displayPuzzle} from "./puzzle-display";
-import {loadPuzzleAndPlaceTiles} from "./puzzle-loader";
+import { PuzzleData } from "./puzzle-data-schema";
+import { TileDisplayData } from "./puzzle-display-schema";
+import { displayPuzzle } from "./puzzle-display";
+import { loadPuzzleAndPlaceTiles } from "./puzzle-loader";
 
 
-function doPuzzle(puzzle: { puzzleData: any; displayData: any; }) {
+function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData; }) {
     displayPuzzle(loadPuzzleAndPlaceTiles(puzzle.puzzleData), puzzle.displayData);
 }
 
 let testButton = document.getElementById("test")!;
 testButton.addEventListener("click", () => {
-    doPuzzle(testPuzzle);
+    import("./test-puzzle").then(function(puzzle) {
+        doPuzzle(puzzle.testPuzzle);
+    })
 });
 let pocketButton = document.getElementById("pocket")!;
 pocketButton.addEventListener("click", () => {
-    doPuzzle(pocketPuzzle);
+    import("./pocket-puzzle").then(function(puzzle) {
+        doPuzzle(puzzle.pocketPuzzle);
+    })
 });
 let greatButton = document.getElementById("great")!;
 greatButton.addEventListener("click", () => {
-    doPuzzle(greatPuzzle);
+    import("./great-puzzle").then(function(puzzle) {
+        doPuzzle(puzzle.greatPuzzle);
+    })
 });

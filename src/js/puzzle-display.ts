@@ -1,25 +1,9 @@
 import display_data from "../display-data.json";
+import { TriangleDisplayData, TileDisplayData } from "./puzzle-display-schema"
 import { Tile } from "./tile";
 import { Face } from "./face";
 import { Tetrahedron } from "./tetrahedron";
-import {G, Matrix, Svg, SVG} from "@svgdotjs/svg.js";
-
-
-interface TriangleDisplayData {
-    readonly x: number,
-    readonly y: number,
-    readonly r: number,
-}
-
-interface PositionDisplayData {
-    readonly name: string,
-    readonly center: TriangleDisplayData
-}
-
-interface TileDisplayData {
-    readonly tileScale: number,
-    readonly tilePositions: PositionDisplayData[];
-}
+import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
 
 function drawTile(svg: Svg, tile: Tile | null, rotate: boolean): G {
