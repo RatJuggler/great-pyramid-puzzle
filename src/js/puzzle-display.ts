@@ -28,7 +28,7 @@ function drawTilePosition(svg: Svg, tpName: string, tile: Tile | null, rotate: b
 
     // Group and identify the elements showing at a tile position.
     const tileDisplay = svg.group().id(tpName);
-    tileDisplay.element('title').words(tpName);
+    tileDisplay.element('title').words("Position: " + tpName + ", Tile: " + (tile == null ? "Empty" : tile.id));
 
     // Draw the tile if present.
     if (tile !== null) {
