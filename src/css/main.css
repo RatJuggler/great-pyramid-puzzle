@@ -22,7 +22,7 @@ html, body {
 #puzzle-selection {
   position: fixed;
   overflow: hidden;
-  width: 500px;
+  width: 420px;
   height: 100%;
   padding-top: 100px;
   top: 0;
@@ -35,7 +35,7 @@ html, body {
   top: 50%;
 }
 
-#puzzle-selection button {
+#puzzle-selection .pure-button {
   width: 100%;
   margin-top: 5px;
   margin-bottom: 5px;
