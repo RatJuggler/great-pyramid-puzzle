@@ -45,42 +45,42 @@ html, body {
   font-size: 1.5em;
 }
 
-/* Generated from: https://proto.io/freebies/onoff/ */
-.placement {
+/* Based on generated code from: https://proto.io/freebies/onoff/ */
+.selector {
   position: relative; width: 200px;
   -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
   margin: 10px auto;
 }
-.placement-checkbox {
+.selector-checkbox {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
-.placement-label {
+.selector-label {
   display: block; overflow: hidden; cursor: pointer;
   border: 2px solid #999999; border-radius: 20px;
 }
-.placement-inner {
+.selector-inner {
   display: block; width: 200%; margin-left: -100%;
   transition: margin 0.3s ease-in 0s;
 }
-.placement-inner:before, .placement-inner:after {
+.selector-inner:before, .selector-inner:after {
   display: block; float: left; width: 50%; height: 43px; padding: 0; line-height: 43px;
   font-size: 24px; color: white;
   box-sizing: border-box;
 }
-.placement-inner:before {
+.selector-inner:before {
   content: "Random";
   padding-left: 10px;
   background-color: #E6E6E6; color: #000000;
 }
-.placement-inner:after {
+.selector-inner:after {
   content: "Sequential";
   padding-right: 10px;
   background-color: #E6E6E6; color: #000000;
   text-align: right;
 }
-.placement-switch {
+.selector-switch {
   display: block; width: 33px; margin: 5px;
   background: #FFFFFF;
   position: absolute; top: 0; bottom: 0;
@@ -88,9 +88,9 @@ html, body {
   border: 2px solid #999999; border-radius: 20px;
   transition: all 0.3s ease-in 0s;
 }
-.placement-checkbox:checked + .placement-label .placement-inner {
+.selector-checkbox:checked + .selector-label .selector-inner {
   margin-left: 0;
 }
-.placement-checkbox:checked + .placement-label .placement-switch {
+.selector-checkbox:checked + .selector-label .selector-switch {
   right: 0;
 }
