@@ -54,12 +54,27 @@ export class TilePosition {
         return !this._tile;
     }
 
-    placeTile(tile: Tile): boolean {
+    private static matching(tile: Tile): boolean {
+        return tile.id !== 0;
+    }
+
+    private placeTile(tile: Tile, useMatching: boolean): boolean {
         if (this.isEmpty()) {
+            if (useMatching && !TilePosition.matching(tile)) {
+                return false;
+            }
             this._tile = tile;
             return true;
         }
         return false;
+    }
+
+    placeTileWithoutMatching(tile: Tile): boolean {
+        return this.placeTile(tile, false);
+    }
+
+    placeTileWithMatching(tile: Tile): boolean {
+        return this.placeTile(tile, true);
     }
 
 }

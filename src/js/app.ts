@@ -19,11 +19,18 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData
     }
     displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
     displayInterval = setInterval(function () {
-        let tile = (<HTMLInputElement>document.getElementById("tile-selection")!).checked ?
+        const tile = (<HTMLInputElement>document.getElementById("tile-selection")!).checked ?
             tilePool.randomTile : tilePool.nextTile;
         if (tile) {
-            console.assert((<HTMLInputElement>document.getElementById("tile-placement")!).checked ?
-                tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile));
+            const useMatching = (<HTMLInputElement>document.getElementById("tile-matching")!).checked;
+            const useRandom = (<HTMLInputElement>document.getElementById("tile-placement")!).checked;
+            if (useMatching) {
+                console.assert( useRandom?
+                    tetrahedron.placeTileRandomlyWithMatching(tile) : tetrahedron.placeTileSequentiallyWithMatching(tile));
+            } else {
+                console.assert(useRandom ?
+                    tetrahedron.placeTileRandomlyWithoutMatching(tile) : tetrahedron.placeTileSequentiallyWithoutMatching(tile));
+            }
             displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
         } else {
             clearInterval(displayInterval);

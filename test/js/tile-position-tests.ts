@@ -30,7 +30,7 @@ describe("TilePosition behaviour", function () {
 
         context("on a TilePosition which has a Tile in it", function () {
             const tilePosition = new TilePosition("TP");
-            assert.isTrue(tilePosition.placeTile(TILE_1));
+            assert.isTrue(tilePosition.placeTileWithoutMatching(TILE_1));
             it("should return the Tile", function () {
                 expect(tilePosition.tile).to.equal(TILE_1);
             });
@@ -100,7 +100,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position is already occupied by a Tile", function () {
             const tilePosition = new TilePosition("TP");
-            assert.isTrue(tilePosition.placeTile(TILE_1));
+            assert.isTrue(tilePosition.placeTileWithoutMatching(TILE_1));
             it("should return False", function () {
                 expect(tilePosition.isEmpty()).to.be.false;
             });
@@ -108,11 +108,11 @@ describe("TilePosition behaviour", function () {
 
     });
 
-    describe("if #placeTile() is called to place a Tile (without using matching)", function () {
+    describe("if #placeTileWithoutMatching() is called to place a Tile", function () {
 
         context("and the Position is empty", function () {
             const tilePosition = new TilePosition("TP");
-            const result = tilePosition.placeTile(TILE_1);
+            const result = tilePosition.placeTileWithoutMatching(TILE_1);
             it("should be placed", function () {
                 expect(tilePosition.toString()).to.contain(TILE_1.toString());
             });
@@ -123,9 +123,37 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position is already occupied by a Tile", function () {
             const tilePosition = new TilePosition("TP");
-            assert.isTrue(tilePosition.placeTile(TILE_1));
+            assert.isTrue(tilePosition.placeTileWithoutMatching(TILE_1));
             assert.isTrue(tilePosition.toString().includes(TILE_1.toString()));
-            const result = tilePosition.placeTile(TILE_2);
+            const result = tilePosition.placeTileWithoutMatching(TILE_2);
+            it("should not be placed", function () {
+                expect(tilePosition.toString()).to.not.contain(TILE_2.toString());
+            });
+            it("should return False", function () {
+                expect(result).to.be.false;
+            });
+        });
+
+    });
+
+    describe("if #placeTileWithMatching() is called to place a Tile", function () {
+
+        context("and the Position is empty", function () {
+            const tilePosition = new TilePosition("TP");
+            const result = tilePosition.placeTileWithMatching(TILE_1);
+            it("should be placed", function () {
+                expect(tilePosition.toString()).to.contain(TILE_1.toString());
+            });
+            it("should return True", function () {
+                expect(result).to.be.true;
+            });
+        });
+
+        context("and the Position is already occupied by a Tile", function () {
+            const tilePosition = new TilePosition("TP");
+            assert.isTrue(tilePosition.placeTileWithMatching(TILE_1));
+            assert.isTrue(tilePosition.toString().includes(TILE_1.toString()));
+            const result = tilePosition.placeTileWithMatching(TILE_2);
             it("should not be placed", function () {
                 expect(tilePosition.toString()).to.not.contain(TILE_2.toString());
             });

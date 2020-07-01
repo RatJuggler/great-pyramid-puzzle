@@ -88,20 +88,40 @@ export class Face {
         return this.emptyTilePositions.length > 0;
     }
 
-    private placeTile(tile: Tile, position: number) {
+    private placeTile(tile: Tile, position: number, useMatching: boolean): boolean {
         const emptyPositions = this.emptyTilePositions;
         if (emptyPositions.length === 0) {
             return false;
         }
-        return emptyPositions[position].placeTile(tile);
+        if (useMatching) {
+            return emptyPositions[position].placeTileWithMatching(tile);
+        } else {
+            return emptyPositions[position].placeTileWithoutMatching(tile);
+        }
     }
 
-    placeTileRandomly(tile: Tile): boolean {
-        return this.placeTile(tile, getRandomInt(this.emptyTilePositions.length));
+    private placeTileRandomly(tile: Tile, useMatching: boolean): boolean {
+        return this.placeTile(tile, getRandomInt(this.emptyTilePositions.length), useMatching);
     }
 
-    placeTileSequentially(tile: Tile): boolean {
-        return this.placeTile(tile, 0);
+    private placeTileSequentially(tile: Tile, useMatching: boolean): boolean {
+        return this.placeTile(tile, 0, useMatching);
+    }
+
+    placeTileRandomlyWithoutMatching(tile: Tile): boolean {
+        return this.placeTileRandomly(tile, false);
+    }
+
+    placeTileRandomlyWithMatching(tile: Tile): boolean {
+        return this.placeTileRandomly(tile, true);
+    }
+
+    placeTileSequentiallyWithoutMatching(tile: Tile): boolean {
+        return this.placeTileSequentially(tile, false);
+    }
+
+    placeTileSequentiallyWithMatching(tile: Tile): boolean {
+        return this.placeTileSequentially(tile, true);
     }
 
 }
