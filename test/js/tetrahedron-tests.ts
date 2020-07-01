@@ -71,7 +71,7 @@ describe("Tetrahedron behaviour", function () {
 
     });
 
-    describe("if #placeTileWithoutMatching() is called to place a Tile (without using matching)", function () {
+    describe("if #placeTileRandomly() is called to place a Tile (without using matching)", function () {
 
         context("and the Tetrahedron has no Tiles on it", function () {
             const tetrahedron =
@@ -108,6 +108,53 @@ describe("Tetrahedron behaviour", function () {
                 tile = tilePool.randomTile;
             }
             const result = tetrahedron.placeTileRandomly(TILE_1);
+            it("should not be placed", function () {
+                expect(tetrahedron.toString()).to.not.contain(TILE_1.toString());
+            });
+            it("should return False", function () {
+                expect(result).to.be.false;
+            });
+        });
+
+    });
+
+    describe("if #placeTileSequentially() is called to place a Tile (without using matching)", function () {
+
+        context("and the Tetrahedron has no Tiles on it", function () {
+            const tetrahedron =
+                new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+            const result = tetrahedron.placeTileSequentially(TILE_1);
+            it("should place the Tile on Face 1 at Position 1", function () {
+                expect(tetrahedron.getFace("1").getTileAtPosition("1")).to.equal(TILE_1);
+            });
+            it("should return True", function () {
+                expect(result).to.be.true;
+            });
+        });
+
+        context("and the Tetrahedron already has Tiles on it", function () {
+            const tetrahedron =
+                new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+            assert.isTrue(tetrahedron.placeTileSequentially(TILE_1));
+            const result = tetrahedron.placeTileSequentially(TILE_2);
+            it("should place the Tile at the next sequentially free position", function () {
+                expect(tetrahedron.getFace("2").getTileAtPosition("1")).to.equal(TILE_2);
+            });
+            it("should return True", function () {
+                expect(result).to.be.true;
+            });
+        });
+
+        context("and the Tetrahedron has no remaining empty positions", function () {
+            const tetrahedron =
+                new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+            let tile = tilePool.randomTile;
+            while (tile) {
+                assert.isTrue(tetrahedron.placeTileSequentially(tile));
+                tile = tilePool.randomTile;
+            }
+            const result = tetrahedron.placeTileSequentially(TILE_1);
             it("should not be placed", function () {
                 expect(tetrahedron.toString()).to.not.contain(TILE_1.toString());
             });

@@ -169,7 +169,7 @@ describe("Face behavior", function () {
 
     });
 
-    describe("if #placeTileWithoutMatching() is called to place a Tile (without using matching)", function () {
+    describe("if #placeTileRandomly() is called to place a Tile (without using matching)", function () {
 
         context("and all the Tile Positions on the Face are empty", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
@@ -201,6 +201,48 @@ describe("Face behavior", function () {
             assert.isTrue(faceWithOneTilePosition.placeTileRandomly(TILE_1));
             assert.isFalse(faceWithOneTilePosition.hasEmptyTilePositions());
             const result = faceWithOneTilePosition.placeTileRandomly(TILE_2);
+            it("should not be placed", function () {
+                expect(faceWithOneTilePosition.toString()).to.not.contain(TILE_2.toString());
+            });
+            it("should return False", function () {
+                expect(result).to.be.false;
+            });
+        });
+
+    });
+
+    describe("if #placeTileSequantially() is called to place a Tile (without using matching)", function () {
+
+        context("and all the Tile Positions on the Face are empty", function () {
+            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            assert.isTrue(faceWithOneTilePosition.hasEmptyTilePositions());
+            const result = faceWithOneTilePosition.placeTileSequentially(TILE_1);
+            it("should place the Tile at Position 1", function () {
+                expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
+            });
+            it("should return True", function () {
+                expect(result).to.be.true;
+            });
+        });
+
+        context("and the Face already has some filled Tile Positions on it", function () {
+            const faceWithFourTilePositions = new Face("2", 4, FOUR_TILE_POSITION_DATA);
+            assert.isTrue(faceWithFourTilePositions.placeTileSequentially(TILE_1));
+            assert.isTrue(faceWithFourTilePositions.hasEmptyTilePositions());
+            const result = faceWithFourTilePositions.placeTileSequentially(TILE_2);
+            it("should place the Tile at the next sequentially free Position", function () {
+                expect(faceWithFourTilePositions.getTileAtPosition("2")).to.equal(TILE_2);
+            });
+            it("should return True", function () {
+                expect(result).to.be.true;
+            });
+        });
+
+        context("and the Face has no remaining empty Tile Positions", function () {
+            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            assert.isTrue(faceWithOneTilePosition.placeTileSequentially(TILE_1));
+            assert.isFalse(faceWithOneTilePosition.hasEmptyTilePositions());
+            const result = faceWithOneTilePosition.placeTileSequentially(TILE_2);
             it("should not be placed", function () {
                 expect(faceWithOneTilePosition.toString()).to.not.contain(TILE_2.toString());
             });
