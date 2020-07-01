@@ -2,6 +2,7 @@ import { Tile } from "./tile";
 import { TileData } from "./puzzle-data-schema";
 import { getRandomInt } from "./utils";
 
+
 export class TilePool {
 
     private readonly _tiles = new Map<string, Tile>();
@@ -39,6 +40,14 @@ export class TilePool {
         let tilesString = "TilePool:\n";
         this._tiles.forEach((tile) => tilesString += tile.toString() + '\n');
         return tilesString;
+    }
+
+    get nextTile(): Tile | null {
+        if (this._tiles.size === 0) {
+            return null;
+        }
+        const keys = Array.from(this._tiles.keys()).sort();
+        return this.getTile(keys[0]);
     }
 
     get randomTile(): Tile | null {

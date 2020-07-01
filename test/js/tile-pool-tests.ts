@@ -5,7 +5,7 @@ import { Tile } from "../../src/js/tile";
 import { TilePool } from '../../src/js/tile-pool';
 import { assert, expect } from 'chai';
 import 'mocha';
-// @ts-ignore
+// @ts-ignore\
 import { TILE_1, TILE_1_DATA } from "./common-test-data";
 
 
@@ -124,18 +124,72 @@ describe("TilePool behavior", function () {
 
     });
 
+    describe("if #getNextTile() is called to select the next Tile (in order) from the TilePool", function () {
+
+        context("when no Tiles have previously been selected from the TilePool", function () {
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+            const tile = tilePool.nextTile!;
+            it("should return the first Tile (in order)", function () {
+                expect(tile).to.be.an.instanceOf(Tile);
+                expect(tile.id).to.equal("1");
+            });
+            it("should remove the Tile from the pool", function () {
+                expect(function () {
+                    tilePool.getTile(tile.id);
+                }).to.throw(Error, "Tile (1) not found in the tile pool!");
+            });
+        });
+
+        context("when there are Tiles remaining in the TilePool", function () {
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+            const tile1 = tilePool.nextTile!;
+            const tile2 = tilePool.nextTile!;
+            const tile3 = tilePool.nextTile!;
+            it("should return the first Tile (in order) from those remaining", function () {
+                expect(tile1).to.be.an.instanceOf(Tile);
+                expect(tile1.id).to.equal("1");
+                expect(tile2).to.be.an.instanceOf(Tile);
+                expect(tile2.id).to.equal("2");
+                expect(tile3).to.be.an.instanceOf(Tile);
+                expect(tile3.id).to.equal("3");
+            });
+            it("should remove the Tile from the pool", function () {
+                expect(function () {
+                    tilePool.getTile(tile1.id);
+                }).to.throw(Error, "Tile (1) not found in the tile pool!");
+                expect(function () {
+                    tilePool.getTile(tile2.id);
+                }).to.throw(Error, "Tile (2) not found in the tile pool!");
+                expect(function () {
+                    tilePool.getTile(tile3.id);
+                }).to.throw(Error, "Tile (3) not found in the tile pool!");
+            });
+        });
+
+        context("when there are no Tiles remaining in the TilePool", function () {
+            it("should return null", function () {
+                const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+                for (let i = 0; i < validPuzzleData.totalNumberOfTiles; i++) {
+                    expect(tilePool.nextTile).to.be.an.instanceOf(Tile);
+                }
+                expect(tilePool.nextTile).to.be.null;
+            });
+        });
+
+    });
+
     describe("if #getRandomTile() is called to select a random Tile from the TilePool", function () {
 
         context("when there are Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
-            const oldPoolToString = tilePool.toString();
-            const tile = tilePool.randomTile;
+            const tile = tilePool.randomTile!;
             it("should return a random Tile from those remaining", function () {
                 expect(tile).to.be.an.instanceOf(Tile);
             });
-            it("should remove the random Tile from the pool", function () {
-                expect(oldPoolToString).to.contain(tile!.toString());
-                expect(tilePool.toString()).to.not.contain(tile!.toString());
+            it("should remove the Tile from the pool", function () {
+                expect(function () {
+                    tilePool.getTile(tile.id);
+                }).to.throw(Error, `Tile (${tile.id}) not found in the tile pool!`);
             });
         });
 
