@@ -27,8 +27,11 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData
                 console.assert(tetrahedron.placeTileSequentially(tile));
             }
             displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
+        } else {
+            clearInterval(displayInterval);
+            displayInterval = 0;
         }
-    }, 1000);
+    }, 700);
 }
 
 let testButton = document.getElementById("test")!;
