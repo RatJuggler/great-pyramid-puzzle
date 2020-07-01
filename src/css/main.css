@@ -37,14 +37,60 @@ html, body {
 
 #puzzle-selection .pure-button {
   width: 100%;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin: 5px 0;
   font-size: 2em;
 }
 
 #puzzle-selection p {
-  color: #eaeaea;
-  font-size: 2em;
-  line-height: 1.5em;
-  text-shadow: 2px 2px 2px #000;
+  font-size: 1.5em;
+}
+
+/* Generated from: https://proto.io/freebies/onoff/ */
+.placement {
+  position: relative; width: 200px;
+  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+  margin: 10px auto;
+}
+.placement-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.placement-label {
+  display: block; overflow: hidden; cursor: pointer;
+  border: 2px solid #999999; border-radius: 20px;
+}
+.placement-inner {
+  display: block; width: 200%; margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+.placement-inner:before, .placement-inner:after {
+  display: block; float: left; width: 50%; height: 43px; padding: 0; line-height: 43px;
+  font-size: 24px; color: white;
+  box-sizing: border-box;
+}
+.placement-inner:before {
+  content: "Random";
+  padding-left: 10px;
+  background-color: #E6E6E6; color: #000000;
+}
+.placement-inner:after {
+  content: "Sequential";
+  padding-right: 10px;
+  background-color: #E6E6E6; color: #000000;
+  text-align: right;
+}
+.placement-switch {
+  display: block; width: 33px; margin: 5px;
+  background: #FFFFFF;
+  position: absolute; top: 0; bottom: 0;
+  right: 153px;
+  border: 2px solid #999999; border-radius: 20px;
+  transition: all 0.3s ease-in 0s;
+}
+.placement-checkbox:checked + .placement-label .placement-inner {
+  margin-left: 0;
+}
+.placement-checkbox:checked + .placement-label .placement-switch {
+  right: 0;
 }
