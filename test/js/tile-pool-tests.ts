@@ -108,8 +108,8 @@ describe("TilePool behavior", function () {
             it("should throw an error", function () {
                 const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
                 expect(function () {
-                    tilePool.getTile("TestTile");
-                }).to.throw(Error, "Tile (TestTile) not found in the tile pool!");
+                    tilePool.getTile(999);
+                }).to.throw(Error, "Tile (999) not found in the tile pool!");
             });
         });
 
@@ -117,8 +117,8 @@ describe("TilePool behavior", function () {
             it("should throw an error", function () {
                 const tilePool = new TilePool(0, []);
                 expect(function () {
-                    tilePool.getTile("TestTile");
-                }).to.throw(Error, "Tile (TestTile) not found in the tile pool!");
+                    tilePool.getTile(1);
+                }).to.throw(Error, "Tile (1) not found in the tile pool!");
             });
         });
 
@@ -131,7 +131,7 @@ describe("TilePool behavior", function () {
             const tile = tilePool.nextTile!;
             it("should return the first Tile (in order)", function () {
                 expect(tile).to.be.an.instanceOf(Tile);
-                expect(tile.id).to.equal("1");
+                expect(tile.id).to.equal(1);
             });
             it("should remove the Tile from the pool", function () {
                 expect(function () {
@@ -147,11 +147,11 @@ describe("TilePool behavior", function () {
             const tile3 = tilePool.nextTile!;
             it("should return the first Tile (in order) from those remaining", function () {
                 expect(tile1).to.be.an.instanceOf(Tile);
-                expect(tile1.id).to.equal("1");
+                expect(tile1.id).to.equal(1);
                 expect(tile2).to.be.an.instanceOf(Tile);
-                expect(tile2.id).to.equal("2");
+                expect(tile2.id).to.equal(2);
                 expect(tile3).to.be.an.instanceOf(Tile);
-                expect(tile3.id).to.equal("3");
+                expect(tile3.id).to.equal(3);
             });
             it("should remove the Tile from the pool", function () {
                 expect(function () {

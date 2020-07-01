@@ -16,7 +16,7 @@ describe("Tile behaviour", function () {
                 expect(tile).to.be.an.instanceOf(Tile);
             });
             it("should also return the correct toString result from this instance", function () {
-                const expectedToString = "Id: TestTile1, Side-A: 0001, Side-B: 0010, Side-C: 0100";
+                const expectedToString = "Id: 101, Side-A: 0001, Side-B: 0010, Side-C: 0100";
                 expect(tile.toString()).to.equal(expectedToString);
             });
         });
@@ -24,7 +24,7 @@ describe("Tile behaviour", function () {
         context("with an invalid Tile segment data length", function () {
             it("should throw an error", function () {
                 const invalidTileData: TileData = {
-                    "tile": "TestTile",
+                    "tile": 0,
                     "sideA": "0001",
                     "sideB": "00010",
                     "sideC": "0100"
@@ -38,7 +38,7 @@ describe("Tile behaviour", function () {
         context("with an invalid Tile segment data coding", function () {
             it("should throw an error", function () {
                 const invalidTileData: TileData = {
-                    "tile": "TestTile",
+                    "tile": 0,
                     "sideA": "0001",
                     "sideB": "0010",
                     "sideC": "01A0"

@@ -1,7 +1,7 @@
 // Interfaces defining the puzzle data structure configuration.
 
 interface TileData {
-    readonly tile: string;
+    readonly tile: number;
     readonly sideA: string;
     readonly sideB: string;
     readonly sideC: string;

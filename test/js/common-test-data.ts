@@ -3,7 +3,7 @@ import { Tile } from "../../src/js/tile";
 
 
 const TILE_1_DATA: TileData = {
-    "tile": "TestTile1",
+    "tile": 101,
     "sideA": "0001",
     "sideB": "0010",
     "sideC": "0100"
@@ -11,7 +11,7 @@ const TILE_1_DATA: TileData = {
 const TILE_1 = new Tile(TILE_1_DATA);
 
 const TILE_2_DATA: TileData = {
-    "tile": "TestTile2",
+    "tile": 102,
     "sideA": "0011",
     "sideB": "0100",
     "sideC": "1001"

@@ -922,217 +922,217 @@
   ],
   "tiles": [
     {
-      "tile": "1",
+      "tile": 1,
       "sideA": "1000",
       "sideB": "1000",
       "sideC": "1000"
     },
     {
-      "tile": "2",
+      "tile": 2,
       "sideA": "0100",
       "sideB": "1100",
       "sideC": "0110"
     },
     {
-      "tile": "3",
+      "tile": 3,
       "sideA": "0110",
       "sideB": "1100",
       "sideC": "1110"
     },
     {
-      "tile": "4",
+      "tile": 4,
       "sideA": "0011",
       "sideB": "1100",
       "sideC": "0001"
     },
     {
-      "tile": "5",
+      "tile": 5,
       "sideA": "0001",
       "sideB": "0111",
       "sideC": "0001"
     },
     {
-      "tile": "6",
+      "tile": 6,
       "sideA": "0001",
       "sideB": "0110",
       "sideC": "1100"
     },
     {
-      "tile": "7",
+      "tile": 7,
       "sideA": "0010",
       "sideB": "0100",
       "sideC": "0110"
     },
     {
-      "tile": "8",
+      "tile": 8,
       "sideA": "0001",
       "sideB": "1000",
       "sideC": "1100"
     },
     {
-      "tile": "9",
+      "tile": 9,
       "sideA": "0001",
       "sideB": "0110",
       "sideC": "1000"
     },
     {
-      "tile": "10",
+      "tile": 10,
       "sideA": "1111",
       "sideB": "0001",
       "sideC": "0001"
     },
     {
-      "tile": "11",
+      "tile": 11,
       "sideA": "0110",
       "sideB": "1000",
       "sideC": "0011"
     },
     {
-      "tile": "12",
+      "tile": 12,
       "sideA": "0110",
       "sideB": "0111",
       "sideC": "1000"
     },
     {
-      "tile": "13",
+      "tile": 13,
       "sideA": "0001",
       "sideB": "0001",
       "sideC": "1110"
     },
     {
-      "tile": "14",
+      "tile": 14,
       "sideA": "0110",
       "sideB": "0111",
       "sideC": "1110"
     },
     {
-      "tile": "15",
+      "tile": 15,
       "sideA": "1000",
       "sideB": "1110",
       "sideC": "0110"
     },
     {
-      "tile": "16",
+      "tile": 16,
       "sideA": "0100",
       "sideB": "0011",
       "sideC": "1100"
     },
     {
-      "tile": "17",
+      "tile": 17,
       "sideA": "0001",
       "sideB": "1110",
       "sideC": "0010"
     },
     {
-      "tile": "18",
+      "tile": 18,
       "sideA": "0110",
       "sideB": "0110",
       "sideC": "0110"
     },
     {
-      "tile": "19",
+      "tile": 19,
       "sideA": "1000",
       "sideB": "1110",
       "sideC": "0100"
     },
     {
-      "tile": "20",
+      "tile": 20,
       "sideA": "1000",
       "sideB": "0110",
       "sideC": "0110"
     },
     {
-      "tile": "21",
+      "tile": 21,
       "sideA": "0001",
       "sideB": "1000",
       "sideC": "0110"
     },
     {
-      "tile": "22",
+      "tile": 22,
       "sideA": "0001",
       "sideB": "0011",
       "sideC": "0010"
     },
     {
-      "tile": "23",
+      "tile": 23,
       "sideA": "1000",
       "sideB": "0111",
       "sideC": "0001"
     },
     {
-      "tile": "24",
+      "tile": 24,
       "sideA": "1111",
       "sideB": "0010",
       "sideC": "1000"
     },
     {
-      "tile": "25",
+      "tile": 25,
       "sideA": "0001",
       "sideB": "0001",
       "sideC": "0011"
     },
     {
-      "tile": "26",
+      "tile": 26,
       "sideA": "1000",
       "sideB": "0011",
       "sideC": "0001"
     },
     {
-      "tile": "27",
+      "tile": 27,
       "sideA": "0100",
       "sideB": "0110",
       "sideC": "0100"
     },
     {
-      "tile": "28",
+      "tile": 28,
       "sideA": "1100",
       "sideB": "0110",
       "sideC": "0001"
     },
     {
-      "tile": "29",
+      "tile": 29,
       "sideA": "1000",
       "sideB": "0011",
       "sideC": "0011"
     },
     {
-      "tile": "30",
+      "tile": 30,
       "sideA": "0010",
       "sideB": "0001",
       "sideC": "0111"
     },
     {
-      "tile": "31",
+      "tile": 31,
       "sideA": "1000",
       "sideB": "0011",
       "sideC": "0111"
     },
     {
-      "tile": "32",
+      "tile": 32,
       "sideA": "1000",
       "sideB": "1110",
       "sideC": "0111"
     },
     {
-      "tile": "33",
+      "tile": 33,
       "sideA": "0100",
       "sideB": "1100",
       "sideC": "1000"
     },
     {
-      "tile": "34",
+      "tile": 34,
       "sideA": "0010",
       "sideB": "1100",
       "sideC": "0001"
     },
     {
-      "tile": "35",
+      "tile": 35,
       "sideA": "0010",
       "sideB": "0001",
       "sideC": "1000"
     },
     {
-      "tile": "36",
+      "tile": 36,
       "sideA": "0110",
       "sideB": "1000",
       "sideC": "1000"

@@ -3,7 +3,7 @@ import { TileData } from "./puzzle-data-schema";
 
 export class Tile {
 
-    private readonly _id: string;
+    private readonly _id: number;
     private readonly _sideA: string;
     private readonly _sideB: string;
     private readonly _sideC: string;
@@ -29,7 +29,7 @@ export class Tile {
         return `Id: ${this._id}, Side-A: ${this._sideA}, Side-B: ${this._sideB}, Side-C: ${this._sideC}`;
     }
 
-    get id(): string {
+    get id(): number {
         return this._id;
     }
 

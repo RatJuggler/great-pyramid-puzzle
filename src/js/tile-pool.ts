@@ -5,7 +5,7 @@ import { getRandomInt } from "./utils";
 
 export class TilePool {
 
-    private readonly _tiles = new Map<string, Tile>();
+    private readonly _tiles = new Map<number, Tile>();
 
     constructor(numberOfTiles: number, tileData: TileData[]) {
         if (numberOfTiles !== tileData.length) {
@@ -27,7 +27,7 @@ export class TilePool {
         return true;
     }
 
-    getTile(id: string): Tile {
+    getTile(id: number): Tile {
         if (this._tiles.has(id)) {
             const tile = this._tiles.get(id)!;
             this._tiles.delete(id);
@@ -46,7 +46,7 @@ export class TilePool {
         if (this._tiles.size === 0) {
             return null;
         }
-        const keys = Array.from(this._tiles.keys()).sort();
+        const keys = Array.from(this._tiles.keys()).sort((a: number, b: number) => a - b);
         return this.getTile(keys[0]);
     }
 
