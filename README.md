@@ -1,6 +1,7 @@
 # great-pyramid-puzzle
 
 ![Build & Test](https://github.com/RatJuggler/great-pyramid-puzzle/workflows/Build%20&%20Test/badge.svg)
+![Build & Deploy](https://github.com/RatJuggler/great-pyramid-puzzle/workflows/Build%20&%20Deploy/badge.svg?event=release)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/RatJuggler/great-pyramid-puzzle)
 
 The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I tried solving it way back then on my 
