@@ -1,6 +1,5 @@
 import valid_config1 from "../valid-test-puzzle-data1.json";
 import { getTetrahedron, getTilePool } from "../../src/js/puzzle-loader";
-import { placeTilesRandomly } from "../../src/js/place-tiles.js";
 import { displayPuzzle } from "../../src/js/puzzle-display";
 import { expect } from 'chai';
 import 'mocha';
@@ -46,7 +45,11 @@ describe("Puzzle display functionality", function () {
             registerWindow(window, document);
             const tetrahedron = getTetrahedron(valid_config1.testPuzzleData);
             const tilePool = getTilePool(valid_config1.testPuzzleData);
-            placeTilesRandomly(tetrahedron, tilePool);
+            let tile = tilePool.randomTile;
+            while (tile) {
+                console.assert(tetrahedron.placeTileRandomly(tile));
+                tile = tilePool.randomTile;
+            }
             const canvas = displayPuzzle(document.documentElement, tetrahedron, testDisplayData);
             console.log(canvas.svg());
             it("should have 4 faces and 4 tiles", function () {

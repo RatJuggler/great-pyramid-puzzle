@@ -1,15 +1,30 @@
 import { PuzzleData } from "./puzzle-data-schema";
 import { TileDisplayData } from "./puzzle-display-schema";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
-import { placeTilesRandomly } from "./place-tiles";
 import { displayPuzzle } from "./puzzle-display";
+import { TilePool } from "./tile-pool";
+import { Tetrahedron } from "./tetrahedron";
+
+
+let tetrahedron: Tetrahedron;
+let tilePool: TilePool;
+let displayInterval: number;
 
 
 function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData; }) {
-    const tetrahedron = getTetrahedron(puzzle.puzzleData);
-    const tilePool = getTilePool(puzzle.puzzleData);
-    placeTilesRandomly(tetrahedron, tilePool);
+    tetrahedron = getTetrahedron(puzzle.puzzleData);
+    tilePool = getTilePool(puzzle.puzzleData);
+    if (displayInterval) {
+        clearInterval(displayInterval);
+    }
     displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
+    displayInterval = setInterval(function () {
+        let tile = tilePool.randomTile;
+        if (tile) {
+            console.assert(tetrahedron.placeTileRandomly(tile));
+            displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
+        }
+    }, 1000);
 }
 
 let testButton = document.getElementById("test")!;
