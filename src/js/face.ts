@@ -80,7 +80,7 @@ export class Face {
         this._joins.set(fromSide, {toSide: toSide, ofFace: ofFace});
     }
 
-    private get emptyTilePositions() {
+    private get emptyTilePositions(): TilePosition[] {
         return Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.isEmpty());
     }
 
@@ -95,6 +95,14 @@ export class Face {
         }
         const tilePosition = emptyPositions[getRandomInt(emptyPositions.length)];
         return tilePosition.placeTile(tile);
+    }
+
+    placeTileSequentially(tile: Tile): boolean {
+        const emptyPositions = this.emptyTilePositions;
+        if (emptyPositions.length === 0) {
+            return false;
+        }
+        return emptyPositions[0].placeTile(tile);
     }
 
 }

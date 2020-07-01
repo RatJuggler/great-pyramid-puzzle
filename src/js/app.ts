@@ -21,7 +21,8 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData
     displayInterval = setInterval(function () {
         let tile = tilePool.randomTile;
         if (tile) {
-            console.assert(tetrahedron.placeTileRandomly(tile));
+            console.assert(tetrahedron.placeTileSequentially(tile));
+            // console.assert(tetrahedron.placeTileRandomly(tile));
             displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
         }
     }, 1000);

@@ -46,6 +46,10 @@ export class Tetrahedron {
         return this._name;
     }
 
+    private get facesWithEmptyPositions() {
+        return Array.from(this._faces.values()).filter(face => face.hasEmptyTilePositions());
+    }
+
     getFace(name: string): Face {
         if (this._faces.has(name)) {
             return this._faces.get(name)!;
@@ -54,12 +58,20 @@ export class Tetrahedron {
     }
 
     placeTileRandomly(tile: Tile): boolean {
-        const facesWithEmptyPositions = Array.from(this._faces.values()).filter(face => face.hasEmptyTilePositions());
-        if (facesWithEmptyPositions.length === 0) {
+        const emptyFaces = this.facesWithEmptyPositions;
+        if (emptyFaces.length === 0) {
             return false;
         }
-        const faceToUse = facesWithEmptyPositions[getRandomInt(facesWithEmptyPositions.length)];
+        const faceToUse = emptyFaces[getRandomInt(emptyFaces.length)];
         return faceToUse.placeTileRandomly(tile);
+    }
+
+    placeTileSequentially(tile: Tile): boolean {
+        const emptyFaces = this.facesWithEmptyPositions;
+        if (emptyFaces.length === 0) {
+            return false;
+        }
+        return emptyFaces[0].placeTileSequentially(tile);
     }
 
 }
