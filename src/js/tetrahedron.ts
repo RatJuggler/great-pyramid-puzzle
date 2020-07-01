@@ -62,8 +62,7 @@ export class Tetrahedron {
         if (emptyFaces.length === 0) {
             return false;
         }
-        const faceToUse = emptyFaces[getRandomInt(emptyFaces.length)];
-        return faceToUse.placeTileRandomly(tile);
+        return emptyFaces[getRandomInt(emptyFaces.length)].placeTileRandomly(tile);
     }
 
     placeTileSequentially(tile: Tile): boolean {

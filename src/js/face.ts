@@ -88,21 +88,20 @@ export class Face {
         return this.emptyTilePositions.length > 0;
     }
 
-    placeTileRandomly(tile: Tile): boolean {
+    private placeTile(tile: Tile, position: number) {
         const emptyPositions = this.emptyTilePositions;
         if (emptyPositions.length === 0) {
             return false;
         }
-        const tilePosition = emptyPositions[getRandomInt(emptyPositions.length)];
-        return tilePosition.placeTile(tile);
+        return emptyPositions[position].placeTile(tile);
+    }
+
+    placeTileRandomly(tile: Tile): boolean {
+        return this.placeTile(tile, getRandomInt(this.emptyTilePositions.length));
     }
 
     placeTileSequentially(tile: Tile): boolean {
-        const emptyPositions = this.emptyTilePositions;
-        if (emptyPositions.length === 0) {
-            return false;
-        }
-        return emptyPositions[0].placeTile(tile);
+        return this.placeTile(tile, 0);
     }
 
 }
