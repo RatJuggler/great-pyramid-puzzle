@@ -19,13 +19,11 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData
     }
     displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
     displayInterval = setInterval(function () {
-        let tile = tilePool.randomTile;
+        let tile = (<HTMLInputElement>document.getElementById("tile-selection")!).checked ?
+            tilePool.randomTile : tilePool.nextTile;
         if (tile) {
-            if ((<HTMLInputElement>document.getElementById("tile-placement")!).checked) {
-                console.assert(tetrahedron.placeTileRandomly(tile));
-            } else {
-                console.assert(tetrahedron.placeTileSequentially(tile));
-            }
+            console.assert((<HTMLInputElement>document.getElementById("tile-placement")!).checked ?
+                tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile));
             displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
         } else {
             clearInterval(displayInterval);
