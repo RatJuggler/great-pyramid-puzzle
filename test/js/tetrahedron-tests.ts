@@ -76,7 +76,7 @@ describe("Tetrahedron behaviour", function () {
         context("and the Tetrahedron has no Tiles on it", function () {
             const tetrahedron =
                 new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
-            const result = tetrahedron.placeTileWithoutMatching(TILE_1);
+            const result = tetrahedron.placeTileRandomly(TILE_1);
             it("should place the Tile in a random empty Position on a random Face", function () {
                 expect(tetrahedron.toString()).to.contain(TILE_1.toString());
             });
@@ -88,8 +88,8 @@ describe("Tetrahedron behaviour", function () {
         context("and the Tetrahedron already has Tiles on it", function () {
             const tetrahedron =
                 new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
-            assert.isTrue(tetrahedron.placeTileWithoutMatching(TILE_1));
-            const result = tetrahedron.placeTileWithoutMatching(TILE_2);
+            assert.isTrue(tetrahedron.placeTileRandomly(TILE_1));
+            const result = tetrahedron.placeTileRandomly(TILE_2);
             it("should place the Tile in a random empty Position on a random Face", function () {
                 expect(tetrahedron.toString()).to.contain(TILE_2.toString());
             });
@@ -104,10 +104,10 @@ describe("Tetrahedron behaviour", function () {
             const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
             let tile = tilePool.randomTile;
             while (tile) {
-                assert.isTrue(tetrahedron.placeTileWithoutMatching(tile));
+                assert.isTrue(tetrahedron.placeTileRandomly(tile));
                 tile = tilePool.randomTile;
             }
-            const result = tetrahedron.placeTileWithoutMatching(TILE_1);
+            const result = tetrahedron.placeTileRandomly(TILE_1);
             it("should not be placed", function () {
                 expect(tetrahedron.toString()).to.not.contain(TILE_1.toString());
             });
