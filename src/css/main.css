@@ -24,7 +24,7 @@ html, body {
   overflow: hidden;
   width: 420px;
   height: 100%;
-  padding-top: 100px;
+  padding-top: 60px;
   top: 0;
   left: 0;
   z-index: 3;
@@ -93,4 +93,10 @@ html, body {
 }
 .selector-checkbox:checked + .selector-label .selector-switch {
   right: 0;
+}
+.selector-inner.tile-matching:before {
+  content: "Off";
+}
+.selector-inner.tile-matching:after {
+  content: "On";
 }
