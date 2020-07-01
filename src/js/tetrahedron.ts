@@ -53,13 +53,13 @@ export class Tetrahedron {
         throw new Error(`Face (${name}) not found on Tetrahedron!`);
     }
 
-    placeTileWithoutMatching(tile: Tile): boolean {
+    placeTileRandomly(tile: Tile): boolean {
         const facesWithEmptyPositions = Array.from(this._faces.values()).filter(face => face.hasEmptyTilePositions());
         if (facesWithEmptyPositions.length === 0) {
             return false;
         }
         const faceToUse = facesWithEmptyPositions[getRandomInt(facesWithEmptyPositions.length)];
-        return faceToUse.placeTileWithoutMatching(tile);
+        return faceToUse.placeTileRandomly(tile);
     }
 
 }

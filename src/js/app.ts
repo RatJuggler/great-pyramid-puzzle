@@ -1,7 +1,7 @@
 import { PuzzleData } from "./puzzle-data-schema";
 import { TileDisplayData } from "./puzzle-display-schema";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
-import { placeTilesRandomly } from "./place-tiles.js";
+import { placeTilesRandomly } from "./place-tiles";
 import { displayPuzzle } from "./puzzle-display";
 
 
