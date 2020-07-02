@@ -1,27 +1,28 @@
+import { testPuzzle } from "./test-puzzle";
+import { pocketPuzzle } from "./pocket-puzzle";
+import { greatPuzzle } from "./great-puzzle";
 import { PuzzleData } from "./puzzle-data-schema";
 import { TileDisplayData } from "./puzzle-display-schema";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
 import { displayPuzzle } from "./puzzle-display";
-import { TilePool } from "./tile-pool";
 import { Tetrahedron } from "./tetrahedron";
 
 
-let tetrahedron: Tetrahedron;
-let tilePool: TilePool;
-let displayData: TileDisplayData;
 let displayInterval: number;
 
-function doDisplay() {
+function doDisplay(tetrahedron: Tetrahedron, displayData: TileDisplayData) {
     displayPuzzle("#puzzle-display", tetrahedron, displayData);
     const tileId = RegExp('[1-4]-[1-9]');
     document.getElementById("puzzle-display")!.querySelectorAll("g")
         .forEach(function (svgGroup) {
             if (tileId.test(svgGroup.id)) {
-                svgGroup.addEventListener("click", function () {
-                    const tile = tetrahedron.getFace(this.id.charAt(0)).getTileAtPosition(this.id.charAt(2));
+                svgGroup.addEventListener("click", (e) => {
+                    // @ts-ignore
+                    const id = e.currentTarget!.id;
+                    const tile = tetrahedron.getFace(id.charAt(0)).getTileAtPosition(id.charAt(2));
                     if (tile) {
                         tile.nextOrientation();
-                        doDisplay();
+                        doDisplay(tetrahedron, displayData);
                     }
                 });
             }
@@ -29,20 +30,20 @@ function doDisplay() {
 }
 
 function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData; }) {
-    tetrahedron = getTetrahedron(puzzle.puzzleData);
-    tilePool = getTilePool(puzzle.puzzleData);
-    displayData = puzzle.displayData;
     if (displayInterval) {
         clearInterval(displayInterval);
     }
-    doDisplay();
-    displayInterval = setInterval(function () {
+    const tetrahedron = getTetrahedron(puzzle.puzzleData);
+    const tilePool = getTilePool(puzzle.puzzleData);
+    const displayData = puzzle.displayData;
+    doDisplay(tetrahedron, displayData);
+    displayInterval = setInterval( () => {
         let tile = (<HTMLInputElement>document.getElementById("tile-selection")!).checked ?
             tilePool.randomTile : tilePool.nextTile;
         if (tile) {
             console.assert((<HTMLInputElement>document.getElementById("tile-placement")!).checked ?
                 tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile));
-            doDisplay();
+            doDisplay(tetrahedron, displayData);
         } else {
             clearInterval(displayInterval);
             displayInterval = 0;
@@ -50,21 +51,10 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData
     }, 500);
 }
 
-let testButton = document.getElementById("test")!;
-testButton.addEventListener("click", () => {
-    import("./test-puzzle").then(function(puzzle) {
-        doPuzzle(puzzle.testPuzzle);
-    })
-});
-let pocketButton = document.getElementById("pocket")!;
-pocketButton.addEventListener("click", () => {
-    import("./pocket-puzzle").then(function(puzzle) {
-        doPuzzle(puzzle.pocketPuzzle);
-    })
-});
-let greatButton = document.getElementById("great")!;
-greatButton.addEventListener("click", () => {
-    import("./great-puzzle").then(function(puzzle) {
-        doPuzzle(puzzle.greatPuzzle);
-    })
-});
+function enablePuzzleButton(buttonId: string, puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData; }) {
+    document.getElementById(buttonId)!.addEventListener("click", () => doPuzzle(puzzle));
+}
+
+enablePuzzleButton("test", testPuzzle);
+enablePuzzleButton("pocket", pocketPuzzle);
+enablePuzzleButton("great", greatPuzzle);
