@@ -4,7 +4,7 @@ import { greatPuzzle } from "./great-puzzle";
 import { PuzzleData } from "./puzzle-data-schema";
 import { TileDisplayData } from "./puzzle-display-schema";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
-import { displayPuzzle } from "./puzzle-display";
+import { displayPuzzle, rotateTile } from "./puzzle-display";
 import { Tetrahedron } from "./tetrahedron";
 
 
@@ -18,11 +18,11 @@ function doDisplay(tetrahedron: Tetrahedron, displayData: TileDisplayData) {
             if (tileId.test(svgGroup.id)) {
                 svgGroup.addEventListener("click", (e) => {
                     // @ts-ignore
-                    const id = e.currentTarget!.id;
-                    const tile = tetrahedron.getFace(id.charAt(0)).getTileAtPosition(id.charAt(2));
+                    const tileSvg = <HTMLElement>e.currentTarget!;
+                    const tile = tetrahedron.getFace(tileSvg.id.charAt(0)).getTileAtPosition(tileSvg.id.charAt(2));
                     if (tile) {
                         tile.nextOrientation();
-                        doDisplay(tetrahedron, displayData);
+                        rotateTile(tileSvg);
                     }
                 });
             }

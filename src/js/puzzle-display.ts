@@ -6,6 +6,12 @@ import { Tetrahedron } from "./tetrahedron";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
 
+function rotateTile(tile: HTMLElement) {
+    // Use the existing element with a new SVG instance.
+    const svg = SVG(tile) as Svg;
+    svg.rotate(120, 0, 0);
+}
+
 function drawTile(svg: Svg, tileDisplay: G, segments: string[], tile: Tile) {
 
     // Draw the individual segments.
@@ -102,4 +108,4 @@ function displayPuzzle(rootElement: string | HTMLElement, puzzleToDisplay: Tetra
     return svg;
 }
 
-export { displayPuzzle }
+export { displayPuzzle, rotateTile }
