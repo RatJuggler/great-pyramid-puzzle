@@ -8,28 +8,46 @@ import { Tetrahedron } from "./tetrahedron";
 
 let tetrahedron: Tetrahedron;
 let tilePool: TilePool;
+let displayData: TileDisplayData;
 let displayInterval: number;
 
+function doDisplay() {
+    displayPuzzle("#puzzle-display", tetrahedron, displayData);
+    const tileId = RegExp('[1-4]-[1-9]');
+    document.getElementById("puzzle-display")!.querySelectorAll("g")
+        .forEach(function (svgGroup) {
+            if (tileId.test(svgGroup.id)) {
+                svgGroup.addEventListener("click", function () {
+                    const tile = tetrahedron.getFace(this.id.charAt(0)).getTileAtPosition(this.id.charAt(2));
+                    if (tile) {
+                        tile.nextOrientation();
+                        doDisplay();
+                    }
+                });
+            }
+        });
+}
 
 function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData; }) {
     tetrahedron = getTetrahedron(puzzle.puzzleData);
     tilePool = getTilePool(puzzle.puzzleData);
+    displayData = puzzle.displayData;
     if (displayInterval) {
         clearInterval(displayInterval);
     }
-    displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
+    doDisplay();
     displayInterval = setInterval(function () {
         let tile = (<HTMLInputElement>document.getElementById("tile-selection")!).checked ?
             tilePool.randomTile : tilePool.nextTile;
         if (tile) {
             console.assert((<HTMLInputElement>document.getElementById("tile-placement")!).checked ?
                 tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile));
-            displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
+            doDisplay();
         } else {
             clearInterval(displayInterval);
             displayInterval = 0;
         }
-    }, 700);
+    }, 500);
 }
 
 let testButton = document.getElementById("test")!;
