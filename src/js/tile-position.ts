@@ -3,7 +3,6 @@ import { Tile } from "./tile";
 
 
 interface TilePositionJoinProperties {
-    readonly fromSide: string,
     readonly toSide: string;
     readonly ofTilePosition: TilePosition;
     readonly onFace: Face;
@@ -14,15 +13,15 @@ export class TilePosition {
 
     private static SIDE_NAMES = ["A", "B", "C"];
 
-    private _joins = new Array<TilePositionJoinProperties>();
+    private _joins = new Map<string, TilePositionJoinProperties>();
     private _tile: Tile | null = null;
 
     constructor(private _id: string) {}
 
     toString(): string {
         let tileString = `TilePosition: ${this._id}, Contains Tile: [${this._tile}], Joins: `;
-        this._joins.forEach((join) =>
-            tileString += `(${this._id}-${join.fromSide}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
+        this._joins.forEach((join, side) =>
+            tileString += `(${this._id}-${side}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
         return tileString;
     }
 
@@ -44,8 +43,7 @@ export class TilePosition {
         if (!(TilePosition.SIDE_NAMES.includes(toSide))) {
             throw new Error(`Side to join to must be one of ${TilePosition.SIDE_NAMES}!`);
         }
-        this._joins.push({
-            fromSide: fromSide,
+        this._joins.set(fromSide, {
             toSide: toSide,
             ofTilePosition: ofTilePosition,
             onFace: onFace
@@ -56,31 +54,12 @@ export class TilePosition {
         return !this._tile;
     }
 
-    private match(tile: Tile): boolean {
-        for (const join of this._joins) {
-            console.log(join);
-            // tile.side[fromSide] match with onFace.ofTilePosition.tile.side[toSide]
-        }
-        return tile.id !== 0;
-    }
-
-    private placeTile(tile: Tile, useMatching: boolean): boolean {
+    placeTile(tile: Tile): boolean {
         if (this.isEmpty()) {
-            if (useMatching && !this.match(tile)) {
-                return false;
-            }
             this._tile = tile;
             return true;
         }
         return false;
-    }
-
-    placeTileWithoutMatching(tile: Tile): boolean {
-        return this.placeTile(tile, false);
-    }
-
-    placeTileWithMatching(tile: Tile): boolean {
-        return this.placeTile(tile, true);
     }
 
 }

@@ -45,10 +45,10 @@ describe("Puzzle display functionality", function () {
             registerWindow(window, document);
             const tetrahedron = getTetrahedron(valid_config1.testPuzzleData);
             const tilePool = getTilePool(valid_config1.testPuzzleData);
-            let tile = tilePool.nextTile;
+            let tile = tilePool.randomTile;
             while (tile) {
-                console.assert(tetrahedron.placeTileSequentiallyWithoutMatching(tile));
-                tile = tilePool.nextTile;
+                console.assert(tetrahedron.placeTileRandomly(tile));
+                tile = tilePool.randomTile;
             }
             const canvas = displayPuzzle(document.documentElement, tetrahedron, testDisplayData);
             console.log(canvas.svg());

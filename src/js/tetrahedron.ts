@@ -57,48 +57,20 @@ export class Tetrahedron {
         throw new Error(`Face (${name}) not found on Tetrahedron!`);
     }
 
-    private placeTileRandomly(tile: Tile, useMatching: boolean): boolean {
+    placeTileRandomly(tile: Tile): boolean {
         const emptyFaces = this.facesWithEmptyPositions;
         if (emptyFaces.length === 0) {
             return false;
         }
-        if (useMatching) {
-            return emptyFaces[getRandomInt(emptyFaces.length)].placeTileRandomlyWithMatching(tile);
-        } else {
-            return emptyFaces[getRandomInt(emptyFaces.length)].placeTileRandomlyWithoutMatching(tile);
-        }
+        return emptyFaces[getRandomInt(emptyFaces.length)].placeTileRandomly(tile);
     }
 
-    placeTileRandomlyWithoutMatching(tile: Tile): boolean {
-        return this.placeTileRandomly(tile, false);
-    }
-
-    placeTileRandomlyWithMatching(tile: Tile): boolean {
-        return this.placeTileRandomly(tile, true);
-    }
-
-    private placeTileSequentially(tile: Tile, useMatching: boolean): boolean {
+    placeTileSequentially(tile: Tile): boolean {
         const emptyFaces = this.facesWithEmptyPositions;
         if (emptyFaces.length === 0) {
             return false;
         }
-        if (useMatching) {
-            return emptyFaces[0].placeTileSequentiallyWithMatching(tile);
-        } else {
-            return emptyFaces[0].placeTileSequentiallyWithoutMatching(tile);
-        }
-    }
-
-    placeTileSequentiallyWithoutMatching(tile: Tile): boolean {
-        return this.placeTileSequentially(tile, false);
-    }
-
-    placeTileSequentiallyWithMatching(tile: Tile): boolean {
-        const emptyFaces = this.facesWithEmptyPositions;
-        if (emptyFaces.length === 0) {
-            return false;
-        }
-        return this.placeTileSequentially(tile, true);
+        return emptyFaces[0].placeTileSequentially(tile);
     }
 
 }
