@@ -14,6 +14,7 @@
   <meta name="og:image" content="https://github.com/RatJuggler/great-pyramid-puzzle/blob/master/images/screenshot.png?raw=true">
 
   <link rel="stylesheet" href="../node_modules/purecss/build/pure.css">
+  <link rel="stylesheet" href="../node_modules/purecss/build/grids-responsive.css">
   <link rel="stylesheet" href="./css/main.css">
 </head>
 
@@ -30,48 +31,54 @@
   </div>
 </div>
 
-<div class="content-wrapper">
-  <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="-50 -100 100 150" id="puzzle-display">
-    <!--SVG.js will add nodes in here...-->
-  </svg>
-</div>
+<div id="layout" class="pure-g">
 
-<div id="puzzle-selection">
-  <ul>
-    <li>
-      <button id="test" class="pure-button">Test - 1 Tile/Side</button>
-    </li>
-    <li>
-      <button id="pocket" class="pure-button">Pocket - 4 Tiles/Side</button>
-    </li>
-    <li>
-      <button id="great" class="pure-button">Great - 9 Tiles/Side</button>
-    </li>
-    <li>
-      <p>Tile selection:</p>
-    </li>
-    <li>
-      <div class="selector">
-        <input type="checkbox" class="selector-checkbox" id="tile-selection" tabindex="0" checked>
-        <label class="selector-label" for="tile-selection">
-          <span class="selector-inner tile-selection"></span>
-          <span class="selector-switch"></span>
-        </label>
-      </div>
-    </li>
-    <li>
-      <p>Tile placement:</p>
-    </li>
-    <li>
-      <div class="selector">
-        <input type="checkbox" class="selector-checkbox" id="tile-placement" tabindex="0" checked>
-        <label class="selector-label" for="tile-placement">
-          <span class="selector-inner tile-placement"></span>
-          <span class="selector-switch"></span>
-        </label>
-      </div>
-    </li>
-  </ul>
+  <div class="sidebar pure-u-1 pure-u-md-1-5">
+    <div id="puzzle-selection">
+      <ul>
+        <li>
+          <button id="test" class="pure-button">Test - 1 Tile/Side</button>
+        </li>
+        <li>
+          <button id="pocket" class="pure-button">Pocket - 4 Tiles/Side</button>
+        </li>
+        <li>
+          <button id="great" class="pure-button">Great - 9 Tiles/Side</button>
+        </li>
+        <li>
+          <p>Tile selection:</p>
+        </li>
+        <li>
+          <div class="selector">
+            <input type="checkbox" class="selector-checkbox" id="tile-selection" tabindex="0" checked>
+            <label class="selector-label" for="tile-selection">
+              <span class="selector-inner tile-selection"></span>
+              <span class="selector-switch"></span>
+            </label>
+          </div>
+        </li>
+        <li>
+          <p>Tile placement:</p>
+        </li>
+        <li>
+          <div class="selector">
+            <input type="checkbox" class="selector-checkbox" id="tile-placement" tabindex="0" checked>
+            <label class="selector-label" for="tile-placement">
+              <span class="selector-inner tile-placement"></span>
+              <span class="selector-switch"></span>
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="content pure-u-1 pure-u-md-4-5">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="-50 -100 100 150" id="puzzle-display">
+      <!--SVG.js will add nodes in here...-->
+    </svg>
+  </div>
+
 </div>
 
 <script src="./js/app.ts"></script>
