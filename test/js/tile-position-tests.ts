@@ -19,7 +19,7 @@ describe("TilePosition behaviour", function () {
                 expect(tilePosition.isEmpty());
             })
             it("should return the correct toString result", function () {
-                const expectedToString = "TilePosition: XYZ, Contains Tile: [null], Joins: ";
+                const expectedToString = "TilePosition: XYZ, Contains Tile: [null, Orientation: null], Joins: ";
                 expect(tilePosition.toString()).to.equal(expectedToString);
             })
         });
@@ -54,11 +54,11 @@ describe("TilePosition behaviour", function () {
         context("with valid side names for the two different TilePositions to be joined", function () {
             tilePosition1.join("A", "B", tilePosition2, faceWithOneTilePosition);
             it("should join the TilePositions in the direction given", function () {
-                const tile1ExpectedToString = "TilePosition: TP1, Contains Tile: [null], Joins: (TP1-A->1-TP2-B)";
+                const tile1ExpectedToString = "TilePosition: TP1, Contains Tile: [null, Orientation: null], Joins: (TP1-A->1-TP2-B)";
                 expect(tilePosition1.toString()).to.equal(tile1ExpectedToString);
             });
             it("should not join the TilePositions in the opposite direction", function () {
-                const tile2ExpectedToString = "TilePosition: TP2, Contains Tile: [null], Joins: ";
+                const tile2ExpectedToString = "TilePosition: TP2, Contains Tile: [null, Orientation: null], Joins: ";
                 expect(tilePosition2.toString()).to.equal(tile2ExpectedToString);
             });
         });
