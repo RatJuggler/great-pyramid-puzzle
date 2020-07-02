@@ -17,7 +17,7 @@ describe("Face behavior", function () {
             });
             it("should return the correct toString result", function () {
                 const expectedToString =
-                    "Face: 1, Tile Positions: 1, Joins: \nTilePosition: 1, Contains Tile: [null, Orientation: null], Joins: \n";
+                    "Face: 1, Tile Positions: 1, Joins: \nTilePosition: 1, Contains Tile: [null], Joins: \n";
                 expect(face.toString()).to.equal(expectedToString);
             });
         });
@@ -105,12 +105,12 @@ describe("Face behavior", function () {
             face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
             it("should join the Faces in the direction given", function () {
                 const face1ExpectedToString =
-                    "Face: 1, Tile Positions: 1, Joins: (1-A->1-B)\nTilePosition: 1, Contains Tile: [null, Orientation: null], Joins: \n";
+                    "Face: 1, Tile Positions: 1, Joins: (1-A->1-B)\nTilePosition: 1, Contains Tile: [null], Joins: \n";
                 expect(face1WithOneTilePosition.toString()).to.equal(face1ExpectedToString);
             });
             it("should not join the Faces in the opposite direction", function () {
                 const face2ExpectedToString =
-                    "Face: 1, Tile Positions: 1, Joins: \nTilePosition: 1, Contains Tile: [null, Orientation: null], Joins: \n";
+                    "Face: 1, Tile Positions: 1, Joins: \nTilePosition: 1, Contains Tile: [null], Joins: \n";
                 expect(face2WithOneTilePosition.toString()).to.equal(face2ExpectedToString);
             });
         });

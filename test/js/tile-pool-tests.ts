@@ -13,10 +13,10 @@ describe("TilePool behavior", function () {
 
     const validPuzzleData = valid_config1.testPuzzleData;
     const validTilePoolToString = "TilePool:\n" +
-        "Id: 1, Side-A: 1010, Side-B: 0010, Side-C: 0010\n" +
-        "Id: 2, Side-A: 0100, Side-B: 0100, Side-C: 1001\n" +
-        "Id: 3, Side-A: 0101, Side-B: 1001, Side-C: 1010\n" +
-        "Id: 4, Side-A: 0010, Side-B: 0100, Side-C: 0101\n";
+        "Id: 1, Side-A: 1010, Side-B: 0010, Side-C: 0010, Orientation: 0\n" +
+        "Id: 2, Side-A: 0100, Side-B: 0100, Side-C: 1001, Orientation: 0\n" +
+        "Id: 3, Side-A: 0101, Side-B: 1001, Side-C: 1010, Orientation: 0\n" +
+        "Id: 4, Side-A: 0010, Side-B: 0100, Side-C: 0101, Orientation: 0\n";
 
 
     describe("if a new TilePool is created", function () {
@@ -32,8 +32,8 @@ describe("TilePool behavior", function () {
         });
 
         context("with invalid tile configuration data file 1", function () {
+            const puzzleData = invalid_config1.testPuzzleData;
             it("should throw an error", function () {
-                const puzzleData = invalid_config1.testPuzzleData;
                 expect(function () {
                     new TilePool(puzzleData.totalNumberOfTiles, puzzleData.tiles);
                 }).to.throw(Error, "Number of tiles provided (4) does not match number expected (64)!");
@@ -41,8 +41,8 @@ describe("TilePool behavior", function () {
         });
 
         context("with invalid tile configuration data file 2", function () {
+            const puzzleData = invalid_config2.testPuzzleData;
             it("should throw an error", function () {
-                const puzzleData = invalid_config2.testPuzzleData;
                 expect(function () {
                     new TilePool(puzzleData.totalNumberOfTiles, puzzleData.tiles);
                 }).to.throw(Error, "Duplicate Tile found in pool for (3)!");
@@ -105,8 +105,8 @@ describe("TilePool behavior", function () {
         });
 
         context("when there isn't a Tile with the given id in the TilePool", function () {
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
             it("should throw an error", function () {
-                const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
                 expect(function () {
                     tilePool.getTile(999);
                 }).to.throw(Error, "Tile (999) not found in the tile pool!");
@@ -114,8 +114,8 @@ describe("TilePool behavior", function () {
         });
 
         context("when the TilePool is empty", function () {
+            const tilePool = new TilePool(0, []);
             it("should throw an error", function () {
-                const tilePool = new TilePool(0, []);
                 expect(function () {
                     tilePool.getTile(1);
                 }).to.throw(Error, "Tile (1) not found in the tile pool!");
@@ -145,7 +145,7 @@ describe("TilePool behavior", function () {
             const tile1 = tilePool.nextTile!;
             const tile2 = tilePool.nextTile!;
             const tile3 = tilePool.nextTile!;
-            it("should return the first Tile (in order) from those remaining", function () {
+            it("should return the Tiles (in order) from those remaining", function () {
                 expect(tile1).to.be.an.instanceOf(Tile);
                 expect(tile1.id).to.equal(1);
                 expect(tile2).to.be.an.instanceOf(Tile);
@@ -153,7 +153,7 @@ describe("TilePool behavior", function () {
                 expect(tile3).to.be.an.instanceOf(Tile);
                 expect(tile3.id).to.equal(3);
             });
-            it("should remove the Tile from the pool", function () {
+            it("should remove the Tiles from the pool", function () {
                 expect(function () {
                     tilePool.getTile(tile1.id);
                 }).to.throw(Error, "Tile (1) not found in the tile pool!");
@@ -167,11 +167,11 @@ describe("TilePool behavior", function () {
         });
 
         context("when there are no Tiles remaining in the TilePool", function () {
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+            for (let i = 0; i < validPuzzleData.totalNumberOfTiles; i++) {
+                assert.instanceOf(tilePool.nextTile, Tile);
+            }
             it("should return null", function () {
-                const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
-                for (let i = 0; i < validPuzzleData.totalNumberOfTiles; i++) {
-                    expect(tilePool.nextTile).to.be.an.instanceOf(Tile);
-                }
                 expect(tilePool.nextTile).to.be.null;
             });
         });
@@ -194,11 +194,11 @@ describe("TilePool behavior", function () {
         });
 
         context("when there are no Tiles remaining in the TilePool", function () {
+            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+            for (let i = 0; i < validPuzzleData.totalNumberOfTiles; i++) {
+                assert.instanceOf(tilePool.randomTile, Tile);
+            }
             it("should return null", function () {
-                const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
-                for (let i = 0; i < validPuzzleData.totalNumberOfTiles; i++) {
-                    expect(tilePool.randomTile).to.be.an.instanceOf(Tile);
-                }
                 expect(tilePool.randomTile).to.be.null;
             });
         });
