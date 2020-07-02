@@ -135,6 +135,33 @@ describe("TilePosition behaviour", function () {
 
     });
 
+    describe("if #removeTile() is called to remove a Tile", function () {
+
+        context("and the Position is empty", function () {
+            const tilePosition = new TilePosition("TP");
+            const result = tilePosition.removeTile();
+            it("should remain empty", function () {
+                expect(tilePosition.isEmpty()).to.be.true;
+            });
+            it("should return False", function () {
+                expect(result).to.be.false;
+            });
+        });
+
+        context("and the Position has a Tile in it", function () {
+            const tilePosition = new TilePosition("TP");
+            assert.isTrue(tilePosition.placeTile(TILE_1));
+            const result = tilePosition.removeTile();
+            it("should remove the Tile", function () {
+                expect(tilePosition.isEmpty()).to.be.true;
+            });
+            it("should return True", function () {
+                expect(result).to.be.true;
+            });
+        });
+
+    });
+
     describe("if #nextOrientation() is called on this Position", function () {
 
         context("and the Position doesn't have a Tile in it", function () {

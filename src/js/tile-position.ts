@@ -64,8 +64,17 @@ export class TilePosition {
         return false;
     }
 
+    removeTile(): boolean {
+        if (this.isEmpty()) {
+            return false;
+        }
+        this._tile = null;
+        this._orientation= null;
+        return true;
+    }
+
     nextOrientation(): number {
-        if (this._tile == null || this._orientation == null) {
+        if (this.isEmpty() || this._orientation == null) {
             throw new Error("Orientation must be initialised and used with a Tile!");
         }
         this._orientation = ++this._orientation % TilePosition.SIDE_NAMES.length;
