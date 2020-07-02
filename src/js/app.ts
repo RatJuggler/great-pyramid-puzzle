@@ -35,15 +35,14 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData
     }
     const tetrahedron = getTetrahedron(puzzle.puzzleData);
     const tilePool = getTilePool(puzzle.puzzleData);
-    const displayData = puzzle.displayData;
-    doDisplay(tetrahedron, displayData);
+    doDisplay(tetrahedron, puzzle.displayData);
     displayInterval = setInterval( () => {
         let tile = (<HTMLInputElement>document.getElementById("tile-selection")!).checked ?
             tilePool.randomTile : tilePool.nextTile;
         if (tile) {
             console.assert((<HTMLInputElement>document.getElementById("tile-placement")!).checked ?
                 tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile));
-            doDisplay(tetrahedron, displayData);
+            doDisplay(tetrahedron, puzzle.displayData);
         } else {
             clearInterval(displayInterval);
             displayInterval = 0;
