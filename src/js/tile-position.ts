@@ -15,7 +15,7 @@ export class TilePosition {
 
     private _joins = new Map<string, TilePositionJoinProperties>();
     private _tile: Tile | null = null;
-    private _orientation: string | null = null;
+    private _orientation: number | null = null;
 
     constructor(private _id: string) {}
 
@@ -58,10 +58,18 @@ export class TilePosition {
     placeTile(tile: Tile): boolean {
         if (this.isEmpty()) {
             this._tile = tile;
-            this._orientation = TilePosition.SIDE_NAMES[0];
+            this._orientation = 0;
             return true;
         }
         return false;
+    }
+
+    nextOrientation(): number {
+        if (this._tile == null || this._orientation == null) {
+            throw new Error("Orientation must be initialised and used with a Tile!");
+        }
+        this._orientation = ++this._orientation % TilePosition.SIDE_NAMES.length;
+        return this._orientation;
     }
 
 }

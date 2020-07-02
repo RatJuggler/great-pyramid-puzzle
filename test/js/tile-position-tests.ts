@@ -89,7 +89,7 @@ describe("TilePosition behaviour", function () {
 
     });
 
-    describe("if #isEmpty() is called to test if there is already a Tile at this position", function () {
+    describe("if #isEmpty() is called to test if there is already a Tile at this Position", function () {
 
         context("and the Position is empty", function () {
             const tilePosition = new TilePosition("TP");
@@ -130,6 +130,37 @@ describe("TilePosition behaviour", function () {
             });
             it("should return False", function () {
                 expect(result).to.be.false;
+            });
+        });
+
+    });
+
+    describe("if #nextOrientation() is called on this Position", function () {
+
+        context("and the Position doesn't have a Tile in it", function () {
+            const tilePosition = new TilePosition("TP");
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePosition.nextOrientation();
+                }).to.throw(Error, "Orientation must be initialised and used with a Tile!");
+            });
+        });
+
+        context("and the Position has a newly placed Tile in it", function () {
+            const tilePosition = new TilePosition("TP");
+            assert.isTrue(tilePosition.placeTile(TILE_1));
+            it("should update and return the next orientation", function () {
+                expect(tilePosition.nextOrientation()).to.equal(1);
+            });
+        });
+
+        context("and the Tile at this Position has already had the Orientation changed twice", function () {
+            const tilePosition = new TilePosition("TP");
+            assert.isTrue(tilePosition.placeTile(TILE_1));
+            assert.strictEqual(tilePosition.nextOrientation(), 1);
+            assert.strictEqual(tilePosition.nextOrientation(), 2);
+            it("should update and return the initial orientation", function () {
+                expect(tilePosition.nextOrientation()).to.equal(0);
             });
         });
 
