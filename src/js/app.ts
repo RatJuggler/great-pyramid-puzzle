@@ -2,7 +2,7 @@ import { testPuzzle } from "./test-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
 import { PuzzleData } from "./puzzle-data-schema";
-import { TileDisplayData } from "./puzzle-display-schema";
+import { DisplayData } from "./puzzle-display-schema";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
 import { displayPuzzle, rotateTile } from "./puzzle-display";
 import { Tetrahedron } from "./tetrahedron";
@@ -10,7 +10,7 @@ import { Tetrahedron } from "./tetrahedron";
 
 let displayInterval: number;
 
-function doDisplay(tetrahedron: Tetrahedron, displayData: TileDisplayData) {
+function doDisplay(tetrahedron: Tetrahedron, displayData: DisplayData) {
     displayPuzzle("#puzzle-display", tetrahedron, displayData);
     const tileId = RegExp('[1-4]-[1-9]');
     document.getElementById("puzzle-display")!.querySelectorAll("g")
@@ -29,7 +29,7 @@ function doDisplay(tetrahedron: Tetrahedron, displayData: TileDisplayData) {
         });
 }
 
-function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData; }) {
+function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; }) {
     if (displayInterval) {
         clearInterval(displayInterval);
     }
@@ -51,7 +51,7 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData
     }, 500);
 }
 
-function enablePuzzleButton(buttonId: string, puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData; }) {
+function enablePuzzleButton(buttonId: string, puzzle: { puzzleData: PuzzleData; displayData: DisplayData; }) {
     document.getElementById(buttonId)!.addEventListener("click", () => doPuzzle(puzzle));
 }
 

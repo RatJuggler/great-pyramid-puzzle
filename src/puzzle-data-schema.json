@@ -1,7 +1,7 @@
 {
-  "$id": "https://pyramid.puzzle/pyramid-puzzle-data-schema.json",
+  "$id": "https://pyramid.puzzle/puzzle-data-schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "The Great Pyramid Puzzle",
+  "title": "The Great Pyramid Puzzle Data",
   "description": "Define the tile positions and tiles used in the Pyramid Puzzles.",
   "type": "object",
   "additionalProperties": true,
