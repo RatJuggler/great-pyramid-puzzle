@@ -41,9 +41,9 @@ function drawTilePosition(svg: Svg, tilePosition: TilePosition, rotate: boolean)
     if (tilePosition.isEmpty()) {
         hover += "Empty";
     } else {
-        hover += tilePosition.tile!.id;
+        hover += tilePosition.tile.id;
         const segments = rotate ? display_data.down_segments : display_data.up_segments;
-        drawTile(svg, tileDisplay, segments, tilePosition.tile!);
+        drawTile(svg, tileDisplay, segments, tilePosition.tile);
     }
 
     tileDisplay.element('title').words(hover);

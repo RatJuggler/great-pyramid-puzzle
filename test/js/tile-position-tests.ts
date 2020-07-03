@@ -38,8 +38,10 @@ describe("TilePosition behaviour", function () {
 
         context("on a TilePosition which doesn't have a Tile in it", function () {
             const tilePosition = new TilePosition("TP", "1");
-            it("should return null", function () {
-                expect(tilePosition.tile).to.be.null;
+            it("should return throw an error", function () {
+                expect(function () {
+                    tilePosition.tile;
+                }).to.throw(Error, "Can't fetch a Tile when there isn't one!");
             });
         });
 

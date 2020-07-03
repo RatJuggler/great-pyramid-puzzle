@@ -80,8 +80,10 @@ describe("Face behavior", function () {
 
         context("with the id of an existing TilePosition which doesn't have a Tile in it", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            it("should return null", function () {
-                expect(faceWithOneTilePosition.getTileAtPosition("1")).to.be.null;
+            it("should return throw an error", function () {
+                expect(function () {
+                    faceWithOneTilePosition.getTileAtPosition("1");
+                }).to.throw(Error, "Can't fetch a Tile when there isn't one!");
             });
         });
 

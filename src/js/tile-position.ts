@@ -33,9 +33,13 @@ export class TilePosition {
         return this._onFace + "-" + this._id;
     }
 
-    get tile(): Tile | null {
+    get tile(): Tile {
+        if (this._tile === null) {
+            throw new Error("Can't fetch a Tile when there isn't one!");
+        }
         return this._tile;
     }
+
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition, onFace: Face) : void {
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
