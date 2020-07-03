@@ -4,14 +4,15 @@ import { greatPuzzle } from "./great-puzzle";
 import { PuzzleData } from "./puzzle-data-schema";
 import { DisplayData } from "./puzzle-display-schema";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
-import { displayPuzzle, rotateTile } from "./puzzle-display";
+import { DisplayManager } from "./puzzle-display";
 import { Tetrahedron } from "./tetrahedron";
 
 
 let displayInterval: number;
+let displayManager: DisplayManager;
 
-function doDisplay(tetrahedron: Tetrahedron, displayData: DisplayData) {
-    displayPuzzle("#puzzle-display", tetrahedron, displayData);
+function doDisplay(tetrahedron: Tetrahedron) {
+    displayManager.displayPuzzle("#puzzle-display", tetrahedron);
     const tileId = RegExp('[1-4]-[1-9]');
     document.getElementById("puzzle-display")!.querySelectorAll("g")
         .forEach(function (svgGroup) {
@@ -22,7 +23,7 @@ function doDisplay(tetrahedron: Tetrahedron, displayData: DisplayData) {
                     const tile = tetrahedron.getFace(tileSvg.id.charAt(0)).getTileAtPosition(tileSvg.id.charAt(2));
                     if (tile) {
                         tile.nextOrientation();
-                        rotateTile(tileSvg);
+                        displayManager.rotateTile(tileSvg);
                     }
                 });
             }
@@ -35,7 +36,8 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; })
     }
     const tetrahedron = getTetrahedron(puzzle.puzzleData);
     const tilePool = getTilePool(puzzle.puzzleData);
-    doDisplay(tetrahedron, puzzle.displayData);
+    displayManager = new DisplayManager(puzzle.displayData);
+    doDisplay(tetrahedron);
     displayInterval = setInterval( () => {
         const selection = <HTMLInputElement>document.getElementById("tile-selection")!;
         const tile = selection.checked ? tilePool.randomTile : tilePool.nextTile;
@@ -43,7 +45,7 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; })
             const placement = <HTMLInputElement>document.getElementById("tile-placement")!;
             const tilePlaced = placement.checked ? tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile);
             console.assert(!!tilePlaced);
-            doDisplay(tetrahedron, puzzle.displayData);
+            doDisplay(tetrahedron);
         } else {
             clearInterval(displayInterval);
             displayInterval = 0;
