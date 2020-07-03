@@ -16,10 +16,10 @@ export class TilePosition {
     private _joins = new Map<string, TilePositionJoinProperties>();
     private _tile: Tile | null = null;
 
-    constructor(private _id: string) {}
+    constructor(private _id: string, private _onFace: string) {}
 
     toString(): string {
-        let tileString = `TilePosition: ${this._id}, Contains Tile: [${this._tile}], Joins: `;
+        let tileString = `TilePosition: ${this._id}, On Face: ${this._onFace}, Contains Tile: [${this._tile}], Joins: `;
         this._joins.forEach((join, side) =>
             tileString += `(${this._id}-${side}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
         return tileString;
@@ -29,10 +29,13 @@ export class TilePosition {
         return this._id;
     }
 
+    get name(): String {
+        return this._onFace + "-" + this._id;
+    }
+
     get tile(): Tile | null {
         return this._tile;
     }
-
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition, onFace: Face) : void {
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
