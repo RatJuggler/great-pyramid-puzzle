@@ -12,7 +12,7 @@ let displayInterval: number;
 let displayManager: DisplayManager;
 
 function doDisplay(tetrahedron: Tetrahedron) {
-    displayManager.displayPuzzle("#puzzle-display", tetrahedron);
+    displayManager.displayPuzzle(tetrahedron);
     const tileId = RegExp('[1-4]-[1-9]');
     document.getElementById("puzzle-display")!.querySelectorAll("g")
         .forEach(function (svgGroup) {
@@ -36,7 +36,7 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; })
     }
     const tetrahedron = getTetrahedron(puzzle.puzzleData);
     const tilePool = getTilePool(puzzle.puzzleData);
-    displayManager = new DisplayManager(puzzle.displayData);
+    displayManager = new DisplayManager("#puzzle-display", puzzle.displayData);
     doDisplay(tetrahedron);
     displayInterval = setInterval( () => {
         const selection = <HTMLInputElement>document.getElementById("tile-selection")!;

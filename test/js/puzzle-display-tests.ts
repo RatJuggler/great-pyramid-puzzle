@@ -19,8 +19,8 @@ describe("Puzzle display functionality", function () {
             const document = window.document;
             registerWindow(window, document);
             const tetrahedron = getTetrahedron(valid_data1.testPuzzleData);
-            const displayManager = new DisplayManager(valid_display1);
-            const canvas = displayManager.displayPuzzle(document.documentElement, tetrahedron);
+            const displayManager = new DisplayManager(document.documentElement, valid_display1);
+            const canvas = displayManager.displayPuzzle(tetrahedron);
             console.log(canvas.svg());
             it("should have 4 faces and 4 empty tiles", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(8);
@@ -36,13 +36,13 @@ describe("Puzzle display functionality", function () {
             registerWindow(window, document);
             const tetrahedron = getTetrahedron(valid_data1.testPuzzleData);
             const tilePool = getTilePool(valid_data1.testPuzzleData);
-            const displayManager = new DisplayManager(valid_display1);
+            const displayManager = new DisplayManager(document.documentElement, valid_display1);
             let tile = tilePool.randomTile;
             while (tile) {
                 assert.isNotNull(tetrahedron.placeTileRandomly(tile));
                 tile = tilePool.randomTile;
             }
-            const canvas = displayManager.displayPuzzle(document.documentElement, tetrahedron);
+            const canvas = displayManager.displayPuzzle(tetrahedron);
             console.log(canvas.svg());
             it("should have 4 faces and 4 tiles", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(8);
