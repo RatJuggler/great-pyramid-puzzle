@@ -1,0 +1,9 @@
+{
+    "tileScale": 1,
+    "tilePositions": [
+        {
+            "name": "1",
+            "center": {"x": 0, "y": 0, "r": 0}
+        }
+    ]
+}
