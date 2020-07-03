@@ -29,7 +29,7 @@ export class TilePosition {
         return this._id;
     }
 
-    get name(): String {
+    get name(): string {
         return this._onFace + "-" + this._id;
     }
 
