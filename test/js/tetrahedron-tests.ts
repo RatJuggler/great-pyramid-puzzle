@@ -3,6 +3,7 @@ import invalid_config1 from "../invalid-face-puzzle-data1.json";
 import { Face } from "../../src/js/face";
 import { Tetrahedron } from '../../src/js/tetrahedron';
 import { TilePool } from "../../src/js/tile-pool";
+import { TilePosition } from "../../src/js/tile-position";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -80,21 +81,29 @@ describe("Tetrahedron behaviour", function () {
             it("should place the Tile in a random empty Position on a random Face", function () {
                 expect(tetrahedron.toString()).to.contain(TILE_1.toString());
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should not return null", function () {
+                expect(result).to.not.be.null;
+            });
+            it("should return the updated Position", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result!.tile).to.equal(TILE_1);
             });
         });
 
         context("and the Tetrahedron already has Tiles on it", function () {
             const tetrahedron =
                 new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
-            assert.isTrue(tetrahedron.placeTileRandomly(TILE_1));
+            assert.isNotNull(tetrahedron.placeTileRandomly(TILE_1));
             const result = tetrahedron.placeTileRandomly(TILE_2);
             it("should place the Tile in a random empty Position on a random Face", function () {
                 expect(tetrahedron.toString()).to.contain(TILE_2.toString());
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should not return null", function () {
+                expect(result).to.not.be.null;
+            });
+            it("should return the updated Position", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result!.tile).to.equal(TILE_2);
             });
         });
 
@@ -104,15 +113,15 @@ describe("Tetrahedron behaviour", function () {
             const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
             let tile = tilePool.randomTile;
             while (tile) {
-                assert.isTrue(tetrahedron.placeTileRandomly(tile));
+                assert.isNotNull(tetrahedron.placeTileRandomly(tile));
                 tile = tilePool.randomTile;
             }
             const result = tetrahedron.placeTileRandomly(TILE_1);
             it("should not be placed", function () {
                 expect(tetrahedron.toString()).to.not.contain(TILE_1.toString());
             });
-            it("should return False", function () {
-                expect(result).to.be.false;
+            it("should return null", function () {
+                expect(result).to.be.null;
             });
         });
 
@@ -127,21 +136,29 @@ describe("Tetrahedron behaviour", function () {
             it("should place the Tile on Face 1 at Position 1", function () {
                 expect(tetrahedron.getFace("1").getTileAtPosition("1")).to.equal(TILE_1);
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should not return null", function () {
+                expect(result).to.not.be.null;
+            });
+            it("should return the updated Position", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result!.tile).to.equal(TILE_1);
             });
         });
 
         context("and the Tetrahedron already has Tiles on it", function () {
             const tetrahedron =
                 new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
-            assert.isTrue(tetrahedron.placeTileSequentially(TILE_1));
+            assert.isNotNull(tetrahedron.placeTileSequentially(TILE_1));
             const result = tetrahedron.placeTileSequentially(TILE_2);
             it("should place the Tile at the next sequentially free position", function () {
                 expect(tetrahedron.getFace("2").getTileAtPosition("1")).to.equal(TILE_2);
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should not return null", function () {
+                expect(result).to.not.be.null;
+            });
+            it("should return the updated Position", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result!.tile).to.equal(TILE_2);
             });
         });
 
@@ -151,15 +168,15 @@ describe("Tetrahedron behaviour", function () {
             const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
             let tile = tilePool.randomTile;
             while (tile) {
-                assert.isTrue(tetrahedron.placeTileSequentially(tile));
+                assert.isNotNull(tetrahedron.placeTileSequentially(tile));
                 tile = tilePool.randomTile;
             }
             const result = tetrahedron.placeTileSequentially(TILE_1);
             it("should not be placed", function () {
                 expect(tetrahedron.toString()).to.not.contain(TILE_1.toString());
             });
-            it("should return False", function () {
-                expect(result).to.be.false;
+            it("should return null", function () {
+                expect(result).to.be.null;
             });
         });
 

@@ -61,12 +61,12 @@ export class TilePosition {
         return !this._tile;
     }
 
-    placeTile(tile: Tile): boolean {
-        if (this.isEmpty()) {
-            this._tile = tile.place();
-            return true;
+    placeTile(tile: Tile): TilePosition {
+        if (!this.isEmpty()) {
+            throw new Error("Can't place a Tile when the position is already filled!");
         }
-        return false;
+        this._tile = tile.place();
+        return this;
     }
 
     removeTile(): boolean {

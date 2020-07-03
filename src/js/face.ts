@@ -88,19 +88,19 @@ export class Face {
         return this.emptyTilePositions.length > 0;
     }
 
-    private placeTile(tile: Tile, position: number) {
+    private placeTile(tile: Tile, position: number): TilePosition | null {
         const emptyPositions = this.emptyTilePositions;
         if (emptyPositions.length === 0) {
-            return false;
+            return null;
         }
         return emptyPositions[position].placeTile(tile);
     }
 
-    placeTileRandomly(tile: Tile): boolean {
+    placeTileRandomly(tile: Tile): TilePosition | null {
         return this.placeTile(tile, getRandomInt(this.emptyTilePositions.length));
     }
 
-    placeTileSequentially(tile: Tile): boolean {
+    placeTileSequentially(tile: Tile): TilePosition | null {
         return this.placeTile(tile, 0);
     }
 

@@ -1,7 +1,7 @@
 import valid_config1 from "../valid-test-puzzle-data1.json";
 import { getTetrahedron, getTilePool } from "../../src/js/puzzle-loader";
 import { displayPuzzle } from "../../src/js/puzzle-display";
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
 import { createSVGWindow } from 'svgdom';
@@ -47,7 +47,7 @@ describe("Puzzle display functionality", function () {
             const tilePool = getTilePool(valid_config1.testPuzzleData);
             let tile = tilePool.randomTile;
             while (tile) {
-                console.assert(tetrahedron.placeTileRandomly(tile));
+                assert.isNotNull(tetrahedron.placeTileRandomly(tile));
                 tile = tilePool.randomTile;
             }
             const canvas = displayPuzzle(document.documentElement, tetrahedron, testDisplayData);

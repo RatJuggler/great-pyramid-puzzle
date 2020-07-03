@@ -1,6 +1,7 @@
 import { Face } from "./face";
 import { FaceData } from "./puzzle-data-schema";
 import { Tile } from "./tile";
+import { TilePosition } from "./tile-position";
 import { getRandomInt } from "./utils";
 
 
@@ -57,18 +58,18 @@ export class Tetrahedron {
         throw new Error(`Face (${name}) not found on Tetrahedron!`);
     }
 
-    placeTileRandomly(tile: Tile): boolean {
+    placeTileRandomly(tile: Tile): TilePosition | null {
         const emptyFaces = this.facesWithEmptyPositions;
         if (emptyFaces.length === 0) {
-            return false;
+            return null;
         }
         return emptyFaces[getRandomInt(emptyFaces.length)].placeTileRandomly(tile);
     }
 
-    placeTileSequentially(tile: Tile): boolean {
+    placeTileSequentially(tile: Tile): TilePosition | null {
         const emptyFaces = this.facesWithEmptyPositions;
         if (emptyFaces.length === 0) {
-            return false;
+            return null;
         }
         return emptyFaces[0].placeTileSequentially(tile);
     }

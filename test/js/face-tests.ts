@@ -72,7 +72,7 @@ describe("Face behavior", function () {
 
         context("with the id of an existing TilePosition which has a Tile in it", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isTrue(faceWithOneTilePosition.placeTileRandomly(TILE_1));
+            assert.isNotNull(faceWithOneTilePosition.placeTileRandomly(TILE_1));
             it("should return the Tile", function () {
                 expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
             });
@@ -163,7 +163,7 @@ describe("Face behavior", function () {
 
         context("and there aren't any empty Tile Positions", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isTrue(faceWithOneTilePosition.placeTileSequentially(TILE_1));
+            assert.isNotNull(faceWithOneTilePosition.placeTileSequentially(TILE_1));
             it("should return False", function () {
                 expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.false;
             });
@@ -179,32 +179,40 @@ describe("Face behavior", function () {
             it("should place the Tile in a random Position", function () {
                 expect(faceWithOneTilePosition.toString()).to.contain(TILE_1.toString());
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should not return null", function () {
+                expect(result).to.not.be.null;
+            });
+            it("should return the updated Position", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result!.tile).to.equal(TILE_1);
             });
         });
 
         context("and the Face already has some filled Tile Positions on it", function () {
             const faceWithFourTilePositions = new Face("2", 4, FOUR_TILE_POSITION_DATA);
-            assert.isTrue(faceWithFourTilePositions.placeTileRandomly(TILE_1));
+            assert.isNotNull(faceWithFourTilePositions.placeTileRandomly(TILE_1));
             const result = faceWithFourTilePositions.placeTileRandomly(TILE_2);
             it("should place the Tile in a random empty Position", function () {
                 expect(faceWithFourTilePositions.toString()).to.contain(TILE_2.toString());
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should not return null", function () {
+                expect(result).to.not.be.null;
+            });
+            it("should return the updated Position", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result!.tile).to.equal(TILE_2);
             });
         });
 
         context("and the Face has no remaining empty Tile Positions", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isTrue(faceWithOneTilePosition.placeTileRandomly(TILE_1));
+            assert.isNotNull(faceWithOneTilePosition.placeTileRandomly(TILE_1));
             const result = faceWithOneTilePosition.placeTileRandomly(TILE_2);
             it("should not be placed", function () {
                 expect(faceWithOneTilePosition.toString()).to.not.contain(TILE_2.toString());
             });
-            it("should return False", function () {
-                expect(result).to.be.false;
+            it("should return null", function () {
+                expect(result).to.be.null;
             });
         });
 
@@ -218,32 +226,40 @@ describe("Face behavior", function () {
             it("should place the Tile at Position 1", function () {
                 expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should not return null", function () {
+                expect(result).to.not.be.null;
+            });
+            it("should return the updated Position", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result!.tile).to.equal(TILE_1);
             });
         });
 
         context("and the Face already has some filled Tile Positions on it", function () {
             const faceWithFourTilePositions = new Face("2", 4, FOUR_TILE_POSITION_DATA);
-            assert.isTrue(faceWithFourTilePositions.placeTileSequentially(TILE_1));
+            assert.isNotNull(faceWithFourTilePositions.placeTileSequentially(TILE_1));
             const result = faceWithFourTilePositions.placeTileSequentially(TILE_2);
             it("should place the Tile at the next sequentially free Position", function () {
                 expect(faceWithFourTilePositions.getTileAtPosition("2")).to.equal(TILE_2);
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should not return null", function () {
+                expect(result).to.not.be.null;
+            });
+            it("should return the updated Position", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result!.tile).to.equal(TILE_2);
             });
         });
 
         context("and the Face has no remaining empty Tile Positions", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isTrue(faceWithOneTilePosition.placeTileSequentially(TILE_1));
+            assert.isNotNull(faceWithOneTilePosition.placeTileSequentially(TILE_1));
             const result = faceWithOneTilePosition.placeTileSequentially(TILE_2);
             it("should not be placed", function () {
                 expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
             });
-            it("should return False", function () {
-                expect(result).to.be.false;
+            it("should return null", function () {
+                expect(result).to.be.null;
             });
         });
 

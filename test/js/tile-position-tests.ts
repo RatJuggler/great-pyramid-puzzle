@@ -1,5 +1,5 @@
-import { TilePosition } from '../../src/js/tile-position';
 import { Face } from "../../src/js/face";
+import { TilePosition } from '../../src/js/tile-position';
 import { assert, expect} from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -30,7 +30,7 @@ describe("TilePosition behaviour", function () {
 
         context("on a TilePosition which has a Tile in it", function () {
             const tilePosition = new TilePosition("TP", "1");
-            assert.isTrue(tilePosition.placeTile(TILE_1));
+            assert.isNotNull(tilePosition.placeTile(TILE_1));
             it("should return the Tile", function () {
                 expect(tilePosition.tile).to.equal(TILE_1);
             });
@@ -102,7 +102,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position is already occupied by a Tile", function () {
             const tilePosition = new TilePosition("TP", "1");
-            assert.isTrue(tilePosition.placeTile(TILE_1));
+            assert.isNotNull(tilePosition.placeTile(TILE_1));
             it("should return False", function () {
                 expect(tilePosition.isEmpty()).to.be.false;
             });
@@ -118,20 +118,25 @@ describe("TilePosition behaviour", function () {
             it("should be placed", function () {
                 expect(tilePosition.tile).to.equal(TILE_1);
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should not return null", function () {
+                expect(result).to.not.be.null;
+            });
+            it("should return the updated Position", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result.tile).to.equal(TILE_1);
             });
         });
 
         context("and the Position is already occupied by a Tile", function () {
             const tilePosition = new TilePosition("TP", "1");
-            assert.isTrue(tilePosition.placeTile(TILE_1));
-            const result = tilePosition.placeTile(TILE_2);
+            assert.isNotNull(tilePosition.placeTile(TILE_1));
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePosition.placeTile(TILE_2);
+                }).to.throw(Error, "Can't place a Tile when the position is already filled!");
+            });
             it("should not be placed", function () {
                 expect(tilePosition.tile).to.equal(TILE_1);
-            });
-            it("should return False", function () {
-                expect(result).to.be.false;
             });
         });
 
@@ -152,7 +157,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it", function () {
             const tilePosition = new TilePosition("TP", "1");
-            assert.isTrue(tilePosition.placeTile(TILE_1));
+            assert.isNotNull(tilePosition.placeTile(TILE_1));
             const result = tilePosition.removeTile();
             it("should remove the Tile", function () {
                 expect(tilePosition.isEmpty()).to.be.true;
