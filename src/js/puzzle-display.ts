@@ -62,7 +62,7 @@ export class DisplayManager {
                 (fData.x + tpData.x) * this._displayData.faceScale,
                 (fData.y + tpData.y) * this._displayData.faceScale);
         // Group and identify the elements showing at a tile position.
-        const tpGroup = this._svg.group().id(tilePosition.name).setData({rotate: tpData.r});
+        const tpGroup = this._svg.group().id(tilePosition.id).setData({rotate: tpData.r});
         this.drawTilePosition(tpGroup, tilePosition, tpData.r);
         return tpGroup.transform(tPosition);
     }
@@ -115,7 +115,7 @@ export class DisplayManager {
     }
 
     redrawTilePosition(tilePosition: TilePosition, puzzleDisplay: HTMLElement): void {
-        const tpElement = puzzleDisplay.querySelector("[id='" + tilePosition.name + "']")!;
+        const tpElement = puzzleDisplay.querySelector("[id='" + tilePosition.id + "']")!;
         const tpGroup = SVG(tpElement) as G;
         tpGroup.clear();
         this.drawTilePosition(tpGroup, tilePosition, tpGroup.dom.rotate);

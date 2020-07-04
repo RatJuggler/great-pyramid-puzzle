@@ -16,21 +16,21 @@ export class TilePosition {
     private _joins = new Map<string, TilePositionJoinProperties>();
     private _tile: Tile | null = null;
 
-    constructor(private _id: string, private _onFace: string) {}
+    constructor(private _name: string, private _onFace: string) {}
 
     toString(): string {
-        let tileString = `TilePosition: ${this._id}, On Face: ${this._onFace}, Contains Tile: [${this._tile}], Joins: `;
+        let tileString = `TilePosition: ${this._name}, On Face: ${this._onFace}, Contains Tile: [${this._tile}], Joins: `;
         this._joins.forEach((join, side) =>
-            tileString += `(${this._id}-${side}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
+            tileString += `(${this._name}-${side}->${join.onFace.name}-${join.ofTilePosition.name}-${join.toSide})`);
         return tileString;
     }
 
     get id(): string {
-        return this._id;
+        return this._onFace + "-" + this._name;
     }
 
     get name(): string {
-        return this._onFace + "-" + this._id;
+        return this._name;
     }
 
     get tile(): Tile {
