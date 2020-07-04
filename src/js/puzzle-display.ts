@@ -55,15 +55,21 @@ export class DisplayManager {
         return tpGroup;
     }
 
-    private displayTilePosition(tilePosition: TilePosition, rotate: number): G {
+    private displayTilePosition(tilePosition: TilePosition, fData: CenterPointData, tpData: CenterPointData): G {
+        // Build the tile position transform.
+        const tPosition =
+            new Matrix(this._scaleTile, 0, 0, this._scaleTile,
+                (fData.x + tpData.x) * this._displayData.faceScale,
+                (fData.y + tpData.y) * this._displayData.faceScale);
         // Group and identify the elements showing at a tile position.
-        const tpGroup = this._svg.group().id(tilePosition.name).setData({rotate: rotate});
-        this.drawTilePosition(tpGroup, tilePosition, rotate);
-        return tpGroup;
+        const tpGroup = this._svg.group().id(tilePosition.name).setData({rotate: tpData.r});
+        this.drawTilePosition(tpGroup, tilePosition, tpData.r);
+        return tpGroup.transform(tPosition);
     }
 
     private drawFace(fCenter: { x: any; y: any; }, name: string): G {
-        const fPosition = new Matrix(this._displayData.faceScale, 0, 0, this._displayData.faceScale, fCenter.x, fCenter.y);
+        const fPosition =
+            new Matrix(this._displayData.faceScale, 0, 0, this._displayData.faceScale, fCenter.x, fCenter.y);
         // Create a group for the elements on a face with an identifier.
         const fGroup = this._svg.group().id("face" + name);
         fGroup.element('title').words("Face " + name);
@@ -77,18 +83,15 @@ export class DisplayManager {
 
     private displayFace(fData: CenterPointData, puzzleFace: Face) {
         // Determine the center of the face and draw it.
-        const fCenter = {x: fData.x * this._displayData.faceScale, y: fData.y * this._displayData.faceScale};
+        const fCenter = {
+            x: fData.x * this._displayData.faceScale,
+            y: fData.y * this._displayData.faceScale
+        };
         const fGroup = this.drawFace(fCenter, puzzleFace.name);
         // Draw each tile position on the face.
         this._displayData.tilePositions.forEach((tpData) => {
             const tilePosition = puzzleFace.getTilePosition(tpData.id);
-            // Build the tile position transform.
-            const tPosition =
-                new Matrix(this._scaleTile, 0, 0, this._scaleTile,
-                    (fData.x + tpData.center.x) * this._displayData.faceScale,
-                    (fData.y + tpData.center.y) * this._displayData.faceScale);
-            fGroup.add(
-                this.displayTilePosition(tilePosition, tpData.center.r).transform(tPosition));
+            fGroup.add(this.displayTilePosition(tilePosition, fData, tpData.center));
         });
         // Rotate the face if required.
         fGroup.rotate(fData.r, fCenter.x, fCenter.y);
