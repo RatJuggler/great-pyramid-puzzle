@@ -109,7 +109,7 @@
             },
             {
               "fromSide": "C",
-              "toSide": "B",
+              "toSide": "A",
               "ofTilePosition": "3",
               "onFace": "1"
             }

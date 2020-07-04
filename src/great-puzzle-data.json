@@ -34,7 +34,7 @@
             },
             {
               "fromSide": "B",
-              "toSide": "A",
+              "toSide": "C",
               "ofTilePosition": "3",
               "onFace": "1"
             },
@@ -51,13 +51,13 @@
           "joins": [
             {
               "fromSide": "A",
-              "toSide": "C",
+              "toSide": "B",
               "ofTilePosition": "3",
               "onFace": "1"
             },
             {
               "fromSide": "B",
-              "toSide": "A",
+              "toSide": "C",
               "ofTilePosition": "6",
               "onFace": "1"
             },
@@ -74,20 +74,20 @@
           "joins": [
             {
               "fromSide": "A",
-              "toSide": "B",
-              "ofTilePosition": "1",
-              "onFace": "1"
-            },
-            {
-              "fromSide": "B",
               "toSide": "C",
               "ofTilePosition": "4",
               "onFace": "1"
             },
             {
-              "fromSide": "C",
+              "fromSide": "B",
               "toSide": "A",
               "ofTilePosition": "2",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTilePosition": "1",
               "onFace": "1"
             }
           ]
@@ -103,13 +103,13 @@
             },
             {
               "fromSide": "B",
-              "toSide": "A",
+              "toSide": "C",
               "ofTilePosition": "8",
               "onFace": "1"
             },
             {
               "fromSide": "C",
-              "toSide": "B",
+              "toSide": "A",
               "ofTilePosition": "3",
               "onFace": "1"
             }
@@ -120,7 +120,7 @@
           "joins": [
             {
               "fromSide": "A",
-              "toSide": "C",
+              "toSide": "B",
               "ofTilePosition": "6",
               "onFace": "1"
             },
@@ -143,20 +143,20 @@
           "joins": [
             {
               "fromSide": "A",
-              "toSide": "B",
-              "ofTilePosition": "2",
-              "onFace": "1"
-            },
-            {
-              "fromSide": "B",
               "toSide": "C",
               "ofTilePosition": "7",
               "onFace": "1"
             },
             {
-              "fromSide": "C",
+              "fromSide": "B",
               "toSide": "A",
               "ofTilePosition": "5",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTilePosition": "2",
               "onFace": "1"
             }
           ]
@@ -166,7 +166,7 @@
           "joins": [
             {
               "fromSide": "A",
-              "toSide": "C",
+              "toSide": "B",
               "ofTilePosition": "8",
               "onFace": "1"
             },
@@ -178,7 +178,7 @@
             },
             {
               "fromSide": "C",
-              "toSide": "B",
+              "toSide": "A",
               "ofTilePosition": "6",
               "onFace": "1"
             }
@@ -189,20 +189,20 @@
           "joins": [
             {
               "fromSide": "A",
-              "toSide": "B",
-              "ofTilePosition": "4",
-              "onFace": "1"
-            },
-            {
-              "fromSide": "B",
               "toSide": "C",
               "ofTilePosition": "9",
               "onFace": "1"
             },
             {
-              "fromSide": "C",
+              "fromSide": "B",
               "toSide": "A",
               "ofTilePosition": "7",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTilePosition": "4",
               "onFace": "1"
             }
           ]
@@ -224,7 +224,7 @@
             },
             {
               "fromSide": "C",
-              "toSide": "B",
+              "toSide": "A",
               "ofTilePosition": "8",
               "onFace": "1"
             }
