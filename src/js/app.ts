@@ -48,9 +48,9 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; })
     placeTileInterval = setInterval( () => {
         const tile = selection.checked ? tilePool.randomTile : tilePool.nextTile;
         if (tile) {
-            const tilePlaced = placement.checked ? tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile);
-            console.assert(!!tilePlaced);
-            displayManager.displayPuzzle(tetrahedron);
+            const tilePlacedPosition = placement.checked ? tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile);
+            console.assert(!!tilePlacedPosition);
+            displayManager.redrawTilePosition(tilePlacedPosition!, puzzleDisplay);
         } else {
             clearInterval(placeTileInterval);
             placeTileInterval = 0;

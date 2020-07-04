@@ -36,7 +36,7 @@ export class DisplayManager {
 
     private drawTilePosition(tilePosition: TilePosition, rotate: number): G {
         // Group and identify the elements showing at a tile position.
-        const tileDisplay = this._svg.group().id(tilePosition.name);
+        const tileDisplay = this._svg.group().id(tilePosition.name).setData({rotate: rotate});
         let hover = "Position: " + tilePosition.name + ", Tile: ";
         // Draw the tile if present.
         if (tilePosition.isEmpty()) {
@@ -103,6 +103,29 @@ export class DisplayManager {
             this.displayFace(displayFace.center, puzzleFace);
         });
         return this._svg;
+    }
+
+    redrawTilePosition(tilePosition: TilePosition, puzzleDisplay: HTMLElement): void {
+        const tpElement = puzzleDisplay.querySelector("[id='" + tilePosition.name + "']")!;
+        const tpGroup = SVG(tpElement) as G;
+        const rotate = tpGroup.dom.rotate;
+        tpGroup.clear();
+        let hover = "Position: " + tilePosition.name + ", Tile: ";
+        // Draw the tile if present.
+        if (tilePosition.isEmpty()) {
+            hover += "Empty";
+        } else {
+            hover += tilePosition.tile.id;
+            this.drawTile(tpGroup, tilePosition.tile, rotate);
+        }
+        // Set the tile description/hover.
+        tpGroup.element('title').words(hover);
+        // Draw the tile position outline.
+        tpGroup.add(
+            this._svg.path(this._displayData.triangle)
+                .fill(tilePosition.isEmpty() ? '#e6e6e6' : 'none')
+                .stroke({width: 0.005, color: '#000000'})
+                .rotate(rotate, 0, 0));
     }
 
     rotateTile(tile: HTMLElement): void {
