@@ -124,7 +124,8 @@ export class DisplayManager {
     rotateTile(tile: HTMLElement): void {
         // Use the existing element with a new SVG instance.
         const svg = SVG(tile) as Svg;
-        svg.rotate(120, 0, 0);
+        // @ts-ignore
+        svg.animate({duration: 1000, ease: "<>"}).rotate(120, 0, 0);
     }
 
 }
