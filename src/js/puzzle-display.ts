@@ -46,7 +46,7 @@ export class DisplayManager {
         return tGroup;
     }
 
-    private drawTilePosition(tpGroup: G, tilePosition: TilePosition, rotate: number): G {
+    private drawTilePosition(tpGroup: G, tilePosition: TilePosition): G {
         // Information about the tile position.
         let hover = "Position: " + tilePosition.name + ", Tile: ";
         // Draw the tile if present.
@@ -63,7 +63,7 @@ export class DisplayManager {
             this._svg.path(this._displayData.triangle)
                 .fill(tilePosition.isEmpty() ? '#e6e6e6' : 'none')
                 .stroke({width: 0.005, color: '#000000'}));
-        return tpGroup.rotate(rotate, 0, 0);
+        return tpGroup;
     }
 
     private displayTilePosition(tilePosition: TilePosition, fData: CenterPointData, tpData: CenterPointData): G {
@@ -73,9 +73,9 @@ export class DisplayManager {
                 (fData.x + tpData.x) * this._displayData.faceScale,
                 (fData.y + tpData.y) * this._displayData.faceScale);
         // Group and identify the elements showing at a tile position.
-        const tpGroup = this._svg.group().id(tilePosition.id).setData({rotate: tpData.r});
+        const tpGroup = this._svg.group().id(tilePosition.id);
         // Draw tile position
-        this.drawTilePosition(tpGroup, tilePosition, tpData.r);
+        this.drawTilePosition(tpGroup, tilePosition);
         return tpGroup.transform(tPosition).rotate(tpData.r, 0, 0);
     }
 
@@ -86,10 +86,10 @@ export class DisplayManager {
         const fGroup = this._svg.group().id(face.id);
         fGroup.element('title').words("Face " + face.name);
         // Then draw the underlying face.
-        fGroup.path(this._displayData.triangle)
+        fGroup.add(this._svg.path(this._displayData.triangle)
             .transform(fPosition)
             .fill('#f3f3f3')
-            .stroke({width: 0.01, color: '#000000'});
+            .stroke({width: 0.01, color: '#000000'}));
         return fGroup;
     }
 
@@ -107,7 +107,7 @@ export class DisplayManager {
         });
         // Rotate the face if required.
         fGroup.rotate(fData.r, fCenter.x, fCenter.y);
-        // Draw a point to show the center of the face.
+        // Draw a point to show the center of the face last so it always shows up.
         this._svg.circle(1)
             .id("center" + face.name)
             .center(fCenter.x, fCenter.y)
@@ -137,11 +137,10 @@ export class DisplayManager {
         this._ntGroup!.add(tGroup);
         // @ts-ignore
         tGroup.animate({duration: 1000, ease: "<>"}).transform(tpGroup.matrix()).after(() => {
-            tGroup.rotate(tpGroup.dom.rotate, 0, 0);
-            this._ntGroup!.clear()
             // Draw the new tile at it's final position.
             tpGroup.clear();
             tpGroup.add(this.drawTile(tilePosition.tile));
+            this._ntGroup!.clear();
         });
     }
 
