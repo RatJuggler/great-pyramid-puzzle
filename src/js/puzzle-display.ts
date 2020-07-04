@@ -56,19 +56,24 @@ export class DisplayManager {
         return tileDisplay;
     }
 
-    private drawFace(fData: CenterPointData, puzzleFace: Face) {
-        // Determine the center of the face and it's final position transform.
-        const fCenter = {x: fData.x * this._displayData.faceScale, y: fData.y * this._displayData.faceScale};
+    private drawFace(fCenter: { x: any; y: any; }, name: string): G {
         const fPosition = new Matrix(this._displayData.faceScale, 0, 0, this._displayData.faceScale, fCenter.x, fCenter.y);
-        // Group and identify the elements showing on a face.
-        const faceDisplay = this._svg.group().id("face" + puzzleFace.name);
-        faceDisplay.element('title').words("Face " + puzzleFace.name);
-        // The underlying face.
+        // Create a group for the elements on a face with an identifier.
+        const faceDisplay = this._svg.group().id("face" + name);
+        faceDisplay.element('title').words("Face " + name);
+        // Then draw the underlying face.
         faceDisplay.path(this._displayData.triangle)
             .transform(fPosition)
             .fill('#f3f3f3')
             .stroke({width: 0.01, color: '#000000'});
-        // Draw each tile position.
+        return faceDisplay;
+    }
+
+    private displayFace(fData: CenterPointData, puzzleFace: Face) {
+        // Determine the center of the face and draw it.
+        const fCenter = {x: fData.x * this._displayData.faceScale, y: fData.y * this._displayData.faceScale};
+        const faceDisplay = this.drawFace(fCenter, puzzleFace.name);
+        // Draw each tile position on the face.
         this._displayData.tilePositions.forEach((tpData) => {
             const tilePosition = puzzleFace.getTilePosition(tpData.id);
             // Build the tile position transform.
@@ -95,15 +100,8 @@ export class DisplayManager {
         // Display each face of the puzzle.
         this._displayData.facePositions.forEach((displayFace) => {
             const puzzleFace = puzzleToDisplay.getFace(displayFace.id);
-            this.drawFace(displayFace.center, puzzleFace);
+            this.displayFace(displayFace.center, puzzleFace);
         });
-        // puzzleToDisplay.faces.forEach(face =>
-        //     drawFace(svg, fScale, displayFace.center, face, tileDisplayData)
-        // );
-        // Then show the tiles on it.
-        // puzzleToDisplay.forEachFace((face) => {
-        //
-        // });
         return this._svg;
     }
 
