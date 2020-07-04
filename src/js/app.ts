@@ -8,13 +8,12 @@ import { DisplayManager } from "./puzzle-display";
 import { Tetrahedron } from "./tetrahedron";
 
 
-let displayInterval: number;
+let placeTileInterval: number;
 let displayManager: DisplayManager;
 
-function doDisplay(tetrahedron: Tetrahedron) {
-    displayManager.displayPuzzle(tetrahedron);
+function attachRotateEvents(tetrahedron: Tetrahedron, puzzleDisplay: HTMLElement) {
     const tileId = RegExp('[1-4]-[1-9]');
-    document.getElementById("puzzle-display")!.querySelectorAll("g")
+    puzzleDisplay.querySelectorAll("g")
         .forEach(function (svgGroup) {
             if (tileId.test(svgGroup.id)) {
                 svgGroup.addEventListener("click", (e) => {
@@ -31,24 +30,31 @@ function doDisplay(tetrahedron: Tetrahedron) {
 }
 
 function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; }) {
-    if (displayInterval) {
-        clearInterval(displayInterval);
+    // Clear any previous puzzle tile placement schedules.
+    if (placeTileInterval) {
+        clearInterval(placeTileInterval);
     }
+    // Locate key UI elements.
+    const selection = <HTMLInputElement>document.getElementById("tile-selection")!;
+    const placement = <HTMLInputElement>document.getElementById("tile-placement")!;
+    const puzzleDisplay = <HTMLInputElement>document.getElementById("puzzle-display")!;
+    // Build internal puzzle representation with tiles waiting to be placed on it.
     const tetrahedron = getTetrahedron(puzzle.puzzleData);
     const tilePool = getTilePool(puzzle.puzzleData);
-    displayManager = new DisplayManager("#puzzle-display", puzzle.displayData);
-    doDisplay(tetrahedron);
-    displayInterval = setInterval( () => {
-        const selection = <HTMLInputElement>document.getElementById("tile-selection")!;
+    // Show the initial puzzle state.
+    displayManager = new DisplayManager(puzzleDisplay, puzzle.displayData);
+    displayManager.displayPuzzle(tetrahedron);
+    // Schedule a series of events to place tiles on the puzzle.
+    placeTileInterval = setInterval( () => {
         const tile = selection.checked ? tilePool.randomTile : tilePool.nextTile;
         if (tile) {
-            const placement = <HTMLInputElement>document.getElementById("tile-placement")!;
             const tilePlaced = placement.checked ? tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile);
             console.assert(!!tilePlaced);
-            doDisplay(tetrahedron);
+            displayManager.displayPuzzle(tetrahedron);
         } else {
-            clearInterval(displayInterval);
-            displayInterval = 0;
+            clearInterval(placeTileInterval);
+            placeTileInterval = 0;
+            attachRotateEvents(tetrahedron, puzzleDisplay);
         }
     }, 500);
 }
