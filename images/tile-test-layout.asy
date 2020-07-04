@@ -25,7 +25,9 @@ void draw_segment(transform toPosition, point sp1, point sp2, point sp3, point s
     fill(toPosition * ((0, 0)--sp4--sp5--cycle), substr(code, 3, 1) == "0" ? white : red);
 }
 
-void draw_tile(real tile_scale, point center, int rotateTo, string codeA, string codeB, string codeC) {
+void draw_tile(real tile_scale, point center, int rotateTo,
+        string codeA, string codeB, string codeC,
+        string side1 = "A", string side2 = "B", string side3 = "C") {
     path tile = scale(tile_scale) * polygon(3);
     // Points
     point A = point(tile, 1);
@@ -59,9 +61,9 @@ void draw_tile(real tile_scale, point center, int rotateTo, string codeA, string
     draw_segment(toPosition, B, seg5, seg6, seg7, C, codeB);
     draw_segment(toPosition, C, seg9, seg10, seg11, A, codeC);
     draw(toPosition * tile, black);
-    label("A", toPosition * sideA, side_label);
-    label("B", toPosition * sideB, side_label);
-    label("C", toPosition * sideC, side_label);
+    label(side1, toPosition * sideA, side_label);
+    label(side2, toPosition * sideB, side_label);
+    label(side3, toPosition * sideC, side_label);
     dot(center, peg_colour);
 }
 
@@ -91,10 +93,10 @@ draw_tile(tile_scale, face_1_center, -60, "0100", "0100", "1001");
 draw_tile(tile_scale, face_2_center, 0, "0101", "1001", "1010");
 
 // Face 3 tile
-draw_tile(tile_scale, face_3_center, 0, "1010", "0010", "0010");
+draw_tile(tile_scale, face_3_center, 0, "1010", "0010", "0010", "C", "A", "B");
 
 // Face 4 tile
-draw_tile(tile_scale, face_4_center, 0, "0010", "0100", "0101");
+draw_tile(tile_scale, face_4_center, 0, "0010", "0100", "0101", "B", "C", "A");
 
 label("*Outward facing surfaces shown.", (point(face_4, 2).x, point(face_2, 1).y), E, note_label);
 
