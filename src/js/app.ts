@@ -57,7 +57,7 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; })
             placeTileInterval = 0;
             attachRotateEvents(tetrahedron, puzzleDisplay);
         }
-    }, 500);
+    }, 2000);
 }
 
 function enablePuzzleButton(buttonId: string, puzzle: { puzzleData: PuzzleData; displayData: DisplayData; }) {
