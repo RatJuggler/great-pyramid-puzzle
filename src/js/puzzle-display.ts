@@ -17,21 +17,24 @@ export class DisplayManager {
         this._svg.clear();
     }
 
-    private drawTile(tpGroup: G, tile: Tile, rotate: number): void {
+    private drawTile(tile: Tile, rotate: number): G {
+        // Group and identify the components of a tile.
+        const tGroup = this._svg.group().id("tile" + tile.id);
         // Draw the individual segments.
         for (let segN = 0; segN < this._displayData.segments.length; segN++) {
-            tpGroup.add(
+            tGroup.add(
                 this._svg.path(this._displayData.segments[segN])
                     .fill(tile.segments.charAt(segN) === '1' ? '#ff0000' : '#ffffff')
                     .stroke('none')
                     .rotate(rotate, 0, 0));
         }
         // Draw the peg in the middle.
-        tpGroup.add(
+        tGroup.add(
             this._svg.circle(0.2)
                 .center(0, 0)
                 .fill('#bebebe')
                 .stroke('none'));
+        return tGroup;
     }
 
     private drawTilePosition(tpGroup: G, tilePosition: TilePosition, rotate: number): G {
@@ -42,7 +45,7 @@ export class DisplayManager {
             hover += "Empty";
         } else {
             hover += tilePosition.tile.id;
-            this.drawTile(tpGroup, tilePosition.tile, rotate);
+            tpGroup.add(this.drawTile(tilePosition.tile, rotate));
         }
         // Set the tile description/hover.
         tpGroup.element('title').words(hover);
