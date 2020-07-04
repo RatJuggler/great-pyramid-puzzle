@@ -69,7 +69,7 @@ path tile_1_4 = shift(0, -tile_offset_y2) * shift(face_1_center) * scale(tile_sc
 
 tile_position_down(tile_1_1, "1-1");
 tile_position_down(tile_1_2, "1-2");
-tile_position_up(tile_1_3, "1-3");
+tile_position_up(tile_1_3, "1-3", "C", "A", "B");
 tile_position_down(tile_1_4, "1-4");
 
 // Face 2 tiles
