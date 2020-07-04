@@ -17,62 +17,68 @@ export class DisplayManager {
         this._svg.clear();
     }
 
-    private drawTile(tileDisplay: G, tile: Tile, rotate: number): void {
+    private drawTile(tpGroup: G, tile: Tile, rotate: number): void {
         // Draw the individual segments.
         for (let segN = 0; segN < this._displayData.segments.length; segN++) {
-            tileDisplay.add(
+            tpGroup.add(
                 this._svg.path(this._displayData.segments[segN])
                     .fill(tile.segments.charAt(segN) === '1' ? '#ff0000' : '#ffffff')
                     .stroke('none')
                     .rotate(rotate, 0, 0));
         }
         // Draw the peg in the middle.
-        tileDisplay.add(
+        tpGroup.add(
             this._svg.circle(0.2)
                 .center(0, 0)
                 .fill('#bebebe')
                 .stroke('none'));
     }
 
-    private drawTilePosition(tilePosition: TilePosition, rotate: number): G {
-        // Group and identify the elements showing at a tile position.
-        const tileDisplay = this._svg.group().id(tilePosition.name).setData({rotate: rotate});
+    private drawTilePosition(tpGroup: G, tilePosition: TilePosition, rotate: number): G {
+        // Information about the tile position.
         let hover = "Position: " + tilePosition.name + ", Tile: ";
         // Draw the tile if present.
         if (tilePosition.isEmpty()) {
             hover += "Empty";
         } else {
             hover += tilePosition.tile.id;
-            this.drawTile(tileDisplay, tilePosition.tile, rotate);
+            this.drawTile(tpGroup, tilePosition.tile, rotate);
         }
         // Set the tile description/hover.
-        tileDisplay.element('title').words(hover);
+        tpGroup.element('title').words(hover);
         // Draw the tile position outline.
-        tileDisplay.add(
+        tpGroup.add(
             this._svg.path(this._displayData.triangle)
                 .fill(tilePosition.isEmpty() ? '#e6e6e6' : 'none')
                 .stroke({width: 0.005, color: '#000000'})
                 .rotate(rotate, 0, 0));
-        return tileDisplay;
+        return tpGroup;
+    }
+
+    private displayTilePosition(tilePosition: TilePosition, rotate: number): G {
+        // Group and identify the elements showing at a tile position.
+        const tpGroup = this._svg.group().id(tilePosition.name).setData({rotate: rotate});
+        this.drawTilePosition(tpGroup, tilePosition, rotate);
+        return tpGroup;
     }
 
     private drawFace(fCenter: { x: any; y: any; }, name: string): G {
         const fPosition = new Matrix(this._displayData.faceScale, 0, 0, this._displayData.faceScale, fCenter.x, fCenter.y);
         // Create a group for the elements on a face with an identifier.
-        const faceDisplay = this._svg.group().id("face" + name);
-        faceDisplay.element('title').words("Face " + name);
+        const fGroup = this._svg.group().id("face" + name);
+        fGroup.element('title').words("Face " + name);
         // Then draw the underlying face.
-        faceDisplay.path(this._displayData.triangle)
+        fGroup.path(this._displayData.triangle)
             .transform(fPosition)
             .fill('#f3f3f3')
             .stroke({width: 0.01, color: '#000000'});
-        return faceDisplay;
+        return fGroup;
     }
 
     private displayFace(fData: CenterPointData, puzzleFace: Face) {
         // Determine the center of the face and draw it.
         const fCenter = {x: fData.x * this._displayData.faceScale, y: fData.y * this._displayData.faceScale};
-        const faceDisplay = this.drawFace(fCenter, puzzleFace.name);
+        const fGroup = this.drawFace(fCenter, puzzleFace.name);
         // Draw each tile position on the face.
         this._displayData.tilePositions.forEach((tpData) => {
             const tilePosition = puzzleFace.getTilePosition(tpData.id);
@@ -81,11 +87,11 @@ export class DisplayManager {
                 new Matrix(this._scaleTile, 0, 0, this._scaleTile,
                     (fData.x + tpData.center.x) * this._displayData.faceScale,
                     (fData.y + tpData.center.y) * this._displayData.faceScale);
-            faceDisplay.add(
-                this.drawTilePosition(tilePosition, tpData.center.r).transform(tPosition));
+            fGroup.add(
+                this.displayTilePosition(tilePosition, tpData.center.r).transform(tPosition));
         });
         // Rotate the face if required.
-        faceDisplay.rotate(fData.r, fCenter.x, fCenter.y);
+        fGroup.rotate(fData.r, fCenter.x, fCenter.y);
         // Draw a point to show the center of the face.
         this._svg.circle(1)
             .id("center" + puzzleFace.name)
@@ -108,24 +114,8 @@ export class DisplayManager {
     redrawTilePosition(tilePosition: TilePosition, puzzleDisplay: HTMLElement): void {
         const tpElement = puzzleDisplay.querySelector("[id='" + tilePosition.name + "']")!;
         const tpGroup = SVG(tpElement) as G;
-        const rotate = tpGroup.dom.rotate;
         tpGroup.clear();
-        let hover = "Position: " + tilePosition.name + ", Tile: ";
-        // Draw the tile if present.
-        if (tilePosition.isEmpty()) {
-            hover += "Empty";
-        } else {
-            hover += tilePosition.tile.id;
-            this.drawTile(tpGroup, tilePosition.tile, rotate);
-        }
-        // Set the tile description/hover.
-        tpGroup.element('title').words(hover);
-        // Draw the tile position outline.
-        tpGroup.add(
-            this._svg.path(this._displayData.triangle)
-                .fill(tilePosition.isEmpty() ? '#e6e6e6' : 'none')
-                .stroke({width: 0.005, color: '#000000'})
-                .rotate(rotate, 0, 0));
+        this.drawTilePosition(tpGroup, tilePosition, tpGroup.dom.rotate);
     }
 
     rotateTile(tile: HTMLElement): void {
