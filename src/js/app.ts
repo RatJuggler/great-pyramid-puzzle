@@ -12,14 +12,14 @@ let placeTileInterval: number;
 let displayManager: DisplayManager;
 
 function attachRotateEvents(tetrahedron: Tetrahedron, puzzleDisplay: HTMLElement) {
-    const tileId = RegExp('[1-4]-[1-9]');
     puzzleDisplay.querySelectorAll("g")
         .forEach(function (svgGroup) {
-            if (tileId.test(svgGroup.id)) {
+            const tpId = svgGroup.id.match(/^([1-4])-([1-9])$/);
+            if (tpId) {
                 svgGroup.addEventListener("click", (e) => {
                     // @ts-ignore
                     const tileSvg = <HTMLElement>e.currentTarget!;
-                    const tile = tetrahedron.getFace(tileSvg.id.charAt(0)).getTileAtPosition(tileSvg.id.charAt(2));
+                    const tile = tetrahedron.getFace(tpId[1]).getTileAtPosition(tpId[2]);
                     if (tile) {
                         tile.nextOrientation();
                         displayManager.rotateTile(tileSvg);
@@ -48,7 +48,8 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; })
     placeTileInterval = setInterval( () => {
         const tile = selection.checked ? tilePool.randomTile : tilePool.nextTile;
         if (tile) {
-            const tilePlacedPosition = placement.checked ? tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile);
+            const tilePlacedPosition =
+                placement.checked ? tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile);
             console.assert(!!tilePlacedPosition);
             displayManager.redrawTilePosition(tilePlacedPosition!, puzzleDisplay);
         } else {
