@@ -45,6 +45,10 @@ export class Face {
         return faceString;
     }
 
+    get id(): string {
+        return "face" + this._name;
+    }
+
     get name(): string {
         return this._name;
     }

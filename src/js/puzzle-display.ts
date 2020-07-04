@@ -67,12 +67,12 @@ export class DisplayManager {
         return tpGroup.transform(tPosition);
     }
 
-    private drawFace(fCenter: { x: any; y: any; }, name: string): G {
+    private drawFace(fCenter: { x: any; y: any; }, face: Face): G {
         const fPosition =
             new Matrix(this._displayData.faceScale, 0, 0, this._displayData.faceScale, fCenter.x, fCenter.y);
         // Create a group for the elements on a face with an identifier.
-        const fGroup = this._svg.group().id("face" + name);
-        fGroup.element('title').words("Face " + name);
+        const fGroup = this._svg.group().id(face.id);
+        fGroup.element('title').words("Face " + face.name);
         // Then draw the underlying face.
         fGroup.path(this._displayData.triangle)
             .transform(fPosition)
@@ -81,28 +81,28 @@ export class DisplayManager {
         return fGroup;
     }
 
-    private displayFace(fData: CenterPointData, puzzleFace: Face) {
+    private displayFace(fData: CenterPointData, face: Face) {
         // Determine the center of the face and draw it.
         const fCenter = {
             x: fData.x * this._displayData.faceScale,
             y: fData.y * this._displayData.faceScale
         };
-        const fGroup = this.drawFace(fCenter, puzzleFace.name);
+        const fGroup = this.drawFace(fCenter, face);
         // Draw each tile position on the face.
         this._displayData.tilePositions.forEach((tpData) => {
-            const tilePosition = puzzleFace.getTilePosition(tpData.id);
+            const tilePosition = face.getTilePosition(tpData.id);
             fGroup.add(this.displayTilePosition(tilePosition, fData, tpData.center));
         });
         // Rotate the face if required.
         fGroup.rotate(fData.r, fCenter.x, fCenter.y);
         // Draw a point to show the center of the face.
         this._svg.circle(1)
-            .id("center" + puzzleFace.name)
+            .id("center" + face.name)
             .center(fCenter.x, fCenter.y)
             .fill('#000000')
             .stroke('none')
             .element('title')
-            .words("Center of Face " + puzzleFace.name);
+            .words("Center of Face " + face.name);
     }
 
     displayPuzzle(puzzleToDisplay: Tetrahedron): Svg {
