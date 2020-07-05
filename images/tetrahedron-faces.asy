@@ -17,26 +17,26 @@ pen face_colour = palegray + linewidth(1);
 pen title_label = fontsize(14pt);
 
 
-path drawFace(point face_center, int rotate, string face_id, align label_align, align a_align, align b_align, align c_align) {
-    path face = shift(face_center) * rotate(rotate) * polygon(3);
+path drawFace(point center, int rotate, string id, align label_align, align a_align, align b_align, align c_align) {
+    path face = shift(center) * rotate(rotate) * polygon(3);
     filldraw(face, face_colour);
-    dot(Label("Face " + face_id), face_center, label_align, face_label);
-    label(face_id + "-A", (point(face, 1)--point(face, 0)), a_align, side_label);
-    label(face_id + "-B", (point(face, 0)--point(face, 2)), b_align, side_label);
-    label(face_id + "-C", (point(face, 2)--point(face, 1)), c_align, side_label);
+    dot(Label("Face " + id), center, label_align, face_label);
+    label(id + "-A", (point(face, 1)--point(face, 0)), a_align, side_label);
+    label(id + "-B", (point(face, 0)--point(face, 2)), b_align, side_label);
+    label(id + "-C", (point(face, 2)--point(face, 1)), c_align, side_label);
     return face;
 }
 
 // Reference triangle and height.
-path fRef = polygon(3);
-real fheight = abs(point(fRef, 0).y);
+path ref = polygon(3);
+real height = abs(point(ref, 0).y);
 
 // Tetrahedron faces, outward facing surfaces will be shown so these would fold down.
 // Faces are created and rotated to maintain side labeling consistency.
 path face_1 = drawFace((0, 0), -60, "1", N, W, E, S);
-path face_2 = drawFace((0, fheight * 2 + face_gap), 0, "2", S, W, N, E);
-path face_3 = drawFace((point(fRef, 0).x + face_gap, -fheight - face_gap), -120, "3", S, N, E, W);
-path face_4 = drawFace((point(fRef, 2).x - face_gap, -fheight - face_gap), 120, "4", S, E, W, N);
+path face_2 = drawFace((0, height * 2 + face_gap), 0, "2", S, W, N, E);
+path face_3 = drawFace((point(ref, 0).x + face_gap, -height - face_gap), -120, "3", S, N, E, W);
+path face_4 = drawFace((point(ref, 2).x - face_gap, -height - face_gap), 120, "4", S, E, W, N);
 
 // Midpoint side arrows.
 point midpoint2A = midpoint(point(face_2, 0)--point(face_2, 1));
