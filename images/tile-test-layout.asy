@@ -25,9 +25,7 @@ void draw_segment(transform toPosition, point sp1, point sp2, point sp3, point s
     fill(toPosition * ((0, 0)--sp4--sp5--cycle), substr(code, 3, 1) == "0" ? white : red);
 }
 
-void draw_tile(real tile_scale, point center, int rotateTo,
-        string codeA, string codeB, string codeC,
-        string side1 = "A", string side2 = "B", string side3 = "C") {
+void draw_tile(real tile_scale, point center, int rotateTo, string codeA, string codeB, string codeC) {
     path tile = scale(tile_scale) * polygon(3);
     // Points
     point A = point(tile, 1);
@@ -61,28 +59,30 @@ void draw_tile(real tile_scale, point center, int rotateTo,
     draw_segment(toPosition, B, seg5, seg6, seg7, C, codeB);
     draw_segment(toPosition, C, seg9, seg10, seg11, A, codeC);
     draw(toPosition * tile, black);
-    label(side1, toPosition * sideA, side_label);
-    label(side2, toPosition * sideB, side_label);
-    label(side3, toPosition * sideC, side_label);
+    label("A", toPosition * sideA, side_label);
+    label("B", toPosition * sideB, side_label);
+    label("C", toPosition * sideC, side_label);
     dot(center, peg_colour);
 }
 
-// Tetrahedron triangle faces, outward facing surfaces will be shown so would fold down
+// Tetrahedron faces, outward facing surfaces will be shown so these would fold down.
+// Faces are created and rotated to maintain side labeling consistency.
 point face_1_center = (0, 0);
-path face_1 = rotate(60) * polygon(3);
-point face_2_center = (0, -point(face_1, 2).y + face_gap);
+path face_1 = rotate(-60) * polygon(3);
+point face_2_center = (0, -point(face_1, 0).y + face_gap);
 path face_2 = shift(face_2_center) * polygon(3);
-point face_3_center = (point(face_1, 0).x + face_gap, -point(face_1, 1).y - (face_gap * 0.5));
-path face_3 = shift(face_3_center) * polygon(3);
-point face_4_center = (-point(face_1, 0).x - face_gap, -point(face_1, 1).y - (face_gap * 0.5));
-path face_4 = shift(face_4_center) * polygon(3);
+point face_3_center = (point(face_1, 1).x + face_gap, -point(face_1, 2).y - (face_gap * 0.5));
+path face_3 = shift(face_3_center) * rotate(-120) * polygon(3);
+point face_4_center = (-point(face_1, 1).x - face_gap, -point(face_1, 2).y - (face_gap * 0.5));
+path face_4 = shift(face_4_center) * rotate(120) * polygon(3);
 
 filldraw(face_1, face_colour);
 filldraw(face_2, face_colour);
 filldraw(face_3, face_colour);
 filldraw(face_4, face_colour);
 
-// Fit tiles onto a face
+// Fit tiles onto a face.
+// Tiles are created and rotated to maintain side labeling consistency.
 real face_side = length(point(face_1, 0)--point(face_1, 1));
 real tile_scale = (face_side - (tile_gap * 2)) / face_side;
 
@@ -93,12 +93,13 @@ draw_tile(tile_scale, face_1_center, -60, "0100", "0100", "1001");
 draw_tile(tile_scale, face_2_center, 0, "0101", "1001", "1010");
 
 // Face 3 tile
-draw_tile(tile_scale, face_3_center, 0, "1010", "0010", "0010", "C", "A", "B");
+draw_tile(tile_scale, face_3_center, -120, "0010", "0010", "1010");
 
 // Face 4 tile
-draw_tile(tile_scale, face_4_center, 0, "0010", "0100", "0101", "B", "C", "A");
+draw_tile(tile_scale, face_4_center, 120, "0101", "0010", "0100");
 
-label("*Outward facing surfaces shown.", (point(face_4, 2).x, point(face_2, 1).y), E, note_label);
+// Notes
+label("*Outward facing surfaces shown.", (point(face_4, 1).x, point(face_2, 1).y), E, note_label);
 
 // Title
-label("Test puzzle tile layout.", (0, point(face_1, 2).y - 0.4), N, title_label);
+label("Test puzzle tile layout.", (0, point(face_1, 0).y - 0.4), N, title_label);
