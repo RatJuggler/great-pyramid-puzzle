@@ -25,7 +25,7 @@ void draw_segment(transform toPosition, point sp1, point sp2, point sp3, point s
     fill(toPosition * ((0, 0)--sp4--sp5--cycle), substr(code, 3, 1) == "0" ? white : red);
 }
 
-void drawTileAtPosition(point center, real scale, int rotate, string id,
+void drawTileAtPosition(real offset, real scale, int rotate, string id,
         align a_align, align b_align, align c_align,
         string codeA, string codeB, string codeC) {
     path tile = scale(scale) * polygon(3);
@@ -56,6 +56,7 @@ void drawTileAtPosition(point center, real scale, int rotate, string id,
     point seg10 = intersectionpoint(sideC, medianB);
     point seg11 = intersectionpoint(sideC, parallelB);
     // Shift and Draw
+    point center = rotate(rotate) * (0, offset);
     transform toPosition = shift(center) * rotate(rotate);
     draw_segment(toPosition, A, seg1, seg2, seg3, B, codeA);
     draw_segment(toPosition, B, seg5, seg6, seg7, C, codeB);
@@ -67,32 +68,33 @@ void drawTileAtPosition(point center, real scale, int rotate, string id,
     dot(center, peg_colour);
 }
 
-path drawFace(point center, int rotate) {
+path drawFace(real offset, int rotate) {
+    point center = rotate(rotate) * (0, offset);
     path face = shift(center) * rotate(rotate) * polygon(3);
     filldraw(face, face_colour);
     return face;
 }
 
-// Reference triangle and height.
+// Reference triangle and face offset.
 path ref = polygon(3);
-real height = abs(point(ref, 0).y);
+real fOffset = abs(point(ref, 0).y) * 2 + face_gap;
 
 // Tetrahedron faces, outward facing surfaces will be shown so these would fold down.
 // Faces are created and rotated to maintain side labeling consistency.
-path face_1 = drawFace((0, 0), -60);
-path face_2 = drawFace((0, height * 2 + face_gap), 0);
-path face_3 = drawFace((point(ref, 0).x + face_gap, -height - face_gap), -120);
-path face_4 = drawFace((point(ref, 2).x - face_gap, -height - face_gap), 120);
+path face_1 = drawFace(0, -60);
+path face_2 = drawFace(fOffset, 0);
+path face_3 = drawFace(fOffset, -120);
+path face_4 = drawFace(fOffset, 120);
 
 // Fit tiles onto a face.
 // Tiles are created and rotated to maintain side labeling consistency.
 real face_side = length(point(ref, 0)--point(ref, 1));
 real tile_scale = (face_side - (tile_gap * 2)) / face_side;
 
-drawTileAtPosition((0, 0), tile_scale, -60, "1-1", W, E, S, "0100", "0100", "1001");
-drawTileAtPosition((0, height * 2 + face_gap), tile_scale, 0, "2-1", W, N, E, "0101", "1001", "1010");
-drawTileAtPosition((point(ref, 0).x + face_gap, -height - face_gap), tile_scale, -120, "3-1", N, E, W, "0010", "0010", "1010");
-drawTileAtPosition((point(ref, 2).x - face_gap, -height - face_gap), tile_scale, 120, "4-1", E, W, N, "0101", "0010", "0100");
+drawTileAtPosition(0, tile_scale, -60, "1-1", W, E, S, "0100", "0100", "1001");
+drawTileAtPosition(fOffset, tile_scale, 0, "2-1", W, N, E, "0101", "1001", "1010");
+drawTileAtPosition(fOffset, tile_scale, -120, "3-1", N, E, W, "0010", "0010", "1010");
+drawTileAtPosition(fOffset, tile_scale, 120, "4-1", E, W, N, "0101", "0010", "0100");
 
 // Notes
 label("*Outward facing surfaces shown.", (point(face_4, 1).x, point(face_2, 1).y), E, note_label);
