@@ -1,19 +1,23 @@
 // Interfaces defining the puzzle display data structure configuration.
 
-interface TriangleDisplayData {
+interface CenterPointData {
     readonly x: number,
     readonly y: number,
-    readonly r: number,
+    readonly r: number
 }
 
 interface PositionDisplayData {
-    readonly name: string,
-    readonly center: TriangleDisplayData
+    readonly id: string,
+    readonly center: CenterPointData
 }
 
-interface TileDisplayData {
+interface DisplayData {
+    readonly triangle: string,
+    readonly segments: string[],
+    readonly faceScale: number,
+    readonly facePositions: PositionDisplayData[],
     readonly tileScale: number,
-    readonly tilePositions: PositionDisplayData[];
+    readonly tilePositions: PositionDisplayData[]
 }
 
-export { TriangleDisplayData, PositionDisplayData, TileDisplayData }
+export { CenterPointData, PositionDisplayData, DisplayData }

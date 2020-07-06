@@ -1,5 +1,6 @@
 import puzzle_schema from "../../src/puzzle-data-schema.json";
-import test_puzzle from "../valid-test-puzzle-data1.json";
+import valid_test_puzzle from "../valid-test-puzzle-data1.json";
+import test_puzzle from "../../src/test-puzzle-data.json";
 import pocket_puzzle from "../../src/pocket-puzzle-data.json";
 import great_puzzle from "../../src/great-puzzle-data.json";
 import Ajv from 'ajv';
@@ -7,9 +8,9 @@ import { expect } from 'chai';
 import 'mocha';
 
 
-describe("Validate puzzle definition files", function () {
+describe("Validate puzzle data definition files", function () {
 
-    describe("the puzzle definition file schema", function () {
+    describe("the puzzle data definition file schema", function () {
 
         context("when loaded", function () {
             it("should be valid", function () {
@@ -22,12 +23,12 @@ describe("Validate puzzle definition files", function () {
 
     });
 
-    describe("the valid test puzzle definition", function () {
+    describe("the valid test puzzle data definition", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
                 let ajv = new Ajv();
-                let valid = ajv.validate(puzzle_schema, test_puzzle.testPuzzleData);
+                let valid = ajv.validate(puzzle_schema, valid_test_puzzle.testPuzzleData);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });
@@ -35,7 +36,20 @@ describe("Validate puzzle definition files", function () {
 
     });
 
-    describe("the pocket puzzle definition", function () {
+    describe("the test puzzle data definition", function () {
+
+        context("when loaded", function () {
+            it("should validate", function () {
+                let ajv = new Ajv();
+                let valid = ajv.validate(puzzle_schema, test_puzzle);
+                console.log(ajv.errorsText());
+                expect(valid).to.be.true;
+            });
+        });
+
+    });
+
+    describe("the pocket puzzle data definition", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
@@ -48,7 +62,7 @@ describe("Validate puzzle definition files", function () {
 
     });
 
-    describe("the great puzzle definition", function () {
+    describe("the great puzzle data definition", function () {
 
         context("when loaded", function () {
             it("should validate", function () {

@@ -1,52 +1,69 @@
+import { testPuzzle } from "./test-puzzle";
+import { pocketPuzzle } from "./pocket-puzzle";
+import { greatPuzzle } from "./great-puzzle";
 import { PuzzleData } from "./puzzle-data-schema";
-import { TileDisplayData } from "./puzzle-display-schema";
+import { DisplayData } from "./puzzle-display-schema";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
-import { displayPuzzle } from "./puzzle-display";
-import { TilePool } from "./tile-pool";
+import { DisplayManager } from "./puzzle-display";
 import { Tetrahedron } from "./tetrahedron";
 
 
-let tetrahedron: Tetrahedron;
-let tilePool: TilePool;
-let displayInterval: number;
+let placeTileInterval: number;
+let displayManager: DisplayManager;
 
-
-function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: TileDisplayData; }) {
-    tetrahedron = getTetrahedron(puzzle.puzzleData);
-    tilePool = getTilePool(puzzle.puzzleData);
-    if (displayInterval) {
-        clearInterval(displayInterval);
-    }
-    displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
-    displayInterval = setInterval(function () {
-        let tile = (<HTMLInputElement>document.getElementById("tile-selection")!).checked ?
-            tilePool.randomTile : tilePool.nextTile;
-        if (tile) {
-            console.assert((<HTMLInputElement>document.getElementById("tile-placement")!).checked ?
-                tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile));
-            displayPuzzle("#puzzle-display", tetrahedron, puzzle.displayData);
-        } else {
-            clearInterval(displayInterval);
-            displayInterval = 0;
-        }
-    }, 700);
+function attachRotateEvents(tetrahedron: Tetrahedron, puzzleDisplay: HTMLElement) {
+    puzzleDisplay.querySelectorAll("g")
+        .forEach(function (svgGroup) {
+            const tpId = svgGroup.id.match(/^([1-4])-([1-9])$/);
+            if (tpId) {
+                svgGroup.addEventListener("click", (e) => {
+                    // @ts-ignore
+                    const tileSvg = <HTMLElement>e.currentTarget!;
+                    const tile = tetrahedron.getFace(tpId[1]).getTileAtPosition(tpId[2]);
+                    if (tile) {
+                        tile.nextOrientation();
+                        displayManager.rotateTile(tileSvg);
+                    }
+                });
+            }
+        });
 }
 
-let testButton = document.getElementById("test")!;
-testButton.addEventListener("click", () => {
-    import("./test-puzzle").then(function(puzzle) {
-        doPuzzle(puzzle.testPuzzle);
-    })
-});
-let pocketButton = document.getElementById("pocket")!;
-pocketButton.addEventListener("click", () => {
-    import("./pocket-puzzle").then(function(puzzle) {
-        doPuzzle(puzzle.pocketPuzzle);
-    })
-});
-let greatButton = document.getElementById("great")!;
-greatButton.addEventListener("click", () => {
-    import("./great-puzzle").then(function(puzzle) {
-        doPuzzle(puzzle.greatPuzzle);
-    })
-});
+function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; }) {
+    // Clear any previous puzzle tile placement schedules.
+    if (placeTileInterval) {
+        clearInterval(placeTileInterval);
+    }
+    // Locate key UI elements.
+    const selection = <HTMLInputElement>document.getElementById("tile-selection")!;
+    const placement = <HTMLInputElement>document.getElementById("tile-placement")!;
+    const puzzleDisplay = <HTMLInputElement>document.getElementById("puzzle-display")!;
+    // Build internal puzzle representation with tiles waiting to be placed on it.
+    const tetrahedron = getTetrahedron(puzzle.puzzleData);
+    const tilePool = getTilePool(puzzle.puzzleData);
+    // Show the initial puzzle state.
+    displayManager = new DisplayManager(puzzleDisplay, puzzle.displayData);
+    displayManager.displayPuzzle(tetrahedron);
+    // Schedule a series of events to place tiles on the puzzle.
+    placeTileInterval = setInterval( () => {
+        const tile = selection.checked ? tilePool.randomTile : tilePool.nextTile;
+        if (tile) {
+            const tilePlacedPosition =
+                placement.checked ? tetrahedron.placeTileRandomly(tile) : tetrahedron.placeTileSequentially(tile);
+            console.assert(!!tilePlacedPosition);
+            displayManager.redrawTilePosition(tilePlacedPosition!, puzzleDisplay);
+        } else {
+            clearInterval(placeTileInterval);
+            placeTileInterval = 0;
+            attachRotateEvents(tetrahedron, puzzleDisplay);
+        }
+    }, 2000);
+}
+
+function enablePuzzleButton(buttonId: string, puzzle: { puzzleData: PuzzleData; displayData: DisplayData; }) {
+    document.getElementById(buttonId)!.addEventListener("click", () => doPuzzle(puzzle));
+}
+
+enablePuzzleButton("test", testPuzzle);
+enablePuzzleButton("pocket", pocketPuzzle);
+enablePuzzleButton("great", greatPuzzle);

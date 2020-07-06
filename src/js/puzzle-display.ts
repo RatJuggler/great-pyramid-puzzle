@@ -1,105 +1,154 @@
-import display_data from "../display-data.json";
-import { TriangleDisplayData, TileDisplayData } from "./puzzle-display-schema"
+import { CenterPointData, DisplayData } from "./puzzle-display-schema"
 import { Tile } from "./tile";
+import { TilePosition } from "./tile-position";
 import { Face } from "./face";
 import { Tetrahedron } from "./tetrahedron";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
 
-function drawTile(svg: Svg, tileDisplay: G, segments: string[], tile: Tile) {
+export class DisplayManager {
 
-    // Draw the individual segments.
-    for (let segN = 0; segN < segments.length; segN++) {
-        tileDisplay.add(
-            svg.path(segments[segN])
-                .fill(tile.segments.charAt(segN) === '1' ? '#ff0000' : '#ffffff')
+    private readonly _svg: Svg;
+    private readonly _scaleTile: number = this._displayData.faceScale * this._displayData.tileScale;
+    private readonly _newTileStart =
+        new Matrix(this._scaleTile, 0, 0, this._scaleTile,
+            -1.8 * this._displayData.faceScale,
+            -1.05 * this._displayData.faceScale);
+    private _ntGroup: G | null = null;
+
+    constructor(rootElement: string | HTMLElement, private readonly _displayData: DisplayData) {
+        // Use an existing root SVG element and clear it.
+        this._svg = SVG(rootElement) as Svg;
+        this._svg.clear();
+    }
+
+    private drawTile(tile: Tile): G {
+        // Group and identify the components of a tile.
+        const tGroup = this._svg.group().id("tile" + tile.id);
+        // Draw the individual segments.
+        for (let segN = 0; segN < this._displayData.segments.length; segN++) {
+            tGroup.add(
+                this._svg.path(this._displayData.segments[segN])
+                    .fill(tile.segments.charAt(segN) === '1' ? '#ff0000' : '#ffffff')
+                    .stroke('none'));
+        }
+        // Draw the tile outline.
+        tGroup.add(
+            this._svg.path(this._displayData.triangle)
+                .fill('none')
+                .stroke({width: 0.005, color: '#000000'}));
+        // Draw the peg in the middle.
+        tGroup.add(
+            this._svg.circle(0.2)
+                .center(0, 0)
+                .fill('#bebebe')
                 .stroke('none'));
+        return tGroup;
     }
 
-    // Draw the peg in the middle.
-    tileDisplay.add(
-        svg.circle(0.2)
-            .center(0, 0)
-            .fill('#bebebe')
-            .stroke('none'));
-}
-
-function drawTilePosition(svg: Svg, tpName: string, tile: Tile | null, rotate: boolean): G {
-
-    // Group and identify the elements showing at a tile position.
-    const tileDisplay = svg.group().id(tpName);
-    tileDisplay.element('title').words("Position: " + tpName + ", Tile: " + (tile == null ? "Empty" : tile.id));
-
-    // Draw the tile if present.
-    if (tile !== null) {
-        const segments = rotate ? display_data.down_segments : display_data.up_segments;
-        drawTile(svg, tileDisplay, segments, tile);
+    private drawTilePosition(tpGroup: G, tilePosition: TilePosition): G {
+        // Information about the tile position.
+        let hover = "Position: " + tilePosition.name + ", Tile: ";
+        // Draw the tile if present.
+        if (tilePosition.isEmpty()) {
+            hover += "Empty";
+        } else {
+            hover += tilePosition.tile.id;
+            tpGroup.add(this.drawTile(tilePosition.tile));
+        }
+        // Set the tile description/hover.
+        tpGroup.element('title').words(hover);
+        // Draw the tile position outline.
+        tpGroup.add(
+            this._svg.path(this._displayData.triangle)
+                .fill(tilePosition.isEmpty() ? '#e6e6e6' : 'none')
+                .stroke({width: 0.005, color: '#000000'}));
+        return tpGroup;
     }
 
-    // Draw the tile position outline.
-    const drawTriangle = rotate ? display_data.down_triangle : display_data.up_triangle;
-    tileDisplay.add(
-        svg.path(drawTriangle)
-            .fill(tile == null ? '#e6e6e6' : 'none')
-            .stroke({width: 0.005, color: '#000000'}));
-
-    return tileDisplay;
-}
-
-function drawFace(svg: Svg, fScale: number, fData: TriangleDisplayData, puzzleFace: Face, tileDisplayData: TileDisplayData) {
-
-    const fCenter = {x: fData.x * fScale, y: fData.y * fScale};
-    const fPosition = new Matrix(fScale, 0, 0, fScale, fCenter.x, fCenter.y);
-    const tScale = fScale * tileDisplayData.tileScale;
-
-    // Group and identify the elements showing on a face.
-    const faceDisplay = svg.group().id("face" + puzzleFace.name);
-    faceDisplay.element('title').words("Face " + puzzleFace.name);
-
-    // The underlying face.
-    faceDisplay.path(display_data.up_triangle)
-        .transform(fPosition)
-        .fill('#f3f3f3')
-        .stroke({width: 0.01, color: '#000000'});
-
-    // Draw the contents of each tile position.
-    tileDisplayData.tilePositions.forEach((tpData) => {
-        const tile = puzzleFace.getTileAtPosition(tpData.name);
-        const tpName = puzzleFace.name + "-" + tpData.name;
+    private displayTilePosition(tilePosition: TilePosition, fData: CenterPointData, tpData: CenterPointData): G {
+        // Build the tile position transform.
         const tPosition =
-            new Matrix(tScale, 0, 0, tScale, (fData.x + tpData.center.x) * fScale, (fData.y + tpData.center.y) * fScale);
-        faceDisplay.add(
-            drawTilePosition(svg, tpName, tile, tpData.center.r === 60)
-                .transform(tPosition));
-    });
+            new Matrix(this._scaleTile, 0, 0, this._scaleTile,
+                (fData.x + tpData.x) * this._displayData.faceScale,
+                (fData.y + tpData.y) * this._displayData.faceScale);
+        // Group and identify the elements showing at a tile position.
+        const tpGroup = this._svg.group().id(tilePosition.id);
+        // Draw tile position
+        this.drawTilePosition(tpGroup, tilePosition);
+        return tpGroup.transform(tPosition).rotate(tpData.r, 0, 0);
+    }
 
-    // Rotate the face if required.
-    faceDisplay.rotate(fData.r, fCenter.x, fCenter.y);
+    private drawFace(fCenter: { x: any; y: any; }, face: Face): G {
+        const fPosition =
+            new Matrix(this._displayData.faceScale, 0, 0, this._displayData.faceScale, fCenter.x, fCenter.y);
+        // Create a group for the elements on a face with an identifier.
+        const fGroup = this._svg.group().id(face.id);
+        fGroup.element('title').words("Face " + face.name);
+        // Then draw the underlying face.
+        fGroup.add(this._svg.path(this._displayData.triangle)
+            .transform(fPosition)
+            .fill('#f3f3f3')
+            .stroke({width: 0.01, color: '#000000'}));
+        return fGroup;
+    }
 
-    // Draw a point to show the center of the face.
-    svg.circle(1)
-        .id("center" + puzzleFace.name)
-        .center(fCenter.x, fCenter.y)
-        .fill('#000000')
-        .stroke('none')
-        .element('title')
-        .words("Center of Face " + puzzleFace.name);
+    private displayFace(fData: CenterPointData, face: Face) {
+        // Determine the center of the face and draw it.
+        const fCenter = {
+            x: fData.x * this._displayData.faceScale,
+            y: fData.y * this._displayData.faceScale
+        };
+        const fGroup = this.drawFace(fCenter, face);
+        // Draw each tile position on the face.
+        this._displayData.tilePositions.forEach((tpData) => {
+            const tilePosition = face.getTilePosition(tpData.id);
+            fGroup.add(this.displayTilePosition(tilePosition, fData, tpData.center));
+        });
+        // Rotate the face if required.
+        fGroup.rotate(fData.r, fCenter.x, fCenter.y);
+        // Draw a point to show the center of the face last so it always shows up.
+        this._svg.circle(1)
+            .id("center" + face.name)
+            .center(fCenter.x, fCenter.y)
+            .fill('#000000')
+            .stroke('none')
+            .element('title')
+            .words("Center of Face " + face.name);
+    }
+
+    displayPuzzle(puzzleToDisplay: Tetrahedron): Svg {
+        // Display each face of the puzzle.
+        this._displayData.facePositions.forEach((displayFace) => {
+            const puzzleFace = puzzleToDisplay.getFace(displayFace.id);
+            this.displayFace(displayFace.center, puzzleFace);
+        });
+        // New puzzle area must be create last.
+        this._ntGroup = this._svg.group().id("newtile");
+        return this._svg;
+    }
+
+    redrawTilePosition(tilePosition: TilePosition, puzzleDisplay: HTMLElement): void {
+        // Find the tile position display to update.
+        const tpElement = puzzleDisplay.querySelector("[id='" + tilePosition.id + "']")!;
+        const tpGroup = SVG(tpElement) as G;
+        // Draw the new tile at the starting position.
+        const tGroup = this.drawTile(tilePosition.tile).transform(this._newTileStart);
+        this._ntGroup!.add(tGroup);
+        // @ts-ignore
+        tGroup.animate({duration: 1000, ease: "<>"}).transform(tpGroup.matrix()).after(() => {
+            // Draw the new tile at it's final position.
+            tpGroup.clear();
+            tpGroup.add(this.drawTile(tilePosition.tile));
+            this._ntGroup!.clear();
+        });
+    }
+
+    rotateTile(tile: HTMLElement): void {
+        // Use the existing element with a new SVG instance.
+        const svg = SVG(tile) as Svg;
+        // @ts-ignore
+        svg.animate({duration: 1000, ease: "<>"}).rotate(120, 0, 0);
+    }
+
 }
-
-function displayPuzzle(rootElement: string | HTMLElement, puzzleToDisplay: Tetrahedron, tileDisplayData: TileDisplayData): Svg {
-
-    // Use an existing root SVG element and clear it.
-    const svg = SVG(rootElement) as Svg;
-    svg.clear();
-
-    // Then display each face of the puzzle.
-    const fScale = display_data.faceDisplay.faceScale;
-    display_data.faceDisplay.faces.forEach((displayFace) => {
-        const puzzleFace = puzzleToDisplay.getFace(displayFace.name);
-        drawFace(svg, fScale, displayFace.center, puzzleFace, tileDisplayData);
-    });
-
-    return svg;
-}
-
-export { displayPuzzle }

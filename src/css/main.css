@@ -4,14 +4,14 @@ html, body {
 
 .home-menu {
   text-align: left;
-  font-size: 1.5em;
+  font-size: 150%;
 }
 
 .home-menu ul {
   float: right;
 }
 
-.content-wrapper {
+.pure-g {
   height: 100%;
 }
 
@@ -20,36 +20,28 @@ html, body {
 }
 
 #puzzle-selection {
-  position: fixed;
-  overflow: hidden;
-  width: 420px;
-  height: 100%;
-  padding-top: 100px;
-  top: 0;
-  left: 0;
-  z-index: 3;
+  padding-top: 10%;
 }
 
 #puzzle-selection ul {
   list-style-type: none;
-  top: 50%;
 }
 
 #puzzle-selection .pure-button {
   width: 100%;
   margin: 5px 0;
-  font-size: 2em;
+  font-size: 150%;
 }
 
 #puzzle-selection p {
-  font-size: 1.5em;
+  font-size: 150%;
 }
 
 /* Based on generated code from: https://proto.io/freebies/onoff/ */
 .selector {
   position: relative; width: 200px;
   -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-  margin: 10px auto;
+  margin: 10px 0;
 }
 .selector-checkbox {
   position: absolute;

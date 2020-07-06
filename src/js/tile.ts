@@ -3,10 +3,11 @@ import { TileData } from "./puzzle-data-schema";
 
 export class Tile {
 
+    private static readonly ORIENTATION = [ [0, 1, 2], [2, 0, 1], [1, 2, 0] ];
+
     private readonly _id: number;
-    private readonly _sideA: string;
-    private readonly _sideB: string;
-    private readonly _sideC: string;
+    private readonly _sides: string[];
+    private _orientation: number = 0;
 
     validateSegments(segments: string): string {
         if (segments.length !== 4) {
@@ -20,13 +21,19 @@ export class Tile {
 
     constructor(tileDetails: TileData) {
         this._id = tileDetails.tile;
-        this._sideA = this.validateSegments(tileDetails.sideA);
-        this._sideB = this.validateSegments(tileDetails.sideB);
-        this._sideC = this.validateSegments(tileDetails.sideC);
+        this._sides = [
+            this.validateSegments(tileDetails.sideA),
+            this.validateSegments(tileDetails.sideB),
+            this.validateSegments(tileDetails.sideC)
+        ];
+    }
+
+    private getSide(side: number): string {
+        return this._sides[Tile.ORIENTATION[this._orientation][side]];
     }
 
     toString(): string {
-        return `Id: ${this._id}, Side-A: ${this._sideA}, Side-B: ${this._sideB}, Side-C: ${this._sideC}`;
+        return `Id: ${this._id}, Side-A: ${this.getSide(0)}, Side-B: ${this.getSide(1)}, Side-C: ${this.getSide(2)}, Orientation: ${this._orientation}`;
     }
 
     get id(): number {
@@ -34,7 +41,17 @@ export class Tile {
     }
 
     get segments(): string {
-        return this._sideA + this._sideB + this._sideC;
+        return this.getSide(0) + this.getSide(1) + this.getSide(2);
+    }
+
+    place(): Tile {
+        this._orientation = 0;
+        return this;
+    }
+
+    nextOrientation(): Tile {
+        this._orientation = ++this._orientation % this._sides.length;
+        return this;
     }
 
 }

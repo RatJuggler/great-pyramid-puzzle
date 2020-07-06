@@ -16,20 +16,27 @@ export class TilePosition {
     private _joins = new Map<string, TilePositionJoinProperties>();
     private _tile: Tile | null = null;
 
-    constructor(private _id: string) {}
+    constructor(private _name: string, private _onFace: string) {}
 
     toString(): string {
-        let tileString = `TilePosition: ${this._id}, Contains Tile: [${this._tile}], Joins: `;
+        let tileString = `TilePosition: ${this._name}, On Face: ${this._onFace}, Contains Tile: [${this._tile}], Joins: `;
         this._joins.forEach((join, side) =>
-            tileString += `(${this._id}-${side}->${join.onFace.name}-${join.ofTilePosition.id}-${join.toSide})`);
+            tileString += `(${this._name}-${side}->${join.onFace.name}-${join.ofTilePosition.name}-${join.toSide})`);
         return tileString;
     }
 
     get id(): string {
-        return this._id;
+        return this._onFace + "-" + this._name;
     }
 
-    get tile(): Tile | null {
+    get name(): string {
+        return this._name;
+    }
+
+    get tile(): Tile {
+        if (this._tile === null) {
+            throw new Error("Can't fetch a Tile when there isn't one!");
+        }
         return this._tile;
     }
 
@@ -54,12 +61,20 @@ export class TilePosition {
         return !this._tile;
     }
 
-    placeTile(tile: Tile): boolean {
-        if (this.isEmpty()) {
-            this._tile = tile;
-            return true;
+    placeTile(tile: Tile): TilePosition {
+        if (!this.isEmpty()) {
+            throw new Error("Can't place a Tile when the position is already filled!");
         }
-        return false;
+        this._tile = tile.place();
+        return this;
+    }
+
+    removeTile(): boolean {
+        if (this.isEmpty()) {
+            return false;
+        }
+        this._tile = null;
+        return true;
     }
 
 }

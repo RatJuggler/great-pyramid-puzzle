@@ -31,8 +31,8 @@ export class Face {
         }
         // We can't join the tile positions until they've been created for every face.
         for (const tilePositionData of tilePositions) {
-            const newTilePosition = new TilePosition(tilePositionData.position);
-            this._tilePositions.set(newTilePosition.id, newTilePosition);
+            const newTilePosition = new TilePosition(tilePositionData.position, this._name);
+            this._tilePositions.set(newTilePosition.name, newTilePosition);
         }
     }
 
@@ -43,6 +43,10 @@ export class Face {
         faceString += '\n';
         this._tilePositions.forEach(tilePosition => faceString += tilePosition.toString() + '\n');
         return faceString;
+    }
+
+    get id(): string {
+        return "face" + this._name;
     }
 
     get name(): string {
@@ -88,19 +92,19 @@ export class Face {
         return this.emptyTilePositions.length > 0;
     }
 
-    private placeTile(tile: Tile, position: number) {
+    private placeTile(tile: Tile, position: number): TilePosition | null {
         const emptyPositions = this.emptyTilePositions;
         if (emptyPositions.length === 0) {
-            return false;
+            return null;
         }
         return emptyPositions[position].placeTile(tile);
     }
 
-    placeTileRandomly(tile: Tile): boolean {
+    placeTileRandomly(tile: Tile): TilePosition | null {
         return this.placeTile(tile, getRandomInt(this.emptyTilePositions.length));
     }
 
-    placeTileSequentially(tile: Tile): boolean {
+    placeTileSequentially(tile: Tile): TilePosition | null {
         return this.placeTile(tile, 0);
     }
 

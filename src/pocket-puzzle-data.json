@@ -34,7 +34,7 @@
             },
             {
               "fromSide": "B",
-              "toSide": "A",
+              "toSide": "C",
               "ofTilePosition": "3",
               "onFace": "1"
             },
@@ -51,7 +51,7 @@
           "joins": [
             {
               "fromSide": "A",
-              "toSide": "C",
+              "toSide": "B",
               "ofTilePosition": "3",
               "onFace": "1"
             },
@@ -74,20 +74,20 @@
           "joins": [
             {
               "fromSide": "A",
-              "toSide": "B",
-              "ofTilePosition": "1",
-              "onFace": "1"
-            },
-            {
-              "fromSide": "B",
               "toSide": "C",
               "ofTilePosition": "4",
               "onFace": "1"
             },
             {
-              "fromSide": "C",
+              "fromSide": "B",
               "toSide": "A",
               "ofTilePosition": "2",
+              "onFace": "1"
+            },
+            {
+              "fromSide": "C",
+              "toSide": "B",
+              "ofTilePosition": "1",
               "onFace": "1"
             }
           ]
@@ -109,7 +109,7 @@
             },
             {
               "fromSide": "C",
-              "toSide": "B",
+              "toSide": "A",
               "ofTilePosition": "3",
               "onFace": "1"
             }
