@@ -10,14 +10,12 @@ import geometry;
 size(10cm);
 unitsize(3cm);
 real face_gap = 0.05;
-real tile_gap = 0.05;
+real tile_gap = 0.04;
 pen tile_label = fontsize(12pt);
 pen note_label = fontsize(8pt);
 pen side_label = fontsize(6pt);
 pen face_colour = palegray;
 pen tile_colour = lightgray;
-transform label_down_right = shift(0.05, -0.05);
-transform label_up_right = shift(0.05, 0.05);
 pen title_label = fontsize(14pt);
 
 
@@ -62,7 +60,7 @@ path drawFace(real offset, int rotate) {
     return face;
 }
 
-// Reference triangle and height.
+// Reference triangle and face offset.
 path ref = polygon(3);
 real fOffset = abs(point(ref, 0).y) * 2 + face_gap;
 
@@ -77,9 +75,9 @@ path face_4 = drawFace(fOffset, 120);
 // Tiles are created and rotated to maintain side labeling consistency.
 real face_side = length(point(ref, 0)--point(ref, 1));
 real tile_scale = ((face_side - (tile_gap * 3)) / 2) / face_side;
-real tOffset_x = (point(ref, 0).x * tile_scale) + (tile_gap / 2);
-real tOffset_y = (-point(ref, 0).y * tile_scale) + (tile_gap / 2);
-real tOffset_y2 = (-point(ref, 0).y * 2 * tile_scale) + (tile_gap / 2);
+real tOffset_x = (point(ref, 0).x * tile_scale) + tile_gap;
+real tOffset_y = (abs(point(ref, 0).y) * tile_scale) + tile_gap / 2;
+real tOffset_y2 = (abs(point(ref, 0).y) * tile_scale * 2) + tile_gap;
 
 drawTilesOnFace(0, tile_scale, -60, "1", tOffset_x, tOffset_y, tOffset_y2);
 drawTilesOnFace(fOffset, tile_scale, 0, "2", tOffset_x, tOffset_y, tOffset_y2);
