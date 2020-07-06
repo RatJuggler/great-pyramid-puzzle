@@ -17,7 +17,8 @@ pen face_colour = palegray + linewidth(1);
 pen title_label = fontsize(14pt);
 
 
-path drawFace(point center, int rotate, string id, align label_align, align a_align, align b_align, align c_align) {
+path drawFace(real offset, int rotate, string id, align label_align, align a_align, align b_align, align c_align) {
+    point center = rotate(rotate) * (0, offset);
     path face = shift(center) * rotate(rotate) * polygon(3);
     filldraw(face, face_colour);
     dot(Label("Face " + id), center, label_align, face_label);
@@ -27,16 +28,16 @@ path drawFace(point center, int rotate, string id, align label_align, align a_al
     return face;
 }
 
-// Reference triangle and height.
+// Reference triangle and face offset.
 path ref = polygon(3);
-real height = abs(point(ref, 0).y);
+real fOffset = abs(point(ref, 0).y) * 2 + face_gap;
 
 // Tetrahedron faces, outward facing surfaces will be shown so these would fold down.
 // Faces are created and rotated to maintain side labeling consistency.
-path face_1 = drawFace((0, 0), -60, "1", N, W, E, S);
-path face_2 = drawFace((0, height * 2 + face_gap), 0, "2", S, W, N, E);
-path face_3 = drawFace((point(ref, 0).x + face_gap, -height - face_gap), -120, "3", S, N, E, W);
-path face_4 = drawFace((point(ref, 2).x - face_gap, -height - face_gap), 120, "4", S, E, W, N);
+path face_1 = drawFace(0, -60, "1", N, W, E, S);
+path face_2 = drawFace(fOffset, 0, "2", S, W, N, E);
+path face_3 = drawFace(fOffset, -120, "3", S, N, E, W);
+path face_4 = drawFace(fOffset, 120, "4", S, E, W, N);
 
 // Midpoint side arrows.
 point midpoint2A = midpoint(point(face_2, 0)--point(face_2, 1));
