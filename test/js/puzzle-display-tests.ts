@@ -22,8 +22,8 @@ describe("Puzzle display functionality", function () {
             const displayManager = new DisplayManager(document.documentElement, valid_display1);
             const canvas = displayManager.displayPuzzle(tetrahedron);
             console.log(canvas.svg());
-            it("should have 4 faces and 4 empty tiles", function () {
-                expect(document.getElementsByTagName("g")).to.have.length(8);
+            it("should have 4 faces, 4 empty tile positions and 1 new tile position", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(9);
             });
             it("should have 4 face center points", function () {
                 expect(document.getElementsByTagName("circle")).to.have.length(4);
@@ -44,8 +44,8 @@ describe("Puzzle display functionality", function () {
             }
             const canvas = displayManager.displayPuzzle(tetrahedron);
             console.log(canvas.svg());
-            it("should have 4 faces and 4 tiles", function () {
-                expect(document.getElementsByTagName("g")).to.have.length(8);
+            it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(13);
             });
             it("should have 4 face center and 4 tile center points", function () {
                 expect(document.getElementsByTagName("circle")).to.have.length(8);
