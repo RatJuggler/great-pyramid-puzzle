@@ -1,9 +1,11 @@
-import puzzle_data from "../test-puzzle-data.json";
+import layout_data from "../test-layout-data.json";
+import tile_data from "../test-tile-data.json";
 import display_data from "../test-display-data.json";
 
 
 const testPuzzle = {
-    puzzleData: puzzle_data,
+    layoutData: layout_data,
+    tileData: tile_data,
     displayData: display_data
 }
 
