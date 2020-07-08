@@ -1,7 +1,6 @@
 {
   "puzzle": "pocket",
   "numberOfTilesPerFace": 4,
-  "totalNumberOfTiles": 16,
   "faces": [
     {
       "name": "1",
@@ -458,104 +457,6 @@
           ]
         }
       ]
-    }
-  ],
-  "tiles": [
-    {
-      "tile": 1,
-      "sideA": "0011",
-      "sideB": "0010",
-      "sideC": "0001"
-    },
-    {
-      "tile": 2,
-      "sideA": "1000",
-      "sideB": "0001",
-      "sideC": "0110"
-    },
-    {
-      "tile": 3,
-      "sideA": "0110",
-      "sideB": "1000",
-      "sideC": "0100"
-    },
-    {
-      "tile": 4,
-      "sideA": "0100",
-      "sideB": "0100",
-      "sideC": "1000"
-    },
-    {
-      "tile": 5,
-      "sideA": "1110",
-      "sideB": "0011",
-      "sideC": "1000"
-    },
-    {
-      "tile": 6,
-      "sideA": "1000",
-      "sideB": "0011",
-      "sideC": "1000"
-    },
-    {
-      "tile": 7,
-      "sideA": "1100",
-      "sideB": "1100",
-      "sideC": "0011"
-    },
-    {
-      "tile": 8,
-      "sideA": "1000",
-      "sideB": "1100",
-      "sideC": "0110"
-    },
-    {
-      "tile": 9,
-      "sideA": "0011",
-      "sideB": "0110",
-      "sideC": "0110"
-    },
-    {
-      "tile": 10,
-      "sideA": "0001",
-      "sideB": "0110",
-      "sideC": "1100"
-    },
-    {
-      "tile": 11,
-      "sideA": "0111",
-      "sideB": "0001",
-      "sideC": "0001"
-    },
-    {
-      "tile": 12,
-      "sideA": "0001",
-      "sideB": "0100",
-      "sideC": "0001"
-    },
-    {
-      "tile": 13,
-      "sideA": "0110",
-      "sideB": "0010",
-      "sideC": "0001"
-    },
-    {
-      "tile": 14,
-      "sideA": "0001",
-      "sideB": "1000",
-      "sideC": "0010"
-    },
-    {
-      "tile": 15,
-      "sideA": "1100",
-      "sideB": "0110",
-      "sideC": "0110"
-    },
-    {
-      "tile": 16,
-      "sideA": "0010",
-      "sideB": "0110",
-      "sideC": "1000"
     }
   ]
 }

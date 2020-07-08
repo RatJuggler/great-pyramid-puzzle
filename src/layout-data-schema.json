@@ -1,11 +1,11 @@
 {
-  "$id": "https://pyramid.puzzle/puzzle-data-schema.json",
+  "$id": "https://pyramid.puzzle/layout-data-schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "The Great Pyramid Puzzle Data",
-  "description": "Define the tile positions and tiles used in the Pyramid Puzzles.",
+  "title": "The Great Pyramid Puzzle Layout Data",
+  "description": "Define the faces and tile positions for the Pyramid Puzzles.",
   "type": "object",
   "additionalProperties": true,
-  "required": ["puzzle", "numberOfTilesPerFace", "totalNumberOfTiles", "faces", "tiles"],
+  "required": ["puzzle", "numberOfTilesPerFace", "faces"],
   "properties": {
     "puzzle": {
       "description": "The name of this version of the Pyramid Puzzle.",
@@ -17,11 +17,6 @@
       "description": "The number of tiles used on each face of the puzzle.",
       "type": "integer",
       "enum": [1, 4, 9]
-    },
-    "totalNumberOfTiles": {
-      "description": "The total number of tiles used on the puzzle.",
-      "type": "integer",
-      "enum": [4, 16, 36]
     },
     "faces": {
       "description": "The faces of the tetrahedron.",
@@ -115,42 +110,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "tiles": {
-      "description": "The tiles used by the version of the puzzle.",
-      "type": "array",
-      "minItems": 4,
-      "maxItems": 36,
-      "uniqueItems": true,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["tile", "sideA", "sideB", "sideC"],
-        "properties": {
-          "tile": {
-            "description": "A number to identify the individual tile.",
-            "type": "number"
-          },
-          "sideA": {
-            "description": "A string representing the pattern on side one of the tile (Seg1, Seg2, Seg3, Seg4)",
-            "type": "string",
-            "minLength": 4,
-            "maxLength": 4
-          },
-          "sideB": {
-            "description": "A string representing the pattern on side two of the tile (Seg5, Seg6, Seg7, Seg8).",
-            "type": "string",
-            "minLength": 4,
-            "maxLength": 4
-          },
-          "sideC": {
-            "description": "A string representing the pattern on side three of the tile (Seg9, Seg10, Seg11, Seg12).",
-            "type": "string",
-            "minLength": 4,
-            "maxLength": 4
           }
         }
       }
