@@ -1,21 +1,21 @@
-import puzzle_schema from "../../src/puzzle-data-schema.json";
-import valid_test_puzzle from "../valid-test-puzzle-data1.json";
-import test_puzzle from "../../src/test-puzzle-data.json";
-import pocket_puzzle from "../../src/pocket-puzzle-data.json";
-import great_puzzle from "../../src/great-puzzle-data.json";
+import tile_schema from "../../src/tile-data-schema.json";
+import test_tiles from "../../src/test-tile-data.json";
+import pocket_tiles from "../../src/pocket-tile-data.json";
+import great_tiles from "../../src/great-tile-data.json";
+import valid_test_tiles from "../valid-test-tile-data1.json";
 import Ajv from 'ajv';
 import { expect } from 'chai';
 import 'mocha';
 
 
-describe("Validate puzzle data definition files", function () {
+describe("Validate tile data definition files", function () {
 
-    describe("the puzzle data definition file schema", function () {
+    describe("the tile data definition file schema", function () {
 
         context("when loaded", function () {
             it("should be valid", function () {
                 let ajv = new Ajv();
-                let valid = ajv.validateSchema(puzzle_schema);
+                let valid = ajv.validateSchema(tile_schema);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });
@@ -23,12 +23,12 @@ describe("Validate puzzle data definition files", function () {
 
     });
 
-    describe("the valid test puzzle data definition", function () {
+    describe("the valid test tiles data definition", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
                 let ajv = new Ajv();
-                let valid = ajv.validate(puzzle_schema, valid_test_puzzle.testPuzzleData);
+                let valid = ajv.validate(tile_schema, valid_test_tiles.testTileData);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });
@@ -36,12 +36,12 @@ describe("Validate puzzle data definition files", function () {
 
     });
 
-    describe("the test puzzle data definition", function () {
+    describe("the test tiles data definition", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
                 let ajv = new Ajv();
-                let valid = ajv.validate(puzzle_schema, test_puzzle);
+                let valid = ajv.validate(tile_schema, test_tiles);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });
@@ -49,12 +49,12 @@ describe("Validate puzzle data definition files", function () {
 
     });
 
-    describe("the pocket puzzle data definition", function () {
+    describe("the pocket tiles data definition", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
                 let ajv = new Ajv();
-                let valid = ajv.validate(puzzle_schema, pocket_puzzle);
+                let valid = ajv.validate(tile_schema, pocket_tiles);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });
@@ -62,12 +62,12 @@ describe("Validate puzzle data definition files", function () {
 
     });
 
-    describe("the great puzzle data definition", function () {
+    describe("the great tiles data definition", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
                 let ajv = new Ajv();
-                let valid = ajv.validate(puzzle_schema, great_puzzle);
+                let valid = ajv.validate(tile_schema, great_tiles);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });
