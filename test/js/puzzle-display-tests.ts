@@ -1,4 +1,5 @@
-import valid_data1 from "../valid-test-puzzle-data1.json";
+import valid_layout_data1 from "../valid-test-layout-data1.json";
+import valid_tile_data1 from "../valid-test-tile-data1.json";
 import valid_display1 from "../valid-test-display-data1.json";
 import { getTetrahedron, getTilePool } from "../../src/js/puzzle-loader";
 import { DisplayManager } from "../../src/js/puzzle-display";
@@ -18,7 +19,7 @@ describe("Puzzle display functionality", function () {
             const window = createSVGWindow();
             const document = window.document;
             registerWindow(window, document);
-            const tetrahedron = getTetrahedron(valid_data1.testPuzzleData);
+            const tetrahedron = getTetrahedron(valid_layout_data1.testLayoutData);
             const displayManager = new DisplayManager(document.documentElement, valid_display1);
             const canvas = displayManager.displayPuzzle(tetrahedron);
             console.log(canvas.svg());
@@ -34,8 +35,8 @@ describe("Puzzle display functionality", function () {
             const window = createSVGWindow();
             const document = window.document;
             registerWindow(window, document);
-            const tetrahedron = getTetrahedron(valid_data1.testPuzzleData);
-            const tilePool = getTilePool(valid_data1.testPuzzleData);
+            const tetrahedron = getTetrahedron(valid_layout_data1.testLayoutData);
+            const tilePool = getTilePool(valid_tile_data1.testTileData);
             const displayManager = new DisplayManager(document.documentElement, valid_display1);
             let tile = tilePool.randomTile;
             while (tile) {
