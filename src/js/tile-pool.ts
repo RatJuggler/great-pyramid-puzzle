@@ -1,5 +1,5 @@
 import { Tile } from "./tile";
-import { TileData } from "./puzzle-data-schema";
+import { TileDefinition } from "./tile-data-schema";
 import { getRandomInt } from "./utils";
 
 
@@ -7,7 +7,7 @@ export class TilePool {
 
     private readonly _tiles = new Map<number, Tile>();
 
-    constructor(numberOfTiles: number, tileData: TileData[]) {
+    constructor(numberOfTiles: number, tileData: TileDefinition[]) {
         if (numberOfTiles !== tileData.length) {
             throw new Error(`Number of tiles provided (${tileData.length}) does not match number expected (${numberOfTiles})!`);
         }
@@ -18,7 +18,7 @@ export class TilePool {
         }
     }
 
-    addTile(tileDetails: TileData): boolean {
+    addTile(tileDetails: TileDefinition): boolean {
         if (this._tiles.has(tileDetails.tile)) {
             return false;
         }

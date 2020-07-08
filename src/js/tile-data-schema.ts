@@ -10,7 +10,7 @@ interface TileDefinition {
 interface TileData {
     readonly puzzle: string;
     readonly totalNumberOfTiles: number;
-    readonly tiles: TileData[];
+    readonly tiles: TileDefinition[];
 }
 
 export { TileData, TileDefinition };

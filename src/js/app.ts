@@ -1,7 +1,8 @@
 import { testPuzzle } from "./test-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
-import { PuzzleData } from "./puzzle-data-schema";
+import { LayoutData } from "./layout-data-schema";
+import { TileData } from "./tile-data-schema";
 import { DisplayData } from "./puzzle-display-schema";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
 import { DisplayManager } from "./puzzle-display";
@@ -29,7 +30,7 @@ function attachRotateEvents(tetrahedron: Tetrahedron, puzzleDisplay: HTMLElement
         });
 }
 
-function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; }) {
+function doPuzzle(puzzle: { layoutData: LayoutData; tileData: TileData; displayData: DisplayData; }) {
     // Clear any previous puzzle tile placement schedules.
     if (placeTileInterval) {
         clearInterval(placeTileInterval);
@@ -39,8 +40,8 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; })
     const placement = <HTMLInputElement>document.getElementById("tile-placement")!;
     const puzzleDisplay = <HTMLInputElement>document.getElementById("puzzle-display")!;
     // Build internal puzzle representation with tiles waiting to be placed on it.
-    const tetrahedron = getTetrahedron(puzzle.puzzleData);
-    const tilePool = getTilePool(puzzle.puzzleData);
+    const tetrahedron = getTetrahedron(puzzle.layoutData);
+    const tilePool = getTilePool(puzzle.tileData);
     // Show the initial puzzle state.
     displayManager = new DisplayManager(puzzleDisplay, puzzle.displayData);
     displayManager.displayPuzzle(tetrahedron);
@@ -57,10 +58,10 @@ function doPuzzle(puzzle: { puzzleData: PuzzleData; displayData: DisplayData; })
             placeTileInterval = 0;
             attachRotateEvents(tetrahedron, puzzleDisplay);
         }
-    }, 2000);
+    }, 1000);
 }
 
-function enablePuzzleButton(buttonId: string, puzzle: { puzzleData: PuzzleData; displayData: DisplayData; }) {
+function enablePuzzleButton(buttonId: string, puzzle: { layoutData: LayoutData; tileData: TileData; displayData: DisplayData; }) {
     document.getElementById(buttonId)!.addEventListener("click", () => doPuzzle(puzzle));
 }
 

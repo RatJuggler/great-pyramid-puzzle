@@ -1,4 +1,4 @@
-import { TileData } from "./puzzle-data-schema";
+import { TileDefinition } from "./tile-data-schema";
 
 
 export class Tile {
@@ -19,7 +19,7 @@ export class Tile {
         return segments;
     }
 
-    constructor(tileDetails: TileData) {
+    constructor(tileDetails: TileDefinition) {
         this._id = tileDetails.tile;
         this._sides = [
             this.validateSegments(tileDetails.sideA),

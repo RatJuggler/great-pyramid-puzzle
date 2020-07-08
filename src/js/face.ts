@@ -1,6 +1,6 @@
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
-import { TilePositionData} from "./puzzle-data-schema";
+import { TilePositionData} from "./layout-data-schema";
 import { getRandomInt } from "./utils";
 
 
