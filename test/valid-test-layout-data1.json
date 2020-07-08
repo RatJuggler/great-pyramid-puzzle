@@ -1,9 +1,8 @@
 {
-  "tesDescription": "Simplest valid full configuration.",
-  "testPuzzleData": {
+  "tesDescription": "Simplest valid layout configuration.",
+  "testLayoutData": {
     "puzzle": "test-valid",
     "numberOfTilesPerFace": 1,
-    "totalNumberOfTiles": 4,
     "faces": [
       {
         "name": "1",
@@ -184,32 +183,6 @@
             ]
           }
         ]
-      }
-    ],
-    "tiles": [
-      {
-        "tile": 1,
-        "sideA": "1010",
-        "sideB": "0010",
-        "sideC": "0010"
-      },
-      {
-        "tile": 2,
-        "sideA": "0100",
-        "sideB": "0100",
-        "sideC": "1001"
-      },
-      {
-        "tile": 3,
-        "sideA": "0101",
-        "sideB": "1001",
-        "sideC": "1010"
-      },
-      {
-        "tile": 4,
-        "sideA": "0010",
-        "sideB": "0100",
-        "sideC": "0101"
       }
     ]
   }

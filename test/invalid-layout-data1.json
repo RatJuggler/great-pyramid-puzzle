@@ -1,9 +1,8 @@
 {
   "tesDescription": "There must be configuration data for 4 faces",
-  "testPuzzleData": {
+  "testLayoutData": {
     "puzzle": "faces-invalid",
     "numberOfTilesPerFace": 1,
-    "totalNumberOfTiles": 4,
     "faces": [
       {
         "name": "1",
@@ -35,7 +34,6 @@
           }
         ]
       }
-    ],
-    "tiles": []
+    ]
   }
 }
