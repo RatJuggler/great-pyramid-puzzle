@@ -18,11 +18,11 @@ interface FaceDisplayData {
 }
 
 interface DisplayData {
-    readonly triangle: string,
-    readonly segments: string[],
+    readonly triangle: number[],
+    readonly segments: number[][][],
     readonly faceScale: number,
     readonly tileScale: number,
     readonly faces: FaceDisplayData[],
 }
 
-export { CenterPointData, DisplayData }
+export { CenterPointData, TilePositionDisplayData, FaceDisplayData, DisplayData }

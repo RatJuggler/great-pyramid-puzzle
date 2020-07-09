@@ -32,17 +32,32 @@
   "required": ["triangle", "segments", "faceScale", "tileScale", "faces"],
   "properties": {
     "triangle": {
-      "description": "An SVG path string defining a base unit triangle.",
-      "type": "string"
+      "description": "A point path defining a base unit triangle.",
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": false,
+      "items": {
+        "type": "number"
+      }
     },
     "segments": {
-      "description": "An array of SVG path strings defining the segments on a tile.",
+      "description": "An array of point paths defining the segments on a tile.",
       "type": "array",
       "minItems": 12,
       "maxItems": 12,
       "uniqueItems": true,
       "items": {
-        "type": "string"
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "uniqueItems": true,
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": false
+        }
       }
     },
     "faceScale": {
