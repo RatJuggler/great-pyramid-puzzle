@@ -4,7 +4,7 @@
   "title": "The Great Pyramid Puzzle Layout Data",
   "description": "Define the faces and tile positions for the Pyramid Puzzles.",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "required": ["puzzle", "numberOfTilesPerFace", "faces"],
   "properties": {
     "puzzle": {

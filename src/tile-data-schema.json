@@ -4,7 +4,7 @@
   "title": "The Great Pyramid Puzzle Tile Data",
   "description": "Define the tiles for the Pyramid Puzzles.",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "required": ["puzzle", "totalNumberOfTiles", "tiles"],
   "properties": {
     "puzzle": {
