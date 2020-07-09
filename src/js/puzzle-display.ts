@@ -69,21 +69,23 @@ export class DisplayManager {
         return tGroup;
     }
 
-    private drawTilePosition(tpGroup: G, tilePosition: TilePosition, tpCenter: CenterPointData): void {
+    private static setTPDescription(tpGroup: G, tilePosition: TilePosition): void {
         // Information about the tile position.
-        let hover = "Position: " + tilePosition.name + ", Tile: ";
+        const desc = "Position: " + tilePosition.name + ", Tile: " + (tilePosition.isEmpty() ? "Empty" : tilePosition.tile.id);
+        tpGroup.element('title').words(desc);
+    }
+
+    private drawTilePosition(tpGroup: G, tilePosition: TilePosition, tpCenter: CenterPointData): void {
+        // Set the tile description.
+        DisplayManager.setTPDescription(tpGroup, tilePosition);
         // Draw the tile if present or an outline if not.
         if (tilePosition.isEmpty()) {
-            hover += "Empty";
             this.drawTriangle(tpGroup, tpCenter, this._scaleTile, '#C0C0C0', {width: 0.4, color: '#000000'});
         } else {
-            hover += tilePosition.tile.id;
             tpGroup.add(
                 this.drawTile(tilePosition.tile, tpCenter)
             );
         }
-        // Set the tile description/hover.
-        tpGroup.element('title').words(hover);
     }
 
     private displayTilePosition(tilePosition: TilePosition, tpCenter: CenterPointData): G {
@@ -153,6 +155,8 @@ export class DisplayManager {
         // @ts-ignore
         newTile.animate({duration: 500}).transform(matrix)
             .after(() => {
+                // Add a desciption and the tile to this position.
+                DisplayManager.setTPDescription(tpGroup, tilePosition);
                 tpGroup.add(newTile);
             });
     }
