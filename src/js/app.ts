@@ -9,6 +9,7 @@ import { getTetrahedron, getTilePool } from "./puzzle-loader";
 import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
+import {TilePosition} from "./tile-position";
 
 
 // Track tile placing event timer.
@@ -43,6 +44,20 @@ function getSelector(name: string): string {
     return "Random";
 }
 
+function getPuzzleType(): { layoutData: LayoutData; tileData: TileData; displayData: DisplayData; } {
+    const puzzleType = getSelector("puzzle-type");
+    switch (puzzleType) {
+        case "Test":
+            return testPuzzle;
+        case "Pocket":
+            return pocketPuzzle;
+        case "Great":
+            return greatPuzzle;
+        default:
+            throw new Error("Invalid puzzle type option!");
+    }
+}
+
 function getTileSelection(tilePool: TilePool): Tile | null {
     const selection = getSelector("tile-selection");
     switch (selection) {
@@ -57,7 +72,7 @@ function getTileSelection(tilePool: TilePool): Tile | null {
     }
 }
 
-function placeTile(tile: Tile, tetrahedron: Tetrahedron)  {
+function placeTile(tile: Tile, tetrahedron: Tetrahedron): TilePosition  {
     const placement = getSelector("tile-placement");
     let tilePlacedPosition;
     switch (placement) {
@@ -76,11 +91,13 @@ function placeTile(tile: Tile, tetrahedron: Tetrahedron)  {
     return tilePlacedPosition;
 }
 
-function doPuzzle(puzzle: { layoutData: LayoutData; tileData: TileData; displayData: DisplayData; }): void {
+function doPuzzle(): void {
     // Clear any previous puzzle tile placement schedules.
     if (placeTileInterval) {
         clearInterval(placeTileInterval);
     }
+    // Determine the puzzle type.
+    const puzzle = getPuzzleType();
     // Build internal puzzle representation with tiles waiting to be placed on it.
     const tetrahedron = getTetrahedron(puzzle.layoutData);
     const tilePool = getTilePool(puzzle.tileData);
@@ -102,10 +119,4 @@ function doPuzzle(puzzle: { layoutData: LayoutData; tileData: TileData; displayD
     }, 1000);
 }
 
-function enablePuzzleButton(buttonId: string, puzzle: { layoutData: LayoutData; tileData: TileData; displayData: DisplayData; }) {
-    document.getElementById(buttonId)!.addEventListener("click", () => doPuzzle(puzzle));
-}
-
-enablePuzzleButton("test", testPuzzle);
-enablePuzzleButton("pocket", pocketPuzzle);
-enablePuzzleButton("great", greatPuzzle);
+document.getElementById("go")!.addEventListener("click", () => doPuzzle());

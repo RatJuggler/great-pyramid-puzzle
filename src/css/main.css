@@ -31,6 +31,12 @@ html, body {
   font-size: 150%;
 }
 
+#puzzle-selection .pure-button {
+  width: 100%;
+  margin: 5px 0;
+  font-size: 150%;
+}
+
 .selector {
   border: 2px solid #999999;
   display: inline-block;
