@@ -37,13 +37,17 @@
     <div id="puzzle-selection">
       <ul>
         <li>
-          <button id="test" class="pure-button">Test - 1 Tile/Side</button>
+          <p>Puzzle Type:</p>
         </li>
         <li>
-          <button id="pocket" class="pure-button">Pocket - 4 Tiles/Side</button>
-        </li>
-        <li>
-          <button id="great" class="pure-button">Great - 9 Tiles/Side</button>
+          <div class="selector">
+            <input type="radio" id="puzzle-test" name="puzzle-type" value="Test" checked>
+            <label for="puzzle-test">Test - 1 Tile/Side</label>
+            <input type="radio" id="puzzle-pocket" name="puzzle-type" value="Pocket">
+            <label for="puzzle-pocket">Pocket - 4 Tiles/Side</label>
+            <input type="radio" id="puzzle-great" name="puzzle-type" value="Great">
+            <label for="puzzle-great">Great - 9 Tiles/Side</label>
+          </div>
         </li>
         <li>
           <p>Tile selection:</p>

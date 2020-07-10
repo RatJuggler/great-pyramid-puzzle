@@ -27,12 +27,6 @@ html, body {
   list-style-type: none;
 }
 
-#puzzle-selection .pure-button {
-  width: 100%;
-  margin: 5px 0;
-  font-size: 150%;
-}
-
 #puzzle-selection p {
   font-size: 150%;
 }
@@ -56,7 +50,7 @@ html, body {
   color: #000000;
   display: inline-block;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 125%;
   padding: 10px 10px;
   width: 100%
 }
