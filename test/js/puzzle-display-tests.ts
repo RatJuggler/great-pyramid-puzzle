@@ -31,13 +31,34 @@ describe("Puzzle display functionality", function () {
             });
         });
 
-        context("with tiles on it", function () {
+        context("with some tiles on it", function () {
             const window = createSVGWindow();
             const document = window.document;
             registerWindow(window, document);
             const tetrahedron = getTetrahedron(valid_layout_data1.testLayoutData);
-            const tilePool = getTilePool(valid_tile_data1.testTileData);
             const displayManager = new DisplayManager(document.documentElement, valid_display1);
+            const tilePool = getTilePool(valid_tile_data1.testTileData);
+            const tile1 = tilePool.randomTile!;
+            assert.isNotNull(tetrahedron.placeTileRandomly(tile1));
+            const tile2 = tilePool.randomTile!;
+            assert.isNotNull(tetrahedron.placeTileRandomly(tile2));
+            const canvas = displayManager.displayPuzzle(tetrahedron);
+            console.log(canvas.svg());
+            it("should have 4 faces, 2 empty tile positions, 2 tile positions with tiles and 1 new tile position", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(11);
+            });
+            it("should have 4 face center points and 2 tile center points", function () {
+                expect(document.getElementsByTagName("circle")).to.have.length(6);
+            });
+        });
+
+        context("with all the tiles on it", function () {
+            const window = createSVGWindow();
+            const document = window.document;
+            registerWindow(window, document);
+            const tetrahedron = getTetrahedron(valid_layout_data1.testLayoutData);
+            const displayManager = new DisplayManager(document.documentElement, valid_display1);
+            const tilePool = getTilePool(valid_tile_data1.testTileData);
             let tile = tilePool.randomTile;
             while (tile) {
                 assert.isNotNull(tetrahedron.placeTileRandomly(tile));
