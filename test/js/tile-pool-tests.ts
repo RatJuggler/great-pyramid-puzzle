@@ -205,4 +205,29 @@ describe("TilePool behavior", function () {
 
     });
 
+    describe("if #getTestTile() is called to return the display test Tile", function () {
+
+        context("while there are Tiles remaining in the TilePool", function () {
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
+            for (let i = 0; i < validTileData.totalNumberOfTiles; i++) {
+                const tile = tilePool.testTile!;
+                it("should always return the display test Tile", function () {
+                    expect(tile).to.be.an.instanceOf(Tile);
+                    expect(tile.id).to.equal(0);
+                });
+            }
+        });
+
+        context("when there are no Tiles remaining in the TilePool", function () {
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
+            for (let i = 0; i < validTileData.totalNumberOfTiles; i++) {
+                assert.instanceOf(tilePool.testTile, Tile);
+            }
+            it("should return null", function () {
+                expect(tilePool.testTile).to.be.null;
+            });
+        });
+
+    });
+
 });

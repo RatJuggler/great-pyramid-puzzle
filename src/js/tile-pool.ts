@@ -26,7 +26,7 @@ export class TilePool {
         }
     }
 
-    private addTile(tileDetails: TileDefinition): boolean {
+    addTile(tileDetails: TileDefinition): boolean {
         if (this._tiles.has(tileDetails.tile)) {
             return false;
         }
@@ -35,7 +35,7 @@ export class TilePool {
         return true;
     }
 
-    private getTile(id: number): Tile {
+    getTile(id: number): Tile {
         if (this._tiles.has(id)) {
             const tile = this._tiles.get(id)!;
             this._tiles.delete(id);
