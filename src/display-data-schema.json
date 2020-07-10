@@ -28,28 +28,47 @@
   },
 
   "type": "object",
-  "additionalProperties": true,
-  "required": ["triangle", "segments", "faceScale", "facePositions", "tileScale", "tilePositions"],
+  "additionalProperties": false,
+  "required": ["triangle", "segments", "faceScale", "tileScale", "faces"],
   "properties": {
     "triangle": {
-      "description": "An SVG path string defining a base unit triangle.",
-      "type": "string"
+      "description": "A point path defining a base unit triangle.",
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": false,
+      "items": {
+        "type": "number"
+      }
     },
     "segments": {
-      "description": "An array of SVG path strings defining the segments on a tile.",
+      "description": "An array of point paths defining the segments on a tile.",
       "type": "array",
       "minItems": 12,
       "maxItems": 12,
       "uniqueItems": true,
       "items": {
-        "type": "string"
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "uniqueItems": true,
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": false
+        }
       }
     },
     "faceScale": {
       "description": "A scaling factor used when displaying a face.",
       "type": "number"
     },
-    "facePositions": {
+    "tileScale": {
+      "description": "A scaling factor used when displaying a tile.",
+      "type": "number"
+    },
+    "faces": {
       "description": "The face position layout of the tetrahedron.",
       "type": "array",
       "minItems": 4,
@@ -58,7 +77,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "center"],
+        "required": ["id", "center", "tilePositions"],
         "properties": {
           "id": {
             "description": "The id of the face.",
@@ -66,31 +85,27 @@
           },
           "center": {
             "$ref": "#/definitions/center"
-          }
-        }
-      }
-    },
-    "tileScale": {
-      "description": "A scaling factor used when displaying a tile.",
-      "type": "number"
-    },
-    "tilePositions": {
-      "description": "The tiles positions on a face of the tetrahedron.",
-      "type": "array",
-      "minItems": 1,
-      "maxItems": 9,
-      "uniqueItems": true,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["id", "center"],
-        "properties": {
-          "id": {
-            "description": "The id of the tile position.",
-            "type": "string"
           },
-          "center": {
-            "$ref": "#/definitions/center"
+          "tilePositions": {
+            "description": "The tiles positions on the face.",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 9,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "center"],
+              "properties": {
+                "id": {
+                  "description": "The id of the tile position.",
+                  "type": "string"
+                },
+                "center": {
+                  "$ref": "#/definitions/center"
+                }
+              }
+            }
           }
         }
       }

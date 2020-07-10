@@ -37,52 +37,31 @@ html, body {
   font-size: 150%;
 }
 
-/* Based on generated code from: https://proto.io/freebies/onoff/ */
 .selector {
-  position: relative; width: 200px;
-  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-  margin: 10px 0;
+  border: 2px solid #999999;
+  display: inline-block;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 100%
 }
-.selector-checkbox {
+
+.selector input[type=radio] {
   position: absolute;
-  opacity: 0;
-  pointer-events: none;
+  visibility: hidden;
+  display: none;
 }
-.selector-label {
-  display: block; overflow: hidden; cursor: pointer;
-  border: 2px solid #999999; border-radius: 20px;
+
+.selector label {
+  background-color: #E6E6E6;
+  color: #000000;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 10px 10px;
+  width: 100%
 }
-.selector-inner {
-  display: block; width: 200%; margin-left: -100%;
-  transition: margin 0.3s ease-in 0s;
-}
-.selector-inner:before, .selector-inner:after {
-  display: block; float: left; width: 50%; height: 43px; padding: 0; line-height: 43px;
-  font-size: 24px; color: white;
-  box-sizing: border-box;
-}
-.selector-inner:before {
-  content: "Random";
-  padding-left: 10px;
-  background-color: #E6E6E6; color: #000000;
-}
-.selector-inner:after {
-  content: "Sequential";
-  padding-right: 10px;
-  background-color: #E6E6E6; color: #000000;
-  text-align: right;
-}
-.selector-switch {
-  display: block; width: 33px; margin: 5px;
-  background: #FFFFFF;
-  position: absolute; top: 0; bottom: 0;
-  right: 153px;
-  border: 2px solid #999999; border-radius: 20px;
-  transition: all 0.3s ease-in 0s;
-}
-.selector-checkbox:checked + .selector-label .selector-inner {
-  margin-left: 0;
-}
-.selector-checkbox:checked + .selector-label .selector-switch {
-  right: 0;
+
+.selector input[type=radio]:checked + label {
+  color: #E6E6E6;
+  background: #675f6b;
 }

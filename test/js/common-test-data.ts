@@ -1,8 +1,9 @@
-import { TileData, TilePositionData } from "../../src/js/puzzle-data-schema";
+import { TileDefinition } from "../../src/js/tile-data-schema";
+import { TilePositionData } from "../../src/js/layout-data-schema";
 import { Tile } from "../../src/js/tile";
 
 
-const TILE_1_DATA: TileData = {
+const TILE_1_DATA: TileDefinition = {
     "tile": 101,
     "sideA": "0001",
     "sideB": "0010",
@@ -10,7 +11,7 @@ const TILE_1_DATA: TileData = {
 };
 const TILE_1 = new Tile(TILE_1_DATA);
 
-const TILE_2_DATA: TileData = {
+const TILE_2_DATA: TileDefinition = {
     "tile": 102,
     "sideA": "0011",
     "sideB": "0100",

@@ -1,5 +1,6 @@
-import valid_config1 from "../valid-test-puzzle-data1.json";
-import invalid_config1 from "../invalid-face-puzzle-data1.json";
+import valid_layout_config1 from "../valid-test-layout-data1.json";
+import valid_tiles_config1 from "../valid-test-tile-data1.json";
+import invalid_layout_config1 from "../invalid-layout-data1.json";
 import { Face } from "../../src/js/face";
 import { Tetrahedron } from '../../src/js/tetrahedron';
 import { TilePool } from "../../src/js/tile-pool";
@@ -12,14 +13,15 @@ import { TILE_1, TILE_2 } from "./common-test-data";
 
 describe("Tetrahedron behaviour", function () {
 
-    const validPuzzleData = valid_config1.testPuzzleData;
+    const validLayoutData = valid_layout_config1.testLayoutData;
+    const validTileData = valid_tiles_config1.testTileData;
 
     describe("if a new Tetrahedron is created", function () {
 
         context("with valid configuration data file 1", function () {
+            const tetrahedron =
+                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             it("should return a correctly initialised instance", function () {
-                const tetrahedron =
-                    new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
                 expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
                 const expectedToString = "Puzzle Type: test-valid\n" +
                     "Face: 1, Tile Positions: 1, Joins: (1-A->3-B)(1-B->4-B)(1-C->2-B)\n" +
@@ -32,11 +34,14 @@ describe("Tetrahedron behaviour", function () {
                     "TilePosition: 1, On Face: 4, Contains Tile: [null], Joins: (1-A->2-1-C)(1-B->1-1-B)(1-C->3-1-A)\n";
                 expect(tetrahedron.toString()).to.equal(expectedToString);
             });
+            it("should have set the puzzle instance name", function () {
+                expect(tetrahedron.name).to.equal("test-valid");
+            })
         });
 
         context("with invalid face configuration data file 1", function () {
             it("should throw an error", function () {
-                const puzzleData = invalid_config1.testPuzzleData;
+                const puzzleData = invalid_layout_config1.testLayoutData;
                 expect(function () {
                     new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
                 }).to.throw(Error, "Tetrahedron must always have configuration data for 4 Faces!");
@@ -50,7 +55,7 @@ describe("Tetrahedron behaviour", function () {
         context("when there is a Face with the given name already on the Tetrahedron", function () {
             it("should return the Face details", function () {
                 const tetrahedron =
-                    new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+                    new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
                 const face = tetrahedron.getFace("3");
                 expect(face).to.be.an.instanceOf(Face);
                 const expectedToString =
@@ -63,7 +68,7 @@ describe("Tetrahedron behaviour", function () {
         context("when there isn't a Face with the given name on the Tetrahedron", function () {
             it("should throw an error", function () {
                 const tetrahedron =
-                    new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+                    new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
                 expect(function () {
                     tetrahedron.getFace("A");
                 }).to.throw(Error, "Face (A) not found on Tetrahedron!");
@@ -76,7 +81,7 @@ describe("Tetrahedron behaviour", function () {
 
         context("and the Tetrahedron has no Tiles on it", function () {
             const tetrahedron =
-                new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             const result = tetrahedron.placeTileRandomly(TILE_1);
             it("should place the Tile in a random empty Position on a random Face", function () {
                 expect(tetrahedron.toString()).to.contain(TILE_1.toString());
@@ -92,7 +97,7 @@ describe("Tetrahedron behaviour", function () {
 
         context("and the Tetrahedron already has Tiles on it", function () {
             const tetrahedron =
-                new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             assert.isNotNull(tetrahedron.placeTileRandomly(TILE_1));
             const result = tetrahedron.placeTileRandomly(TILE_2);
             it("should place the Tile in a random empty Position on a random Face", function () {
@@ -109,8 +114,8 @@ describe("Tetrahedron behaviour", function () {
 
         context("and the Tetrahedron has no remaining empty positions", function () {
             const tetrahedron =
-                new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
-            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
             let tile = tilePool.randomTile;
             while (tile) {
                 assert.isNotNull(tetrahedron.placeTileRandomly(tile));
@@ -131,7 +136,7 @@ describe("Tetrahedron behaviour", function () {
 
         context("and the Tetrahedron has no Tiles on it", function () {
             const tetrahedron =
-                new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             const result = tetrahedron.placeTileSequentially(TILE_1);
             it("should place the Tile on Face 1 at Position 1", function () {
                 expect(tetrahedron.getFace("1").getTileAtPosition("1")).to.equal(TILE_1);
@@ -147,7 +152,7 @@ describe("Tetrahedron behaviour", function () {
 
         context("and the Tetrahedron already has Tiles on it", function () {
             const tetrahedron =
-                new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
+                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             assert.isNotNull(tetrahedron.placeTileSequentially(TILE_1));
             const result = tetrahedron.placeTileSequentially(TILE_2);
             it("should place the Tile at the next sequentially free position", function () {
@@ -164,8 +169,8 @@ describe("Tetrahedron behaviour", function () {
 
         context("and the Tetrahedron has no remaining empty positions", function () {
             const tetrahedron =
-                new Tetrahedron(validPuzzleData.puzzle, validPuzzleData.numberOfTilesPerFace, validPuzzleData.faces);
-            const tilePool = new TilePool(validPuzzleData.totalNumberOfTiles, validPuzzleData.tiles);
+                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
             let tile = tilePool.randomTile;
             while (tile) {
                 assert.isNotNull(tetrahedron.placeTileSequentially(tile));

@@ -1,13 +1,21 @@
 import { Tile } from "./tile";
-import { TileData } from "./puzzle-data-schema";
+import { TileDefinition } from "./tile-data-schema";
 import { getRandomInt } from "./utils";
 
 
 export class TilePool {
 
+    // Static tile used testing tile orientation display.
+    private static readonly TEST_TILE = new Tile({
+        tile: 0,
+        sideA: "1000",
+        sideB: "0100",
+        sideC: "0010"
+    });
+
     private readonly _tiles = new Map<number, Tile>();
 
-    constructor(numberOfTiles: number, tileData: TileData[]) {
+    constructor(numberOfTiles: number, tileData: TileDefinition[]) {
         if (numberOfTiles !== tileData.length) {
             throw new Error(`Number of tiles provided (${tileData.length}) does not match number expected (${numberOfTiles})!`);
         }
@@ -18,7 +26,7 @@ export class TilePool {
         }
     }
 
-    addTile(tileDetails: TileData): boolean {
+    addTile(tileDetails: TileDefinition): boolean {
         if (this._tiles.has(tileDetails.tile)) {
             return false;
         }
@@ -59,4 +67,13 @@ export class TilePool {
         return this.getTile(id);
     }
 
+    get testTile(): Tile | null {
+        if (this._tiles.size === 0) {
+            return null;
+        }
+        // Discard a random tile.
+        this.randomTile;
+        // Always return the same test tile.
+        return TilePool.TEST_TILE;
+    }
 }

@@ -50,11 +50,12 @@
         </li>
         <li>
           <div class="selector">
-            <input type="checkbox" class="selector-checkbox" id="tile-selection" tabindex="0" checked>
-            <label class="selector-label" for="tile-selection">
-              <span class="selector-inner tile-selection"></span>
-              <span class="selector-switch"></span>
-            </label>
+            <input type="radio" id="selection-random" name="tile-selection" value="Random" checked>
+            <label for="selection-random">Random</label>
+            <input type="radio" id="selection-sequential" name="tile-selection" value="Sequential">
+            <label for="selection-sequential">Sequential</label>
+            <input type="radio" id="selection-test" name="tile-selection" value="Test">
+            <label for="selection-test">Test</label>
           </div>
         </li>
         <li>
@@ -62,11 +63,10 @@
         </li>
         <li>
           <div class="selector">
-            <input type="checkbox" class="selector-checkbox" id="tile-placement" tabindex="0" checked>
-            <label class="selector-label" for="tile-placement">
-              <span class="selector-inner tile-placement"></span>
-              <span class="selector-switch"></span>
-            </label>
+            <input type="radio" id="placement-random" name="tile-placement" value="Random" checked>
+            <label for="placement-random">Random</label>
+            <input type="radio" id="placement-sequential" name="tile-placement" value="Sequential">
+            <label for="placement-sequential">Sequential</label>
           </div>
         </li>
       </ul>

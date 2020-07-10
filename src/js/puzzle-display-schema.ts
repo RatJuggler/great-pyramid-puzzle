@@ -6,18 +6,23 @@ interface CenterPointData {
     readonly r: number
 }
 
-interface PositionDisplayData {
+interface TilePositionDisplayData {
     readonly id: string,
     readonly center: CenterPointData
 }
 
-interface DisplayData {
-    readonly triangle: string,
-    readonly segments: string[],
-    readonly faceScale: number,
-    readonly facePositions: PositionDisplayData[],
-    readonly tileScale: number,
-    readonly tilePositions: PositionDisplayData[]
+interface FaceDisplayData {
+    readonly id: string,
+    readonly center: CenterPointData,
+    readonly tilePositions: TilePositionDisplayData[]
 }
 
-export { CenterPointData, PositionDisplayData, DisplayData }
+interface DisplayData {
+    readonly triangle: number[],
+    readonly segments: number[][][],
+    readonly faceScale: number,
+    readonly tileScale: number,
+    readonly faces: FaceDisplayData[],
+}
+
+export { CenterPointData, TilePositionDisplayData, FaceDisplayData, DisplayData }

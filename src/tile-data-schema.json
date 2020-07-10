@@ -1,0 +1,58 @@
+{
+  "$id": "https://pyramid.puzzle/tile-data-schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "The Great Pyramid Puzzle Tile Data",
+  "description": "Define the tiles for the Pyramid Puzzles.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["puzzle", "totalNumberOfTiles", "tiles"],
+  "properties": {
+    "puzzle": {
+      "description": "The name of this version of the Pyramid Puzzle.",
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 12
+    },
+    "totalNumberOfTiles": {
+      "description": "The total number of tiles used on the puzzle.",
+      "type": "integer",
+      "enum": [4, 16, 36]
+    },
+    "tiles": {
+      "description": "The tiles used by the version of the puzzle.",
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 36,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tile", "sideA", "sideB", "sideC"],
+        "properties": {
+          "tile": {
+            "description": "A number to identify the individual tile.",
+            "type": "number"
+          },
+          "sideA": {
+            "description": "A string representing the pattern on side one of the tile (Seg1, Seg2, Seg3, Seg4)",
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 4
+          },
+          "sideB": {
+            "description": "A string representing the pattern on side two of the tile (Seg5, Seg6, Seg7, Seg8).",
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 4
+          },
+          "sideC": {
+            "description": "A string representing the pattern on side three of the tile (Seg9, Seg10, Seg11, Seg12).",
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 4
+          }
+        }
+      }
+    }
+  }
+}

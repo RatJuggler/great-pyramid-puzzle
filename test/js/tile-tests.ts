@@ -1,5 +1,5 @@
 import { Tile } from '../../src/js/tile';
-import { TileData } from "../../src/js/puzzle-data-schema";
+import { TileDefinition } from "../../src/js/tile-data-schema";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -23,7 +23,7 @@ describe("Tile behaviour", function () {
 
         context("with an invalid Tile segment data length", function () {
             it("should throw an error", function () {
-                const invalidTileData: TileData = {
+                const invalidTileData: TileDefinition = {
                     "tile": 0,
                     "sideA": "0001",
                     "sideB": "00010",
@@ -37,7 +37,7 @@ describe("Tile behaviour", function () {
 
         context("with an invalid Tile segment data coding", function () {
             it("should throw an error", function () {
-                const invalidTileData: TileData = {
+                const invalidTileData: TileDefinition = {
                     "tile": 0,
                     "sideA": "0001",
                     "sideB": "0010",
