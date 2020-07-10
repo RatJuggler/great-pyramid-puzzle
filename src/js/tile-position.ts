@@ -77,4 +77,8 @@ export class TilePosition {
         return true;
     }
 
+    matches(): boolean {
+        return true;
+    }
+
 }

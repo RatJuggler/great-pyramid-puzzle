@@ -3,7 +3,7 @@ import { TilePosition } from '../../src/js/tile-position';
 import { assert, expect} from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1, TILE_2, ONE_TILE_POSITION_DATA } from "./common-test-data";
+import {TILE_1, TILE_2, ONE_TILE_POSITION_DATA} from "./common-test-data";
 
 
 describe("TilePosition behaviour", function () {
@@ -163,6 +163,59 @@ describe("TilePosition behaviour", function () {
                 expect(tilePosition.isEmpty()).to.be.true;
             });
             it("should return True", function () {
+                expect(result).to.be.true;
+            });
+        });
+
+    });
+
+    describe("if #matches() is called to check if the current Tile sides match with surrounding Tiles", function () {
+
+        context("and the Position is empty", function () {
+            const tilePosition = new TilePosition("TP", "1");
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePosition.matches();
+                }).to.throw(Error, "Can't check if a Position matches when there is no Tile to match from!");
+            });
+        });
+
+        context("and the Position has a Tile in it with no surrounding Tiles", function () {
+            const tilePosition = new TilePosition("TP", "1");
+            const result = tilePosition.matches();
+            it("should return true", function () {
+                expect(result).to.be.true;
+            });
+        });
+
+        context("and the Position has a Tile in it with one surrounding Tile which doesn't match", function () {
+            const tilePosition = new TilePosition("TP", "1");
+            const result = tilePosition.matches();
+            it("should return false", function () {
+                expect(result).to.be.false;
+            });
+        });
+
+        context("and the Position has a Tile in it with one surrounding Tile which matches", function () {
+            const tilePosition = new TilePosition("TP", "1");
+            const result = tilePosition.matches();
+            it("should return true", function () {
+                expect(result).to.be.true;
+            });
+        });
+
+        context("and the Position has a Tile in it with surrounding Tiles which don't match", function () {
+            const tilePosition = new TilePosition("TP", "1");
+            const result = tilePosition.matches();
+            it("should return false", function () {
+                expect(result).to.be.false;
+            });
+        });
+
+        context("and the Position has a Tile in it with surrounding Tiles which all match", function () {
+            const tilePosition = new TilePosition("TP", "1");
+            const result = tilePosition.matches();
+            it("should return true", function () {
                 expect(result).to.be.true;
             });
         });
