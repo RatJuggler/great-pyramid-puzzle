@@ -1,9 +1,9 @@
 import { CenterPointData, FaceDisplayData, DisplayData } from "./puzzle-display-schema"
 import { Face } from "./face";
 import { Tetrahedron } from "./tetrahedron";
-import {G, Matrix, Svg, SVG} from "@svgdotjs/svg.js";
-import {TilePosition} from "./tile-position";
-import {Tile} from "./tile";
+import { Tile } from "./tile";
+import { TilePosition } from "./tile-position";
+import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
 
 export class DisplayManager {
@@ -163,7 +163,7 @@ export class DisplayManager {
 
     rotateTile(tpElement: HTMLElement): void {
         // Rotate the child tile group.
-        const tGroup = SVG(tpElement.children[0]) as G;
+        const tGroup = SVG(tpElement.children[1]) as G;
         // @ts-ignore
         tGroup.animate({duration: 1000, ease: "<>"}).rotate(120, this._ntCenter.x, this._ntCenter.y);
     }
