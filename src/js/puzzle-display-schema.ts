@@ -22,6 +22,7 @@ interface DisplayData {
     readonly segments: number[][][],
     readonly faceScale: number,
     readonly tileScale: number,
+    readonly pegScale: number,
     readonly faces: FaceDisplayData[],
 }
 

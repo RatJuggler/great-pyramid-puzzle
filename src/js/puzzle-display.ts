@@ -58,7 +58,7 @@ export class DisplayManager {
             }
         }
         // Draw the peg in the middle.
-        tGroup.circle(5)
+        tGroup.circle(this._displayData.pegScale)
             .center(tpCenter.x, tpCenter.y)
             .fill('#bebebe')
             .stroke('none');
