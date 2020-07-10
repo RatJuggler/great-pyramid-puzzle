@@ -5,6 +5,14 @@ import { getRandomInt } from "./utils";
 
 export class TilePool {
 
+    // Static tile used testing tile orientation display.
+    static readonly TEST_TILE = new Tile({
+        tile: 0,
+        sideA: "1000",
+        sideB: "0100",
+        sideC: "0010"
+    });
+
     private readonly _tiles = new Map<number, Tile>();
 
     constructor(numberOfTiles: number, tileData: TileDefinition[]) {
@@ -18,7 +26,7 @@ export class TilePool {
         }
     }
 
-    addTile(tileDetails: TileDefinition): boolean {
+    private addTile(tileDetails: TileDefinition): boolean {
         if (this._tiles.has(tileDetails.tile)) {
             return false;
         }
@@ -27,7 +35,7 @@ export class TilePool {
         return true;
     }
 
-    getTile(id: number): Tile {
+    private getTile(id: number): Tile {
         if (this._tiles.has(id)) {
             const tile = this._tiles.get(id)!;
             this._tiles.delete(id);

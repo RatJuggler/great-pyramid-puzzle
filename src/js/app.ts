@@ -50,6 +50,8 @@ function getTileSelection(tilePool: TilePool): Tile | null {
             return tilePool.randomTile;
         case "Sequential":
             return tilePool.nextTile;
+        case "Test":
+            return TilePool.TEST_TILE;
         default:
             throw new Error("Invalid tile selection option!");
     }
