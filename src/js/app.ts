@@ -10,6 +10,7 @@ import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import {TilePosition} from "./tile-position";
+import {getRandomInt} from "./utils";
 
 
 // Track tile placing event timer.
@@ -41,7 +42,7 @@ function getSelector(name: string): string {
             return rb.value;
         }
     }
-    return "Random";
+    throw new Error("Expected radio option to be selected!");
 }
 
 function getPuzzleType(): { layoutData: LayoutData; tileData: TileData; displayData: DisplayData; } {
@@ -72,6 +73,21 @@ function getTileSelection(tilePool: TilePool): Tile | null {
     }
 }
 
+function orientateTile(tilePosition: TilePosition): TilePosition {
+    const orientation = getSelector("tile-orientation");
+    switch (orientation) {
+        case "Default":
+            return tilePosition;
+        case "Random":
+            for (let i = getRandomInt(3); i > 0; --i) {
+                tilePosition.tile.nextOrientation();
+            }
+            return tilePosition;
+        default:
+            throw new Error("Invalid tile orientation option!");
+    }
+}
+
 function placeTile(tile: Tile, tetrahedron: Tetrahedron): TilePosition  {
     const placement = getSelector("tile-placement");
     let tilePlacedPosition;
@@ -88,7 +104,7 @@ function placeTile(tile: Tile, tetrahedron: Tetrahedron): TilePosition  {
     if (!tilePlacedPosition) {
         throw new Error("Failed to place tile on puzzle!");
     }
-    return tilePlacedPosition;
+    return orientateTile(tilePlacedPosition);
 }
 
 function doPuzzle(): void {

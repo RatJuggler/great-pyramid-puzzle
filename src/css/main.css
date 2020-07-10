@@ -28,6 +28,7 @@ html, body {
 }
 
 #puzzle-selection p {
+  margin-bottom: 6px;
   font-size: 150%;
 }
 
