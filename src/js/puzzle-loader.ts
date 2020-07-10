@@ -12,9 +12,4 @@ function getTilePool(puzzleType: TileData): TilePool {
     return new TilePool(puzzleType.totalNumberOfTiles, puzzleType.tiles);
 }
 
-function dumpPuzzle(puzzle: Tetrahedron) {
-    console.log(puzzle.toString());
-    console.log("-".repeat(80) + '\n');
-}
-
-export { getTetrahedron, getTilePool, dumpPuzzle }
+export { getTetrahedron, getTilePool }
