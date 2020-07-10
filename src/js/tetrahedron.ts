@@ -30,8 +30,8 @@ export class Tetrahedron {
             for (const tilePositionDetails of faceDetails.tilePositions) {
                 const fromTilePosition = this.getFace(faceDetails.name).getTilePosition(tilePositionDetails.position);
                 for (const joinData of tilePositionDetails.joins) {
-                    const onFace = this.getFace(joinData.onFace);
-                    fromTilePosition.join(joinData.fromSide, joinData.toSide, onFace.getTilePosition(joinData.ofTilePosition), onFace);
+                    const toTilePosition = this.getFace(joinData.onFace).getTilePosition(joinData.ofTilePosition);
+                    fromTilePosition.join(joinData.fromSide, joinData.toSide, toTilePosition);
                 }
             }
         }

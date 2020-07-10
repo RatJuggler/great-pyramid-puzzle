@@ -1,9 +1,8 @@
-import { Face } from "../../src/js/face";
 import { TilePosition } from '../../src/js/tile-position';
 import { assert, expect} from 'chai';
 import 'mocha';
 // @ts-ignore
-import {TILE_1, TILE_2, ONE_TILE_POSITION_DATA} from "./common-test-data";
+import { TILE_1, TILE_2 } from "./common-test-data";
 
 
 describe("TilePosition behaviour", function () {
@@ -51,10 +50,9 @@ describe("TilePosition behaviour", function () {
 
         const tilePosition1 = new TilePosition("TP1", "1");
         const tilePosition2 = new TilePosition("TP2", "1");
-        const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
 
         context("with valid side names for the two different TilePositions to be joined", function () {
-            tilePosition1.join("A", "B", tilePosition2, faceWithOneTilePosition);
+            tilePosition1.join("A", "B", tilePosition2);
             it("should join the TilePositions in the direction given", function () {
                 const tile1ExpectedToString = "TilePosition: TP1, On Face: 1, Contains Tile: [null], Joins: (TP1-A->1-TP2-B)";
                 expect(tilePosition1.toString()).to.equal(tile1ExpectedToString);
@@ -68,7 +66,7 @@ describe("TilePosition behaviour", function () {
         context("where the TilePosition to join to is the same as the TilePosition you are joining from", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    tilePosition1.join("A", "B", tilePosition1, faceWithOneTilePosition);
+                    tilePosition1.join("A", "B", tilePosition1);
                 }).to.throw(Error, "Cannot join a TilePosition to itself!");
             });
         });
@@ -76,7 +74,7 @@ describe("TilePosition behaviour", function () {
         context("where the side name to join from is invalid", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    tilePosition1.join("1", "A", tilePosition2, faceWithOneTilePosition);
+                    tilePosition1.join("1", "A", tilePosition2);
                 }).to.throw(Error, "Side to join from must be one of A,B,C!");
             });
         });
@@ -84,7 +82,7 @@ describe("TilePosition behaviour", function () {
         context("where the side name to join to is invalid", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    tilePosition1.join("A", "X", tilePosition2, faceWithOneTilePosition);
+                    tilePosition1.join("A", "X", tilePosition2);
                 }).to.throw(Error, "Side to join to must be one of A,B,C!");
             });
         });
@@ -182,6 +180,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it with no surrounding Tiles", function () {
             const tilePosition = new TilePosition("TP", "1");
+            assert.isNotNull(tilePosition.placeTile(TILE_1));
             const result = tilePosition.matches();
             it("should return true", function () {
                 expect(result).to.be.true;
@@ -190,6 +189,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it with one surrounding Tile which doesn't match", function () {
             const tilePosition = new TilePosition("TP", "1");
+            assert.isNotNull(tilePosition.placeTile(TILE_1));
             const result = tilePosition.matches();
             it("should return false", function () {
                 expect(result).to.be.false;
@@ -198,6 +198,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it with one surrounding Tile which matches", function () {
             const tilePosition = new TilePosition("TP", "1");
+            assert.isNotNull(tilePosition.placeTile(TILE_1));
             const result = tilePosition.matches();
             it("should return true", function () {
                 expect(result).to.be.true;
@@ -206,6 +207,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it with surrounding Tiles which don't match", function () {
             const tilePosition = new TilePosition("TP", "1");
+            assert.isNotNull(tilePosition.placeTile(TILE_1));
             const result = tilePosition.matches();
             it("should return false", function () {
                 expect(result).to.be.false;
@@ -214,6 +216,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it with surrounding Tiles which all match", function () {
             const tilePosition = new TilePosition("TP", "1");
+            assert.isNotNull(tilePosition.placeTile(TILE_1));
             const result = tilePosition.matches();
             it("should return true", function () {
                 expect(result).to.be.true;

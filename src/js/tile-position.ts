@@ -1,11 +1,9 @@
-import { Face } from "./face";
 import { Tile } from "./tile";
 
 
 interface TilePositionJoinProperties {
     readonly toSide: string;
     readonly ofTilePosition: TilePosition;
-    readonly onFace: Face;
 }
 
 
@@ -21,7 +19,7 @@ export class TilePosition {
     toString(): string {
         let tileString = `TilePosition: ${this._name}, On Face: ${this._onFace}, Contains Tile: [${this._tile}], Joins: `;
         this._joins.forEach((join, side) =>
-            tileString += `(${this._name}-${side}->${join.onFace.name}-${join.ofTilePosition.name}-${join.toSide})`);
+            tileString += `(${this._name}-${side}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide})`);
         return tileString;
     }
 
@@ -40,7 +38,7 @@ export class TilePosition {
         return this._tile;
     }
 
-    join(fromSide: string, toSide: string, ofTilePosition: TilePosition, onFace: Face) : void {
+    join(fromSide: string, toSide: string, ofTilePosition: TilePosition) : void {
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
         }
@@ -52,8 +50,7 @@ export class TilePosition {
         }
         this._joins.set(fromSide, {
             toSide: toSide,
-            ofTilePosition: ofTilePosition,
-            onFace: onFace
+            ofTilePosition: ofTilePosition
         });
     }
 
@@ -78,6 +75,9 @@ export class TilePosition {
     }
 
     matches(): boolean {
+        if (this.isEmpty()) {
+            throw new Error("Can't check if a Position matches when there is no Tile to match from!");
+        }
         return true;
     }
 
