@@ -1,6 +1,7 @@
 import valid_layout_config1 from "../valid-test-layout-data1.json";
 import valid_tiles_config1 from "../valid-test-tile-data1.json";
 import invalid_layout_config1 from "../invalid-layout-data1.json";
+import invalid_layout_config2 from "../invalid-layout-data2.json";
 import { Face } from "../../src/js/face";
 import { Tetrahedron } from '../../src/js/tetrahedron';
 import { TilePool } from "../../src/js/tile-pool";
@@ -18,7 +19,7 @@ describe("Tetrahedron behaviour", function () {
 
     describe("if a new Tetrahedron is created", function () {
 
-        context("with valid configuration data file 1", function () {
+        context("with valid layout configuration file 1", function () {
             const tetrahedron =
                 new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             it("should return a correctly initialised instance", function () {
@@ -44,12 +45,20 @@ describe("Tetrahedron behaviour", function () {
             });
         });
 
-        context("with invalid face configuration data file 1", function () {
+        context("with invalid layout configuration file 1", function () {
             it("should throw an error", function () {
                 const puzzleData = invalid_layout_config1.testLayoutData;
                 expect(function () {
                     new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
                 }).to.throw(Error, "Tetrahedron must always have configuration data for 4 Faces!");
+            });
+        });
+
+        context("with invalid layout configuration file 2", function () {
+            const puzzleData = invalid_layout_config2.testLayoutData;
+            const tetrahedron = new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
+            it("should fail the integrity check", function () {
+                expect(tetrahedron.integrityCheck()).to.be.false;
             });
         });
 
