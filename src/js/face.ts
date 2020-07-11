@@ -36,22 +36,29 @@ export class Face {
         }
     }
 
-    integrityCheck(): boolean {
+    integrityCheck(): [boolean, string] {
         // Each face must join to 3 other faces and must have a valid number of tile positions.
-        return this._joins.size === Face.SIDE_NAMES.length &&
-            Face.VALID_TILE_COUNTS.includes(this._tilePositions.size);
+        if (this._joins.size !== Face.SIDE_NAMES.length) {
+            return [false, `Face joins not complete: ${this.toString()}`];
+        }
+        if (!Face.VALID_TILE_COUNTS.includes(this._tilePositions.size)) {
+            return [false, `Invalid number of tile positions on Face: ${this.toString()}`];
+        }
+        return [true, "Passed"];
     }
 
-    fullIntegrityCheck(): boolean {
-        if (!this.integrityCheck()) {
-            return false;
+    fullIntegrityCheck(): [boolean, string] {
+        const faceIntegrity = this.integrityCheck();
+        if (!faceIntegrity[0]) {
+            return faceIntegrity;
         }
         for (const tilePosition of this._tilePositions.values()) {
-            if (!tilePosition.integrityCheck()) {
-                return false;
+            const tileIntegrity = tilePosition.integrityCheck();
+            if (!tileIntegrity[0]) {
+                return tileIntegrity;
             }
         }
-        return true;
+        return faceIntegrity;
     }
 
     toString(): string {

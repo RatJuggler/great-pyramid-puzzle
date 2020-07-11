@@ -22,7 +22,10 @@ describe("Face behavior", function () {
                 expect(face.toString()).to.equal(expectedToString);
             });
             it("should fail the integrity check", function () {
-                expect(face.integrityCheck()).to.be.false;
+                const expectedFailure = [false,
+                    "Face joins not complete: Face: 1, Tile Positions: 1, Joins: \n" +
+                    "TilePosition: 1, On Face: 1, Contains Tile: [null], Joins: \n"];
+                expect(face.integrityCheck()).to.eql(expectedFailure)
             });
         });
 
@@ -65,7 +68,7 @@ describe("Face behavior", function () {
                 expect(face1WithOneTilePosition.toString()).to.equal(expectedToString);
             });
             it("should pass the integrity check", function () {
-                expect(face1WithOneTilePosition.integrityCheck()).to.be.true;
+                expect(face1WithOneTilePosition.integrityCheck()).to.eql([true, "Passed"]);
             });
         });
 
