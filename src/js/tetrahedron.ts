@@ -7,13 +7,13 @@ import { getRandomInt } from "./utils";
 
 export class Tetrahedron {
 
-    private readonly FACES = 4;
+    private static readonly FACES = 4;
 
     private readonly _faces = new Map<string, Face>();
 
     constructor(private _name: string, numberOfTilesPerFace: number, faceData: FaceData[]) {
-        if (faceData.length !== this.FACES) {
-            throw new Error(`Tetrahedron must always have configuration data for ${this.FACES} Faces!`)
+        if (faceData.length !== Tetrahedron.FACES) {
+            throw new Error(`Tetrahedron must always have configuration data for ${Tetrahedron.FACES} Faces!`)
         }
         // We have to create all of the face and tile positions before we can join them together.
         for (const faceDetails of faceData) {
@@ -35,6 +35,20 @@ export class Tetrahedron {
                 }
             }
         }
+    }
+
+    integrityCheck(): boolean {
+        // There must be 4 faces.
+        if (this._faces.size !== Tetrahedron.FACES) {
+            return false;
+        }
+        // The faces must all pass their full integrity checks.
+        for (const face of this._faces.values()) {
+            if (!face.fullIntegrityCheck()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     toString(): string {

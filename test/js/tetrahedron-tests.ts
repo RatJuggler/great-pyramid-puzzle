@@ -23,6 +23,11 @@ describe("Tetrahedron behaviour", function () {
                 new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             it("should return a correctly initialised instance", function () {
                 expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
+            });
+            it("should have set the puzzle instance name", function () {
+                expect(tetrahedron.name).to.equal("test-valid");
+            })
+            it("should return the correct toString result", function () {
                 const expectedToString = "Puzzle Type: test-valid\n" +
                     "Face: 1, Tile Positions: 1, Joins: (1-A->3-B)(1-B->4-B)(1-C->2-B)\n" +
                     "TilePosition: 1, On Face: 1, Contains Tile: [null], Joins: (1-A->3-1-B)(1-B->4-1-B)(1-C->2-1-B)\n" +
@@ -34,9 +39,9 @@ describe("Tetrahedron behaviour", function () {
                     "TilePosition: 1, On Face: 4, Contains Tile: [null], Joins: (1-A->2-1-C)(1-B->1-1-B)(1-C->3-1-A)\n";
                 expect(tetrahedron.toString()).to.equal(expectedToString);
             });
-            it("should have set the puzzle instance name", function () {
-                expect(tetrahedron.name).to.equal("test-valid");
-            })
+            it("should pass the integrity check", function () {
+                expect(tetrahedron.integrityCheck()).to.be.true;
+            });
         });
 
         context("with invalid face configuration data file 1", function () {

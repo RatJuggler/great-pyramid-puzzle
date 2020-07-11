@@ -42,6 +42,18 @@ export class Face {
             Face.VALID_TILE_COUNTS.includes(this._tilePositions.size);
     }
 
+    fullIntegrityCheck(): boolean {
+        if (!this.integrityCheck()) {
+            return false;
+        }
+        for (const tilePosition of this._tilePositions.values()) {
+            if (!tilePosition.integrityCheck()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     toString(): string {
         let faceString = `Face: ${this._name}, Tile Positions: ${this.tilePositionCount}, Joins: `;
         this._joins.forEach((join, side) =>
