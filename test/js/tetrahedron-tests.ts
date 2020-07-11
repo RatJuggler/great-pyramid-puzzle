@@ -41,7 +41,7 @@ describe("Tetrahedron behaviour", function () {
                 expect(tetrahedron.toString()).to.equal(expectedToString);
             });
             it("should pass the integrity check", function () {
-                expect(tetrahedron.integrityCheck()).to.be.true;
+                expect(tetrahedron.integrityCheck()).to.eql([true, "Passed"]);
             });
         });
 
@@ -58,7 +58,10 @@ describe("Tetrahedron behaviour", function () {
             const puzzleData = invalid_layout_config2.testLayoutData;
             const tetrahedron = new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
             it("should fail the integrity check", function () {
-                expect(tetrahedron.integrityCheck()).to.be.false;
+                const expectedFailure = [false,
+                    "Face joins not complete: Face: 1, Tile Positions: 1, Joins: \n" +
+                    "TilePosition: 1, On Face: 1, Contains Tile: [null], Joins: \n"];
+                expect(tetrahedron.integrityCheck()).to.eql(expectedFailure)
             });
         });
 

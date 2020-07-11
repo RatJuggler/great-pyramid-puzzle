@@ -37,18 +37,19 @@ export class Tetrahedron {
         }
     }
 
-    integrityCheck(): boolean {
+    integrityCheck(): [boolean, string] {
         // There must be 4 faces.
         if (this._faces.size !== Tetrahedron.FACES) {
-            return false;
+            return [false, `Tetrahedron not configured with 4 faces: ${this.toString()}`];
         }
         // The faces must all pass their full integrity checks.
         for (const face of this._faces.values()) {
-            if (!face.fullIntegrityCheck()) {
-                return false;
+            const faceIntegrity = face.fullIntegrityCheck();
+            if (!faceIntegrity[0]) {
+                return faceIntegrity;
             }
         }
-        return true;
+        return [true, "Passed"];
     }
 
     toString(): string {
