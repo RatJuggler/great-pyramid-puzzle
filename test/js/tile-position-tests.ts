@@ -7,20 +7,44 @@ import { TILE_1, TILE_2 } from "./common-test-data";
 
 describe("TilePosition behaviour", function () {
 
-    describe("if a new TilePosition is created", function () {
+    describe("when a new TilePosition is first created", function () {
 
-        context("with a valid identifier", function () {
+        context("without joining to any other TilePositions", function () {
             const tilePosition = new TilePosition("XYZ", "1");
             it("should return a correctly initialised instance", function () {
                 expect(tilePosition).to.be.an.instanceOf(TilePosition);
             });
             it("should not be holding a Tile", function () {
                 expect(tilePosition.isEmpty());
-            })
+            });
             it("should return the correct toString result", function () {
                 const expectedToString = "TilePosition: XYZ, On Face: 1, Contains Tile: [null], Joins: ";
                 expect(tilePosition.toString()).to.equal(expectedToString);
-            })
+            });
+            it("should fail the integrity check", function () {
+                expect(tilePosition.integrityCheck()).to.be.false;
+            });
+        });
+
+        context("and then joined to three other tile positions", function () {
+            const tilePosition = new TilePosition("XYZ", "1");
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
+            const tilePosition3 = new TilePosition("TP3", "1");
+            tilePosition.join("A", "B", tilePosition1);
+            tilePosition.join("B", "C", tilePosition2);
+            tilePosition.join("C", "A", tilePosition3);
+            it("should not be holding a Tile", function () {
+                expect(tilePosition.isEmpty());
+            });
+            it("should return the correct toString result", function () {
+                const expectedToString =
+                    "TilePosition: XYZ, On Face: 1, Contains Tile: [null], Joins: (XYZ-A->1-TP1-B)(XYZ-B->1-TP2-C)(XYZ-C->1-TP3-A)";
+                expect(tilePosition.toString()).to.equal(expectedToString);
+            });
+            it("should pass the integrity check", function () {
+                expect(tilePosition.integrityCheck()).to.be.true;
+            });
         });
 
     });
@@ -48,10 +72,9 @@ describe("TilePosition behaviour", function () {
 
     describe("if #join() is called to join one TilePosition to another", function () {
 
-        const tilePosition1 = new TilePosition("TP1", "1");
-        const tilePosition2 = new TilePosition("TP2", "1");
-
         context("with valid side names for the two different TilePositions to be joined", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
             tilePosition1.join("A", "B", tilePosition2);
             it("should join the TilePositions in the direction given", function () {
                 const tile1ExpectedToString = "TilePosition: TP1, On Face: 1, Contains Tile: [null], Joins: (TP1-A->1-TP2-B)";
@@ -63,7 +86,8 @@ describe("TilePosition behaviour", function () {
             });
         });
 
-        context("where the TilePosition to join to is the same as the TilePosition you are joining from", function () {
+        context("where the TilePosition to join to is the same as the one you are joining from", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.join("A", "B", tilePosition1);
@@ -72,6 +96,8 @@ describe("TilePosition behaviour", function () {
         });
 
         context("where the side name to join from is invalid", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.join("1", "A", tilePosition2);
@@ -80,12 +106,43 @@ describe("TilePosition behaviour", function () {
         });
 
         context("where the side name to join to is invalid", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.join("A", "X", tilePosition2);
                 }).to.throw(Error, "Side to join to must be one of A,B,C!");
             });
         });
+
+        context("where there is already a join for the side given", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
+            const tilePosition3 = new TilePosition("TP3", "1");
+            tilePosition1.join("A", "B", tilePosition2);
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePosition1.join("A", "B", tilePosition3);
+                }).to.throw(Error, "Existing join already present for side A!");
+            })
+        })
+
+        context("where the TilePosition is already joined to three others", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
+            const tilePosition3 = new TilePosition("TP3", "1");
+            const tilePosition4 = new TilePosition("TP4", "1");
+            const tilePosition5 = new TilePosition("TP5", "1");
+            tilePosition1.join("A", "B", tilePosition2);
+            tilePosition1.join("B", "C", tilePosition3);
+            tilePosition1.join("C", "A", tilePosition4);
+            assert(tilePosition1.integrityCheck());
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePosition1.join("A", "A", tilePosition5);
+                }).to.throw(Error, "Tile positions can only join to three other tile positions!");
+            })
+        })
 
     });
 

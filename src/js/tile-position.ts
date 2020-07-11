@@ -9,12 +9,17 @@ interface TilePositionJoinProperties {
 
 export class TilePosition {
 
-    private static SIDE_NAMES = ["A", "B", "C"];
+    private static readonly SIDE_NAMES = ["A", "B", "C"];
 
     private _joins = new Map<string, TilePositionJoinProperties>();
     private _tile: Tile | null = null;
 
     constructor(private _name: string, private _onFace: string) {}
+
+    integrityCheck(): boolean {
+        // Each tile position must join to 3 other tile positions.
+        return this._joins.size === TilePosition.SIDE_NAMES.length;
+    }
 
     toString(): string {
         let tileString = `TilePosition: ${this._name}, On Face: ${this._onFace}, Contains Tile: [${this._tile}], Joins: `;
@@ -39,6 +44,9 @@ export class TilePosition {
     }
 
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition) : void {
+        if (this._joins.size === TilePosition.SIDE_NAMES.length) {
+            throw new Error("Tile positions can only join to three other tile positions!");
+        }
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
         }
@@ -47,6 +55,9 @@ export class TilePosition {
         }
         if (!(TilePosition.SIDE_NAMES.includes(toSide))) {
             throw new Error(`Side to join to must be one of ${TilePosition.SIDE_NAMES}!`);
+        }
+        if (this._joins.get(fromSide)) {
+            throw new Error(`Existing join already present for side ${fromSide}!`);
         }
         this._joins.set(fromSide, {
             toSide: toSide,
