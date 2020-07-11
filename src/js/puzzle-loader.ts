@@ -5,7 +5,12 @@ import { TilePool } from "./tile-pool";
 
 
 function getTetrahedron(puzzleType: LayoutData): Tetrahedron {
-    return new Tetrahedron(puzzleType.puzzle, puzzleType.numberOfTilesPerFace, puzzleType.faces);
+    const tetrahedron = new Tetrahedron(puzzleType.puzzle, puzzleType.numberOfTilesPerFace, puzzleType.faces);
+    const integrityCheck = tetrahedron.integrityCheck();
+    if (!integrityCheck[0]) {
+        throw new Error(integrityCheck[1]);
+    }
+    return tetrahedron;
 }
 
 function getTilePool(puzzleType: TileData): TilePool {
