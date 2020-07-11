@@ -22,11 +22,13 @@ describe("TilePosition behaviour", function () {
                 expect(tilePosition.toString()).to.equal(expectedToString);
             });
             it("should fail the integrity check", function () {
-                expect(tilePosition.integrityCheck()).to.be.false;
+                const expectedFailure =
+                    [false, "Tile position joins not complete: TilePosition: XYZ, On Face: 1, Contains Tile: [null], Joins: "];
+                expect(tilePosition.integrityCheck()).to.eql(expectedFailure)
             });
         });
 
-        context("and then joined to three other tile positions", function () {
+        context("and then joined to three other TilePositions", function () {
             const tilePosition = new TilePosition("XYZ", "1");
             const tilePosition1 = new TilePosition("TP1", "1");
             const tilePosition2 = new TilePosition("TP2", "1");
@@ -43,7 +45,7 @@ describe("TilePosition behaviour", function () {
                 expect(tilePosition.toString()).to.equal(expectedToString);
             });
             it("should pass the integrity check", function () {
-                expect(tilePosition.integrityCheck()).to.be.true;
+                expect(tilePosition.integrityCheck()).to.eql([true, "Passed"]);
             });
         });
 
@@ -128,18 +130,17 @@ describe("TilePosition behaviour", function () {
         })
 
         context("where the TilePosition is already joined to three others", function () {
+            const tilePosition = new TilePosition("TP", "1");
             const tilePosition1 = new TilePosition("TP1", "1");
             const tilePosition2 = new TilePosition("TP2", "1");
             const tilePosition3 = new TilePosition("TP3", "1");
             const tilePosition4 = new TilePosition("TP4", "1");
-            const tilePosition5 = new TilePosition("TP5", "1");
-            tilePosition1.join("A", "B", tilePosition2);
-            tilePosition1.join("B", "C", tilePosition3);
-            tilePosition1.join("C", "A", tilePosition4);
-            assert(tilePosition1.integrityCheck());
+            tilePosition.join("A", "B", tilePosition1);
+            tilePosition.join("B", "C", tilePosition2);
+            tilePosition.join("C", "A", tilePosition3);
             it("should throw an error", function () {
                 expect(function () {
-                    tilePosition1.join("A", "A", tilePosition5);
+                    tilePosition.join("A", "A", tilePosition4);
                 }).to.throw(Error, "Tile positions can only join to three other tile positions!");
             })
         })

@@ -16,9 +16,12 @@ export class TilePosition {
 
     constructor(private _name: string, private _onFace: string) {}
 
-    integrityCheck(): boolean {
+    integrityCheck(): [boolean, string] {
         // Each tile position must join to 3 other tile positions.
-        return this._joins.size === TilePosition.SIDE_NAMES.length;
+        if (this._joins.size === TilePosition.SIDE_NAMES.length) {
+            return [true, "Passed"];
+        }
+        return [false, `Tile position joins not complete: ${this.toString()}`];
     }
 
     toString(): string {
