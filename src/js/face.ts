@@ -12,9 +12,9 @@ interface FaceJoinProperties {
 
 export class Face {
 
-    private static FACE_NAMES = ["1", "2", "3", "4"];
-    private static VALID_TILE_COUNTS = [1, 4, 9];
-    private static SIDE_NAMES = ["A", "B", "C"];
+    private static readonly FACE_NAMES = ["1", "2", "3", "4"];
+    private static readonly VALID_TILE_COUNTS = [1, 4, 9];
+    private static readonly SIDE_NAMES = ["A", "B", "C"];
 
     private readonly _joins = new Map<string, FaceJoinProperties>();
     private readonly _tilePositions = new Map<string, TilePosition>();
@@ -34,6 +34,12 @@ export class Face {
             const newTilePosition = new TilePosition(tilePositionData.position, this._name);
             this._tilePositions.set(newTilePosition.name, newTilePosition);
         }
+    }
+
+    integrityCheck(): boolean {
+        // Each face must join to 3 other faces and must have a valid number of tile positions.
+        return this._joins.size === Face.SIDE_NAMES.length &&
+            Face.VALID_TILE_COUNTS.includes(this._tilePositions.size);
     }
 
     toString(): string {
@@ -69,6 +75,9 @@ export class Face {
     }
 
     join(fromSide: string, toSide: string, ofFace: Face) : void {
+        if (this._joins.size === Face.SIDE_NAMES.length) {
+            throw new Error("Faces can only join to three other faces!");
+        }
         if (this === ofFace) {
             throw new Error("Cannot join a Face to itself!");
         }
@@ -81,7 +90,13 @@ export class Face {
         if (!(Face.SIDE_NAMES.includes(toSide))) {
             throw new Error(`Side to join to must be one of ${Face.SIDE_NAMES}!`);
         }
-        this._joins.set(fromSide, {toSide: toSide, ofFace: ofFace});
+        if (this._joins.get(fromSide)) {
+            throw new Error(`Existing join already present for side ${fromSide}!`);
+        }
+        this._joins.set(fromSide, {
+            toSide: toSide,
+            ofFace: ofFace
+        });
     }
 
     private get emptyTilePositions(): TilePosition[] {
