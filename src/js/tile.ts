@@ -31,20 +31,31 @@ export class Tile {
         this._sides.set(Side.SideC, this.validateSegments(tileDetails.sideC));
     }
 
-    public getSide(side: Side): string {
-        return this._sides.get(Tile.ORIENTATION[this._orientation].get(side)!)!;
-    }
-
-    toString(): string {
-        return `Id: ${this._id}, Side-A: ${this.getSide(Side.SideA)}, Side-B: ${this.getSide(Side.SideB)}, Side-C: ${this.getSide(Side.SideC)}, Orientation: ${this._orientation}`;
-    }
-
     get id(): number {
         return this._id;
     }
 
     get segments(): string {
-        return this.getSide(Side.SideA) + this.getSide(Side.SideB) + this.getSide(Side.SideC);
+        return this.getSideSegements(Side.SideA) +
+            this.getSideSegements(Side.SideB) +
+            this.getSideSegements(Side.SideC);
+    }
+
+    getSideSegements(side: Side): string {
+        return this._sides.get(Tile.ORIENTATION[this._orientation].get(side)!)!;
+    }
+
+    getSideSegementsToMatchWith(side: Side): string {
+        const sideSegments = this.getSideSegements(side);
+        return sideSegments[3] + sideSegments[2] + sideSegments[1] + sideSegments[0];
+    }
+
+    toString(): string {
+        return `Id: ${this._id}, ` +
+            `Side-A: ${this.getSideSegements(Side.SideA)}, ` +
+            `Side-B: ${this.getSideSegements(Side.SideB)}, ` +
+            `Side-C: ${this.getSideSegements(Side.SideC)}, ` +
+            `Orientation: ${this._orientation}`;
     }
 
     place(): Tile {

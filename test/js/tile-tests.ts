@@ -1,9 +1,10 @@
 import { Tile } from '../../src/js/tile';
 import { TileDefinition } from "../../src/js/tile-data-schema";
+import { Side } from "../../src/js/side";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1_DATA } from "./common-test-data";
+import { TILE_1_DATA, TILE_3_DATA } from "./common-test-data";
 
 
 describe("Tile behaviour", function () {
@@ -14,6 +15,9 @@ describe("Tile behaviour", function () {
             const tile = new Tile(TILE_1_DATA);
             it("should return a correctly initialised instance", function () {
                 expect(tile).to.be.an.instanceOf(Tile);
+            });
+            it("with the id set correctly", function () {
+                expect(tile.id).to.equal(TILE_1_DATA.tile);
             });
             it("should also return the correct toString result from this instance", function () {
                 const expectedToString = "Id: 101, Side-A: 1010, Side-B: 0010, Side-C: 0010, Orientation: 0";
@@ -51,22 +55,83 @@ describe("Tile behaviour", function () {
 
     });
 
+    describe("if #getSideSegments() is called to get the segments for a side", function () {
+
+        context("with argument SideA and the Tile orientation unchanged", function () {
+            const tile = new Tile(TILE_3_DATA);
+            it("should return the segment coding for SideA", function () {
+                expect(tile.getSideSegements(Side.SideA)).to.equal(TILE_3_DATA.sideA);
+            });
+        });
+
+        context("with argument SideA and the Tile rotated once", function () {
+            const tile = new Tile(TILE_3_DATA);
+            assert.strictEqual(tile.nextOrientation(), tile);
+            it("should return the segment coding for SideC", function () {
+                expect(tile.getSideSegements(Side.SideA)).to.equal(TILE_3_DATA.sideC);
+            });
+        });
+
+        context("with argument SideA and the Tile rotated twice", function () {
+            const tile = new Tile(TILE_3_DATA);
+            assert.strictEqual(tile.nextOrientation(), tile);
+            assert.strictEqual(tile.nextOrientation(), tile);
+            it("should return the segment coding for SideB", function () {
+                expect(tile.getSideSegements(Side.SideA)).to.equal(TILE_3_DATA.sideB);
+            });
+        });
+
+        context("with argument SideA and the Tile rotated three times", function () {
+            const tile = new Tile(TILE_3_DATA);
+            assert.strictEqual(tile.nextOrientation(), tile);
+            assert.strictEqual(tile.nextOrientation(), tile);
+            assert.strictEqual(tile.nextOrientation(), tile);
+            it("should return the segment coding for SideA", function () {
+                expect(tile.getSideSegements(Side.SideA)).to.equal(TILE_3_DATA.sideA);
+            });
+        });
+
+    });
+
     describe("if #getSegments() is called to get all the segment codings", function () {
 
         context("on a newly created Tile", function () {
             const tile = new Tile(TILE_1_DATA);
+            const expectedReturn = TILE_1_DATA.sideA + TILE_1_DATA.sideB + TILE_1_DATA.sideC;
             it("should return a string of the initial segment codings", function () {
-                expect(tile.segments).to.equal("101000100010");
+                expect(tile.segments).to.equal(expectedReturn);
             });
         });
 
-        context("on a Tile where the orientation has changed twice", function () {
+        context("on a Tile which has been rotated twice", function () {
             const tile = new Tile(TILE_1_DATA);
             assert.strictEqual(tile.nextOrientation(), tile);
             assert.strictEqual(tile.nextOrientation(), tile);
-            it("should return a string of all the segment codings", function () {
-                expect(tile.segments).to.equal("001000101010");
+            const expectedReturn = TILE_1_DATA.sideB + TILE_1_DATA.sideC + TILE_1_DATA.sideA;
+            it("should return a string of the rotated segment codings", function () {
+                expect(tile.segments).to.equal(expectedReturn);
             });
+        });
+
+    });
+
+    describe("if #placeTile() is called on a Tile", function () {
+
+        context("and the orientation has not been changed", function () {
+            const tile = new Tile(TILE_1_DATA);
+            const expectedToString = tile.toString();
+            it("should return the tile unchanged", function () {
+                expect(tile.place().toString()).to.equal(expectedToString);
+            })
+        });
+
+        context("and the orientation has been changed", function () {
+            const tile = new Tile(TILE_1_DATA);
+            assert.strictEqual(tile.nextOrientation(), tile);
+            const expectedToString = tile.toString();
+            it("should return the tile with the orientation reset", function () {
+                expect(tile.place().toString()).to.not.equal(expectedToString);
+            })
         });
 
     });
@@ -75,9 +140,10 @@ describe("Tile behaviour", function () {
 
         context("and the the Tile is newly placed", function () {
             const tile = new Tile(TILE_1_DATA);
+            const expectedReturn = TILE_1_DATA.sideC + TILE_1_DATA.sideA + TILE_1_DATA.sideB;
             const result = tile.nextOrientation();
             it("should update to the next orientation", function () {
-                expect(tile.segments).to.equal("001010100010");
+                expect(tile.segments).to.equal(expectedReturn);
             });
             it("should return the same Tile instance", function () {
                 expect(result).to.equal(tile);
@@ -88,9 +154,10 @@ describe("Tile behaviour", function () {
             const tile = new Tile(TILE_1_DATA);
             assert.strictEqual(tile.nextOrientation(), tile);
             assert.strictEqual(tile.nextOrientation(), tile);
+            const expectedReturn = TILE_1_DATA.sideA + TILE_1_DATA.sideB + TILE_1_DATA.sideC;
             const result = tile.nextOrientation();
             it("should update to the initial orientation", function () {
-                expect(tile.segments).to.equal("101000100010");
+                expect(tile.segments).to.equal(expectedReturn);
             });
             it("should return the same Tile instance", function () {
                 expect(result).to.equal(tile);
