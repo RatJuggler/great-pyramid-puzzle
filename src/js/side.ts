@@ -43,11 +43,6 @@ class Sides {
         throw new Error(`Side ${name} must be one of ${Sides.SIDE_NAMES}!`);
     }
 
-    nextSide(side: Side): Side {
-        const nextSide = (side.value + 1) % this.numberOfSides;
-        return this._sides.get(Sides.SIDE_NAMES[nextSide])!;
-    }
-
 }
 
 const SIDES = new Sides();
