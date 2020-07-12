@@ -1,14 +1,18 @@
 import { TileDefinition } from "./tile-data-schema";
-import { Sides } from "./common-data-schema";
+import { NUMBER_OF_SIDES, Sides } from "./side";
 
 
 export class Tile {
 
-    private static readonly ORIENTATION = [ [0, 1, 2], [2, 0, 1], [1, 2, 0] ];
+    private static readonly ORIENTATION = [
+        [Sides.SideA, Sides.SideB, Sides.SideC],
+        [Sides.SideC, Sides.SideA, Sides.SideB],
+        [Sides.SideB, Sides.SideC, Sides.SideA]
+    ];
 
     private readonly _id: number;
     private readonly _sides: string[];
-    private _orientation: number = 0;
+    private _orientation: Sides = Sides.SideA;
 
     validateSegments(segments: string): string {
         if (segments.length !== 4) {
@@ -30,7 +34,7 @@ export class Tile {
     }
 
     public getSide(side: Sides): string {
-        return this._sides[Tile.ORIENTATION[this._orientation][side.valueOf()]];
+        return this._sides[Tile.ORIENTATION[this._orientation][side]];
     }
 
     toString(): string {
@@ -46,12 +50,12 @@ export class Tile {
     }
 
     place(): Tile {
-        this._orientation = 0;
+        this._orientation = Sides.SideA;
         return this;
     }
 
     nextOrientation(): Tile {
-        this._orientation = ++this._orientation % this._sides.length;
+        this._orientation = ++this._orientation % NUMBER_OF_SIDES;
         return this;
     }
 

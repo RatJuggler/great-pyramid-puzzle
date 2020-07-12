@@ -2,7 +2,8 @@ import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
 import { TilePositionData} from "./layout-data-schema";
 import { getRandomInt } from "./utils";
-import { SIDE_NAMES, NUMBER_OF_SIDES, IntegrityCheckResult } from "./common-data-schema";
+import { IntegrityCheckResult } from "./common-data-schema";
+import { NUMBER_OF_SIDES, validateSide } from "./side";
 
 
 interface FaceJoinProperties {
@@ -103,12 +104,8 @@ export class Face {
         if (this.tilePositionCount !== ofFace.tilePositionCount) {
             throw new Error("Cannot join Faces which have differing numbers of Tile Positions!");
         }
-        if (!SIDE_NAMES.includes(fromSide)) {
-            throw new Error(`Side to join from must be one of ${SIDE_NAMES}!`);
-        }
-        if (!SIDE_NAMES.includes(toSide)) {
-            throw new Error(`Side to join to must be one of ${SIDE_NAMES}!`);
-        }
+        validateSide(fromSide, "to join from");
+        validateSide(toSide, "to join to");
         if (this._joins.get(fromSide)) {
             throw new Error(`Existing join already present for side ${fromSide}!`);
         }

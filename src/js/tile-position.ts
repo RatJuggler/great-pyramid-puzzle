@@ -1,5 +1,6 @@
 import { Tile } from "./tile";
-import { SIDE_NAMES, NUMBER_OF_SIDES, IntegrityCheckResult } from "./common-data-schema";
+import { IntegrityCheckResult } from "./common-data-schema";
+import { NUMBER_OF_SIDES, validateSide } from "./side";
 
 
 interface TilePositionJoinProperties {
@@ -52,12 +53,8 @@ export class TilePosition {
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
         }
-        if (!SIDE_NAMES.includes(fromSide)) {
-            throw new Error(`Side to join from must be one of ${SIDE_NAMES}!`);
-        }
-        if (!SIDE_NAMES.includes(toSide)) {
-            throw new Error(`Side to join to must be one of ${SIDE_NAMES}!`);
-        }
+        validateSide(fromSide, "to join from");
+        validateSide(toSide, "to join to");
         if (this._joins.get(fromSide)) {
             throw new Error(`Existing join already present for side ${fromSide}!`);
         }
