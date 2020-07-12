@@ -1,4 +1,4 @@
-const enum Side {SideA = 'A', SideB = 'B', SideC = 'C'}
+enum Side {SideA = 'A', SideB = 'B', SideC = 'C'}
 
 class Sides {
 
