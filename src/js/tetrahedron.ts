@@ -37,7 +37,7 @@ export class Tetrahedron {
         }
     }
 
-    integrityCheck(): [boolean, string] {
+    integrityCheck(): IntegrityCheckResult {
         // There must be 4 faces.
         if (this._faces.size !== Tetrahedron.FACES) {
             return [false, `Tetrahedron not configured with 4 faces: ${this.toString()}`];

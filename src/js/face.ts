@@ -36,7 +36,7 @@ export class Face {
         }
     }
 
-    integrityCheck(): [boolean, string] {
+    integrityCheck(): IntegrityCheckResult {
         // Each face must join to 3 other faces and must have a valid number of tile positions.
         if (this._joins.size !== Face.SIDE_NAMES.length) {
             return [false, `Face joins not complete: ${this.toString()}`];
@@ -47,7 +47,7 @@ export class Face {
         return [true, "Passed"];
     }
 
-    fullIntegrityCheck(): [boolean, string] {
+    fullIntegrityCheck(): IntegrityCheckResult {
         const faceIntegrity = this.integrityCheck();
         if (!faceIntegrity[0]) {
             return faceIntegrity;

@@ -16,7 +16,7 @@ export class TilePosition {
 
     constructor(private _name: string, private _onFace: string) {}
 
-    integrityCheck(): [boolean, string] {
+    integrityCheck(): IntegrityCheckResult {
         // Each tile position must join to 3 other tile positions.
         if (this._joins.size === TilePosition.SIDE_NAMES.length) {
             return [true, "Passed"];
