@@ -4,14 +4,10 @@
 
 class Side {
 
-    constructor(private _side: string, private _nSide: number) {}
+    constructor(private _side: string) {}
 
     get name(): string {
         return this._side;
-    }
-
-    get value(): number {
-        return this._nSide;
     }
 
 }
@@ -20,9 +16,9 @@ class Sides {
 
     private static readonly SIDE_NAMES = ['A', 'B', 'C'];
 
-    public readonly sideA = new Side(Sides.SIDE_NAMES[0], 0);
-    public readonly sideB = new Side(Sides.SIDE_NAMES[1], 1);
-    public readonly sideC = new Side(Sides.SIDE_NAMES[2], 2);
+    public readonly sideA = new Side(Sides.SIDE_NAMES[0]);
+    public readonly sideB = new Side(Sides.SIDE_NAMES[1]);
+    public readonly sideC = new Side(Sides.SIDE_NAMES[2]);
 
     private readonly _sides = new Map<string, Side>();
 
