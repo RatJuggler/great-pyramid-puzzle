@@ -1,16 +1,14 @@
 import { testPuzzle } from "./test-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
-import { LayoutData } from "./layout-data-schema";
-import { TileData } from "./tile-data-schema";
-import { DisplayData } from "./puzzle-display-schema";
+import { PuzzleDefinition } from "./common-data-schema";
 import { DisplayManager } from "./puzzle-display";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
 import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
-import {TilePosition} from "./tile-position";
-import {getRandomInt} from "./utils";
+import { TilePosition } from "./tile-position";
+import { getRandomInt } from "./utils";
 
 
 // Track tile placing event timer.
@@ -45,7 +43,7 @@ function getSelector(name: string): string {
     throw new Error("Expected radio option to be selected!");
 }
 
-function getPuzzleType(): { layoutData: LayoutData; tileData: TileData; displayData: DisplayData; } {
+function getPuzzleType(): PuzzleDefinition {
     const puzzleType = getSelector("puzzle-type");
     switch (puzzleType) {
         case "Test":

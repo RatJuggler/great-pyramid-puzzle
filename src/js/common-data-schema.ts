@@ -1,11 +1,18 @@
+import {LayoutData} from "./layout-data-schema";
+import {TileData} from "./tile-data-schema";
+import {DisplayData} from "./puzzle-display-schema";
+
 // Data structure common to both puzzle layout and tile definitions.
 
 
-const SIDE_NAMES = "ABC";
-const NUMBER_OF_SIDES = SIDE_NAMES.length;
-const enum Sides {SideA, SideB, SideC}
+interface PuzzleDefinition {
+    readonly layoutData: LayoutData,
+    readonly tileData: TileData,
+    readonly displayData: DisplayData
 
+}
 
 type IntegrityCheckResult = [boolean, string];
 
-export { SIDE_NAMES, NUMBER_OF_SIDES, Sides, IntegrityCheckResult }
+
+export { PuzzleDefinition, IntegrityCheckResult }
