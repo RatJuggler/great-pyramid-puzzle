@@ -2,7 +2,7 @@ import { TilePosition } from '../../src/js/tile-position';
 import { assert, expect} from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1, TILE_2 } from "./common-test-data";
+import { TILE_1, TILE_2, TILE_3, TILE_4 } from "./common-test-data";
 
 
 describe("TilePosition behaviour", function () {
@@ -253,7 +253,14 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it with one surrounding Tile which doesn't match", function () {
             const tilePosition = new TilePosition("TP", "1");
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
+            const tilePosition3 = new TilePosition("TP3", "1");
+            tilePosition.join("A", "B", tilePosition1);
+            tilePosition.join("B", "C", tilePosition2);
+            tilePosition.join("C", "A", tilePosition3);
             assert.isNotNull(tilePosition.placeTile(TILE_1));
+            assert.isNotNull(tilePosition2.placeTile(TILE_3));
             const result = tilePosition.matches();
             it("should return false", function () {
                 expect(result).to.be.false;
@@ -262,7 +269,14 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it with one surrounding Tile which matches", function () {
             const tilePosition = new TilePosition("TP", "1");
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
+            const tilePosition3 = new TilePosition("TP3", "1");
+            tilePosition.join("A", "B", tilePosition1);
+            tilePosition.join("B", "C", tilePosition2);
+            tilePosition.join("C", "A", tilePosition3);
             assert.isNotNull(tilePosition.placeTile(TILE_1));
+            assert.isNotNull(tilePosition1.placeTile(TILE_2));
             const result = tilePosition.matches();
             it("should return true", function () {
                 expect(result).to.be.true;
@@ -271,7 +285,16 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it with surrounding Tiles which don't match", function () {
             const tilePosition = new TilePosition("TP", "1");
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
+            const tilePosition3 = new TilePosition("TP3", "1");
+            tilePosition.join("A", "B", tilePosition1);
+            tilePosition.join("B", "C", tilePosition2);
+            tilePosition.join("C", "A", tilePosition3);
             assert.isNotNull(tilePosition.placeTile(TILE_1));
+            assert.isNotNull(tilePosition1.placeTile(TILE_2));
+            assert.isNotNull(tilePosition2.placeTile(TILE_3));
+            assert.isNotNull(tilePosition3.placeTile(TILE_4));
             const result = tilePosition.matches();
             it("should return false", function () {
                 expect(result).to.be.false;
@@ -280,7 +303,17 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it with surrounding Tiles which all match", function () {
             const tilePosition = new TilePosition("TP", "1");
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
+            const tilePosition3 = new TilePosition("TP3", "1");
+            tilePosition.join("A", "B", tilePosition1);
+            tilePosition.join("B", "C", tilePosition2);
+            tilePosition.join("C", "A", tilePosition3);
             assert.isNotNull(tilePosition.placeTile(TILE_1));
+            assert.isNotNull(tilePosition1.placeTile(TILE_2));
+            assert.isNotNull(tilePosition2.placeTile(TILE_3));
+            tilePosition2.tile.nextOrientation();
+            assert.isNotNull(tilePosition3.placeTile(TILE_4));
             const result = tilePosition.matches();
             it("should return true", function () {
                 expect(result).to.be.true;

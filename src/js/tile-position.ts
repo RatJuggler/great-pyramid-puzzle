@@ -89,7 +89,13 @@ export class TilePosition {
             throw new Error("Can't check if a Position matches when there is no Tile to match from!");
         }
         for (const join of this._joins.entries()) {
-            this.tile.getSide(join[0]);
+            if (!join[1].ofTilePosition.isEmpty()) {
+                const thisSegment = this.tile.getSideSegements(join[0]);
+                const thatSegment = join[1].ofTilePosition.tile.getSideSegementsToMatchWith(join[1].toSide);
+                if (thisSegment !== thatSegment) {
+                    return false;
+                }
+            }
         }
         return true;
     }
