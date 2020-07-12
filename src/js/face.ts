@@ -65,7 +65,7 @@ export class Face {
     toString(): string {
         let faceString = `Face: ${this._name}, Tile Positions: ${this.tilePositionCount}, Joins: `;
         this._joins.forEach((join, side) =>
-            faceString += `(${this._name}-${side.name}->${join.ofFace.name}-${join.toSide.name})`);
+            faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
         faceString += '\n';
         this._tilePositions.forEach(tilePosition => faceString += tilePosition.toString() + '\n');
         return faceString;

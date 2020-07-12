@@ -1,9 +1,6 @@
 import { TileDefinition } from "./tile-data-schema";
 import { Side, SIDES } from "./side";
 
-// This is complicated by the face we've defined the puzzle data using sides A/B/C but when
-// working with the Tile orientation it's been simpler to use 0/1/2 to index the array.
-
 
 export class Tile {
 

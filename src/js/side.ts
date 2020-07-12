@@ -1,31 +1,19 @@
-// This is over-complicated for just working with sides.
-// Would be simplified if we just used 0/1/2 for all faces instead of A/B/C (see Tile).
-
-
-class Side {
-
-    constructor(private _side: string) {}
-
-    get name(): string {
-        return this._side;
-    }
-
-}
+enum Side {SideA = 'A', SideB = 'B', SideC = 'C'}
 
 class Sides {
 
     private static readonly SIDE_NAMES = ['A', 'B', 'C'];
 
-    public readonly sideA = new Side(Sides.SIDE_NAMES[0]);
-    public readonly sideB = new Side(Sides.SIDE_NAMES[1]);
-    public readonly sideC = new Side(Sides.SIDE_NAMES[2]);
+    public readonly sideA = Side.SideA;
+    public readonly sideB = Side.SideB;
+    public readonly sideC = Side.SideC;
 
     private readonly _sides = new Map<string, Side>();
 
     constructor() {
-        this._sides.set(this.sideA.name, this.sideA);
-        this._sides.set(this.sideB.name, this.sideB);
-        this._sides.set(this.sideC.name, this.sideC);
+        this._sides.set(this.sideA, this.sideA);
+        this._sides.set(this.sideB, this.sideB);
+        this._sides.set(this.sideC, this.sideC);
     }
 
     get numberOfSides(): number {
