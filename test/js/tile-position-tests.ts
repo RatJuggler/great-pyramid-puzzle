@@ -275,8 +275,8 @@ describe("TilePosition behaviour", function () {
             tilePosition1.join("A", "B", tilePosition3);
             tilePosition1.join("B", "B", tilePosition4);
             tilePosition1.join("C", "B", tilePosition2);
-            assert.isNotNull(tilePosition1.placeTile(TILE_1));
-            assert.isNotNull(tilePosition2.placeTile(TILE_2));
+            assert.isNotNull(tilePosition1.placeTile(TILE_2));
+            assert.isNotNull(tilePosition2.placeTile(TILE_3));
             const result = tilePosition1.matches();
             it("should return true", function () {
                 expect(result).to.be.true;
@@ -309,11 +309,10 @@ describe("TilePosition behaviour", function () {
             tilePosition1.join("A", "B", tilePosition3);
             tilePosition1.join("B", "B", tilePosition4);
             tilePosition1.join("C", "B", tilePosition2);
-            assert.isNotNull(tilePosition1.placeTile(TILE_1));
-            assert.isNotNull(tilePosition2.placeTile(TILE_2));
-            assert.isNotNull(tilePosition3.placeTile(TILE_3));
+            assert.isNotNull(tilePosition1.placeTile(TILE_2));
+            assert.isNotNull(tilePosition2.placeTile(TILE_3));
+            assert.isNotNull(tilePosition3.placeTile(TILE_1));
             assert.isNotNull(tilePosition4.placeTile(TILE_4));
-            tilePosition3.tile.nextOrientation();
             const result = tilePosition1.matches();
             it("should return true", function () {
                 expect(result).to.be.true;

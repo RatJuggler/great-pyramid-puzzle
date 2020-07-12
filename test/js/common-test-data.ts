@@ -7,9 +7,9 @@ import { Tile } from "../../src/js/tile";
 
 const TILE_1_DATA: TileDefinition = {
     "tile": 101,
-    "sideA": "1010",
+    "sideA": "0010",
     "sideB": "0010",
-    "sideC": "0010"
+    "sideC": "1010"
 };
 const TILE_1 = new Tile(TILE_1_DATA);
 
@@ -27,15 +27,15 @@ const TILE_3_DATA: TileDefinition = {
     "sideB": "1001",
     "sideC": "1010"
 };
-const TILE_3 = new Tile(TILE_2_DATA);
+const TILE_3 = new Tile(TILE_3_DATA);
 
 const TILE_4_DATA: TileDefinition = {
     "tile": 104,
-    "sideA": "0010",
-    "sideB": "0100",
-    "sideC": "0101"
+    "sideA": "0101",
+    "sideB": "0010",
+    "sideC": "0100"
 };
-const TILE_4 = new Tile(TILE_2_DATA);
+const TILE_4 = new Tile(TILE_4_DATA);
 
 const ONE_TILE_POSITION_DATA: TilePositionData[]  = [
     {"position": "1", "joins": []}
