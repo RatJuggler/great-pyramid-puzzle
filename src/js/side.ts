@@ -2,11 +2,7 @@ const enum Side {SideA = 'A', SideB = 'B', SideC = 'C'}
 
 class Sides {
 
-    public readonly sideA = Side.SideA;
-    public readonly sideB = Side.SideB;
-    public readonly sideC = Side.SideC;
-
-    private readonly _sides = new Map<string, Side>([
+    private static readonly _sides = new Map<string, Side>([
         [Side.SideA, Side.SideA],
         [Side.SideB, Side.SideB],
         [Side.SideC, Side.SideC]
@@ -15,12 +11,12 @@ class Sides {
     constructor() {}
 
     get numberOfSides(): number {
-        return this._sides.size;
+        return Sides._sides.size;
     }
 
-    getSide(side: string, name: string): Side {
-        if (this._sides.has(side)) {
-            return this._sides.get(side)!;
+    validateSide(side: string, name: string): Side {
+        if (Sides._sides.has(side)) {
+            return Sides._sides.get(side)!;
         }
         throw new Error(`Side ${name} must be one of ${Side.SideA},${Side.SideB},${Side.SideC}!`);
     }

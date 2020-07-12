@@ -53,8 +53,8 @@ export class TilePosition {
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
         }
-        const nFromSide = SIDES.getSide(fromSide, "to join from");
-        const nToSide = SIDES.getSide(toSide, "to join to");
+        const nFromSide = SIDES.validateSide(fromSide, "to join from");
+        const nToSide = SIDES.validateSide(toSide, "to join to");
         if (this._joins.get(nFromSide)) {
             throw new Error(`Existing join already present for side ${fromSide}!`);
         }

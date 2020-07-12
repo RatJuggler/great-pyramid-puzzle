@@ -1,13 +1,13 @@
 import { TileDefinition } from "./tile-data-schema";
-import { Side, SIDES } from "./side";
+import { Side } from "./side";
 
 
 export class Tile {
 
     private static readonly ORIENTATION = [
-        new Map<Side, Side>([[SIDES.sideA, SIDES.sideA], [SIDES.sideB, SIDES.sideB], [SIDES.sideC, SIDES.sideC]]),
-        new Map<Side, Side>([[SIDES.sideA, SIDES.sideC], [SIDES.sideB, SIDES.sideA], [SIDES.sideC, SIDES.sideB]]),
-        new Map<Side, Side>([[SIDES.sideA, SIDES.sideB], [SIDES.sideB, SIDES.sideC], [SIDES.sideC, SIDES.sideA]])
+        new Map<Side, Side>([[Side.SideA, Side.SideA], [Side.SideB, Side.SideB], [Side.SideC, Side.SideC]]),
+        new Map<Side, Side>([[Side.SideA, Side.SideC], [Side.SideB, Side.SideA], [Side.SideC, Side.SideB]]),
+        new Map<Side, Side>([[Side.SideA, Side.SideB], [Side.SideB, Side.SideC], [Side.SideC, Side.SideA]])
     ];
 
     private readonly _id: number;
@@ -26,9 +26,9 @@ export class Tile {
 
     constructor(tileDetails: TileDefinition) {
         this._id = tileDetails.tile;
-        this._sides.set(SIDES.sideA, this.validateSegments(tileDetails.sideA));
-        this._sides.set(SIDES.sideB, this.validateSegments(tileDetails.sideB));
-        this._sides.set(SIDES.sideC, this.validateSegments(tileDetails.sideC));
+        this._sides.set(Side.SideA, this.validateSegments(tileDetails.sideA));
+        this._sides.set(Side.SideB, this.validateSegments(tileDetails.sideB));
+        this._sides.set(Side.SideC, this.validateSegments(tileDetails.sideC));
     }
 
     public getSide(side: Side): string {
@@ -36,7 +36,7 @@ export class Tile {
     }
 
     toString(): string {
-        return `Id: ${this._id}, Side-A: ${this.getSide(SIDES.sideA)}, Side-B: ${this.getSide(SIDES.sideB)}, Side-C: ${this.getSide(SIDES.sideC)}, Orientation: ${this._orientation}`;
+        return `Id: ${this._id}, Side-A: ${this.getSide(Side.SideA)}, Side-B: ${this.getSide(Side.SideB)}, Side-C: ${this.getSide(Side.SideC)}, Orientation: ${this._orientation}`;
     }
 
     get id(): number {
@@ -44,7 +44,7 @@ export class Tile {
     }
 
     get segments(): string {
-        return this.getSide(SIDES.sideA) + this.getSide(SIDES.sideB) + this.getSide(SIDES.sideC);
+        return this.getSide(Side.SideA) + this.getSide(Side.SideB) + this.getSide(Side.SideC);
     }
 
     place(): Tile {
