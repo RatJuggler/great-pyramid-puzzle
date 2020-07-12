@@ -3,6 +3,7 @@ import { FaceData } from "./layout-data-schema";
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
 import { getRandomInt } from "./utils";
+import { IntegrityCheckResult } from "./common-data-schema";
 
 
 export class Tetrahedron {

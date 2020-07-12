@@ -1,4 +1,5 @@
 import { TileDefinition } from "./tile-data-schema";
+import { Sides } from "./common-data-schema";
 
 
 export class Tile {
@@ -28,12 +29,12 @@ export class Tile {
         ];
     }
 
-    private getSide(side: number): string {
-        return this._sides[Tile.ORIENTATION[this._orientation][side]];
+    public getSide(side: Sides): string {
+        return this._sides[Tile.ORIENTATION[this._orientation][side.valueOf()]];
     }
 
     toString(): string {
-        return `Id: ${this._id}, Side-A: ${this.getSide(0)}, Side-B: ${this.getSide(1)}, Side-C: ${this.getSide(2)}, Orientation: ${this._orientation}`;
+        return `Id: ${this._id}, Side-A: ${this.getSide(Sides.SideA)}, Side-B: ${this.getSide(Sides.SideB)}, Side-C: ${this.getSide(Sides.SideC)}, Orientation: ${this._orientation}`;
     }
 
     get id(): number {
@@ -41,7 +42,7 @@ export class Tile {
     }
 
     get segments(): string {
-        return this.getSide(0) + this.getSide(1) + this.getSide(2);
+        return this.getSide(Sides.SideA) + this.getSide(Sides.SideB) + this.getSide(Sides.SideC);
     }
 
     place(): Tile {

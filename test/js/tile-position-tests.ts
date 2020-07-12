@@ -103,7 +103,7 @@ describe("TilePosition behaviour", function () {
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.join("1", "A", tilePosition2);
-                }).to.throw(Error, "Side to join from must be one of A,B,C!");
+                }).to.throw(Error, "Side to join from must be one of ABC!");
             });
         });
 
@@ -113,7 +113,7 @@ describe("TilePosition behaviour", function () {
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.join("A", "X", tilePosition2);
-                }).to.throw(Error, "Side to join to must be one of A,B,C!");
+                }).to.throw(Error, "Side to join to must be one of ABC!");
             });
         });
 
@@ -238,6 +238,12 @@ describe("TilePosition behaviour", function () {
 
         context("and the Position has a Tile in it with no surrounding Tiles", function () {
             const tilePosition = new TilePosition("TP", "1");
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "1");
+            const tilePosition3 = new TilePosition("TP3", "1");
+            tilePosition.join("A", "B", tilePosition1);
+            tilePosition.join("B", "C", tilePosition2);
+            tilePosition.join("C", "A", tilePosition3);
             assert.isNotNull(tilePosition.placeTile(TILE_1));
             const result = tilePosition.matches();
             it("should return true", function () {

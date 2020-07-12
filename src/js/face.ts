@@ -2,6 +2,7 @@ import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
 import { TilePositionData} from "./layout-data-schema";
 import { getRandomInt } from "./utils";
+import { SIDE_NAMES, NUMBER_OF_SIDES, IntegrityCheckResult } from "./common-data-schema";
 
 
 interface FaceJoinProperties {
@@ -14,7 +15,6 @@ export class Face {
 
     private static readonly FACE_NAMES = ["1", "2", "3", "4"];
     private static readonly VALID_TILE_COUNTS = [1, 4, 9];
-    private static readonly SIDE_NAMES = ["A", "B", "C"];
 
     private readonly _joins = new Map<string, FaceJoinProperties>();
     private readonly _tilePositions = new Map<string, TilePosition>();
@@ -38,7 +38,7 @@ export class Face {
 
     integrityCheck(): IntegrityCheckResult {
         // Each face must join to 3 other faces and must have a valid number of tile positions.
-        if (this._joins.size !== Face.SIDE_NAMES.length) {
+        if (this._joins.size !== NUMBER_OF_SIDES) {
             return [false, `Face joins not complete: ${this.toString()}`];
         }
         if (!Face.VALID_TILE_COUNTS.includes(this._tilePositions.size)) {
@@ -94,7 +94,7 @@ export class Face {
     }
 
     join(fromSide: string, toSide: string, ofFace: Face) : void {
-        if (this._joins.size === Face.SIDE_NAMES.length) {
+        if (this._joins.size === NUMBER_OF_SIDES) {
             throw new Error("Faces can only join to three other faces!");
         }
         if (this === ofFace) {
@@ -103,11 +103,11 @@ export class Face {
         if (this.tilePositionCount !== ofFace.tilePositionCount) {
             throw new Error("Cannot join Faces which have differing numbers of Tile Positions!");
         }
-        if (!(Face.SIDE_NAMES.includes(fromSide))) {
-            throw new Error(`Side to join from must be one of ${Face.SIDE_NAMES}!`);
+        if (!SIDE_NAMES.includes(fromSide)) {
+            throw new Error(`Side to join from must be one of ${SIDE_NAMES}!`);
         }
-        if (!(Face.SIDE_NAMES.includes(toSide))) {
-            throw new Error(`Side to join to must be one of ${Face.SIDE_NAMES}!`);
+        if (!SIDE_NAMES.includes(toSide)) {
+            throw new Error(`Side to join to must be one of ${SIDE_NAMES}!`);
         }
         if (this._joins.get(fromSide)) {
             throw new Error(`Existing join already present for side ${fromSide}!`);

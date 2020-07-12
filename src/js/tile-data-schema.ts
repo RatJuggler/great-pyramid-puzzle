@@ -1,4 +1,4 @@
-// Interfaces defining the puzzle data structure configuration.
+// Interfaces defining the tile data structures used in the tile configuration files.
 
 interface TileDefinition {
     readonly tile: number;

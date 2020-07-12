@@ -1,4 +1,5 @@
 import { Tile } from "./tile";
+import { SIDE_NAMES, NUMBER_OF_SIDES, IntegrityCheckResult } from "./common-data-schema";
 
 
 interface TilePositionJoinProperties {
@@ -9,8 +10,6 @@ interface TilePositionJoinProperties {
 
 export class TilePosition {
 
-    private static readonly SIDE_NAMES = ["A", "B", "C"];
-
     private _joins = new Map<string, TilePositionJoinProperties>();
     private _tile: Tile | null = null;
 
@@ -18,7 +17,7 @@ export class TilePosition {
 
     integrityCheck(): IntegrityCheckResult {
         // Each tile position must join to 3 other tile positions.
-        if (this._joins.size === TilePosition.SIDE_NAMES.length) {
+        if (this._joins.size === NUMBER_OF_SIDES) {
             return [true, "Passed"];
         }
         return [false, `Tile position joins not complete: ${this.toString()}`];
@@ -47,17 +46,17 @@ export class TilePosition {
     }
 
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition) : void {
-        if (this._joins.size === TilePosition.SIDE_NAMES.length) {
+        if (this._joins.size === NUMBER_OF_SIDES) {
             throw new Error("Tile positions can only join to three other tile positions!");
         }
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
         }
-        if (!(TilePosition.SIDE_NAMES.includes(fromSide))) {
-            throw new Error(`Side to join from must be one of ${TilePosition.SIDE_NAMES}!`);
+        if (!SIDE_NAMES.includes(fromSide)) {
+            throw new Error(`Side to join from must be one of ${SIDE_NAMES}!`);
         }
-        if (!(TilePosition.SIDE_NAMES.includes(toSide))) {
-            throw new Error(`Side to join to must be one of ${TilePosition.SIDE_NAMES}!`);
+        if (!SIDE_NAMES.includes(toSide)) {
+            throw new Error(`Side to join to must be one of ${SIDE_NAMES}!`);
         }
         if (this._joins.get(fromSide)) {
             throw new Error(`Existing join already present for side ${fromSide}!`);
