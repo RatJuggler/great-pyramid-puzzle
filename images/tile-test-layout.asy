@@ -12,8 +12,9 @@ unitsize(3cm);
 real face_gap = 0.05;
 real tile_gap = 0.05;
 pen face_colour = palegray;
-pen peg_colour = linewidth(15) + mediumgray;
+pen peg_colour = linewidth(15) + lightgray;
 pen side_label = fontsize(12pt);
+pen tile_label = fontsize(12pt);
 pen note_label = fontsize(8pt);
 pen title_label = fontsize(14pt);
 
@@ -66,6 +67,7 @@ void drawTileAtPosition(real offset, real scale, int rotate, string id,
     label("B", toPosition * sideB, side_label);
     label("C", toPosition * sideC, side_label);
     dot(center, peg_colour);
+    label(id, center, tile_label);
 }
 
 path drawFace(real offset, int rotate) {
@@ -91,10 +93,10 @@ path face_4 = drawFace(fOffset, 120);
 real face_side = length(point(ref, 0)--point(ref, 1));
 real tile_scale = (face_side - (tile_gap * 2)) / face_side;
 
-drawTileAtPosition(0, tile_scale, -60, "1-1", W, E, S, "0100", "0100", "1001");
-drawTileAtPosition(fOffset, tile_scale, 0, "2-1", W, N, E, "0101", "1001", "1010");
-drawTileAtPosition(fOffset, tile_scale, -120, "3-1", N, E, W, "0010", "0010", "1010");
-drawTileAtPosition(fOffset, tile_scale, 120, "4-1", E, W, N, "0101", "0010", "0100");
+drawTileAtPosition(0, tile_scale, -60, "Tile 2", W, E, S, "0100", "0100", "1001");
+drawTileAtPosition(fOffset, tile_scale, 0, "Tile 3", W, N, E, "0101", "1001", "1010");
+drawTileAtPosition(fOffset, tile_scale, -120, "Tile 1", N, E, W, "0010", "0010", "1010");
+drawTileAtPosition(fOffset, tile_scale, 120, "Tile 4", E, W, N, "0101", "0010", "0100");
 
 // Notes
 label("*Outward facing surfaces shown.", (point(face_4, 1).x, point(face_2, 1).y), E, note_label);
