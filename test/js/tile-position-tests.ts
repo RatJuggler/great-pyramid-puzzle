@@ -103,7 +103,7 @@ describe("TilePosition behaviour", function () {
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.join("1", "A", tilePosition2);
-                }).to.throw(Error, "Side to join from must be one of ABC!");
+                }).to.throw(Error, "Side to join from must be one of A,B,C!");
             });
         });
 
@@ -113,7 +113,7 @@ describe("TilePosition behaviour", function () {
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.join("A", "X", tilePosition2);
-                }).to.throw(Error, "Side to join to must be one of ABC!");
+                }).to.throw(Error, "Side to join to must be one of A,B,C!");
             });
         });
 

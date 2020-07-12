@@ -167,7 +167,7 @@ describe("Face behavior", function () {
             it("should throw an error", function () {
                 expect(function () {
                     face1WithOneTilePosition.join("7", "A", face2WithOneTilePosition);
-                }).to.throw(Error, "Side to join from must be one of ABC!");
+                }).to.throw(Error, "Side to join from must be one of A,B,C!");
             });
         });
 
@@ -177,7 +177,7 @@ describe("Face behavior", function () {
             it("should throw an error", function () {
                 expect(function () {
                     face1WithOneTilePosition.join("A", "Z", face2WithOneTilePosition);
-                }).to.throw(Error, "Side to join to must be one of ABC!");
+                }).to.throw(Error, "Side to join to must be one of A,B,C!");
             });
         });
 

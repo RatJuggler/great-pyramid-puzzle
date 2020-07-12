@@ -1,24 +1,24 @@
 import { Tile } from "./tile";
 import { IntegrityCheckResult } from "./common-data-schema";
-import { NUMBER_OF_SIDES, validateSide } from "./side";
+import { Side, SIDES } from "./side";
 
 
 interface TilePositionJoinProperties {
-    readonly toSide: string;
+    readonly toSide: Side;
     readonly ofTilePosition: TilePosition;
 }
 
 
 export class TilePosition {
 
-    private _joins = new Map<string, TilePositionJoinProperties>();
+    private _joins = new Map<Side, TilePositionJoinProperties>();
     private _tile: Tile | null = null;
 
     constructor(private _name: string, private _onFace: string) {}
 
     integrityCheck(): IntegrityCheckResult {
         // Each tile position must join to 3 other tile positions.
-        if (this._joins.size === NUMBER_OF_SIDES) {
+        if (this._joins.size === SIDES.numberOfSides) {
             return [true, "Passed"];
         }
         return [false, `Tile position joins not complete: ${this.toString()}`];
@@ -27,7 +27,7 @@ export class TilePosition {
     toString(): string {
         let tileString = `TilePosition: ${this._name}, On Face: ${this._onFace}, Contains Tile: [${this._tile}], Joins: `;
         this._joins.forEach((join, side) =>
-            tileString += `(${this._name}-${side}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide})`);
+            tileString += `(${this._name}-${side.name}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide.name})`);
         return tileString;
     }
 
@@ -47,19 +47,19 @@ export class TilePosition {
     }
 
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition) : void {
-        if (this._joins.size === NUMBER_OF_SIDES) {
+        if (this._joins.size === SIDES.numberOfSides) {
             throw new Error("Tile positions can only join to three other tile positions!");
         }
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
         }
-        validateSide(fromSide, "to join from");
-        validateSide(toSide, "to join to");
-        if (this._joins.get(fromSide)) {
+        const nFromSide = SIDES.getSide(fromSide, "to join from");
+        const nToSide = SIDES.getSide(toSide, "to join to");
+        if (this._joins.get(nFromSide)) {
             throw new Error(`Existing join already present for side ${fromSide}!`);
         }
-        this._joins.set(fromSide, {
-            toSide: toSide,
+        this._joins.set(nFromSide, {
+            toSide: nToSide,
             ofTilePosition: ofTilePosition
         });
     }
@@ -87,6 +87,9 @@ export class TilePosition {
     matches(): boolean {
         if (this.isEmpty()) {
             throw new Error("Can't check if a Position matches when there is no Tile to match from!");
+        }
+        for (const join of this._joins.entries()) {
+            this.tile.getSide(join[0]);
         }
         return true;
     }

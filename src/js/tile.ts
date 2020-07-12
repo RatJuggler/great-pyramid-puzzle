@@ -1,18 +1,21 @@
 import { TileDefinition } from "./tile-data-schema";
-import { NUMBER_OF_SIDES, Sides } from "./side";
+import { Side, SIDES } from "./side";
+
+// This is complicated by the face we've defined the puzzle data using sides A/B/C but when
+// working with the Tile orientation it's been simpler to use 0/1/2 to index the array.
 
 
 export class Tile {
 
     private static readonly ORIENTATION = [
-        [Sides.SideA, Sides.SideB, Sides.SideC],
-        [Sides.SideC, Sides.SideA, Sides.SideB],
-        [Sides.SideB, Sides.SideC, Sides.SideA]
+        [SIDES.sideA, SIDES.sideB, SIDES.sideC],
+        [SIDES.sideC, SIDES.sideA, SIDES.sideB],
+        [SIDES.sideB, SIDES.sideC, SIDES.sideA]
     ];
 
     private readonly _id: number;
     private readonly _sides: string[];
-    private _orientation: Sides = Sides.SideA;
+    private _orientation: Side = SIDES.sideA;
 
     validateSegments(segments: string): string {
         if (segments.length !== 4) {
@@ -33,12 +36,12 @@ export class Tile {
         ];
     }
 
-    public getSide(side: Sides): string {
-        return this._sides[Tile.ORIENTATION[this._orientation][side]];
+    public getSide(side: Side): string {
+        return this._sides[Tile.ORIENTATION[this._orientation.value][side.value].value];
     }
 
     toString(): string {
-        return `Id: ${this._id}, Side-A: ${this.getSide(Sides.SideA)}, Side-B: ${this.getSide(Sides.SideB)}, Side-C: ${this.getSide(Sides.SideC)}, Orientation: ${this._orientation}`;
+        return `Id: ${this._id}, Side-A: ${this.getSide(SIDES.sideA)}, Side-B: ${this.getSide(SIDES.sideB)}, Side-C: ${this.getSide(SIDES.sideC)}, Orientation: ${this._orientation.value}`;
     }
 
     get id(): number {
@@ -46,16 +49,16 @@ export class Tile {
     }
 
     get segments(): string {
-        return this.getSide(Sides.SideA) + this.getSide(Sides.SideB) + this.getSide(Sides.SideC);
+        return this.getSide(SIDES.sideA) + this.getSide(SIDES.sideB) + this.getSide(SIDES.sideC);
     }
 
     place(): Tile {
-        this._orientation = Sides.SideA;
+        this._orientation = SIDES.sideA;
         return this;
     }
 
     nextOrientation(): Tile {
-        this._orientation = ++this._orientation % NUMBER_OF_SIDES;
+        this._orientation = SIDES.nextSide(this._orientation);
         return this;
     }
 
