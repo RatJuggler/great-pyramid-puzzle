@@ -71,10 +71,10 @@ function getTileSelection(tilePool: TilePool): Tile | null {
     }
 }
 
-function orientateTile(tilePosition: TilePosition): TilePosition {
-    const orientation = getSelector("tile-orientation");
-    switch (orientation) {
-        case "Default":
+function rotateTile(tilePosition: TilePosition): TilePosition {
+    const rotation = getSelector("tile-rotation");
+    switch (rotation) {
+        case "None":
             return tilePosition;
         case "Random":
             for (let i = getRandomInt(3); i > 0; --i) {
@@ -82,7 +82,7 @@ function orientateTile(tilePosition: TilePosition): TilePosition {
             }
             return tilePosition;
         default:
-            throw new Error("Invalid tile orientation option!");
+            throw new Error("Invalid tile rotation option!");
     }
 }
 
@@ -102,7 +102,7 @@ function placeTile(tile: Tile, tetrahedron: Tetrahedron): TilePosition  {
     if (!tilePlacedPosition) {
         throw new Error("Failed to place tile on puzzle!");
     }
-    return orientateTile(tilePlacedPosition);
+    return rotateTile(tilePlacedPosition);
 }
 
 function doPuzzle(): void {
