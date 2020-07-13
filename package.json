@@ -21,6 +21,9 @@
   "bugs": {
     "url": "https://github.com/RatJuggler/great-pyramid-puzzle/issues"
   },
+  "browserslist": [
+    "defaults"
+  ],
   "dependencies": {
     "@svgdotjs/svg.js": "^3.0.16",
     "purecss": "^2.0.3"
