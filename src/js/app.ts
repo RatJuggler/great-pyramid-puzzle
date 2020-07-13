@@ -105,7 +105,7 @@ function placeTile(tile: Tile, tetrahedron: Tetrahedron): TilePosition  {
     return rotateTile(tilePlacedPosition);
 }
 
-function doPuzzle(): void {
+function testDisplay(): void {
     // Clear any previous puzzle tile placement schedules.
     if (placeTileInterval) {
         clearInterval(placeTileInterval);
@@ -133,4 +133,42 @@ function doPuzzle(): void {
     }, 1000);
 }
 
-document.getElementById("go")!.addEventListener("click", () => doPuzzle());
+function doPuzzle(): void {
+    alert("Work to solve puzzle!");
+}
+
+function mainOptions(): void {
+    const mainOption = getSelector("option");
+    switch (mainOption) {
+        case "Test":
+            testDisplay();
+            break;
+        case "Solve":
+            doPuzzle();
+            break;
+        default:
+            throw new Error("Invalid main option!");
+    }
+}
+
+function swapOptions(): void {
+    const mainOption = getSelector("option");
+    const solvePuzzle = <HTMLElement>document.getElementById("solve-puzzle")!;
+    const testDisplay = <HTMLElement>document.getElementById("test-display")!;
+    switch (mainOption) {
+        case "Test":
+            solvePuzzle.classList.add("hide-item");
+            testDisplay.classList.remove("hide-item");
+            break;
+        case "Solve":
+            solvePuzzle.classList.remove("hide-item");
+            testDisplay.classList.add("hide-item");
+            break;
+        default:
+            throw new Error("Invalid main option!");
+    }
+}
+
+document.getElementById("option-test")!.addEventListener("click", () => swapOptions());
+document.getElementById("option-solve")!.addEventListener("click", () => swapOptions());
+document.getElementById("go")!.addEventListener("click", () => mainOptions());

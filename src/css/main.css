@@ -19,8 +19,12 @@ html, body {
   height: 100%;
 }
 
+.hide-item {
+  display: none;
+}
+
 #puzzle-selection {
-  padding-top: 20%;
+  padding-top: 10%;
 }
 
 #puzzle-selection ul {
@@ -28,7 +32,7 @@ html, body {
 }
 
 #puzzle-selection p {
-  margin-top: 18px;
+  margin-top: 12px;
   margin-bottom: 4px;
   font-size: 150%;
 }
@@ -61,6 +65,11 @@ html, body {
   font-size: 125%;
   padding: 10px 10px;
   width: 100%
+}
+
+.selector label.disable {
+  color: #acacac;
+  cursor: default;
 }
 
 .selector input[type=radio]:checked + label {

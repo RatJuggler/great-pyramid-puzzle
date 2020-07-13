@@ -50,6 +50,43 @@
           </div>
         </li>
         <li>
+          <p>Option</p>
+        </li>
+        <li>
+          <div class="selector">
+            <input type="radio" id="option-test" name="option" value="Test" checked>
+            <label for="option-test">Test Display</label>
+            <input type="radio" id="option-solve" name="option" value="Solve">
+            <label for="option-solve">Solve Puzzle</label>
+          </div>
+        </li>
+      </ul>
+      <ul id="solve-puzzle" class="hide-item">
+        <li>
+          <p>Algorithm</p>
+        </li>
+        <li>
+          <div class="selector">
+            <input type="radio" id="algorithm-brute" name="algorithm" value="Brute" checked>
+            <label for="algorithm-brute">Brute Force</label>
+            <input type="radio" id="algorithm-machine" name="algorithm" value="Machine" disabled>
+            <label for="algorithm-machine" class="disable">Machine Learning</label>
+          </div>
+        </li>
+        <li>
+          <p>Display</p>
+        </li>
+        <li>
+          <div class="selector">
+            <input type="radio" id="display-final" name="display" value="Final" checked>
+            <label for="display-final">Final Result</label>
+            <input type="radio" id="display-progress" name="display" value="Progress">
+            <label for="display-progress">Progress</label>
+          </div>
+        </li>
+      </ul>
+      <ul id="test-display">
+        <li>
           <p>Tile selection:</p>
         </li>
         <li>
@@ -84,6 +121,8 @@
             <label for="rotation-random">Random</label>
           </div>
         </li>
+      </ul>
+      <ul>
         <li>
           <p></p>
           <button id="go" class="pure-button">Go!</button>
