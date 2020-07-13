@@ -11,7 +11,7 @@ interface TilePositionJoinProperties {
 
 export class TilePosition {
 
-    private static readonly TILE_ORIENTATION = [
+    private static readonly TILE_ROTATION = [
         new Map<Side, Side>([[Side.SideA, Side.SideA], [Side.SideB, Side.SideB], [Side.SideC, Side.SideC]]),
         new Map<Side, Side>([[Side.SideA, Side.SideC], [Side.SideB, Side.SideA], [Side.SideC, Side.SideB]]),
         new Map<Side, Side>([[Side.SideA, Side.SideB], [Side.SideB, Side.SideC], [Side.SideC, Side.SideA]])
@@ -19,7 +19,7 @@ export class TilePosition {
 
     private _joins = new Map<Side, TilePositionJoinProperties>();
     private _tile: Tile | null = null;
-    private _tileOrientation: number = 0;
+    private _tileRotation: number = 0;
 
     constructor(private _name: string, private _onFace: string) {}
 
@@ -48,7 +48,7 @@ export class TilePosition {
 
     toString(): string {
         let tileString = `TilePosition: ${this._name}, On Face: ${this._onFace}, ` +
-            `Contains Tile: [${this._tile}], In Orientation: ${this._tileOrientation}, Joins: `;
+            `Contains Tile: [${this._tile}], Rotated: ${this._tileRotation}, Joins: `;
         this._joins.forEach((join, side) =>
             tileString += `(${this._name}-${side}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide})`);
         return tileString;
@@ -56,7 +56,7 @@ export class TilePosition {
 
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition) : void {
         if (this._joins.size === SIDES.numberOfSides) {
-            throw new Error("Tile positions can only join to three other tile positions!");
+            throw new Error("TilePositions can only join to three other TilePositions!");
         }
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
@@ -78,26 +78,26 @@ export class TilePosition {
 
     placeTile(tile: Tile): TilePosition {
         if (!this.isEmpty()) {
-            throw new Error("Can't place a Tile when the position is already filled!");
+            throw new Error("Can't place a Tile when the TilePosition is already filled!");
         }
         this._tile = tile;
-        this._tileOrientation = 0;
+        this._tileRotation = 0;
         return this;
     }
 
-    nextOrientation(): void {
-        this._tileOrientation = ++this._tileOrientation % TilePosition.TILE_ORIENTATION.length;
+    rotateTile(): void {
+        this._tileRotation = ++this._tileRotation % TilePosition.TILE_ROTATION.length;
     }
 
-    private mapOrientationToTile(mapFrom: Side): Side {
-        return TilePosition.TILE_ORIENTATION[this._tileOrientation].get(mapFrom)!;
+    private mapRotationToTile(mapFrom: Side): Side {
+        return TilePosition.TILE_ROTATION[this._tileRotation].get(mapFrom)!;
     }
 
-    getOrientatedSegments(): string {
+    getRotatedSegments(): string {
         return this.tile.getSegments(
-            this.mapOrientationToTile(Side.SideA),
-            this.mapOrientationToTile(Side.SideB),
-            this.mapOrientationToTile(Side.SideC));
+            this.mapRotationToTile(Side.SideA),
+            this.mapRotationToTile(Side.SideB),
+            this.mapRotationToTile(Side.SideC));
     }
 
     removeTile(): boolean {
@@ -105,18 +105,19 @@ export class TilePosition {
             return false;
         }
         this._tile = null;
+        this._tileRotation = 0;
         return true;
     }
 
     matches(): boolean {
         if (this.isEmpty()) {
-            throw new Error("Can't check if a Position matches when there is no Tile to match from!");
+            throw new Error("Can't check if a TilePosition matches when there is no Tile to match from!");
         }
         for (const join of this._joins.entries()) {
             if (!join[1].ofTilePosition.isEmpty()) {
-                const mapThisSide = this.mapOrientationToTile(join[0]);
+                const mapThisSide = this.mapRotationToTile(join[0]);
                 const thisSegment = this.tile.getSideSegments(mapThisSide);
-                const mapThatSide = this.mapOrientationToTile(join[1].toSide);
+                const mapThatSide = this.mapRotationToTile(join[1].toSide);
                 const thatSegment = join[1].ofTilePosition.tile.getSideSegmentsToMatchWith(mapThatSide);
                 if (thisSegment !== thatSegment) {
                     return false;

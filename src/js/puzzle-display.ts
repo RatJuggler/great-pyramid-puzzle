@@ -49,9 +49,9 @@ export class DisplayManager {
         // Draw a white tile.
         this.drawTriangle(tGroup, tpCenter, this._scaleTile, '#ffffff', {width: 0.2, color: '#000000'});
         // Draw the red segments.
-        const orientatedSegments = tilePosition.getOrientatedSegments();
-        for (let segN = 0; segN < orientatedSegments.length; segN++) {
-            if (orientatedSegments.charAt(segN) === '1') {
+        const segments = tilePosition.getRotatedSegments();
+        for (let segN = 0; segN < segments.length; segN++) {
+            if (segments.charAt(segN) === '1') {
                 tGroup.polygon(this.scaleSegment(segN, tpCenter, this._scaleTile))
                     .fill('#ff0000')
                     .stroke('none');
