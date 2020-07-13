@@ -1,8 +1,9 @@
-import { TilePosition } from '../../src/js/tile-position';
-import { assert, expect} from 'chai';
+import {TilePosition} from '../../src/js/tile-position';
+import { Side } from "../../src/js/side";
+import {assert, expect} from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1, TILE_2, TILE_3, TILE_4 } from "./common-test-data";
+import { TILE_1, TILE_2, TILE_3, TILE_4} from "./common-test-data";
 
 
 describe("TilePosition behaviour", function () {
@@ -18,12 +19,12 @@ describe("TilePosition behaviour", function () {
                 expect(tilePosition.isEmpty());
             });
             it("should return the correct toString result", function () {
-                const expectedToString = "TilePosition: XYZ, On Face: 1, Contains Tile: [null], Joins: ";
+                const expectedToString = "TilePosition: XYZ, On Face: 1, Contains Tile: [null], In Orientation: 0, Joins: ";
                 expect(tilePosition.toString()).to.equal(expectedToString);
             });
             it("should fail the integrity check", function () {
                 const expectedFailure =
-                    [false, "Tile position joins not complete: TilePosition: XYZ, On Face: 1, Contains Tile: [null], Joins: "];
+                    [false, "Tile position joins not complete: TilePosition: XYZ, On Face: 1, Contains Tile: [null], In Orientation: 0, Joins: "];
                 expect(tilePosition.integrityCheck()).to.eql(expectedFailure)
             });
         });
@@ -41,7 +42,7 @@ describe("TilePosition behaviour", function () {
             });
             it("should return the correct toString result", function () {
                 const expectedToString =
-                    "TilePosition: XYZ, On Face: 1, Contains Tile: [null], Joins: (XYZ-A->1-TP1-B)(XYZ-B->1-TP2-C)(XYZ-C->1-TP3-A)";
+                    "TilePosition: XYZ, On Face: 1, Contains Tile: [null], In Orientation: 0, Joins: (XYZ-A->1-TP1-B)(XYZ-B->1-TP2-C)(XYZ-C->1-TP3-A)";
                 expect(tilePosition.toString()).to.equal(expectedToString);
             });
             it("should pass the integrity check", function () {
@@ -79,11 +80,11 @@ describe("TilePosition behaviour", function () {
             const tilePosition2 = new TilePosition("TP2", "1");
             tilePosition1.join("A", "B", tilePosition2);
             it("should join the TilePositions in the direction given", function () {
-                const tile1ExpectedToString = "TilePosition: TP1, On Face: 1, Contains Tile: [null], Joins: (TP1-A->1-TP2-B)";
+                const tile1ExpectedToString = "TilePosition: TP1, On Face: 1, Contains Tile: [null], In Orientation: 0, Joins: (TP1-A->1-TP2-B)";
                 expect(tilePosition1.toString()).to.equal(tile1ExpectedToString);
             });
             it("should not join the TilePositions in the opposite direction", function () {
-                const tile2ExpectedToString = "TilePosition: TP2, On Face: 1, Contains Tile: [null], Joins: ";
+                const tile2ExpectedToString = "TilePosition: TP2, On Face: 1, Contains Tile: [null], In Orientation: 0, Joins: ";
                 expect(tilePosition2.toString()).to.equal(tile2ExpectedToString);
             });
         });
@@ -171,16 +172,16 @@ describe("TilePosition behaviour", function () {
         context("and the Position is empty", function () {
             const tilePosition = new TilePosition("TP", "1");
             const result = tilePosition.placeTile(TILE_1);
-            it("should be placed", function () {
-                expect(tilePosition.tile).to.equal(TILE_1);
-            });
-            it("should not return null", function () {
-                expect(result).to.not.be.null;
-            });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
+            });
+            it("with the Tile placed", function () {
                 expect(result.tile).to.equal(TILE_1);
             });
+            it("in it's initial orientation", function () {
+                const expectedTileSegments = TILE_1.getSegments(Side.SideA, Side.SideB, Side.SideC);
+                expect(result.getOrientatedSegments()).to.equal(expectedTileSegments);
+            })
         });
 
         context("and the Position is already occupied by a Tile", function () {
@@ -193,6 +194,55 @@ describe("TilePosition behaviour", function () {
             });
             it("should not be placed", function () {
                 expect(tilePosition.tile).to.equal(TILE_1);
+            });
+        });
+
+    });
+
+    describe("if #nextOrientation() is called on a Position", function () {
+
+        context("with a newly placed Tile", function () {
+            const tilePosition = new TilePosition("TP", "1");
+            tilePosition.placeTile(TILE_1);
+            tilePosition.nextOrientation();
+            it("should update to the next orientation", function () {
+                const expectedTileSegments = TILE_1.getSegments(Side.SideC, Side.SideA, Side.SideB);
+                expect(tilePosition.getOrientatedSegments()).to.equal(expectedTileSegments);
+            });
+        });
+
+        context("and the Position has already had the Orientation changed twice", function () {
+            const tilePosition = new TilePosition("TP", "1");
+            tilePosition.placeTile(TILE_1);
+            tilePosition.nextOrientation();
+            tilePosition.nextOrientation();
+            tilePosition.nextOrientation();
+            it("should update to the initial orientation", function () {
+                const expectedTileSegments = TILE_1.getSegments(Side.SideA, Side.SideB, Side.SideC);
+                expect(tilePosition.getOrientatedSegments()).to.equal(expectedTileSegments);
+            });
+        });
+
+    });
+
+    describe("if #getOrientatedSegments() is called to get the orientated segment codings", function () {
+
+        context("with a newly placed Tile", function () {
+            const tilePosition = new TilePosition("TP", "1");
+            tilePosition.placeTile(TILE_2);
+            it("should return the segments in their initial orientation", function () {
+                const expectedTileSegments = TILE_2.getSegments(Side.SideA, Side.SideB, Side.SideC);
+                expect(tilePosition.getOrientatedSegments()).to.equal(expectedTileSegments);
+            });
+        });
+
+        context("and the Position has already had the Orientation changed once", function () {
+            const tilePosition = new TilePosition("TP", "1");
+            tilePosition.placeTile(TILE_2);
+            tilePosition.nextOrientation();
+            it("should return the segments rotated once", function () {
+                const expectedTileSegments = TILE_2.getSegments(Side.SideC, Side.SideA, Side.SideB);
+                expect(tilePosition.getOrientatedSegments()).to.equal(expectedTileSegments);
             });
         });
 

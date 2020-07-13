@@ -23,9 +23,9 @@ function attachRotateEvents(puzzleDisplay: HTMLElement, tetrahedron: Tetrahedron
                 svgGroup.addEventListener("click", (e) => {
                     // @ts-ignore
                     const tileSvg = <HTMLElement>e.currentTarget!;
-                    const tile = tetrahedron.getFace(tpId[1]).getTileAtPosition(tpId[2]);
-                    if (tile) {
-                        tile.nextOrientation();
+                    const tilePosition = tetrahedron.getFace(tpId[1]).getTilePosition(tpId[2]);
+                    if (!tilePosition.isEmpty()) {
+                        tilePosition.nextOrientation();
                         displayManager.rotateTile(tileSvg);
                     }
                 });
@@ -78,7 +78,7 @@ function orientateTile(tilePosition: TilePosition): TilePosition {
             return tilePosition;
         case "Random":
             for (let i = getRandomInt(3); i > 0; --i) {
-                tilePosition.tile.nextOrientation();
+                tilePosition.nextOrientation();
             }
             return tilePosition;
         default:

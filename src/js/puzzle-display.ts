@@ -1,7 +1,6 @@
 import { CenterPointData, FaceDisplayData, DisplayData } from "./puzzle-display-schema"
 import { Face } from "./face";
 import { Tetrahedron } from "./tetrahedron";
-import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
@@ -44,14 +43,15 @@ export class DisplayManager {
             .stroke(stroke);
     }
 
-    private drawTile(tile: Tile, tpCenter: CenterPointData): G {
+    private drawTile(tilePosition: TilePosition, tpCenter: CenterPointData): G {
         // Group the elements which make up a tile position.
-        const tGroup = this._draw.group().id("tile" + tile.id);
+        const tGroup = this._draw.group().id("tile" + tilePosition.tile.id);
         // Draw a white tile.
         this.drawTriangle(tGroup, tpCenter, this._scaleTile, '#ffffff', {width: 0.2, color: '#000000'});
         // Draw the red segments.
-        for (let segN = 0; segN < tile.segments.length; segN++) {
-            if (tile.segments.charAt(segN) === '1') {
+        const orientatedSegments = tilePosition.getOrientatedSegments();
+        for (let segN = 0; segN < orientatedSegments.length; segN++) {
+            if (orientatedSegments.charAt(segN) === '1') {
                 tGroup.polygon(this.scaleSegment(segN, tpCenter, this._scaleTile))
                     .fill('#ff0000')
                     .stroke('none');
@@ -79,7 +79,7 @@ export class DisplayManager {
             this.drawTriangle(tpGroup, tpCenter, this._scaleTile, '#C0C0C0', {width: 0.4, color: '#000000'});
         } else {
             tpGroup.add(
-                this.drawTile(tilePosition.tile, tpCenter)
+                this.drawTile(tilePosition, tpCenter)
             );
         }
     }
@@ -145,7 +145,7 @@ export class DisplayManager {
         const tpCenter = tpGroup.dom.tpCenter;
         tpGroup.clear();
         // Draw the new tile at the starting position.
-        const newTile = this.drawTile(tilePosition.tile, this._ntCenter);
+        const newTile = this.drawTile(tilePosition, this._ntCenter);
         // Animate the tile moving into position.
         const matrix = new Matrix()
             .translate(tpCenter.x - this._ntCenter.x, tpCenter.y - this._ntCenter.y)

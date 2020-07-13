@@ -1,6 +1,6 @@
-import { Tile } from "./tile";
-import { IntegrityCheckResult } from "./common-data-schema";
-import { Side, SIDES } from "./side";
+import {Tile} from "./tile";
+import {IntegrityCheckResult} from "./common-data-schema";
+import {Side, SIDES} from "./side";
 
 
 interface TilePositionJoinProperties {
@@ -11,8 +11,15 @@ interface TilePositionJoinProperties {
 
 export class TilePosition {
 
+    private static readonly TILE_ORIENTATION = [
+        new Map<Side, Side>([[Side.SideA, Side.SideA], [Side.SideB, Side.SideB], [Side.SideC, Side.SideC]]),
+        new Map<Side, Side>([[Side.SideA, Side.SideC], [Side.SideB, Side.SideA], [Side.SideC, Side.SideB]]),
+        new Map<Side, Side>([[Side.SideA, Side.SideB], [Side.SideB, Side.SideC], [Side.SideC, Side.SideA]])
+    ];
+
     private _joins = new Map<Side, TilePositionJoinProperties>();
     private _tile: Tile | null = null;
+    private _tileOrientation: number = 0;
 
     constructor(private _name: string, private _onFace: string) {}
 
@@ -22,13 +29,6 @@ export class TilePosition {
             return [true, "Passed"];
         }
         return [false, `Tile position joins not complete: ${this.toString()}`];
-    }
-
-    toString(): string {
-        let tileString = `TilePosition: ${this._name}, On Face: ${this._onFace}, Contains Tile: [${this._tile}], Joins: `;
-        this._joins.forEach((join, side) =>
-            tileString += `(${this._name}-${side}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide})`);
-        return tileString;
     }
 
     get id(): string {
@@ -44,6 +44,14 @@ export class TilePosition {
             throw new Error("Can't fetch a Tile when there isn't one!");
         }
         return this._tile;
+    }
+
+    toString(): string {
+        let tileString = `TilePosition: ${this._name}, On Face: ${this._onFace}, ` +
+            `Contains Tile: [${this._tile}], In Orientation: ${this._tileOrientation}, Joins: `;
+        this._joins.forEach((join, side) =>
+            tileString += `(${this._name}-${side}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide})`);
+        return tileString;
     }
 
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition) : void {
@@ -72,8 +80,24 @@ export class TilePosition {
         if (!this.isEmpty()) {
             throw new Error("Can't place a Tile when the position is already filled!");
         }
-        this._tile = tile.place();
+        this._tile = tile;
+        this._tileOrientation = 0;
         return this;
+    }
+
+    nextOrientation(): void {
+        this._tileOrientation = ++this._tileOrientation % TilePosition.TILE_ORIENTATION.length;
+    }
+
+    private mapOrientationToTile(mapFrom: Side): Side {
+        return TilePosition.TILE_ORIENTATION[this._tileOrientation].get(mapFrom)!;
+    }
+
+    getOrientatedSegments(): string {
+        return this.tile.getSegments(
+            this.mapOrientationToTile(Side.SideA),
+            this.mapOrientationToTile(Side.SideB),
+            this.mapOrientationToTile(Side.SideC));
     }
 
     removeTile(): boolean {
@@ -90,8 +114,10 @@ export class TilePosition {
         }
         for (const join of this._joins.entries()) {
             if (!join[1].ofTilePosition.isEmpty()) {
-                const thisSegment = this.tile.getSideSegements(join[0]);
-                const thatSegment = join[1].ofTilePosition.tile.getSideSegementsToMatchWith(join[1].toSide);
+                const mapThisSide = this.mapOrientationToTile(join[0]);
+                const thisSegment = this.tile.getSideSegments(mapThisSide);
+                const mapThatSide = this.mapOrientationToTile(join[1].toSide);
+                const thatSegment = join[1].ofTilePosition.tile.getSideSegmentsToMatchWith(mapThatSide);
                 if (thisSegment !== thatSegment) {
                     return false;
                 }
