@@ -50,7 +50,7 @@
           </div>
         </li>
         <li>
-          <p>Option</p>
+          <p>Option:</p>
         </li>
         <li>
           <div class="selector">
@@ -63,7 +63,7 @@
       </ul>
       <ul id="solve-puzzle" class="hide-item">
         <li>
-          <p>Algorithm</p>
+          <p>Algorithm:</p>
         </li>
         <li>
           <div class="selector">
@@ -74,14 +74,14 @@
           </div>
         </li>
         <li>
-          <p>Display</p>
+          <p>Display:</p>
         </li>
         <li>
           <div class="selector">
-            <input type="radio" id="display-final" name="display" value="Final" checked>
-            <label for="display-final">Final Result</label>
-            <input type="radio" id="display-progress" name="display" value="Progress">
-            <label for="display-progress">Progress</label>
+            <input type="radio" id="display-completed" name="algorithm-display" value="Completed" checked>
+            <label for="display-completed">Completed Puzzle</label>
+            <input type="radio" id="display-progress" name="algorithm-display" value="Progress">
+            <label for="display-progress">Puzzle in Progress</label>
           </div>
         </li>
       </ul>
@@ -137,6 +137,10 @@
     </svg>
   </div>
 
+</div>
+
+<div id="overlay">
+  <p>Solving puzzle... Click to cancel.</p>
 </div>
 
 <script src="./js/app.ts"></script>

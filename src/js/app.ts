@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime'
 import { testPuzzle } from "./test-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
@@ -133,8 +134,72 @@ function testDisplay(): void {
     }, 1000);
 }
 
+function completePuzzle(): void {
+    // Define completion flag and cancel trigger.
+    let finished = false;
+    let cancel: () => void;
+    // Create the promise to solve the puzzle.
+    new Promise((resolve, reject) => {
+        // Set the overlay to prevent further UI interaction then start the solving process.
+        overlayOn();
+        let solving = 0;
+        const id = setInterval(() => {
+            solving++;
+            console.log("Solving: " + solving);
+            if (solving === 5) {
+                console.log("Solved!");
+                clearInterval(id);
+                resolve();
+            }
+        }, 1000);
+        // Triggering the cancel.
+        cancel = (): void => {
+            // If already completed no need to cancel.
+            if (finished) {
+                return;
+            }
+            // Process the cancel.
+            console.log("Cancelling...");
+            clearInterval(id);
+            reject();
+        }
+        // If cancelled before promise is started.
+        if (finished) {
+            cancel();
+        }
+    })
+        // Always set 'finished', so further cancelling has no effect, and remove the overlay.
+        // Note: Can't use finally here as we have targeted ES2016.
+        .then((resolvedValue) => {
+            finished = true;
+            overlayOff();
+            return resolvedValue;
+        })
+        .catch((err) => {
+            finished = true;
+            overlayOff();
+            return err;
+        });
+    // Attach cancel trigger to required element.
+    document.getElementById("overlay")!.addEventListener("click", () => cancel());
+}
+
+function startPuzzle() {
+    alert("Display puzzle as solution progresses.");
+}
+
 function doPuzzle(): void {
-    alert("Work to solve puzzle!");
+    const display = getSelector("algorithm-display");
+    switch (display) {
+        case "Completed":
+            completePuzzle();
+            break;
+        case "Progress":
+            startPuzzle();
+            break;
+        default:
+            throw new Error("Invalid algorithm display option!");
+    }
 }
 
 function mainOptions(): void {
@@ -167,6 +232,14 @@ function swapOptions(): void {
         default:
             throw new Error("Invalid main option!");
     }
+}
+
+function overlayOn() {
+    document.getElementById("overlay")!.style.display = "block";
+}
+
+function overlayOff() {
+    document.getElementById("overlay")!.style.display = "none";
 }
 
 document.getElementById("option-test")!.addEventListener("click", () => swapOptions());
