@@ -1,6 +1,6 @@
-import { getSelector, getPuzzleType, getTileSelection, placeTile, createSolverPromise } from "./app-options";
+import { getSelector, getPuzzleTypeData, getTileSelection, placeTile, createSolverPromise } from "./app-options";
+import { getPuzzleComponents } from "./puzzle-loader";
 import { DisplayManager } from "./puzzle-display";
-import { getTetrahedron, getTilePool } from "./puzzle-loader";
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
 
@@ -58,23 +58,22 @@ function testDisplay(): void {
     if (placeTileInterval) {
         clearInterval(placeTileInterval);
     }
-    // Determine the puzzle type.
-    const puzzle = getPuzzleType();
-    // Build internal puzzle representation with tiles waiting to be placed on it.
-    const tetrahedron = getTetrahedron(puzzle.layoutData);
-    const tilePool = getTilePool(puzzle.tileData);
+    // Determine the data required for the puzzle.
+    const puzzleTypeData = getPuzzleTypeData();
+    // Find where we want the puzzle displayed.
+    const puzzleDisplay = <HTMLElement>document.getElementById("puzzle-display")!;
+    // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
+    const puzzle = getPuzzleComponents(puzzleTypeData, puzzleDisplay);
     // Show the initial puzzle state.
-    const puzzleDisplay = <HTMLInputElement>document.getElementById("puzzle-display")!;
-    const displayManager = new DisplayManager(puzzleDisplay, puzzle.displayData);
-    displayManager.displayPuzzle(tetrahedron);
+    puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
     // Complete the test depending on the display.
     const display = getSelector("test-display");
     switch (display) {
         case "Completed":
-            completeTest(tilePool, tetrahedron, displayManager, puzzleDisplay);
+            completeTest(puzzle.tilePool, puzzle.tetrahedron, puzzle.displayManager, puzzleDisplay);
             break;
         case "Animated":
-            animateTest(tilePool, tetrahedron, displayManager, puzzleDisplay);
+            animateTest(puzzle.tilePool, puzzle.tetrahedron, puzzle.displayManager, puzzleDisplay);
             break;
         default:
             throw new Error("Invalid test display option!");
@@ -127,23 +126,22 @@ function completePuzzle(tilePool: TilePool, tetrahedron: Tetrahedron, displayMan
 }
 
 function solvePuzzle(): void {
-    // Determine the puzzle type.
-    const puzzle = getPuzzleType();
-    // Build internal puzzle representation with tiles waiting to be placed on it.
-    const tetrahedron = getTetrahedron(puzzle.layoutData);
-    const tilePool = getTilePool(puzzle.tileData);
+    // Determine the data required for the puzzle.
+    const puzzleTypeData = getPuzzleTypeData();
+    // Find where we want the puzzle displayed.
+    const puzzleDisplay = <HTMLElement>document.getElementById("puzzle-display")!;
+    // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
+    const puzzle = getPuzzleComponents(puzzleTypeData, puzzleDisplay);
     // Show the initial puzzle state.
-    const puzzleDisplay = <HTMLInputElement>document.getElementById("puzzle-display")!;
-    const displayManager = new DisplayManager(puzzleDisplay, puzzle.displayData);
-    displayManager.displayPuzzle(tetrahedron);
+    puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
     // Solve the puzzle depending on the display.
     const display = getSelector("solve-display");
     switch (display) {
         case "Completed":
-            completePuzzle(tilePool, tetrahedron, displayManager, puzzleDisplay);
+            completePuzzle(puzzle.tilePool, puzzle.tetrahedron, puzzle.displayManager, puzzleDisplay);
             break;
         case "Animated":
-            animatePuzzle(tilePool, tetrahedron, displayManager, puzzleDisplay);
+            animatePuzzle(puzzle.tilePool, puzzle.tetrahedron, puzzle.displayManager, puzzleDisplay);
             break;
         default:
             throw new Error("Invalid solve display option!");

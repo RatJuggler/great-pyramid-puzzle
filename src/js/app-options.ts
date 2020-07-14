@@ -1,7 +1,7 @@
 import { testPuzzle } from "./test-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
-import { PuzzleDefinition } from "./common-data-schema";
+import { PuzzleDataElements } from "./common-data-schema";
 import { TilePool } from "./tile-pool";
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
@@ -19,7 +19,7 @@ function getSelector(name: string): string {
     throw new Error("Expected radio option to be selected!");
 }
 
-function getPuzzleType(): PuzzleDefinition {
+function getPuzzleTypeData(): PuzzleDataElements {
     const puzzleType = getSelector("puzzle-type");
     switch (puzzleType) {
         case "Test":
@@ -122,4 +122,4 @@ function createSolverPromise(solver: (id: number, resolve: () => void, tetrahedr
     return { promise, cancel }
 }
 
-export { getSelector, getPuzzleType, getTileSelection, placeTile, createSolverPromise }
+export { getSelector, getPuzzleTypeData, getTileSelection, placeTile, createSolverPromise }

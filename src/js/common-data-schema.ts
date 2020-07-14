@@ -1,18 +1,27 @@
-import {LayoutData} from "./layout-data-schema";
-import {TileData} from "./tile-data-schema";
-import {DisplayData} from "./puzzle-display-schema";
+import { LayoutData } from "./layout-data-schema";
+import { TileData } from "./tile-data-schema";
+import { DisplayData } from "./puzzle-display-schema";
+import { TilePool } from "./tile-pool";
+import { Tetrahedron } from "./tetrahedron";
+import { DisplayManager } from "./puzzle-display";
 
-// Data structure common to both puzzle layout and tile definitions.
+// Interface/types used across the application.
 
 
-interface PuzzleDefinition {
+interface PuzzleDataElements {
     readonly layoutData: LayoutData,
     readonly tileData: TileData,
     readonly displayData: DisplayData
+}
 
+interface PuzzleComponents {
+    readonly tilePool: TilePool,
+    readonly tetrahedron: Tetrahedron,
+    readonly displayManager: DisplayManager,
+    readonly puzzleDisplay: HTMLElement
 }
 
 type IntegrityCheckResult = [boolean, string];
 
 
-export { PuzzleDefinition, IntegrityCheckResult }
+export { PuzzleDataElements, PuzzleComponents, IntegrityCheckResult }
