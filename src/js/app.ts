@@ -43,6 +43,7 @@ function animateTest(tilePool: TilePool, tetrahedron: Tetrahedron, displayManage
 }
 
 function completeTest(tilePool: TilePool, tetrahedron: Tetrahedron, displayManager: DisplayManager, puzzleDisplay: HTMLElement): void {
+    // Place the tiles using the options selected, without matching this will be very fast.
     let tile = getTileSelection(tilePool);
     while (tile) {
         placeTile(tile, tetrahedron);
@@ -76,11 +77,26 @@ function testDisplay(): void {
             animateTest(tilePool, tetrahedron, displayManager, puzzleDisplay);
             break;
         default:
-            throw new Error("Invalid solve display option!");
+            throw new Error("Invalid test display option!");
     }
 }
 
-function solvePuzzle(id: number, resolve: () => void, tetrahedron: Tetrahedron, tilePool: TilePool): void {
+function animatePuzzle(tilePool: TilePool, tetrahedron: Tetrahedron, displayManager: DisplayManager, puzzleDisplay: HTMLElement): void {
+    // Schedule a series of events to place tiles on the puzzle.
+    placeTileInterval = setInterval( () => {
+        const tile = tilePool.nextTile;
+        if (tile) {
+            const tilePlacedPosition = tetrahedron.placeTileSequentially(tile);
+            displayManager.redrawTilePosition(tilePlacedPosition!, puzzleDisplay);
+        } else {
+            clearInterval(placeTileInterval);
+            placeTileInterval = 0;
+            attachRotateEvents(puzzleDisplay, tetrahedron, displayManager);
+        }
+    }, 1000);
+}
+
+function doPuzzleSolver(id: number, resolve: () => void, tetrahedron: Tetrahedron, tilePool: TilePool): void {
     const tile = tilePool.nextTile;
     if (tile) {
         tetrahedron.placeTileSequentially(tile);
@@ -90,23 +106,15 @@ function solvePuzzle(id: number, resolve: () => void, tetrahedron: Tetrahedron, 
     }
 }
 
-function completePuzzle(): void {
+function completePuzzle(tilePool: TilePool, tetrahedron: Tetrahedron, displayManager: DisplayManager, puzzleDisplay: HTMLElement): void {
     // Set the overlay to prevent further UI interaction.
     showElement("overlay");
-    // Determine the puzzle type.
-    const puzzle = getPuzzleType();
-    // Build internal puzzle representation with tiles waiting to be placed on it.
-    const tetrahedron = getTetrahedron(puzzle.layoutData);
-    const tilePool = getTilePool(puzzle.tileData);
-    // Show the initial puzzle state.
-    const puzzleDisplay = <HTMLInputElement>document.getElementById("puzzle-display")!;
-    const displayManager = new DisplayManager(puzzleDisplay, puzzle.displayData);
-    displayManager.displayPuzzle(tetrahedron);
     // Start the solving process.
-    const solver = createSolverPromise(solvePuzzle, tetrahedron, tilePool);
+    const solver = createSolverPromise(doPuzzleSolver, tetrahedron, tilePool);
     solver.promise.then((resolvedValue) => {
-        // Show the final puzzle state.
+        // Show the final puzzle state and attach the rotate events.
         displayManager.displayPuzzle(tetrahedron);
+        attachRotateEvents(puzzleDisplay, tetrahedron, displayManager);
         // Remove the overlay.
         hideElement("overlay");
         return resolvedValue;
@@ -118,18 +126,24 @@ function completePuzzle(): void {
     document.getElementById("overlay")!.addEventListener("click", () => solver.cancel());
 }
 
-function startPuzzle() {
-    alert("Display puzzle as solution progresses.");
-}
-
-function doPuzzle(): void {
+function solvePuzzle(): void {
+    // Determine the puzzle type.
+    const puzzle = getPuzzleType();
+    // Build internal puzzle representation with tiles waiting to be placed on it.
+    const tetrahedron = getTetrahedron(puzzle.layoutData);
+    const tilePool = getTilePool(puzzle.tileData);
+    // Show the initial puzzle state.
+    const puzzleDisplay = <HTMLInputElement>document.getElementById("puzzle-display")!;
+    const displayManager = new DisplayManager(puzzleDisplay, puzzle.displayData);
+    displayManager.displayPuzzle(tetrahedron);
+    // Solve the puzzle depending on the display.
     const display = getSelector("solve-display");
     switch (display) {
         case "Completed":
-            completePuzzle();
+            completePuzzle(tilePool, tetrahedron, displayManager, puzzleDisplay);
             break;
         case "Animated":
-            startPuzzle();
+            animatePuzzle(tilePool, tetrahedron, displayManager, puzzleDisplay);
             break;
         default:
             throw new Error("Invalid solve display option!");
@@ -143,7 +157,7 @@ function mainOptions(): void {
             testDisplay();
             break;
         case "Solve":
-            doPuzzle();
+            solvePuzzle();
             break;
         default:
             throw new Error("Invalid main option!");
