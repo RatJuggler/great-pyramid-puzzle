@@ -53,6 +53,7 @@ export class DisplayManager {
         for (let segN = 0; segN < segments.length; segN++) {
             if (segments.charAt(segN) === '1') {
                 tGroup.polygon(this.scaleSegment(segN, tpCenter, this._scaleTile))
+                    .rotate(tpCenter.r, tpCenter.x, tpCenter.y)
                     .fill('#ff0000')
                     .stroke('none');
             }
