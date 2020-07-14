@@ -54,23 +54,16 @@ function testDisplay(): void {
     }, 1000);
 }
 
-function completePuzzle(): void {
+function createPromise(solver: (id: number, resolve: () => void, solving: number) => void, solving: number): { cancel: () => void; promise: Promise<unknown> } {
     // Define completion flag and cancel trigger.
     let finished = false;
-    let cancel: () => void;
+    let cancel = (): void => {
+        finished = true;
+    }
     // Create the promise to solve the puzzle.
-    new Promise((resolve, reject) => {
-        // Set the overlay to prevent further UI interaction then start the solving process.
-        showElement("overlay");
-        let solving = 0;
+    const promise = new Promise((resolve, reject) => {
         const id = setInterval(() => {
-            solving++;
-            console.log("Solving: " + solving);
-            if (solving === 5) {
-                console.log("Solved!");
-                clearInterval(id);
-                resolve();
-            }
+            solver(id, resolve, solving);
         }, 1000);
         // Triggering the cancel.
         cancel = (): void => {
@@ -88,20 +81,43 @@ function completePuzzle(): void {
             cancel();
         }
     })
-        // Always set 'finished', so further cancelling has no effect, and remove the overlay.
+        // Always set 'finished', so further cancelling has no effect.
         // Note: Can't use finally here as we have targeted ES2016.
         .then((resolvedValue) => {
             finished = true;
-            hideElement("overlay");
             return resolvedValue;
         })
         .catch((err) => {
             finished = true;
-            hideElement("overlay");
             return err;
         });
+    return { promise, cancel }
+}
+
+function solvePuzzle(id: number, resolve: () => void, solving: number): void {
+    solving++;
+    console.log("Solving: " + solving);
+    if (solving === 5) {
+        console.log("Solved!");
+        clearInterval(id);
+        resolve();
+    }
+}
+
+function completePuzzle(): void {
+    // Set the overlay to prevent further UI interaction then start the solving process.
+    showElement("overlay");
+    let solving = 0;
+    const solver = createPromise(solvePuzzle, solving);
+    solver.promise.then((resolvedValue) => {
+        hideElement("overlay");
+        return resolvedValue;
+    }).catch((err) => {
+        hideElement("overlay");
+        return err;
+    });
     // Attach cancel trigger to required element.
-    document.getElementById("overlay")!.addEventListener("click", () => cancel());
+    document.getElementById("overlay")!.addEventListener("click", () => solver.cancel());
 }
 
 function startPuzzle() {
