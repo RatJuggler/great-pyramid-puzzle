@@ -149,7 +149,7 @@ function solvePuzzle(): void {
 }
 
 function mainOptions(): void {
-    const mainOption = getSelector("option");
+    const mainOption = getSelector("puzzle-option");
     switch (mainOption) {
         case "Test":
             testDisplay();
@@ -158,12 +158,12 @@ function mainOptions(): void {
             solvePuzzle();
             break;
         default:
-            throw new Error("Invalid main option!");
+            throw new Error("Invalid puzzle option!");
     }
 }
 
 function swapOptions(): void {
-    const mainOption = getSelector("option");
+    const mainOption = getSelector("puzzle-option");
     switch (mainOption) {
         case "Test":
             hideElement("solve-puzzle");
@@ -174,7 +174,7 @@ function swapOptions(): void {
             hideElement("test-puzzle");
             break;
         default:
-            throw new Error("Invalid main option!");
+            throw new Error("Invalid puzzle option!");
     }
 }
 
@@ -189,4 +189,28 @@ function hideElement(id: string): void {
 swapOptions();
 document.getElementById("option-test")!.addEventListener("click", () => swapOptions());
 document.getElementById("option-solve")!.addEventListener("click", () => swapOptions());
+
+function addStatusInfoEvent(id: string, statusInfo: string) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.addEventListener("mouseenter", () => {
+            document.getElementById("show-info")!.innerText = statusInfo;
+        });
+    }
+}
+
+addStatusInfoEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
+addStatusInfoEvent("puzzle-option", "Select to try the various test display options or to try and solve the puzzle.");
+addStatusInfoEvent("solve-display", "Display the solved puzzle as soon as possible or show an animation of the solving process.");
+addStatusInfoEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
+addStatusInfoEvent("test-display", "Display the test layout immediately or show an animation of the layout process.");
+addStatusInfoEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
+addStatusInfoEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
+addStatusInfoEvent("tile-rotation", "If tiles are randomly rotated before being placed on the test display.");
+addStatusInfoEvent("go", "Proceed with the selected options.");
+
+document.getElementById("puzzle-options")!.addEventListener("mouseleave", () => {
+    document.getElementById("show-info")!.innerText = "";
+});
+
 document.getElementById("go")!.addEventListener("click", () => mainOptions());
