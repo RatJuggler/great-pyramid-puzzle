@@ -135,6 +135,7 @@ export class DisplayManager {
         });
         // New tile area group must be created last.
         const ntGroup = this._draw.group().id("newtile");
+        ntGroup.element('title').words("Next tile to be placed.");
         this.drawTriangle(ntGroup, this._ntCenter, this._scaleTile, '#DCDCDC', {width: 0.4, color: '#000000'});
         return this._draw;
     }
