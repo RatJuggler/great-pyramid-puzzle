@@ -19,10 +19,6 @@ html, body {
   height: 100%;
 }
 
-.hide-item {
-  display: none;
-}
-
 #puzzle-selection {
   padding-top: 10%;
 }

@@ -61,7 +61,7 @@ function completePuzzle(): void {
     // Create the promise to solve the puzzle.
     new Promise((resolve, reject) => {
         // Set the overlay to prevent further UI interaction then start the solving process.
-        overlayOn();
+        showElement("overlay");
         let solving = 0;
         const id = setInterval(() => {
             solving++;
@@ -92,12 +92,12 @@ function completePuzzle(): void {
         // Note: Can't use finally here as we have targeted ES2016.
         .then((resolvedValue) => {
             finished = true;
-            overlayOff();
+            hideElement("overlay");
             return resolvedValue;
         })
         .catch((err) => {
             finished = true;
-            overlayOff();
+            hideElement("overlay");
             return err;
         });
     // Attach cancel trigger to required element.
@@ -138,30 +138,29 @@ function mainOptions(): void {
 
 function swapOptions(): void {
     const mainOption = getSelector("option");
-    const solvePuzzle = <HTMLElement>document.getElementById("solve-puzzle")!;
-    const testDisplay = <HTMLElement>document.getElementById("test-display")!;
     switch (mainOption) {
         case "Test":
-            solvePuzzle.classList.add("hide-item");
-            testDisplay.classList.remove("hide-item");
+            hideElement("solve-puzzle");
+            showElement("test-display");
             break;
         case "Solve":
-            solvePuzzle.classList.remove("hide-item");
-            testDisplay.classList.add("hide-item");
+            showElement("solve-puzzle");
+            hideElement("test-display");
             break;
         default:
             throw new Error("Invalid main option!");
     }
 }
 
-function overlayOn() {
-    document.getElementById("overlay")!.style.display = "block";
+function showElement(id: string): void {
+    document.getElementById(id)!.style.display = "block";
 }
 
-function overlayOff() {
-    document.getElementById("overlay")!.style.display = "none";
+function hideElement(id: string): void {
+    document.getElementById(id)!.style.display = "none";
 }
 
+swapOptions();
 document.getElementById("option-test")!.addEventListener("click", () => swapOptions());
 document.getElementById("option-solve")!.addEventListener("click", () => swapOptions());
 document.getElementById("go")!.addEventListener("click", () => mainOptions());
