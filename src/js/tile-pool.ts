@@ -5,7 +5,7 @@ import { getRandomInt } from "./utils";
 
 export class TilePool {
 
-    // Static tile used testing tile orientation display.
+    // Static tile used to test the tile orientation display.
     private static readonly TEST_TILE = new Tile({
         tile: 0,
         sideA: "1000",
@@ -54,6 +54,7 @@ export class TilePool {
         if (this._tiles.size === 0) {
             return null;
         }
+        // Sort keys in ascending numerical order.
         const keys = Array.from(this._tiles.keys()).sort((a: number, b: number) => a - b);
         return this.getTile(keys[0]);
     }
@@ -76,4 +77,5 @@ export class TilePool {
         // Always return the same test tile.
         return TilePool.TEST_TILE;
     }
+
 }
