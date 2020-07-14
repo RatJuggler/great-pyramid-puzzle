@@ -68,7 +68,14 @@ html, body {
 
 .selector input[type=radio]:checked + label {
   color: #E6E6E6;
-  background: #675f6b;
+  background-color: #675f6b;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 3;
 }
 
 #overlay {
