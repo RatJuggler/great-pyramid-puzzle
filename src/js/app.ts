@@ -202,7 +202,7 @@ function addStatusInfoEvent(id: string, statusInfo: string) {
 addStatusInfoEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
 addStatusInfoEvent("puzzle-option", "Select to try the various test display options or to try and solve the puzzle.");
 addStatusInfoEvent("solve-display", "Display the solved puzzle as soon as possible or show an animation of the solving process.");
-addStatusInfoEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
+addStatusInfoEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle. NOTE: DOES NOT CURRENTLY SOLVE THE PUZZLE!");
 addStatusInfoEvent("test-display", "Display the test layout immediately or show an animation of the layout process.");
 addStatusInfoEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
 addStatusInfoEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
