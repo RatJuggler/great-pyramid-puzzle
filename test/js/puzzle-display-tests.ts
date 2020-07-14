@@ -1,8 +1,8 @@
 import valid_layout_data1 from "../valid-test-layout-data1.json";
 import valid_tile_data1 from "../valid-test-tile-data1.json";
 import valid_display1 from "../valid-test-display-data1.json";
-import { getTetrahedron, getTilePool } from "../../src/js/puzzle-loader";
-import { DisplayManager } from "../../src/js/puzzle-display";
+import { PuzzleDataElements } from "../../src/js/common-data-schema";
+import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -13,15 +13,20 @@ import { registerWindow } from "@svgdotjs/svg.js";
 
 describe("Puzzle display functionality", function () {
 
+    const puzzleTypeData: PuzzleDataElements = {
+        layoutData: valid_layout_data1.testLayoutData,
+        tileData: valid_tile_data1.testTileData,
+        displayData: valid_display1
+    }
+
     describe("displaying the test puzzle", function () {
 
         context("without any tiles on it", function () {
             const window = createSVGWindow();
             const document = window.document;
             registerWindow(window, document);
-            const tetrahedron = getTetrahedron(valid_layout_data1.testLayoutData);
-            const displayManager = new DisplayManager(document.documentElement, valid_display1);
-            const canvas = displayManager.displayPuzzle(tetrahedron);
+            const puzzle = getPuzzleComponents(puzzleTypeData, document.documentElement)
+            const canvas = puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
             console.log(canvas.svg());
             it("should have 4 faces, 4 empty tile positions and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(9);
@@ -35,14 +40,12 @@ describe("Puzzle display functionality", function () {
             const window = createSVGWindow();
             const document = window.document;
             registerWindow(window, document);
-            const tetrahedron = getTetrahedron(valid_layout_data1.testLayoutData);
-            const displayManager = new DisplayManager(document.documentElement, valid_display1);
-            const tilePool = getTilePool(valid_tile_data1.testTileData);
-            const tile1 = tilePool.randomTile!;
-            assert.isNotNull(tetrahedron.placeTileRandomly(tile1));
-            const tile2 = tilePool.randomTile!;
-            assert.isNotNull(tetrahedron.placeTileRandomly(tile2));
-            const canvas = displayManager.displayPuzzle(tetrahedron);
+            const puzzle = getPuzzleComponents(puzzleTypeData, document.documentElement)
+            const tile1 = puzzle.tilePool.randomTile!;
+            assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile1));
+            const tile2 = puzzle.tilePool.randomTile!;
+            assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile2));
+            const canvas = puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
             console.log(canvas.svg());
             it("should have 4 faces, 2 empty tile positions, 2 tile positions with tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(11);
@@ -56,15 +59,13 @@ describe("Puzzle display functionality", function () {
             const window = createSVGWindow();
             const document = window.document;
             registerWindow(window, document);
-            const tetrahedron = getTetrahedron(valid_layout_data1.testLayoutData);
-            const displayManager = new DisplayManager(document.documentElement, valid_display1);
-            const tilePool = getTilePool(valid_tile_data1.testTileData);
-            let tile = tilePool.randomTile;
+            const puzzle = getPuzzleComponents(puzzleTypeData, document.documentElement)
+            let tile = puzzle.tilePool.randomTile;
             while (tile) {
-                assert.isNotNull(tetrahedron.placeTileRandomly(tile));
-                tile = tilePool.randomTile;
+                assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile));
+                tile = puzzle.tilePool.randomTile;
             }
-            const canvas = displayManager.displayPuzzle(tetrahedron);
+            const canvas = puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
             console.log(canvas.svg());
             it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(13);
