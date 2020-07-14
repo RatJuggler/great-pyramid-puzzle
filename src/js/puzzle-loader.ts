@@ -20,16 +20,16 @@ function getTetrahedron(layoutData: LayoutData): Tetrahedron {
     return tetrahedron;
 }
 
-function getDisplayManager(puzzleDisplay: HTMLElement, displayData: DisplayData) {
-    return new DisplayManager(puzzleDisplay, displayData);
+function getDisplayManager(displayElement: HTMLElement, displayData: DisplayData) {
+    return new DisplayManager(displayElement, displayData);
 }
 
-function getPuzzleComponents(puzzleTypeData: PuzzleDataElements, puzzleDisplay: HTMLElement): PuzzleComponents {
+function getPuzzleComponents(puzzleTypeData: PuzzleDataElements, displayElement: HTMLElement): PuzzleComponents {
     return {
         tilePool: getTilePool(puzzleTypeData.tileData),
         tetrahedron: getTetrahedron(puzzleTypeData.layoutData),
-        puzzleDisplay: puzzleDisplay,
-        displayManager: getDisplayManager(puzzleDisplay, puzzleTypeData.displayData)
+        displayElement: displayElement,
+        displayManager: getDisplayManager(displayElement, puzzleTypeData.displayData)
     }
 }
 

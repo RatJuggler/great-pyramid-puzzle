@@ -10,7 +10,7 @@ let placeTileInterval: number;
 
 
 function attachRotateEvents(puzzle: PuzzleComponents): void {
-    puzzle.puzzleDisplay.querySelectorAll("g")
+    puzzle.displayElement.querySelectorAll("g")
         .forEach(function (svgGroup) {
             const tpId = svgGroup.id.match(/^([1-4])-([1-9])$/);
             if (tpId) {
@@ -33,7 +33,7 @@ function animateTest(puzzle: PuzzleComponents): void {
         const tile = getTileSelection(puzzle.tilePool);
         if (tile) {
             const tilePlacedPosition = placeTile(tile, puzzle.tetrahedron);
-            puzzle.displayManager.redrawTilePosition(tilePlacedPosition, puzzle.puzzleDisplay);
+            puzzle.displayManager.redrawTilePosition(tilePlacedPosition, puzzle.displayElement);
         } else {
             clearInterval(placeTileInterval);
             placeTileInterval = 0;
@@ -61,9 +61,9 @@ function testDisplay(): void {
     // Determine the data required for the puzzle.
     const puzzleTypeData = getPuzzleTypeData();
     // Find where we want the puzzle displayed.
-    const puzzleDisplay = <HTMLElement>document.getElementById("puzzle-display")!;
+    const displayElement = <HTMLElement>document.getElementById("puzzle-display")!;
     // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
-    const puzzle = getPuzzleComponents(puzzleTypeData, puzzleDisplay);
+    const puzzle = getPuzzleComponents(puzzleTypeData, displayElement);
     // Show the initial puzzle state.
     puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
     // Complete the test depending on the display.
@@ -86,7 +86,7 @@ function animatePuzzle(puzzle: PuzzleComponents): void {
         const tile = puzzle.tilePool.nextTile;
         if (tile) {
             const tilePlacedPosition = puzzle.tetrahedron.placeTileSequentially(tile);
-            puzzle.displayManager.redrawTilePosition(tilePlacedPosition!, puzzle.puzzleDisplay);
+            puzzle.displayManager.redrawTilePosition(tilePlacedPosition!, puzzle.displayElement);
         } else {
             clearInterval(placeTileInterval);
             placeTileInterval = 0;
@@ -129,9 +129,9 @@ function solvePuzzle(): void {
     // Determine the data required for the puzzle.
     const puzzleTypeData = getPuzzleTypeData();
     // Find where we want the puzzle displayed.
-    const puzzleDisplay = <HTMLElement>document.getElementById("puzzle-display")!;
+    const displayElement = <HTMLElement>document.getElementById("puzzle-display")!;
     // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
-    const puzzle = getPuzzleComponents(puzzleTypeData, puzzleDisplay);
+    const puzzle = getPuzzleComponents(puzzleTypeData, displayElement);
     // Show the initial puzzle state.
     puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
     // Solve the puzzle depending on the display.

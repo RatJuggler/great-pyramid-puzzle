@@ -17,8 +17,8 @@ interface PuzzleDataElements {
 interface PuzzleComponents {
     readonly tilePool: TilePool,
     readonly tetrahedron: Tetrahedron,
+    readonly displayElement: HTMLElement
     readonly displayManager: DisplayManager,
-    readonly puzzleDisplay: HTMLElement
 }
 
 type IntegrityCheckResult = [boolean, string];
