@@ -150,22 +150,25 @@ export class DisplayManager {
         const newTile = this.drawTile(tilePosition, this._ntCenter);
         // Animate the tile moving into position.
         const matrix = new Matrix()
-            .translate(tpCenter.x - this._ntCenter.x, tpCenter.y - this._ntCenter.y)
+            .translateO(tpCenter.x - this._ntCenter.x, tpCenter.y - this._ntCenter.y)
             .rotate(tpCenter.r, tpCenter.x, tpCenter.y);
         // @ts-ignore
         newTile.animate({duration: 500}).transform(matrix)
             .after(() => {
-                // Add a description and the tile to this position.
-                DisplayManager.setTPDescription(tpGroup, tilePosition);
-                tpGroup.add(newTile);
+                // Remove the animated tile and redraw the position.
+                newTile.remove();
+                this.drawTilePosition(tpGroup, tilePosition, tpCenter);
             });
     }
 
     rotateTile(tpElement: HTMLElement): void {
+        // Take the tile position element and get the center data.
+        const tpGroup = SVG(tpElement) as G;
+        const tpCenter = tpGroup.dom.tpCenter;
         // Rotate the child tile group.
         const tGroup = SVG(tpElement.children[1]) as G;
         // @ts-ignore
-        tGroup.animate({duration: 1000, ease: "<>"}).rotate(120, this._ntCenter.x, this._ntCenter.y);
+        tGroup.animate({duration: 1000, ease: "<>"}).rotate(120, tpCenter.x, tpCenter.y);
     }
 
 }
