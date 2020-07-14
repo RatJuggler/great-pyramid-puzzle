@@ -30,13 +30,12 @@ html, body {
 #puzzle-selection p {
   margin-top: 12px;
   margin-bottom: 4px;
-  font-size: 150%;
 }
 
 #puzzle-selection .pure-button {
   width: 100%;
   margin: 5px 0;
-  font-size: 150%;
+  font-size: 125%;
 }
 
 .selector {
@@ -58,7 +57,6 @@ html, body {
   color: #000000;
   display: inline-block;
   cursor: pointer;
-  font-size: 125%;
   padding: 10px 10px;
   width: 100%
 }

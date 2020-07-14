@@ -130,11 +130,11 @@ function swapOptions(): void {
     switch (mainOption) {
         case "Test":
             hideElement("solve-puzzle");
-            showElement("test-display");
+            showElement("test-puzzle");
             break;
         case "Solve":
             showElement("solve-puzzle");
-            hideElement("test-display");
+            hideElement("test-puzzle");
             break;
         default:
             throw new Error("Invalid main option!");
