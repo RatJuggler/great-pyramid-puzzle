@@ -1,4 +1,5 @@
-// Interfaces defining the puzzle data structure configuration.
+// Interfaces defining the puzzle layout data structures used in the layout configuration files.
+
 
 interface TilePositionJoinData {
     readonly fromSide: string;

@@ -20,48 +20,84 @@
 
 <body>
 
-<div class="header">
-  <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-    <span class="pure-menu-heading">Solving The Great Pyramid Puzzle</span>
-    <ul class="pure-menu-list">
-      <li class="pure-menu-item pure-menu-selected">
-        <a href="https://github.com/RatJuggler/great-pyramid-puzzle" class="pure-menu-link">Github</a>
-      </li>
-    </ul>
-  </div>
-</div>
+<header class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+  <span class="pure-menu-heading">Solving The Great Pyramid Puzzle</span>
+  <ul class="pure-menu-list">
+    <li class="pure-menu-item pure-menu-selected">
+      <a href="https://github.com/RatJuggler/great-pyramid-puzzle" class="pure-menu-link">Github</a>
+    </li>
+  </ul>
+</header>
 
 <div id="layout" class="pure-g">
 
   <div class="sidebar pure-u-1 pure-u-md-1-5">
-    <div id="puzzle-selection">
-      <ul>
-        <li>
-          <button id="test" class="pure-button">Test - 1 Tile/Side</button>
+    <div id="puzzle-options">
+      <ul id="puzzle-selection">
+        <li id="puzzle-type">
+          <p>Puzzle type:</p>
+          <div class="selector">
+            <input type="radio" id="puzzle-test" name="puzzle-type" value="Test" checked>
+            <label for="puzzle-test">Test - 1 Tile/Side</label>
+            <input type="radio" id="puzzle-pocket" name="puzzle-type" value="Pocket">
+            <label for="puzzle-pocket">Pocket - 4 Tiles/Side</label>
+            <input type="radio" id="puzzle-great" name="puzzle-type" value="Great">
+            <label for="puzzle-great">Great - 9 Tiles/Side</label>
+          </div>
         </li>
-        <li>
-          <button id="pocket" class="pure-button">Pocket - 4 Tiles/Side</button>
+        <li id="puzzle-option">
+          <p>Option:</p>
+          <div class="selector">
+            <input type="radio" id="option-test" name="puzzle-option" value="Test" checked>
+            <label for="option-test">Test Display</label>
+            <input type="radio" id="option-solve" name="puzzle-option" value="Solve">
+            <label for="option-solve">Solve Puzzle</label>
+          </div>
         </li>
-        <li>
-          <button id="great" class="pure-button">Great - 9 Tiles/Side</button>
+      </ul>
+      <ul id="solve-puzzle">
+        <li id="solve-display">
+          <p>Display:</p>
+          <div class="selector">
+            <input type="radio" id="solve-completed" name="solve-display" value="Completed" checked>
+            <label for="solve-completed">Completed Puzzle</label>
+            <input type="radio" id="solve-animated" name="solve-display" value="Animated">
+            <label for="solve-animated">Animated Puzzle</label>
+          </div>
         </li>
-        <li>
+        <li id="solve-algorithm">
+          <p>Algorithm:</p>
+          <div class="selector">
+            <input type="radio" id="algorithm-brute" name="solve-algorithm" value="Brute" checked>
+            <label for="algorithm-brute">Brute Force</label>
+            <input type="radio" id="algorithm-machine" name="solve-algorithm" value="Machine" disabled>
+            <label for="algorithm-machine" class="disable">Machine Learning</label>
+          </div>
+        </li>
+      </ul>
+      <ul id="test-puzzle">
+        <li id="test-display">
+          <p>Display:</p>
+          <div class="selector">
+            <input type="radio" id="test-completed" name="test-display" value="Completed" checked>
+            <label for="test-completed">Completed Puzzle</label>
+            <input type="radio" id="test-animated" name="test-display" value="Animated">
+            <label for="test-animated">Animated Puzzle</label>
+          </div>
+        </li>
+        <li id="tile-selection">
           <p>Tile selection:</p>
-        </li>
-        <li>
           <div class="selector">
             <input type="radio" id="selection-random" name="tile-selection" value="Random" checked>
             <label for="selection-random">Random</label>
             <input type="radio" id="selection-sequential" name="tile-selection" value="Sequential">
             <label for="selection-sequential">Sequential</label>
             <input type="radio" id="selection-test" name="tile-selection" value="Test">
-            <label for="selection-test">Test</label>
+            <label for="selection-test">Display Test</label>
           </div>
         </li>
-        <li>
+        <li id="tile-placement">
           <p>Tile placement:</p>
-        </li>
-        <li>
           <div class="selector">
             <input type="radio" id="placement-random" name="tile-placement" value="Random" checked>
             <label for="placement-random">Random</label>
@@ -69,16 +105,38 @@
             <label for="placement-sequential">Sequential</label>
           </div>
         </li>
+        <li id="tile-rotation">
+          <p>Tile rotation:</p>
+          <div class="selector">
+            <input type="radio" id="rotation-none" name="tile-rotation" value="None" checked>
+            <label for="rotation-none">None</label>
+            <input type="radio" id="rotation-random" name="tile-rotation" value="Random">
+            <label for="rotation-random">Random</label>
+          </div>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <button id="go" class="pure-button">Go!</button>
+        </li>
       </ul>
     </div>
   </div>
 
   <div class="content pure-u-1 pure-u-md-4-5">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="-50 -100 100 150" id="puzzle-display">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="-70 -95 100 150" id="puzzle-display">
       <!--SVG.js will add nodes in here...-->
     </svg>
   </div>
 
+</div>
+
+<footer class="pure-menu pure-menu-horizontal">
+  <span id="show-info" class="pure-menu-heading"></span>
+</footer>
+
+<div id="overlay">
+  <p>Solving puzzle... Click to cancel.</p>
 </div>
 
 <script src="./js/app.ts"></script>

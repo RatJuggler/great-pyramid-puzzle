@@ -16,6 +16,7 @@
     ],
     "faceScale": 40,
     "tileScale": 0.34,
+    "pegScale": 3,
     "faces": [
         {
             "id": "1",

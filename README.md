@@ -8,11 +8,12 @@ The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I t
 [ZX80](https://en.wikipedia.org/wiki/ZX80), but didn't make much progress, so nearly 40 years later I'm trying again.
 
 ##### Progress
-- Captured data representing the Pocket and Great version of the puzzle and also for a simple test version.
+- Captured data representing the Pocket and Great version of the puzzle and a simple test version.
 - Built basic data structures to hold the puzzle data and state.
-- Built simple mechanisms to add tiles to the puzzle, without matching, randomly or in sequence. 
+- Built mechanisms to add tiles to the puzzle, randomly or in sequence without matching, as well as matching with adjacent tiles. 
 - Built a display renderer to show the puzzle in a given state using SVG.
-- Built a UI showing tiles as they are added to the puzzle, with controls to select the puzzle type and tile placing options.
+- Built a UI with test options for tiles selection and placing, and including an animation of the tile placement.
+- DOESN'T ACTUALLY SOLVE ANYTHING YET!
 
 You can see the latest release in action [here](https://ratjuggler.github.io/great-pyramid-puzzle/).
 

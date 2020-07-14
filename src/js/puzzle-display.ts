@@ -1,7 +1,6 @@
 import { CenterPointData, FaceDisplayData, DisplayData } from "./puzzle-display-schema"
 import { Face } from "./face";
 import { Tetrahedron } from "./tetrahedron";
-import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
@@ -44,21 +43,23 @@ export class DisplayManager {
             .stroke(stroke);
     }
 
-    private drawTile(tile: Tile, tpCenter: CenterPointData): G {
+    private drawTile(tilePosition: TilePosition, tpCenter: CenterPointData): G {
         // Group the elements which make up a tile position.
-        const tGroup = this._draw.group().id("tile" + tile.id);
+        const tGroup = this._draw.group().id("tile" + tilePosition.tile.id);
         // Draw a white tile.
         this.drawTriangle(tGroup, tpCenter, this._scaleTile, '#ffffff', {width: 0.2, color: '#000000'});
         // Draw the red segments.
-        for (let segN = 0; segN < tile.segments.length; segN++) {
-            if (tile.segments.charAt(segN) === '1') {
+        const segments = tilePosition.getRotatedSegments();
+        for (let segN = 0; segN < segments.length; segN++) {
+            if (segments.charAt(segN) === '1') {
                 tGroup.polygon(this.scaleSegment(segN, tpCenter, this._scaleTile))
+                    .rotate(tpCenter.r, tpCenter.x, tpCenter.y)
                     .fill('#ff0000')
                     .stroke('none');
             }
         }
         // Draw the peg in the middle.
-        tGroup.circle(5)
+        tGroup.circle(this._displayData.pegScale)
             .center(tpCenter.x, tpCenter.y)
             .fill('#bebebe')
             .stroke('none');
@@ -79,7 +80,7 @@ export class DisplayManager {
             this.drawTriangle(tpGroup, tpCenter, this._scaleTile, '#C0C0C0', {width: 0.4, color: '#000000'});
         } else {
             tpGroup.add(
-                this.drawTile(tilePosition.tile, tpCenter)
+                this.drawTile(tilePosition, tpCenter)
             );
         }
     }
@@ -134,6 +135,7 @@ export class DisplayManager {
         });
         // New tile area group must be created last.
         const ntGroup = this._draw.group().id("newtile");
+        ntGroup.element('title').words("Next tile to be placed.");
         this.drawTriangle(ntGroup, this._ntCenter, this._scaleTile, '#DCDCDC', {width: 0.4, color: '#000000'});
         return this._draw;
     }
@@ -145,25 +147,28 @@ export class DisplayManager {
         const tpCenter = tpGroup.dom.tpCenter;
         tpGroup.clear();
         // Draw the new tile at the starting position.
-        const newTile = this.drawTile(tilePosition.tile, this._ntCenter);
+        const newTile = this.drawTile(tilePosition, this._ntCenter);
         // Animate the tile moving into position.
         const matrix = new Matrix()
-            .translate(tpCenter.x - this._ntCenter.x, tpCenter.y - this._ntCenter.y)
+            .translateO(tpCenter.x - this._ntCenter.x, tpCenter.y - this._ntCenter.y)
             .rotate(tpCenter.r, tpCenter.x, tpCenter.y);
         // @ts-ignore
         newTile.animate({duration: 500}).transform(matrix)
             .after(() => {
-                // Add a description and the tile to this position.
-                DisplayManager.setTPDescription(tpGroup, tilePosition);
-                tpGroup.add(newTile);
+                // Remove the animated tile and redraw the position.
+                newTile.remove();
+                this.drawTilePosition(tpGroup, tilePosition, tpCenter);
             });
     }
 
     rotateTile(tpElement: HTMLElement): void {
+        // Take the tile position element and get the center data.
+        const tpGroup = SVG(tpElement) as G;
+        const tpCenter = tpGroup.dom.tpCenter;
         // Rotate the child tile group.
         const tGroup = SVG(tpElement.children[1]) as G;
         // @ts-ignore
-        tGroup.animate({duration: 1000, ease: "<>"}).rotate(120, this._ntCenter.x, this._ntCenter.y);
+        tGroup.animate({duration: 1000, ease: "<>"}).rotate(120, tpCenter.x, tpCenter.y);
     }
 
 }

@@ -2,21 +2,22 @@ import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
 import { TilePositionData} from "./layout-data-schema";
 import { getRandomInt } from "./utils";
+import { IntegrityCheckResult } from "./common-data-schema";
+import { Side, SIDES } from "./side";
 
 
 interface FaceJoinProperties {
-    readonly toSide: string;
+    readonly toSide: Side;
     readonly ofFace: Face;
 }
 
 
 export class Face {
 
-    private static FACE_NAMES = ["1", "2", "3", "4"];
-    private static VALID_TILE_COUNTS = [1, 4, 9];
-    private static SIDE_NAMES = ["A", "B", "C"];
+    private static readonly FACE_NAMES = ["1", "2", "3", "4"];
+    private static readonly VALID_TILE_COUNTS = [1, 4, 9];
 
-    private readonly _joins = new Map<string, FaceJoinProperties>();
+    private readonly _joins = new Map<Side, FaceJoinProperties>();
     private readonly _tilePositions = new Map<string, TilePosition>();
 
     constructor(private _name: string, numberOfTiles: number, tilePositions: TilePositionData[]) {
@@ -34,6 +35,31 @@ export class Face {
             const newTilePosition = new TilePosition(tilePositionData.position, this._name);
             this._tilePositions.set(newTilePosition.name, newTilePosition);
         }
+    }
+
+    integrityCheck(): IntegrityCheckResult {
+        // Each face must join to 3 other faces and must have a valid number of tile positions.
+        if (this._joins.size !== SIDES.numberOfSides) {
+            return [false, `Face joins not complete: ${this.toString()}`];
+        }
+        if (!Face.VALID_TILE_COUNTS.includes(this._tilePositions.size)) {
+            return [false, `Invalid number of tile positions on Face: ${this.toString()}`];
+        }
+        return [true, "Passed"];
+    }
+
+    fullIntegrityCheck(): IntegrityCheckResult {
+        const faceIntegrity = this.integrityCheck();
+        if (!faceIntegrity[0]) {
+            return faceIntegrity;
+        }
+        for (const tilePosition of this._tilePositions.values()) {
+            const tileIntegrity = tilePosition.integrityCheck();
+            if (!tileIntegrity[0]) {
+                return tileIntegrity;
+            }
+        }
+        return faceIntegrity;
     }
 
     toString(): string {
@@ -69,19 +95,24 @@ export class Face {
     }
 
     join(fromSide: string, toSide: string, ofFace: Face) : void {
+        if (this._joins.size === SIDES.numberOfSides) {
+            throw new Error("Faces can only join to three other faces!");
+        }
         if (this === ofFace) {
             throw new Error("Cannot join a Face to itself!");
         }
         if (this.tilePositionCount !== ofFace.tilePositionCount) {
             throw new Error("Cannot join Faces which have differing numbers of Tile Positions!");
         }
-        if (!(Face.SIDE_NAMES.includes(fromSide))) {
-            throw new Error(`Side to join from must be one of ${Face.SIDE_NAMES}!`);
+        const nFromSide = SIDES.validateSide(fromSide, "to join from");
+        const nToSide = SIDES.validateSide(toSide, "to join to");
+        if (this._joins.get(nFromSide)) {
+            throw new Error(`Existing join already present for side ${fromSide}!`);
         }
-        if (!(Face.SIDE_NAMES.includes(toSide))) {
-            throw new Error(`Side to join to must be one of ${Face.SIDE_NAMES}!`);
-        }
-        this._joins.set(fromSide, {toSide: toSide, ofFace: ofFace});
+        this._joins.set(nFromSide, {
+            toSide: nToSide,
+            ofFace: ofFace
+        });
     }
 
     private get emptyTilePositions(): TilePosition[] {

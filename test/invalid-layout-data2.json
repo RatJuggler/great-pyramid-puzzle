@@ -1,7 +1,7 @@
 {
-  "tesDescription": "There must be layout data for 4 faces",
+  "tesDescription": "All faces must join to three other faces.",
   "testLayoutData": {
-    "puzzle": "face-missing",
+    "puzzle": "face-joins-invalid",
     "numberOfTilesPerFace": 1,
     "faces": [
       {
@@ -26,6 +26,16 @@
       },
       {
         "name": "3",
+        "joins": [],
+        "tilePositions": [
+          {
+            "position": "1",
+            "joins": []
+          }
+        ]
+      },
+      {
+        "name": "4",
         "joins": [],
         "tilePositions": [
           {

@@ -1,13 +1,11 @@
 import { TileDefinition } from "./tile-data-schema";
+import { Side } from "./side";
 
 
 export class Tile {
 
-    private static readonly ORIENTATION = [ [0, 1, 2], [2, 0, 1], [1, 2, 0] ];
-
     private readonly _id: number;
-    private readonly _sides: string[];
-    private _orientation: number = 0;
+    private readonly _sides = new Map<Side, string>() ;
 
     validateSegments(segments: string): string {
         if (segments.length !== 4) {
@@ -21,37 +19,35 @@ export class Tile {
 
     constructor(tileDetails: TileDefinition) {
         this._id = tileDetails.tile;
-        this._sides = [
-            this.validateSegments(tileDetails.sideA),
-            this.validateSegments(tileDetails.sideB),
-            this.validateSegments(tileDetails.sideC)
-        ];
-    }
-
-    private getSide(side: number): string {
-        return this._sides[Tile.ORIENTATION[this._orientation][side]];
-    }
-
-    toString(): string {
-        return `Id: ${this._id}, Side-A: ${this.getSide(0)}, Side-B: ${this.getSide(1)}, Side-C: ${this.getSide(2)}, Orientation: ${this._orientation}`;
+        this._sides.set(Side.SideA, this.validateSegments(tileDetails.sideA));
+        this._sides.set(Side.SideB, this.validateSegments(tileDetails.sideB));
+        this._sides.set(Side.SideC, this.validateSegments(tileDetails.sideC));
     }
 
     get id(): number {
         return this._id;
     }
 
-    get segments(): string {
-        return this.getSide(0) + this.getSide(1) + this.getSide(2);
+    toString(): string {
+        return `Id: ${this._id}, ` +
+            `Side-A: ${this.getSideSegments(Side.SideA)}, ` +
+            `Side-B: ${this.getSideSegments(Side.SideB)}, ` +
+            `Side-C: ${this.getSideSegments(Side.SideC)}`;
     }
 
-    place(): Tile {
-        this._orientation = 0;
-        return this;
+    getSegments(side1: Side, side2: Side, side3: Side): string {
+        return this.getSideSegments(side1) +
+            this.getSideSegments(side2) +
+            this.getSideSegments(side3);
     }
 
-    nextOrientation(): Tile {
-        this._orientation = ++this._orientation % this._sides.length;
-        return this;
+    getSideSegments(side: Side): string {
+        return this._sides.get(side)!;
+    }
+
+    getSideSegmentsToMatchWith(side: Side): string {
+        const sideSegments = this.getSideSegments(side);
+        return sideSegments[3] + sideSegments[2] + sideSegments[1] + sideSegments[0];
     }
 
 }
