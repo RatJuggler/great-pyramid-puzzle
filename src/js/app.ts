@@ -9,7 +9,7 @@ import { TilePool } from "./tile-pool";
 let placeTileInterval: number;
 
 
-function attachRotateEvents(puzzleDisplay: HTMLElement, tetrahedron: Tetrahedron, displayManager: DisplayManager) {
+function attachRotateEvents(puzzleDisplay: HTMLElement, tetrahedron: Tetrahedron, displayManager: DisplayManager): void {
     puzzleDisplay.querySelectorAll("g")
         .forEach(function (svgGroup) {
             const tpId = svgGroup.id.match(/^([1-4])-([1-9])$/);
@@ -27,6 +27,31 @@ function attachRotateEvents(puzzleDisplay: HTMLElement, tetrahedron: Tetrahedron
         });
 }
 
+function animateTest(tilePool: TilePool, tetrahedron: Tetrahedron, displayManager: DisplayManager, puzzleDisplay: HTMLElement): void {
+    // Schedule a series of events to place tiles on the puzzle.
+    placeTileInterval = setInterval( () => {
+        const tile = getTileSelection(tilePool);
+        if (tile) {
+            const tilePlacedPosition = placeTile(tile, tetrahedron);
+            displayManager.redrawTilePosition(tilePlacedPosition, puzzleDisplay);
+        } else {
+            clearInterval(placeTileInterval);
+            placeTileInterval = 0;
+            attachRotateEvents(puzzleDisplay, tetrahedron, displayManager);
+        }
+    }, 1000);
+}
+
+function completeTest(tilePool: TilePool, tetrahedron: Tetrahedron, displayManager: DisplayManager, puzzleDisplay: HTMLElement): void {
+    let tile = getTileSelection(tilePool);
+    while (tile) {
+        placeTile(tile, tetrahedron);
+        tile = getTileSelection(tilePool);
+    }
+    displayManager.displayPuzzle(tetrahedron);
+    attachRotateEvents(puzzleDisplay, tetrahedron, displayManager);
+}
+
 function testDisplay(): void {
     // Clear any previous puzzle tile placement schedules.
     if (placeTileInterval) {
@@ -41,18 +66,18 @@ function testDisplay(): void {
     const puzzleDisplay = <HTMLInputElement>document.getElementById("puzzle-display")!;
     const displayManager = new DisplayManager(puzzleDisplay, puzzle.displayData);
     displayManager.displayPuzzle(tetrahedron);
-    // Schedule a series of events to place tiles on the puzzle.
-    placeTileInterval = setInterval( () => {
-        const tile = getTileSelection(tilePool);
-        if (tile) {
-            const tilePlacedPosition = placeTile(tile, tetrahedron);
-            displayManager.redrawTilePosition(tilePlacedPosition, puzzleDisplay);
-        } else {
-            clearInterval(placeTileInterval);
-            placeTileInterval = 0;
-            attachRotateEvents(puzzleDisplay, tetrahedron, displayManager);
-        }
-    }, 1000);
+    // Complete the test depending on the display.
+    const display = getSelector("test-display");
+    switch (display) {
+        case "Completed":
+            completeTest(tilePool, tetrahedron, displayManager, puzzleDisplay);
+            break;
+        case "Animated":
+            animateTest(tilePool, tetrahedron, displayManager, puzzleDisplay);
+            break;
+        default:
+            throw new Error("Invalid solve display option!");
+    }
 }
 
 function solvePuzzle(id: number, resolve: () => void, tetrahedron: Tetrahedron, tilePool: TilePool): void {
@@ -98,16 +123,16 @@ function startPuzzle() {
 }
 
 function doPuzzle(): void {
-    const display = getSelector("algorithm-display");
+    const display = getSelector("solve-display");
     switch (display) {
         case "Completed":
             completePuzzle();
             break;
-        case "Progress":
+        case "Animated":
             startPuzzle();
             break;
         default:
-            throw new Error("Invalid algorithm display option!");
+            throw new Error("Invalid solve display option!");
     }
 }
 
