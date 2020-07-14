@@ -1,11 +1,14 @@
+import {Tetrahedron} from "./tetrahedron";
+import {TilePool} from "./tile-pool";
+
 // Useful utility functions.
 
 function getRandomInt(n: number): number {
     return Math.floor(Math.random() * Math.floor(n));
 }
 
-function createPromise(solver: (id: number, resolve: () => void, solving: number) => void, solving: number):
-    { promise: Promise<unknown>; cancel: () => void; } {
+function createPromise(solver: (id: number, resolve: () => void, tetrahedron: Tetrahedron, tilePool: TilePool) => void,
+                       tetrahedron: Tetrahedron, tilePool: TilePool): { promise: Promise<unknown>; cancel: () => void; } {
     // Define completion flag and cancel trigger.
     let finished = false;
     let cancel = (): void => {
@@ -14,7 +17,7 @@ function createPromise(solver: (id: number, resolve: () => void, solving: number
     // Create the promise to solve the puzzle.
     const promise = new Promise((resolve, reject) => {
         const id = setInterval(() => {
-            solver(id, resolve, solving);
+            solver(id, resolve, tetrahedron, tilePool);
         }, 1000);
         // Triggering the cancel.
         cancel = (): void => {

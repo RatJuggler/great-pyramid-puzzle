@@ -3,6 +3,7 @@ import { DisplayManager } from "./puzzle-display";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
 import { Tetrahedron } from "./tetrahedron";
 import { createPromise } from "./utils";
+import {TilePool} from "./tile-pool";
 
 
 // Track tile placing event timer.
@@ -55,22 +56,34 @@ function testDisplay(): void {
     }, 1000);
 }
 
-function solvePuzzle(id: number, resolve: () => void, solving: number): void {
-    solving++;
-    console.log("Solving: " + solving);
-    if (solving === 5) {
-        console.log("Solved!");
+function solvePuzzle(id: number, resolve: () => void, tetrahedron: Tetrahedron, tilePool: TilePool): void {
+    const tile = tilePool.nextTile;
+    if (tile) {
+        tetrahedron.placeTileSequentially(tile);
+    } else {
         clearInterval(id);
         resolve();
     }
 }
 
 function completePuzzle(): void {
-    // Set the overlay to prevent further UI interaction then start the solving process.
+    // Set the overlay to prevent further UI interaction.
     showElement("overlay");
-    let solving = 0;
-    const solver = createPromise(solvePuzzle, solving);
+    // Determine the puzzle type.
+    const puzzle = getPuzzleType();
+    // Build internal puzzle representation with tiles waiting to be placed on it.
+    const tetrahedron = getTetrahedron(puzzle.layoutData);
+    const tilePool = getTilePool(puzzle.tileData);
+    // Show the initial puzzle state.
+    const puzzleDisplay = <HTMLInputElement>document.getElementById("puzzle-display")!;
+    const displayManager = new DisplayManager(puzzleDisplay, puzzle.displayData);
+    displayManager.displayPuzzle(tetrahedron);
+    // Start the solving process.
+    const solver = createPromise(solvePuzzle, tetrahedron, tilePool);
     solver.promise.then((resolvedValue) => {
+        // Show the final puzzle state.
+        displayManager.displayPuzzle(tetrahedron);
+        // Remove the overlay.
         hideElement("overlay");
         return resolvedValue;
     }).catch((err) => {
