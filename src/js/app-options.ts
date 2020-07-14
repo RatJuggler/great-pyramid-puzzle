@@ -100,7 +100,6 @@ function createSolverPromise(solver: (id: number, resolve: () => void, tetrahedr
                 return;
             }
             // Process the cancel.
-            console.log("Cancelling...");
             clearInterval(id);
             reject();
         }
