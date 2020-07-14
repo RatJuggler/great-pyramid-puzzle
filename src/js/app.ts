@@ -1,9 +1,8 @@
-import { getSelector, getPuzzleType, getTileSelection, placeTile } from "./app-options";
+import { getSelector, getPuzzleType, getTileSelection, placeTile, createSolverPromise } from "./app-options";
 import { DisplayManager } from "./puzzle-display";
 import { getTetrahedron, getTilePool } from "./puzzle-loader";
 import { Tetrahedron } from "./tetrahedron";
-import { createPromise } from "./utils";
-import {TilePool} from "./tile-pool";
+import { TilePool } from "./tile-pool";
 
 
 // Track tile placing event timer.
@@ -79,7 +78,7 @@ function completePuzzle(): void {
     const displayManager = new DisplayManager(puzzleDisplay, puzzle.displayData);
     displayManager.displayPuzzle(tetrahedron);
     // Start the solving process.
-    const solver = createPromise(solvePuzzle, tetrahedron, tilePool);
+    const solver = createSolverPromise(solvePuzzle, tetrahedron, tilePool);
     solver.promise.then((resolvedValue) => {
         // Show the final puzzle state.
         displayManager.displayPuzzle(tetrahedron);
