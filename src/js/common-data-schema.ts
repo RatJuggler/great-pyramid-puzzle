@@ -7,7 +7,6 @@ import { DisplayManager } from "./puzzle-display";
 
 // Interface/types used across the application.
 
-
 interface PuzzleDataElements {
     readonly layoutData: LayoutData,
     readonly tileData: TileData,
@@ -17,11 +16,9 @@ interface PuzzleDataElements {
 interface PuzzleComponents {
     readonly tilePool: TilePool,
     readonly tetrahedron: Tetrahedron,
-    readonly displayElement: HTMLElement
     readonly displayManager: DisplayManager,
 }
 
 type IntegrityCheckResult = [boolean, string];
-
 
 export { PuzzleDataElements, PuzzleComponents, IntegrityCheckResult }

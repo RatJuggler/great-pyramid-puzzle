@@ -10,17 +10,15 @@ let placeTileInterval: number;
 
 
 function attachRotateEvents(puzzle: PuzzleComponents): void {
-    puzzle.displayElement.querySelectorAll("g")
+    document.querySelectorAll("g")
         .forEach(function (svgGroup) {
             const tpId = svgGroup.id.match(/^([1-4])-([1-9])$/);
             if (tpId) {
                 svgGroup.addEventListener("click", (e) => {
-                    // @ts-ignore
-                    const tileSvg = <HTMLElement>e.currentTarget!;
                     const tilePosition = puzzle.tetrahedron.getFace(tpId[1]).getTilePosition(tpId[2]);
                     if (!tilePosition.isEmpty()) {
                         tilePosition.rotateTile();
-                        puzzle.displayManager.rotateTile(tileSvg);
+                        puzzle.displayManager.rotateTile(<HTMLElement> e.target);
                     }
                 });
             }

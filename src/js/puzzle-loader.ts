@@ -20,15 +20,19 @@ function getTetrahedron(layoutData: LayoutData): Tetrahedron {
     return tetrahedron;
 }
 
-function getDisplayManager(displayElement: HTMLElement, displayData: DisplayData) {
+function getDisplayManager(displayElement: string | HTMLElement, displayData: DisplayData) {
     return new DisplayManager(displayElement, displayData);
 }
 
-function getPuzzleComponents(puzzleTypeData: PuzzleDataElements, displayElement: HTMLElement): PuzzleComponents {
+function getPuzzleComponents(puzzleTypeData: PuzzleDataElements, displayElement: string | HTMLElement): PuzzleComponents {
+    const tilePool = getTilePool(puzzleTypeData.tileData);
+    const tetrahedron = getTetrahedron(puzzleTypeData.layoutData);
+    if (tilePool.tileCount !== tetrahedron.tilePositionCount) {
+        throw new Error("There must be enough Tiles to cover the Tetrahedron!");
+    }
     return {
-        tilePool: getTilePool(puzzleTypeData.tileData),
-        tetrahedron: getTetrahedron(puzzleTypeData.layoutData),
-        displayElement: displayElement,
+        tilePool: tilePool,
+        tetrahedron: tetrahedron,
         displayManager: getDisplayManager(displayElement, puzzleTypeData.displayData)
     }
 }
