@@ -1,11 +1,7 @@
-import { getSelector, getPuzzleTypeData, getTileSelection, placeTile, getSolveAlgorithm, createSolverPromise } from "./app-options";
+import { getSelector, getPuzzleTypeData, getSolveAlgorithm, createSolverPromise } from "./app-options";
 import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
-import { Solver } from "./solver";
-
-
-// Track tile placing event timer.
-let placeTileInterval: number;
+import { Solver, NoMatchingSolver } from "./solver";
 
 
 function attachRotateEvents(puzzle: PuzzleComponents): void {
@@ -24,60 +20,7 @@ function attachRotateEvents(puzzle: PuzzleComponents): void {
         });
 }
 
-function animateTest(puzzle: PuzzleComponents): void {
-    // Schedule a series of events to place tiles on the puzzle.
-    placeTileInterval = setInterval( () => {
-        const tile = getTileSelection(puzzle.tilePool);
-        if (tile) {
-            const tilePlacedPosition = placeTile(tile, puzzle.tetrahedron);
-            puzzle.displayManager.redrawTilePosition(tilePlacedPosition);
-        } else {
-            clearInterval(placeTileInterval);
-            placeTileInterval = 0;
-            attachRotateEvents(puzzle);
-        }
-    }, 1000);
-}
-
-function completeTest(puzzle: PuzzleComponents): void {
-    // Place the tiles using the options selected, without matching this will be very fast.
-    let tile = getTileSelection(puzzle.tilePool);
-    while (tile) {
-        placeTile(tile, puzzle.tetrahedron);
-        tile = getTileSelection(puzzle.tilePool);
-    }
-    puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
-    attachRotateEvents(puzzle);
-}
-
-function testDisplay(): void {
-    // Clear any previous puzzle tile placement schedules.
-    if (placeTileInterval) {
-        clearInterval(placeTileInterval);
-    }
-    // Determine the data required for the puzzle.
-    const puzzleTypeData = getPuzzleTypeData();
-    // Find where we want the puzzle displayed.
-    const displayElement = <HTMLElement>document.getElementById("puzzle-display")!;
-    // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
-    const puzzle = getPuzzleComponents(puzzleTypeData, displayElement);
-    // Show the initial puzzle state.
-    puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
-    // Complete the test depending on the display.
-    const display = getSelector("test-display");
-    switch (display) {
-        case "Completed":
-            completeTest(puzzle);
-            break;
-        case "Animated":
-            animateTest(puzzle);
-            break;
-        default:
-            throw new Error("Invalid test display option!");
-    }
-}
-
-function animatePuzzle(puzzle: PuzzleComponents, solver: Solver): void {
+function animateSolve(puzzle: PuzzleComponents, solver: Solver): void {
     // Schedule a series of events to place tiles on the puzzle.
     const id = setInterval( () => {
         const updatedTilePosition = solver.nextState(id, () => {});
@@ -89,7 +32,7 @@ function animatePuzzle(puzzle: PuzzleComponents, solver: Solver): void {
     }, 1000);
 }
 
-function completePuzzle(puzzle: PuzzleComponents, solver: Solver): void {
+function completeSolve(puzzle: PuzzleComponents, solver: Solver): void {
     // Set the overlay to prevent further UI interaction.
     showElement("overlay");
     // Start the solving process.
@@ -109,6 +52,31 @@ function completePuzzle(puzzle: PuzzleComponents, solver: Solver): void {
     document.getElementById("overlay")!.addEventListener("click", () => solving.cancel());
 }
 
+function testDisplay(): void {
+    // Determine the data required for the puzzle.
+    const puzzleTypeData = getPuzzleTypeData();
+    // Find where we want the puzzle displayed.
+    const displayElement = <HTMLElement>document.getElementById("puzzle-display")!;
+    // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
+    const puzzle = getPuzzleComponents(puzzleTypeData, displayElement);
+    // Show the initial puzzle state.
+    puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
+    // Build the solver to use.
+    const solver = new NoMatchingSolver(puzzle.tetrahedron, puzzle.tilePool);
+    // Complete the test depending on the display.
+    const display = getSelector("test-display");
+    switch (display) {
+        case "Completed":
+            completeSolve(puzzle, solver);
+            break;
+        case "Animated":
+            animateSolve(puzzle, solver);
+            break;
+        default:
+            throw new Error("Invalid test display option!");
+    }
+}
+
 function solvePuzzle(): void {
     // Determine the data required for the puzzle.
     const puzzleTypeData = getPuzzleTypeData();
@@ -124,10 +92,10 @@ function solvePuzzle(): void {
     const display = getSelector("solve-display");
     switch (display) {
         case "Completed":
-            completePuzzle(puzzle, solver);
+            completeSolve(puzzle, solver);
             break;
         case "Animated":
-            animatePuzzle(puzzle, solver);
+            animateSolve(puzzle, solver);
             break;
         default:
             throw new Error("Invalid solve display option!");
@@ -186,7 +154,7 @@ function addStatusInfoEvent(id: string, statusInfo: string) {
 }
 
 addStatusInfoEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
-addStatusInfoEvent("puzzle-option", "Select to try the various test display options or to try and solve the puzzle.");
+addStatusInfoEvent("puzzle-option", "Select to try the various test display options, without solving the puzzle, or to try and solve the puzzle.");
 addStatusInfoEvent("solve-display", "Display the solved puzzle as soon as possible or show an animation of the solving process.");
 addStatusInfoEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle. NOTE: DOES NOT CURRENTLY SOLVE THE PUZZLE!");
 addStatusInfoEvent("test-display", "Display the test layout immediately or show an animation of the layout process.");

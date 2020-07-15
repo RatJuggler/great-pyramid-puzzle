@@ -102,7 +102,7 @@ function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cance
     const promise = new Promise((resolve, reject) => {
         const id = setInterval(() => {
             solver.nextState(id, resolve);
-        }, 250);
+        }, 50);
         // Triggering the cancel.
         cancel = (): void => {
             // If already completed no need to cancel.
