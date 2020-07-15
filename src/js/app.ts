@@ -27,13 +27,11 @@ function attachRotateEvents(puzzle: PuzzleComponents): void {
 function animateSolve(puzzle: PuzzleComponents, solver: Solver): void {
     // Schedule a series of events to place tiles on the puzzle.
     animatedDisplayId = setTimeout( () => {
-        console.log("Animate next state...");
         const updatedTilePosition = solver.nextState();
         if (updatedTilePosition) {
             puzzle.displayManager.redrawTilePosition(updatedTilePosition!);
             animateSolve(puzzle, solver);
         } else {
-            console.log("All done");
             attachRotateEvents(puzzle);
         }
     }, 1000);
