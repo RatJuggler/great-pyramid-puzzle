@@ -1,8 +1,7 @@
-import { getSelector, getPuzzleTypeData, getTileSelection, placeTile, createSolverPromise } from "./app-options";
-import { PuzzleComponents } from "./common-data-schema";
+import { getSelector, getPuzzleTypeData, getTileSelection, placeTile, getSolveAlgorithm, createSolverPromise } from "./app-options";
 import { getPuzzleComponents } from "./puzzle-loader";
-import { Tetrahedron } from "./tetrahedron";
-import { TilePool } from "./tile-pool";
+import { PuzzleComponents } from "./common-data-schema";
+import { Solver } from "./solver";
 
 
 // Track tile placing event timer.
@@ -78,37 +77,24 @@ function testDisplay(): void {
     }
 }
 
-function animatePuzzle(puzzle: PuzzleComponents): void {
+function animatePuzzle(puzzle: PuzzleComponents, solver: Solver): void {
     // Schedule a series of events to place tiles on the puzzle.
-    placeTileInterval = setInterval( () => {
-        const tile = puzzle.tilePool.nextTile;
-        if (tile) {
-            const tilePlacedPosition = puzzle.tetrahedron.placeTileSequentially(tile);
-            puzzle.displayManager.redrawTilePosition(tilePlacedPosition!);
+    const id = setInterval( () => {
+        const updatedTilePosition = solver.nextState(id, () => {});
+        if (updatedTilePosition) {
+            puzzle.displayManager.redrawTilePosition(updatedTilePosition!);
         } else {
-            clearInterval(placeTileInterval);
-            placeTileInterval = 0;
             attachRotateEvents(puzzle);
         }
     }, 1000);
 }
 
-function doPuzzleSolver(id: number, resolve: () => void, tetrahedron: Tetrahedron, tilePool: TilePool): void {
-    const tile = tilePool.nextTile;
-    if (tile) {
-        tetrahedron.placeTileSequentially(tile);
-    } else {
-        clearInterval(id);
-        resolve();
-    }
-}
-
-function completePuzzle(puzzle: PuzzleComponents): void {
+function completePuzzle(puzzle: PuzzleComponents, solver: Solver): void {
     // Set the overlay to prevent further UI interaction.
     showElement("overlay");
     // Start the solving process.
-    const solver = createSolverPromise(doPuzzleSolver, puzzle.tetrahedron, puzzle.tilePool);
-    solver.promise.then((resolvedValue) => {
+    const solving = createSolverPromise(solver);
+    solving.promise.then((resolvedValue) => {
         // Show the final puzzle state and attach the rotate events.
         puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
         attachRotateEvents(puzzle);
@@ -120,7 +106,7 @@ function completePuzzle(puzzle: PuzzleComponents): void {
         return err;
     });
     // Attach cancel trigger to required element.
-    document.getElementById("overlay")!.addEventListener("click", () => solver.cancel());
+    document.getElementById("overlay")!.addEventListener("click", () => solving.cancel());
 }
 
 function solvePuzzle(): void {
@@ -132,14 +118,16 @@ function solvePuzzle(): void {
     const puzzle = getPuzzleComponents(puzzleTypeData, displayElement);
     // Show the initial puzzle state.
     puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
+    // Build the solver to use.
+    const solver = getSolveAlgorithm(puzzle.tetrahedron, puzzle.tilePool);
     // Solve the puzzle depending on the display.
     const display = getSelector("solve-display");
     switch (display) {
         case "Completed":
-            completePuzzle(puzzle);
+            completePuzzle(puzzle, solver);
             break;
         case "Animated":
-            animatePuzzle(puzzle);
+            animatePuzzle(puzzle, solver);
             break;
         default:
             throw new Error("Invalid solve display option!");

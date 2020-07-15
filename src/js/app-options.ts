@@ -2,11 +2,12 @@ import { testPuzzle } from "./test-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
 import { PuzzleDataElements } from "./common-data-schema";
-import { TilePool } from "./tile-pool";
 import { Tile } from "./tile";
+import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
-import { getRandomInt } from "./utils";
 import { Tetrahedron } from "./tetrahedron";
+import { BruteForceSolver, Solver } from "./solver";
+import { getRandomInt } from "./utils";
 
 
 function getSelector(name: string): string {
@@ -81,8 +82,17 @@ function placeTile(tile: Tile, tetrahedron: Tetrahedron): TilePosition  {
     return rotateTile(tilePlacedPosition);
 }
 
-function createSolverPromise(solver: (id: number, resolve: () => void, tetrahedron: Tetrahedron, tilePool: TilePool) => void,
-                             tetrahedron: Tetrahedron, tilePool: TilePool): { promise: Promise<unknown>; cancel: () => void; } {
+function getSolveAlgorithm(tetrahedron: Tetrahedron, tilePool: TilePool): Solver {
+    const solveAlgorithm = getSelector("solve-algorithm");
+    switch (solveAlgorithm) {
+        case "Brute":
+            return new BruteForceSolver(tetrahedron, tilePool);
+        default:
+            throw new Error("Invalid solve algorithm option!");
+    }
+}
+
+function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cancel: () => void; } {
     // Define completion flag and cancel trigger.
     let finished = false;
     let cancel = (): void => {
@@ -91,7 +101,7 @@ function createSolverPromise(solver: (id: number, resolve: () => void, tetrahedr
     // Create the promise to solve the puzzle.
     const promise = new Promise((resolve, reject) => {
         const id = setInterval(() => {
-            solver(id, resolve, tetrahedron, tilePool);
+            solver.nextState(id, resolve);
         }, 250);
         // Triggering the cancel.
         cancel = (): void => {
@@ -121,4 +131,4 @@ function createSolverPromise(solver: (id: number, resolve: () => void, tetrahedr
     return { promise, cancel }
 }
 
-export { getSelector, getPuzzleTypeData, getTileSelection, placeTile, createSolverPromise }
+export { getSelector, getPuzzleTypeData, getTileSelection, placeTile, getSolveAlgorithm, createSolverPromise }
