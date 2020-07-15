@@ -6,7 +6,7 @@ import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
 import { Tetrahedron } from "./tetrahedron";
-import { BruteForceSolver, Solver } from "./solver";
+import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
 import { getRandomInt } from "./utils";
 
 
@@ -83,12 +83,20 @@ function placeTile(tile: Tile, tetrahedron: Tetrahedron): TilePosition  {
 }
 
 function getSolveAlgorithm(tetrahedron: Tetrahedron, tilePool: TilePool): Solver {
-    const solveAlgorithm = getSelector("solve-algorithm");
-    switch (solveAlgorithm) {
-        case "Brute":
-            return new BruteForceSolver(tetrahedron, tilePool);
+    const mainOption = getSelector("puzzle-option");
+    switch (mainOption) {
+        case "Test":
+            return new NoMatchingSolver(tetrahedron, tilePool);
+        case "Solve":
+            const solveAlgorithm = getSelector("solve-algorithm");
+            switch (solveAlgorithm) {
+                case "Brute":
+                    return new BruteForceSolver(tetrahedron, tilePool);
+                default:
+                    throw new Error("Invalid solve algorithm option!");
+            }
         default:
-            throw new Error("Invalid solve algorithm option!");
+            throw new Error("Invalid puzzle option!");
     }
 }
 

@@ -1,7 +1,7 @@
 import { getSelector, getPuzzleTypeData, getSolveAlgorithm, createSolverPromise } from "./app-options";
 import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
-import { Solver, NoMatchingSolver } from "./solver";
+import { Solver } from "./solver";
 
 
 function attachRotateEvents(puzzle: PuzzleComponents): void {
@@ -52,36 +52,11 @@ function completeSolve(puzzle: PuzzleComponents, solver: Solver): void {
     document.getElementById("overlay")!.addEventListener("click", () => solving.cancel());
 }
 
-function testDisplay(): void {
-    // Determine the data required for the puzzle.
-    const puzzleTypeData = getPuzzleTypeData();
-    // Find where we want the puzzle displayed.
-    const displayElement = <HTMLElement>document.getElementById("puzzle-display")!;
-    // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
-    const puzzle = getPuzzleComponents(puzzleTypeData, displayElement);
-    // Show the initial puzzle state.
-    puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
-    // Build the solver to use.
-    const solver = new NoMatchingSolver(puzzle.tetrahedron, puzzle.tilePool);
-    // Complete the test depending on the display.
-    const display = getSelector("test-display");
-    switch (display) {
-        case "Completed":
-            completeSolve(puzzle, solver);
-            break;
-        case "Animated":
-            animateSolve(puzzle, solver);
-            break;
-        default:
-            throw new Error("Invalid test display option!");
-    }
-}
-
 function solvePuzzle(): void {
     // Determine the data required for the puzzle.
     const puzzleTypeData = getPuzzleTypeData();
     // Find where we want the puzzle displayed.
-    const displayElement = <HTMLElement>document.getElementById("puzzle-display")!;
+    const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
     const puzzle = getPuzzleComponents(puzzleTypeData, displayElement);
     // Show the initial puzzle state.
@@ -89,7 +64,7 @@ function solvePuzzle(): void {
     // Build the solver to use.
     const solver = getSolveAlgorithm(puzzle.tetrahedron, puzzle.tilePool);
     // Solve the puzzle depending on the display.
-    const display = getSelector("solve-display");
+    const display = getSelector("puzzle-display");
     switch (display) {
         case "Completed":
             completeSolve(puzzle, solver);
@@ -99,20 +74,6 @@ function solvePuzzle(): void {
             break;
         default:
             throw new Error("Invalid solve display option!");
-    }
-}
-
-function mainOptions(): void {
-    const mainOption = getSelector("puzzle-option");
-    switch (mainOption) {
-        case "Test":
-            testDisplay();
-            break;
-        case "Solve":
-            solvePuzzle();
-            break;
-        default:
-            throw new Error("Invalid puzzle option!");
     }
 }
 
@@ -167,4 +128,4 @@ document.getElementById("puzzle-options")!.addEventListener("mouseleave", () => 
     document.getElementById("show-info")!.innerText = "";
 });
 
-document.getElementById("go")!.addEventListener("click", () => mainOptions());
+document.getElementById("go")!.addEventListener("click", () => solvePuzzle());
