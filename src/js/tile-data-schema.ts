@@ -1,13 +1,13 @@
-// Interfaces defining the tile data structures used in the tile configuration files.
+// Types defining the tile data structures used in the tile configuration files.
 
-interface TileDefinition {
+type TileDefinition = {
     readonly tile: number;
     readonly sideA: string;
     readonly sideB: string;
     readonly sideC: string;
 }
 
-interface TileData {
+type TileData = {
     readonly puzzle: string;
     readonly totalNumberOfTiles: number;
     readonly tiles: TileDefinition[];

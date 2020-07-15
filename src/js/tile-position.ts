@@ -3,7 +3,7 @@ import {IntegrityCheckResult} from "./common-data-schema";
 import {Side, SIDES} from "./side";
 
 
-interface TilePositionJoinProperties {
+type TilePositionJoinProperties = {
     readonly toSide: Side;
     readonly ofTilePosition: TilePosition;
 }

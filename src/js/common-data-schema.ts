@@ -5,15 +5,15 @@ import { TilePool } from "./tile-pool";
 import { Tetrahedron } from "./tetrahedron";
 import { DisplayManager } from "./puzzle-display";
 
-// Interface/types used across the application.
+// Types used across the application.
 
-interface PuzzleDataElements {
+type PuzzleDataElements = {
     readonly layoutData: LayoutData,
     readonly tileData: TileData,
     readonly displayData: DisplayData
 }
 
-interface PuzzleComponents {
+type PuzzleComponents = {
     readonly tilePool: TilePool,
     readonly tetrahedron: Tetrahedron,
     readonly displayManager: DisplayManager,

@@ -6,7 +6,7 @@ import { IntegrityCheckResult } from "./common-data-schema";
 import { Side, SIDES } from "./side";
 
 
-interface FaceJoinProperties {
+type FaceJoinProperties = {
     readonly toSide: Side;
     readonly ofFace: Face;
 }

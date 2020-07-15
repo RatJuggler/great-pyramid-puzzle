@@ -1,23 +1,23 @@
-// Interfaces defining the puzzle display data structure configuration.
+// Types defining the puzzle display data structure configuration.
 
-interface CenterPointData {
+type CenterPointData = {
     readonly x: number,
     readonly y: number,
     readonly r: number
 }
 
-interface TilePositionDisplayData {
+type TilePositionDisplayData = {
     readonly id: string,
     readonly center: CenterPointData
 }
 
-interface FaceDisplayData {
+type FaceDisplayData = {
     readonly id: string,
     readonly center: CenterPointData,
     readonly tilePositions: TilePositionDisplayData[]
 }
 
-interface DisplayData {
+type DisplayData = {
     readonly triangle: number[],
     readonly segments: number[][][],
     readonly faceScale: number,
