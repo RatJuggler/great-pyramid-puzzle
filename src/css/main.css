@@ -3,7 +3,7 @@ html, body {
 }
 
 .home-menu {
-  font-size: 150%;
+  font-size: 1.5em;
 }
 
 .home-menu ul {
@@ -19,7 +19,7 @@ html, body {
 }
 
 #puzzle-options {
-  padding-top: 10%;
+  padding-top: 2em;
 }
 
 #puzzle-options ul {
@@ -34,7 +34,7 @@ html, body {
 
 #puzzle-options .pure-button {
   width: 100%;
-  font-size: 125%;
+  font-size: 1.5em;
 }
 
 .selector {
@@ -60,7 +60,6 @@ html, body {
   width: 100%
 }
 
-
 .selector label.disable {
   color: #ACACAC;
   cursor: default;
@@ -76,7 +75,7 @@ footer {
   left: 0;
   bottom: 0;
   z-index: 3;
-  padding-left: .75em;
+  padding-left: .5em;
 }
 
 #overlay {
@@ -97,7 +96,7 @@ footer {
   position: absolute;
   top: 50%;
   left: 50%;
-  font-size: 200%;
+  font-size: 3em;
   color: white;
   transform: translate(-50%,-50%);
 }
