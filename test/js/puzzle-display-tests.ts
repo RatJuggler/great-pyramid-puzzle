@@ -16,7 +16,7 @@ describe("Puzzle display functionality", function () {
     const puzzleTypeData: PuzzleDataElements = {
         layoutData: valid_layout_data1.testLayoutData,
         tileData: valid_tile_data1.testTileData,
-        displayData: valid_display1
+        displayData: valid_display1.testDisplayData
     }
 
     describe("displaying the test puzzle", function () {
