@@ -5,7 +5,7 @@ import { getTileSelection, placeTile } from "./app-options";
 
 
 interface Solver {
-    nextState: (id: number, resolve: () => void) => TilePosition | null
+    nextState: () => TilePosition | null
 }
 
 
@@ -17,7 +17,7 @@ abstract class SolverBase implements Solver {
         }
     }
 
-    nextState(_id: number, _resolve: () => void): TilePosition | null {
+    nextState(): TilePosition | null {
         return null;
     }
 
@@ -26,13 +26,11 @@ abstract class SolverBase implements Solver {
 
 class NoMatchingSolver extends SolverBase {
 
-    nextState(id: number, resolve: () => void): TilePosition | null {
+    nextState(): TilePosition | null {
         const tile = getTileSelection(this._tilePool);
         if (tile) {
             return  placeTile(tile, this._tetrahedron);
         } else {
-            clearInterval(id);
-            resolve();
             return null;
         }
     }
@@ -42,13 +40,11 @@ class NoMatchingSolver extends SolverBase {
 
 class BruteForceSolver extends SolverBase {
 
-    nextState(id: number, resolve: () => void): TilePosition | null {
+    nextState(): TilePosition | null {
         const tile = this._tilePool.nextTile;
         if (tile) {
             return this._tetrahedron.placeTileSequentially(tile);
         } else {
-            clearInterval(id);
-            resolve();
             return null;
         }
     }

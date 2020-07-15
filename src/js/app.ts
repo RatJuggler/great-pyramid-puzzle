@@ -4,6 +4,10 @@ import { PuzzleComponents } from "./common-data-schema";
 import { Solver } from "./solver";
 
 
+// Track animated display event timer.
+let animatedDisplayId: number;
+
+
 function attachRotateEvents(puzzle: PuzzleComponents): void {
     document.querySelectorAll("g")
         .forEach(function (svgGroup) {
@@ -22,11 +26,14 @@ function attachRotateEvents(puzzle: PuzzleComponents): void {
 
 function animateSolve(puzzle: PuzzleComponents, solver: Solver): void {
     // Schedule a series of events to place tiles on the puzzle.
-    const id = setInterval( () => {
-        const updatedTilePosition = solver.nextState(id, () => {});
+    animatedDisplayId = setTimeout( () => {
+        console.log("Animate next state...");
+        const updatedTilePosition = solver.nextState();
         if (updatedTilePosition) {
             puzzle.displayManager.redrawTilePosition(updatedTilePosition!);
+            animateSolve(puzzle, solver);
         } else {
+            console.log("All done");
             attachRotateEvents(puzzle);
         }
     }, 1000);
@@ -53,6 +60,10 @@ function completeSolve(puzzle: PuzzleComponents, solver: Solver): void {
 }
 
 function solvePuzzle(): void {
+    // Clear any previous display animations.
+    if (animatedDisplayId) {
+        clearInterval(animatedDisplayId);
+    }
     // Determine the data required for the puzzle.
     const puzzleTypeData = getPuzzleTypeData();
     // Find where we want the puzzle displayed.

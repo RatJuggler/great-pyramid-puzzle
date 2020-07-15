@@ -109,7 +109,11 @@ function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cance
     // Create the promise to solve the puzzle.
     const promise = new Promise((resolve, reject) => {
         const id = setInterval(() => {
-            solver.nextState(id, resolve);
+            const updatedTilePosition = solver.nextState();
+            if (!updatedTilePosition) {
+                clearInterval(id);
+                resolve();
+            }
         }, 50);
         // Triggering the cancel.
         cancel = (): void => {
