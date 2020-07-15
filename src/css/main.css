@@ -10,6 +10,10 @@ html, body {
   float: right;
 }
 
+.pure-menu-heading {
+  padding-left: .5em;
+}
+
 .pure-g {
   height: 100%;
 }
@@ -23,7 +27,8 @@ html, body {
 }
 
 #puzzle-options ul {
-  padding-left: 1.5em;
+  padding-left: 1em;
+  padding-right: 1em;
   list-style-type: none;
 }
 
