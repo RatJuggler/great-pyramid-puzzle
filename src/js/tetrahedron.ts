@@ -43,6 +43,10 @@ export class Tetrahedron {
         if (this._faces.size !== Tetrahedron.FACES) {
             return [false, `Tetrahedron not configured with 4 faces: ${this.toString()}`];
         }
+        //  Each face must have the same number of tile positions.
+        if (this.tilePositionCount % Tetrahedron.FACES !== 0) {
+            return [false, `Faces have differing Tile Position counts!`];
+        }
         // The faces must all pass their full integrity checks.
         for (const face of this._faces.values()) {
             const faceIntegrity = face.fullIntegrityCheck();
@@ -53,10 +57,10 @@ export class Tetrahedron {
         return [true, "Passed"];
     }
 
-    toString(): string {
-        let tetrahedronString = `Puzzle Type: ${this._name}\n`;
-        this._faces.forEach(face => tetrahedronString += face.toString());
-        return tetrahedronString;
+    get tilePositionCount(): number {
+        let tilePositions = 0;
+        this._faces.forEach(face => tilePositions += face.tilePositionCount);
+        return tilePositions;
     }
 
     get name(): string {
@@ -88,6 +92,12 @@ export class Tetrahedron {
             return null;
         }
         return emptyFaces[0].placeTileSequentially(tile);
+    }
+
+    toString(): string {
+        let tetrahedronString = `Puzzle Type: ${this._name}\n`;
+        this._faces.forEach(face => tetrahedronString += face.toString());
+        return tetrahedronString;
     }
 
 }

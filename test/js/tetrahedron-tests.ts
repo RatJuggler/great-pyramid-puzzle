@@ -27,7 +27,13 @@ describe("Tetrahedron behaviour", function () {
             });
             it("should have set the puzzle instance name", function () {
                 expect(tetrahedron.name).to.equal("test-valid");
-            })
+            });
+            it("should have the correct number of Tile Positions on it", function () {
+                expect(tetrahedron.tilePositionCount).to.equal(validLayoutData.numberOfTilesPerFace * 4);
+            });
+            it("should pass the integrity check", function () {
+                expect(tetrahedron.integrityCheck()).to.eql([true, "Passed"]);
+            });
             it("should return the correct toString result", function () {
                 const expectedToString = "Puzzle Type: test-valid\n" +
                     "Face: 1, Tile Positions: 1, Joins: (1-A->3-B)(1-B->4-B)(1-C->2-B)\n" +
@@ -39,9 +45,6 @@ describe("Tetrahedron behaviour", function () {
                     "Face: 4, Tile Positions: 1, Joins: (4-A->2-C)(4-B->1-B)(4-C->3-A)\n" +
                     "TilePosition: 1, On Face: 4, Contains Tile: [null], Rotated: 0, Joins: (1-A->2-1-C)(1-B->1-1-B)(1-C->3-1-A)\n";
                 expect(tetrahedron.toString()).to.equal(expectedToString);
-            });
-            it("should pass the integrity check", function () {
-                expect(tetrahedron.integrityCheck()).to.eql([true, "Passed"]);
             });
         });
 
