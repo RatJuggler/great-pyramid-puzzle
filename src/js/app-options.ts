@@ -6,22 +6,11 @@ import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
 import { Tetrahedron } from "./tetrahedron";
-import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
+import { Solver } from "./solver";
 import { getRandomInt } from "./utils";
 
 
-function getSelector(name: string): string {
-    const selection  = <NodeListOf<HTMLInputElement>>document.querySelectorAll(`input[name = "${name}"]`)!;
-    for (const rb of selection) {
-        if (rb.checked) {
-            return rb.value;
-        }
-    }
-    throw new Error("Expected radio option to be selected!");
-}
-
-function getPuzzleTypeData(): PuzzleDataElements {
-    const puzzleType = getSelector("puzzle-type");
+function getPuzzleTypeData(puzzleType: string): PuzzleDataElements {
     switch (puzzleType) {
         case "Test":
             return testPuzzle;
@@ -34,9 +23,8 @@ function getPuzzleTypeData(): PuzzleDataElements {
     }
 }
 
-function getTileSelection(tilePool: TilePool): Tile | null {
-    const selection = getSelector("tile-selection");
-    switch (selection) {
+function getTileSelection(tilePool: TilePool, tileSelection: string): Tile | null {
+    switch (tileSelection) {
         case "Random":
             return tilePool.randomTile;
         case "Sequential":
@@ -48,9 +36,8 @@ function getTileSelection(tilePool: TilePool): Tile | null {
     }
 }
 
-function rotateTile(tilePosition: TilePosition): TilePosition {
-    const rotation = getSelector("tile-rotation");
-    switch (rotation) {
+function rotateTile(tilePosition: TilePosition, tileRotation: string): TilePosition {
+    switch (tileRotation) {
         case "None":
             return tilePosition;
         case "Random":
@@ -63,41 +50,22 @@ function rotateTile(tilePosition: TilePosition): TilePosition {
     }
 }
 
-function placeTile(tile: Tile, tetrahedron: Tetrahedron): TilePosition  {
-    const placement = getSelector("tile-placement");
+function placeTile(tile: Tile, tetrahedron: Tetrahedron, tilePlacement: string, tileRotation: string): TilePosition  {
     let tilePlacedPosition;
-    switch (placement) {
+    switch (tilePlacement) {
         case "Random":
             tilePlacedPosition = tetrahedron.placeTileRandomly(tile);
             break;
         case "Sequential":
             tilePlacedPosition = tetrahedron.placeTileSequentially(tile);
-            break
+            break;
         default:
             throw new Error("Invalid tile placement option!");
     }
     if (!tilePlacedPosition) {
         throw new Error("Failed to place tile on puzzle!");
     }
-    return rotateTile(tilePlacedPosition);
-}
-
-function getSolveAlgorithm(tetrahedron: Tetrahedron, tilePool: TilePool): Solver {
-    const mainOption = getSelector("puzzle-option");
-    switch (mainOption) {
-        case "Test":
-            return new NoMatchingSolver(tetrahedron, tilePool);
-        case "Solve":
-            const solveAlgorithm = getSelector("solve-algorithm");
-            switch (solveAlgorithm) {
-                case "Brute":
-                    return new BruteForceSolver(tetrahedron, tilePool);
-                default:
-                    throw new Error("Invalid solve algorithm option!");
-            }
-        default:
-            throw new Error("Invalid puzzle option!");
-    }
+    return rotateTile(tilePlacedPosition, tileRotation);
 }
 
 function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cancel: () => void; } {
@@ -143,4 +111,4 @@ function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cance
     return { promise, cancel }
 }
 
-export { getSelector, getPuzzleTypeData, getTileSelection, placeTile, getSolveAlgorithm, createSolverPromise }
+export { getPuzzleTypeData, getTileSelection, placeTile, createSolverPromise }

@@ -1,12 +1,22 @@
-import { getSelector, getPuzzleTypeData, getSolveAlgorithm, createSolverPromise } from "./app-options";
+import { getPuzzleTypeData, createSolverPromise } from "./app-options";
 import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
-import { Solver } from "./solver";
+import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
 
 
 // Track animated display event timer.
 let animatedDisplayId: number;
 
+
+function getSelector(name: string): string {
+    const selection  = <NodeListOf<HTMLInputElement>>document.querySelectorAll(`input[name = "${name}"]`)!;
+    for (const rb of selection) {
+        if (rb.checked) {
+            return rb.value;
+        }
+    }
+    throw new Error("Expected radio option to be selected!");
+}
 
 function attachRotateEvents(puzzle: PuzzleComponents): void {
     document.querySelectorAll("g")
@@ -57,13 +67,32 @@ function completeSolve(puzzle: PuzzleComponents, solver: Solver): void {
     document.getElementById("overlay")!.addEventListener("click", () => solving.cancel());
 }
 
+function getSolveAlgorithm(puzzle: PuzzleComponents): Solver {
+    const mainOption = getSelector("puzzle-option");
+    switch (mainOption) {
+        case "Test":
+            return new NoMatchingSolver(puzzle.tetrahedron, puzzle.tilePool,
+                getSelector("tile-selection"), getSelector("tile-placement"), getSelector("tile-rotation"));
+        case "Solve":
+            const solveAlgorithm = getSelector("solve-algorithm");
+            switch (solveAlgorithm) {
+                case "Brute":
+                    return new BruteForceSolver(puzzle.tetrahedron, puzzle.tilePool);
+                default:
+                    throw new Error("Invalid solve algorithm option!");
+            }
+        default:
+            throw new Error("Invalid puzzle option!");
+    }
+}
+
 function solvePuzzle(): void {
     // Clear any previous display animations.
     if (animatedDisplayId) {
         clearInterval(animatedDisplayId);
     }
     // Determine the data required for the puzzle.
-    const puzzleTypeData = getPuzzleTypeData();
+    const puzzleTypeData = getPuzzleTypeData(getSelector("puzzle-type"));
     // Find where we want the puzzle displayed.
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
@@ -71,7 +100,7 @@ function solvePuzzle(): void {
     // Show the initial puzzle state.
     puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
     // Build the solver to use.
-    const solver = getSolveAlgorithm(puzzle.tetrahedron, puzzle.tilePool);
+    const solver = getSolveAlgorithm(puzzle);
     // Solve the puzzle depending on the display.
     const display = getSelector("puzzle-display");
     switch (display) {

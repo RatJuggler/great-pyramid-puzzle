@@ -1,7 +1,7 @@
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
-import { getTileSelection, placeTile } from "./app-options";
+import { getTileSelection, placeTile} from "./app-options";
 
 
 interface Solver {
@@ -26,10 +26,15 @@ abstract class SolverBase implements Solver {
 
 class NoMatchingSolver extends SolverBase {
 
+    constructor(tetrahedron: Tetrahedron, tilePool: TilePool,
+                private _tileSelection: string, private _tilePlacement: string, private _tileRotation: string) {
+        super(tetrahedron, tilePool);
+    }
+
     nextState(): TilePosition | null {
-        const tile = getTileSelection(this._tilePool);
+        const tile = getTileSelection(this._tilePool, this._tileSelection);
         if (tile) {
-            return  placeTile(tile, this._tetrahedron);
+            return  placeTile(tile, this._tetrahedron, this._tilePlacement, this._tileRotation);
         } else {
             return null;
         }
@@ -51,4 +56,4 @@ class BruteForceSolver extends SolverBase {
 
 }
 
-export { Solver, NoMatchingSolver, BruteForceSolver }
+export { Solver, SolverBase, NoMatchingSolver, BruteForceSolver }
