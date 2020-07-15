@@ -33,7 +33,7 @@ function animateTest(puzzle: PuzzleComponents): void {
         const tile = getTileSelection(puzzle.tilePool);
         if (tile) {
             const tilePlacedPosition = placeTile(tile, puzzle.tetrahedron);
-            puzzle.displayManager.redrawTilePosition(tilePlacedPosition, puzzle.displayElement);
+            puzzle.displayManager.redrawTilePosition(tilePlacedPosition);
         } else {
             clearInterval(placeTileInterval);
             placeTileInterval = 0;
@@ -86,7 +86,7 @@ function animatePuzzle(puzzle: PuzzleComponents): void {
         const tile = puzzle.tilePool.nextTile;
         if (tile) {
             const tilePlacedPosition = puzzle.tetrahedron.placeTileSequentially(tile);
-            puzzle.displayManager.redrawTilePosition(tilePlacedPosition!, puzzle.displayElement);
+            puzzle.displayManager.redrawTilePosition(tilePlacedPosition!);
         } else {
             clearInterval(placeTileInterval);
             placeTileInterval = 0;

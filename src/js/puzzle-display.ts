@@ -140,9 +140,9 @@ export class DisplayManager {
         return this._draw;
     }
 
-    redrawTilePosition(tilePosition: TilePosition, puzzleDisplay: HTMLElement): void {
+    redrawTilePosition(tilePosition: TilePosition): void {
         // Find the tile position display to update.
-        const tpElement = puzzleDisplay.querySelector("[id='" + tilePosition.id + "']")!;
+        const tpElement = this._draw.findOne("[id='" + tilePosition.id + "']");
         const tpGroup = SVG(tpElement) as G;
         const tpCenter = tpGroup.dom.tpCenter;
         tpGroup.clear();
