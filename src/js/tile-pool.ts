@@ -26,6 +26,10 @@ export class TilePool {
         }
     }
 
+    get tileCount(): number {
+        return this._tiles.size;
+    }
+
     addTile(tileDetails: TileDefinition): boolean {
         if (this._tiles.has(tileDetails.tile)) {
             return false;
@@ -42,12 +46,6 @@ export class TilePool {
             return tile;
         }
         throw new Error(`Tile (${id}) not found in the tile pool!`);
-    }
-
-    toString(): string {
-        let tilesString = "TilePool:\n";
-        this._tiles.forEach((tile) => tilesString += tile.toString() + '\n');
-        return tilesString;
     }
 
     get nextTile(): Tile | null {
@@ -76,6 +74,12 @@ export class TilePool {
         this.randomTile;
         // Always return the same test tile.
         return TilePool.TEST_TILE;
+    }
+
+    toString(): string {
+        let tilesString = "TilePool:\n";
+        this._tiles.forEach((tile) => tilesString += tile.toString() + '\n');
+        return tilesString;
     }
 
 }

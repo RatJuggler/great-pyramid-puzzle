@@ -26,6 +26,9 @@ describe("TilePool behavior", function () {
             it("should return a correctly initialised instance", function () {
                 expect(tilePool).to.be.an.instanceOf(TilePool);
             });
+            it("should have the correct number of Tiles in it", function () {
+                expect(tilePool.tileCount).to.equal(validTileData.totalNumberOfTiles);
+            });
             it("should also return the correct toString result from this instance", function () {
                 expect(tilePool.toString()).to.equal(validTilePoolToString);
             });
@@ -57,7 +60,7 @@ describe("TilePool behavior", function () {
             const tilePool = new TilePool(0, []);
             const result = tilePool.addTile(TILE_1_DATA);
             it("should add the Tile", function () {
-                expect(tilePool.toString()).to.contain(TILE_1.toString());
+                expect(tilePool.getTile(TILE_1_DATA.tile)).to.eql(TILE_1);
             });
             it("should return True", function () {
                 expect(result).to.be.true;
@@ -68,7 +71,7 @@ describe("TilePool behavior", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
             const result = tilePool.addTile(TILE_1_DATA);
             it("should add the Tile", function () {
-                expect(tilePool.toString()).to.contain(TILE_1.toString());
+                expect(tilePool.getTile(TILE_1_DATA.tile)).to.eql(TILE_1);
             });
             it("should return True", function () {
                 expect(result).to.be.true;
@@ -100,7 +103,7 @@ describe("TilePool behavior", function () {
             });
             it("should return the Tile details", function () {
                 expect(tile).to.be.an.instanceOf(Tile);
-                expect(tile.toString()).to.equal(TILE_1.toString());
+                expect(tile).to.eql(TILE_1);
             });
         });
 
