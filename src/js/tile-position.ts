@@ -100,13 +100,14 @@ export class TilePosition {
             this.mapRotationToTile(Side.SideC));
     }
 
-    removeTile(): boolean {
+    removeTile(): Tile {
         if (this.isEmpty()) {
-            return false;
+            throw new Error("No Tile to remove!");
         }
+        let tileToRemove = this._tile!;
         this._tile = null;
         this._tileRotation = 0;
-        return true;
+        return tileToRemove;
     }
 
     matches(): boolean {

@@ -252,12 +252,10 @@ describe("TilePosition behaviour", function () {
 
         context("and the TilePosition is empty", function () {
             const tilePosition = new TilePosition("TP", "1");
-            const result = tilePosition.removeTile();
-            it("should remain empty", function () {
-                expect(tilePosition.isEmpty()).to.be.true;
-            });
-            it("should return False", function () {
-                expect(result).to.be.false;
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePosition.removeTile();
+                }).to.throw(Error, "No Tile to remove!");
             });
         });
 
@@ -268,8 +266,8 @@ describe("TilePosition behaviour", function () {
             it("should remove the Tile", function () {
                 expect(tilePosition.isEmpty()).to.be.true;
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should return Tile", function () {
+                expect(result).to.eql(TILE_1);
             });
         });
 
@@ -299,7 +297,7 @@ describe("TilePosition behaviour", function () {
             it("should return true", function () {
                 expect(result).to.be.true;
             });
-            assert.isTrue(tilePosition1.removeTile());
+            assert.strictEqual(tilePosition1.removeTile(), TILE_1);
         });
 
         context("and the TilePosition has a Tile in it with one surrounding Tile which doesn't match", function () {
@@ -309,8 +307,8 @@ describe("TilePosition behaviour", function () {
             it("should return false", function () {
                 expect(result).to.be.false;
             });
-            assert.isTrue(tilePosition1.removeTile());
-            assert.isTrue(tilePosition3.removeTile());
+            assert.strictEqual(tilePosition1.removeTile(), TILE_1);
+            assert.strictEqual(tilePosition3.removeTile(), TILE_3);
         });
 
         context("and the TilePosition has a Tile in it with one surrounding Tile which matches", function () {
@@ -320,8 +318,8 @@ describe("TilePosition behaviour", function () {
             it("should return true", function () {
                 expect(result).to.be.true;
             });
-            assert.isTrue(tilePosition1.removeTile());
-            assert.isTrue(tilePosition2.removeTile());
+            assert.strictEqual(tilePosition1.removeTile(), TILE_2);
+            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
         });
 
         context("and the TilePosition has a Tile in it with surrounding Tiles which don't match", function () {
@@ -333,10 +331,10 @@ describe("TilePosition behaviour", function () {
             it("should return false", function () {
                 expect(result).to.be.false;
             });
-            assert.isTrue(tilePosition1.removeTile());
-            assert.isTrue(tilePosition2.removeTile());
-            assert.isTrue(tilePosition3.removeTile());
-            assert.isTrue(tilePosition4.removeTile());
+            assert.strictEqual(tilePosition1.removeTile(), TILE_4);
+            assert.strictEqual(tilePosition2.removeTile(), TILE_2);
+            assert.strictEqual(tilePosition3.removeTile(), TILE_3);
+            assert.strictEqual(tilePosition4.removeTile(), TILE_1);
         });
 
         context("and the TilePosition has a Tile in it with surrounding Tiles which all match", function () {
@@ -348,10 +346,10 @@ describe("TilePosition behaviour", function () {
             it("should return true", function () {
                 expect(result).to.be.true;
             });
-            assert.isTrue(tilePosition1.removeTile());
-            assert.isTrue(tilePosition2.removeTile());
-            assert.isTrue(tilePosition3.removeTile());
-            assert.isTrue(tilePosition4.removeTile());
+            assert.strictEqual(tilePosition1.removeTile(), TILE_2);
+            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
+            assert.strictEqual(tilePosition3.removeTile(), TILE_1);
+            assert.strictEqual(tilePosition4.removeTile(), TILE_4);
         });
 
     });
