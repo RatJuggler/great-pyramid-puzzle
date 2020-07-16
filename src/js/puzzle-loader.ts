@@ -3,8 +3,8 @@ import { TileData } from "./tile-data-schema";
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
 import { PuzzleDataElements, PuzzleComponents } from "./common-data-schema";
-import { DisplayData } from "./puzzle-display-schema";
-import { DisplayManager } from "./puzzle-display";
+import { DisplayData } from "./display-data-schema";
+import { DisplayManager } from "./display";
 
 
 function getTilePool(tileData: TileData): TilePool {

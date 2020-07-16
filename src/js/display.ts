@@ -1,4 +1,4 @@
-import { CenterPointData, FaceDisplayData, DisplayData } from "./puzzle-display-schema"
+import { CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema"
 import { Face } from "./face";
 import { Tetrahedron } from "./tetrahedron";
 import { TilePosition } from "./tile-position";

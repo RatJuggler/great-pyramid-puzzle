@@ -1,9 +1,9 @@
 import { LayoutData } from "./layout-data-schema";
 import { TileData } from "./tile-data-schema";
-import { DisplayData } from "./puzzle-display-schema";
+import { DisplayData } from "./display-data-schema";
 import { TilePool } from "./tile-pool";
 import { Tetrahedron } from "./tetrahedron";
-import { DisplayManager } from "./puzzle-display";
+import { DisplayManager } from "./display";
 
 // Types used across the application.
 
