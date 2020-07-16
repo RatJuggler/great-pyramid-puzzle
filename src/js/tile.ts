@@ -28,13 +28,6 @@ export class Tile {
         return this._id;
     }
 
-    toString(): string {
-        return `Id: ${this._id}, ` +
-            `Side-A: ${this.getSideSegments(Side.SideA)}, ` +
-            `Side-B: ${this.getSideSegments(Side.SideB)}, ` +
-            `Side-C: ${this.getSideSegments(Side.SideC)}`;
-    }
-
     getSegments(side1: Side, side2: Side, side3: Side): string {
         return this.getSideSegments(side1) +
             this.getSideSegments(side2) +
@@ -48,6 +41,20 @@ export class Tile {
     getSideSegmentsToMatchWith(side: Side): string {
         const sideSegments = this.getSideSegments(side);
         return sideSegments[3] + sideSegments[2] + sideSegments[1] + sideSegments[0];
+    }
+
+    toString(): string {
+        return `Id: ${this._id}, ` +
+            `Side-A: ${this.getSideSegments(Side.SideA)}, ` +
+            `Side-B: ${this.getSideSegments(Side.SideB)}, ` +
+            `Side-C: ${this.getSideSegments(Side.SideC)}`;
+    }
+
+    toStringRotated(side1: Side, side2: Side, side3: Side): string {
+        return `Id: ${this._id}, ` +
+            `Side-A: ${this.getSideSegments(side1)}, ` +
+            `Side-B: ${this.getSideSegments(side2)}, ` +
+            `Side-C: ${this.getSideSegments(side3)}`;
     }
 
 }

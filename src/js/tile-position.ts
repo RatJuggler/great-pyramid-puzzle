@@ -46,14 +46,6 @@ export class TilePosition {
         return this._tile;
     }
 
-    toString(): string {
-        let tileString = `TilePosition: ${this._name}, On Face: ${this._onFace}, ` +
-            `Contains Tile: [${this._tile}], Rotated: ${this._tileRotation}, Joins: `;
-        this._joins.forEach((join, side) =>
-            tileString += `(${this._name}-${side}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide})`);
-        return tileString;
-    }
-
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition) : void {
         if (this._joins.size === SIDES.numberOfSides) {
             throw new Error("TilePositions can only join to three other TilePositions!");
@@ -126,6 +118,15 @@ export class TilePosition {
             }
         }
         return true;
+    }
+
+    toString(): string {
+        const tileString = this._tile ? this._tile.toStringRotated(this.mapRotationToTile(Side.SideA), this.mapRotationToTile(Side.SideB), this.mapRotationToTile(Side.SideC)) : "Empty"
+        let tilePositionString = `TilePosition: ${this._name}, On Face: ${this._onFace}, ` +
+            `Contains Tile: [${tileString}], Rotated: ${this._tileRotation}, Joins: `;
+        this._joins.forEach((join, side) =>
+            tilePositionString += `(${this._name}-${side}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide})`);
+        return tilePositionString;
     }
 
 }

@@ -56,52 +56,51 @@ class BruteForceSolver extends SolverBase {
         }
     }
 
-    findTileToPlace(tilePosition: TilePosition, untriedTiles: Array<Tile>, rejectedTiles: Array<Tile>): void {
-        while (untriedTiles.length > 0) {
-            const tile = untriedTiles.shift()!;
-            tilePosition.placeTile(tile);
-            if (!tilePosition.matches()) {
-                tilePosition.rotateTile();
-                if (!tilePosition.matches()) {
-                    tilePosition.rotateTile();
-                    if (!tilePosition.matches()) {
-                        tilePosition.removeTile();
-                        rejectedTiles.push(tile);
-                        continue;
-                    }
-                }
-            }
-            break;
-        }
-    }
-
     nextTilePosition(emptyTilePositions: Array<TilePosition>, unusedTiles: Array<Tile>): boolean {
         if (emptyTilePositions.length === 0) {
             return true;
         }
         const tilePosition = emptyTilePositions.shift()!;
+        console.log("On: " + tilePosition.toString());
         const untriedTiles = [...unusedTiles];
         const rejectedTiles = new Array<Tile>();
         while (untriedTiles.length > 0) {
-            this.findTileToPlace(tilePosition, untriedTiles, rejectedTiles);
-            if (!tilePosition.isEmpty()) {
+            const tile = untriedTiles.shift()!;
+            tilePosition.placeTile(tile);
+            if (tilePosition.matches()) {
+                console.log("Matched: " + tilePosition.toString());
                 const unusedTilesNow = untriedTiles.concat(rejectedTiles);
                 if (this.nextTilePosition(emptyTilePositions, unusedTilesNow)) {
                     return true;
                 }
-                const tile = tilePosition.removeTile();
-                rejectedTiles.push(tile);
             }
+            tilePosition.rotateTile();
+            if (tilePosition.matches()) {
+                console.log("Matched: " + tilePosition.toString());
+                const unusedTilesNow = untriedTiles.concat(rejectedTiles);
+                if (this.nextTilePosition(emptyTilePositions, unusedTilesNow)) {
+                    return true;
+                }
+            }
+            tilePosition.rotateTile();
+            if (tilePosition.matches()) {
+                console.log("Matched: " + tilePosition.toString());
+                const unusedTilesNow = untriedTiles.concat(rejectedTiles);
+                if (this.nextTilePosition(emptyTilePositions, unusedTilesNow)) {
+                    return true;
+                }
+            }
+            console.log("No Match: " + tilePosition.toString());
+            tilePosition.removeTile();
+            rejectedTiles.push(tile);
         }
+        console.log("No Tile: " + tilePosition.toString());
+        emptyTilePositions.unshift(tilePosition);
         return false;
     }
 
     nextState(): TilePosition | null {
-        console.log(this._tilePool.toString());
-        console.log(this._tetrahedron.toString());
         this.nextTilePosition(this._emptyTilePositions, this._unusedTiles);
-        console.log(this._tilePool.toString());
-        console.log(this._tetrahedron.toString());
         return null;
     }
 
