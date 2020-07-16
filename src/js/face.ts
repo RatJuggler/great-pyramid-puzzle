@@ -62,15 +62,6 @@ export class Face {
         return faceIntegrity;
     }
 
-    toString(): string {
-        let faceString = `Face: ${this._name}, Tile Positions: ${this.tilePositionCount}, Joins: `;
-        this._joins.forEach((join, side) =>
-            faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
-        faceString += '\n';
-        this._tilePositions.forEach(tilePosition => faceString += tilePosition.toString() + '\n');
-        return faceString;
-    }
-
     get id(): string {
         return "face" + this._name;
     }
@@ -115,7 +106,7 @@ export class Face {
         });
     }
 
-    private get emptyTilePositions(): TilePosition[] {
+    get emptyTilePositions(): TilePosition[] {
         return Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.isEmpty());
     }
 
@@ -137,6 +128,15 @@ export class Face {
 
     placeTileSequentially(tile: Tile): TilePosition {
         return this.placeTile(tile, 0);
+    }
+
+    toString(): string {
+        let faceString = `Face: ${this._name}, Tile Positions: ${this.tilePositionCount}, Joins: `;
+        this._joins.forEach((join, side) =>
+            faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
+        faceString += '\n';
+        this._tilePositions.forEach(tilePosition => faceString += tilePosition.toString() + '\n');
+        return faceString;
     }
 
 }

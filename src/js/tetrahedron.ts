@@ -67,6 +67,12 @@ export class Tetrahedron {
         return this._name;
     }
 
+    get emptyTilePositions(): Array<TilePosition> {
+        let tilePositions: Array<TilePosition> = [];
+        this._faces.forEach((face) => tilePositions = tilePositions.concat(face.emptyTilePositions))
+        return tilePositions;
+    }
+
     private get facesWithEmptyPositions(): Face[] {
         const emptyFaces = Array.from(this._faces.values()).filter(face => face.hasEmptyTilePositions());
         if (emptyFaces.length === 0) {

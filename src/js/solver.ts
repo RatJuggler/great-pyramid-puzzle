@@ -1,7 +1,8 @@
 import { Tetrahedron } from "./tetrahedron";
+import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
-import { getTileSelection, placeTile} from "./app-options";
+import { getTileSelection, placeTile } from "./app-options";
 
 
 interface Solver {
@@ -32,12 +33,11 @@ class NoMatchingSolver extends SolverBase {
     }
 
     nextState(): TilePosition | null {
-        const tile = getTileSelection(this._tilePool, this._tileSelection);
-        if (tile) {
-            return  placeTile(tile, this._tetrahedron, this._tilePlacement, this._tileRotation);
-        } else {
+        if (this._tilePool.isEmpty) {
             return null;
         }
+        const tile = getTileSelection(this._tilePool, this._tileSelection);
+        return placeTile(tile, this._tetrahedron, this._tilePlacement, this._tileRotation);
     }
 
 }
@@ -45,13 +45,64 @@ class NoMatchingSolver extends SolverBase {
 
 class BruteForceSolver extends SolverBase {
 
-    nextState(): TilePosition | null {
-        const tile = this._tilePool.nextTile;
-        if (tile) {
-            return this._tetrahedron.placeTileSequentially(tile);
-        } else {
-            return null;
+    private _emptyTilePositions: Array<TilePosition>;
+    private _unusedTiles: Array<Tile> = [];
+
+    constructor(tetrahedron: Tetrahedron, tilePool: TilePool) {
+        super(tetrahedron, tilePool);
+        this._emptyTilePositions = this._tetrahedron.emptyTilePositions;
+        while (!this._tilePool.isEmpty) {
+            this._unusedTiles.push(this._tilePool.nextTile);
         }
+    }
+
+    findTileToPlace(tilePosition: TilePosition, untriedTiles: Array<Tile>, rejectedTiles: Array<Tile>): void {
+        while (untriedTiles.length > 0) {
+            const tile = untriedTiles.shift()!;
+            tilePosition.placeTile(tile);
+            if (!tilePosition.matches()) {
+                tilePosition.rotateTile();
+                if (!tilePosition.matches()) {
+                    tilePosition.rotateTile();
+                    if (!tilePosition.matches()) {
+                        tilePosition.removeTile();
+                        rejectedTiles.push(tile);
+                        continue;
+                    }
+                }
+            }
+            break;
+        }
+    }
+
+    nextTilePosition(emptyTilePositions: Array<TilePosition>, unusedTiles: Array<Tile>): boolean {
+        if (emptyTilePositions.length === 0) {
+            return true;
+        }
+        const tilePosition = emptyTilePositions.shift()!;
+        const untriedTiles = [...unusedTiles];
+        const rejectedTiles = new Array<Tile>();
+        while (untriedTiles.length > 0) {
+            this.findTileToPlace(tilePosition, untriedTiles, rejectedTiles);
+            if (!tilePosition.isEmpty()) {
+                const unusedTilesNow = untriedTiles.concat(rejectedTiles);
+                if (this.nextTilePosition(emptyTilePositions, unusedTilesNow)) {
+                    return true;
+                }
+                const tile = tilePosition.removeTile();
+                rejectedTiles.push(tile);
+            }
+        }
+        return false;
+    }
+
+    nextState(): TilePosition | null {
+        console.log(this._tilePool.toString());
+        console.log(this._tetrahedron.toString());
+        this.nextTilePosition(this._emptyTilePositions, this._unusedTiles);
+        console.log(this._tilePool.toString());
+        console.log(this._tetrahedron.toString());
+        return null;
     }
 
 }

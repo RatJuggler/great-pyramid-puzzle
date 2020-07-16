@@ -34,7 +34,7 @@ describe("SolverBase behaviour using MockSolver", function () {
     describe("if the #nextState() placeholder is called", function () {
 
         context("on a properly instantiated instance", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE, "test");
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             const solver = new MockSolver(components.tetrahedron, components.tilePool);
             it("should return null", function () {
                 expect(solver.nextState()).to.be.null;
@@ -50,7 +50,7 @@ describe("NoMatchingSolver behaviour", function () {
     describe("if #nextState() is called", function () {
 
         context("on an instance instantiated for the test puzzle", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE, "test");
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
                 "Random", "Random", "Random");
             it("should first return an instance of TilePosition", function () {
@@ -79,7 +79,7 @@ describe("BruteForceSolver behaviour", function () {
     describe("if #nextState() is called", function () {
 
         context("on a solved puzzle", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE, "test");
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             const solver = new BruteForceSolver(components.tetrahedron, components.tilePool);
             it("should return null", function () {
                 expect(solver.nextState()).to.be.null;
