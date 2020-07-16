@@ -26,10 +26,6 @@ export class TilePool {
         }
     }
 
-    get tileCount(): number {
-        return this._tiles.size;
-    }
-
     addTile(tileDetails: TileDefinition): boolean {
         if (this._tiles.has(tileDetails.tile)) {
             return false;
@@ -37,6 +33,14 @@ export class TilePool {
         const newTile = new Tile(tileDetails);
         this._tiles.set(newTile.id, newTile);
         return true;
+    }
+
+    get tileCount(): number {
+        return this._tiles.size;
+    }
+
+    get isEmpty(): boolean {
+        return this.tileCount === 0;
     }
 
     getTile(id: number): Tile {
@@ -48,32 +52,39 @@ export class TilePool {
         throw new Error(`Tile (${id}) not found in the tile pool!`);
     }
 
-    get nextTile(): Tile | null {
-        if (this._tiles.size === 0) {
-            return null;
+    get nextTile(): Tile {
+        if (this.isEmpty) {
+            throw new Error("No more Tiles in the pool!");
         }
         // Sort keys in ascending numerical order.
         const keys = Array.from(this._tiles.keys()).sort((a: number, b: number) => a - b);
         return this.getTile(keys[0]);
     }
 
-    get randomTile(): Tile | null {
-        if (this._tiles.size === 0) {
-            return null;
+    get randomTile(): Tile {
+        if (this.isEmpty) {
+            throw new Error("No more Tiles in the pool!");
         }
         const keys = Array.from(this._tiles.keys());
         const id = keys[getRandomInt(keys.length)];
         return this.getTile(id);
     }
 
-    get testTile(): Tile | null {
-        if (this._tiles.size === 0) {
-            return null;
+    get testTile(): Tile {
+        if (this.isEmpty) {
+            throw new Error("No more Tiles in the pool!");
         }
         // Discard a random tile.
         this.randomTile;
         // Always return the same test tile.
         return TilePool.TEST_TILE;
+    }
+
+    returnTile(tile: Tile): void {
+        if (this._tiles.has(tile.id)) {
+            throw new Error("Returned Tile already in the pool!");
+        }
+        this._tiles.set(tile.id, tile);
     }
 
     toString(): string {

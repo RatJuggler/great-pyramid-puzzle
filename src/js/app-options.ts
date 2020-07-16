@@ -23,7 +23,7 @@ function getPuzzleTypeData(puzzleType: string): PuzzleDataElements {
     }
 }
 
-function getTileSelection(tilePool: TilePool, tileSelection: string): Tile | null {
+function getTileSelection(tilePool: TilePool, tileSelection: string): Tile {
     switch (tileSelection) {
         case "Random":
             return tilePool.randomTile;

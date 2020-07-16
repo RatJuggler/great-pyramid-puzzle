@@ -92,6 +92,66 @@ describe("TilePool behavior", function () {
 
     });
 
+    describe("if #tileCount() is called to find the number of Tiles left in the TilePool", function () {
+
+        context("on a newly instantiated TilePool", function () {
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
+            it("should return the total number of initial Tiles", function () {
+                expect(tilePool.tileCount).to.equal(validTileData.totalNumberOfTiles);
+            });
+        });
+
+        context("after two Tiles have been removed form the TilePool", function () {
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
+            tilePool.nextTile;
+            tilePool.nextTile;
+            it("should return the number of Tiles left", function () {
+                expect(tilePool.tileCount).to.equal(validTileData.totalNumberOfTiles - 2);
+            });
+        });
+
+        context("and the TilePool is empty", function () {
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
+            for (let i = 0; i < validTileData.totalNumberOfTiles; i++) {
+                tilePool.nextTile;
+            }
+            it("should return 0", function () {
+                expect(tilePool.tileCount).to.equal(0);
+            });
+        });
+
+    });
+
+    describe("if #isEmpty() is called to check if there are any Tile left in the TilePool", function () {
+
+        context("on a newly instantiated TilePool", function () {
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
+            it("should return false", function () {
+                expect(tilePool.isEmpty).to.be.false;
+            });
+        });
+
+        context("after two Tiles have been removed form the TilePool", function () {
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
+            tilePool.nextTile;
+            tilePool.nextTile;
+            it("should return false", function () {
+                expect(tilePool.isEmpty).to.be.false;
+            });
+        });
+
+        context("and the TilePool is empty", function () {
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
+            for (let i = 0; i < validTileData.totalNumberOfTiles; i++) {
+                tilePool.nextTile;
+            }
+            it("should return true", function () {
+                expect(tilePool.isEmpty).to.be.true;
+            });
+        });
+
+    });
+
     describe("if #getTile() is called with the id of a Tile to obtain from the TilePool", function () {
 
         context("when there is a Tile with the given id already in the TilePool", function () {
@@ -102,7 +162,6 @@ describe("TilePool behavior", function () {
                 expect(tilePool.toString()).to.equal(validTilePoolToString);
             });
             it("should return the Tile details", function () {
-                expect(tile).to.be.an.instanceOf(Tile);
                 expect(tile).to.eql(TILE_1);
             });
         });
@@ -131,9 +190,8 @@ describe("TilePool behavior", function () {
 
         context("when no Tiles have previously been selected from the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
-            const tile = tilePool.nextTile!;
+            const tile = tilePool.nextTile;
             it("should return the first Tile (in order)", function () {
-                expect(tile).to.be.an.instanceOf(Tile);
                 expect(tile.id).to.equal(1);
             });
             it("should remove the Tile from the pool", function () {
@@ -145,15 +203,12 @@ describe("TilePool behavior", function () {
 
         context("when there are Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
-            const tile1 = tilePool.nextTile!;
-            const tile2 = tilePool.nextTile!;
-            const tile3 = tilePool.nextTile!;
+            const tile1 = tilePool.nextTile;
+            const tile2 = tilePool.nextTile;
+            const tile3 = tilePool.nextTile;
             it("should return the Tiles (in order) from those remaining", function () {
-                expect(tile1).to.be.an.instanceOf(Tile);
                 expect(tile1.id).to.equal(1);
-                expect(tile2).to.be.an.instanceOf(Tile);
                 expect(tile2.id).to.equal(2);
-                expect(tile3).to.be.an.instanceOf(Tile);
                 expect(tile3.id).to.equal(3);
             });
             it("should remove the Tiles from the pool", function () {
@@ -171,11 +226,13 @@ describe("TilePool behavior", function () {
 
         context("when there are no Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
-            for (let i = 0; i < validTileData.totalNumberOfTiles; i++) {
-                assert.instanceOf(tilePool.nextTile, Tile);
+            while (!tilePool.isEmpty) {
+                tilePool.nextTile;
             }
-            it("should return null", function () {
-                expect(tilePool.nextTile).to.be.null;
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePool.nextTile;
+                }).to.throw(Error, "No more Tiles in the pool!");
             });
         });
 
@@ -185,7 +242,7 @@ describe("TilePool behavior", function () {
 
         context("when there are Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
-            const tile = tilePool.randomTile!;
+            const tile = tilePool.randomTile;
             it("should return a random Tile from those remaining", function () {
                 expect(tile).to.be.an.instanceOf(Tile);
             });
@@ -198,11 +255,13 @@ describe("TilePool behavior", function () {
 
         context("when there are no Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
-            for (let i = 0; i < validTileData.totalNumberOfTiles; i++) {
-                assert.instanceOf(tilePool.randomTile, Tile);
+            while (!tilePool.isEmpty) {
+                tilePool.randomTile;
             }
-            it("should return null", function () {
-                expect(tilePool.randomTile).to.be.null;
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePool.randomTile;
+                }).to.throw(Error, "No more Tiles in the pool!");
             });
         });
 
@@ -213,9 +272,8 @@ describe("TilePool behavior", function () {
         context("while there are Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
             for (let i = 0; i < validTileData.totalNumberOfTiles; i++) {
-                const tile = tilePool.testTile!;
+                const tile = tilePool.testTile;
                 it("should always return the display test Tile", function () {
-                    expect(tile).to.be.an.instanceOf(Tile);
                     expect(tile.id).to.equal(0);
                 });
             }
@@ -223,11 +281,37 @@ describe("TilePool behavior", function () {
 
         context("when there are no Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
-            for (let i = 0; i < validTileData.totalNumberOfTiles; i++) {
-                assert.instanceOf(tilePool.testTile, Tile);
+            while (!tilePool.isEmpty) {
+                tilePool.testTile;
             }
-            it("should return null", function () {
-                expect(tilePool.testTile).to.be.null;
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePool.testTile;
+                }).to.throw(Error, "No more Tiles in the pool!");
+            });
+        });
+
+    });
+
+    describe("if #returnTile() is called to return a Tile to the TilePool", function () {
+
+        context("and the Tile is not already in the pool", function () {
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
+            const tile = tilePool.randomTile;
+            tilePool.returnTile(tile);
+            it("should return the Tile to the pool", function () {
+                expect(tilePool.getTile(tile.id)).to.eql(tile);
+            });
+        });
+
+        context("and the Tile is already in the TilePool", function () {
+            const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
+            const tile = tilePool.randomTile;
+            tilePool.returnTile(tile);
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePool.returnTile(tile);
+                }).to.throw(Error, "Returned Tile already in the pool!");
             });
         });
 

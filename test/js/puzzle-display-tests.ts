@@ -41,9 +41,9 @@ describe("Puzzle display functionality", function () {
             const document = window.document;
             registerWindow(window, document);
             const puzzle = getPuzzleComponents(puzzleTypeData, document.documentElement)
-            const tile1 = puzzle.tilePool.randomTile!;
+            const tile1 = puzzle.tilePool.randomTile;
             assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile1));
-            const tile2 = puzzle.tilePool.randomTile!;
+            const tile2 = puzzle.tilePool.randomTile;
             assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile2));
             const canvas = puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
             console.log(canvas.svg());
@@ -60,10 +60,9 @@ describe("Puzzle display functionality", function () {
             const document = window.document;
             registerWindow(window, document);
             const puzzle = getPuzzleComponents(puzzleTypeData, document.documentElement)
-            let tile = puzzle.tilePool.randomTile;
-            while (tile) {
+            while (!puzzle.tilePool.isEmpty) {
+                let tile = puzzle.tilePool.randomTile;
                 assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile));
-                tile = puzzle.tilePool.randomTile;
             }
             const canvas = puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
             console.log(canvas.svg());

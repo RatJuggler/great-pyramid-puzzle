@@ -136,10 +136,9 @@ describe("Tetrahedron behaviour", function () {
             const tetrahedron =
                 new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
-            let tile = tilePool.randomTile;
-            while (tile) {
+            while (!tilePool.isEmpty) {
+                let tile = tilePool.randomTile;
                 assert.isNotNull(tetrahedron.placeTileRandomly(tile));
-                tile = tilePool.randomTile;
             }
             it("should throw an error", function () {
                 expect(function () {
@@ -189,10 +188,9 @@ describe("Tetrahedron behaviour", function () {
             const tetrahedron =
                 new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
-            let tile = tilePool.randomTile;
-            while (tile) {
+            while (!tilePool.isEmpty) {
+                let tile = tilePool.randomTile;
                 assert.isNotNull(tetrahedron.placeTileSequentially(tile));
-                tile = tilePool.randomTile;
             }
             it("should throw an error", function () {
                 expect(function () {
