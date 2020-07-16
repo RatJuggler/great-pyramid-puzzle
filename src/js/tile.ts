@@ -44,10 +44,7 @@ export class Tile {
     }
 
     toString(): string {
-        return `Id: ${this._id}, ` +
-            `Side-A: ${this.getSideSegments(Side.SideA)}, ` +
-            `Side-B: ${this.getSideSegments(Side.SideB)}, ` +
-            `Side-C: ${this.getSideSegments(Side.SideC)}`;
+        return this.toStringRotated(Side.SideA, Side.SideB, Side.SideC);
     }
 
     toStringRotated(side1: Side, side2: Side, side3: Side): string {
