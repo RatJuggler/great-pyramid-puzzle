@@ -1,9 +1,13 @@
+import { testPuzzle } from "../../src/js/test-puzzle";
+import { pocketPuzzle } from "../../src/js/pocket-puzzle";
+import { greatPuzzle } from "../../src/js/great-puzzle";
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { getPuzzleTypeData, getTileSelection, placeTile } from "../../src/js/app-options";
+import { Tile } from "../../src/js/tile";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { VALID_TEST_PUZZLE } from "./common-test-data";
+import { VALID_TEST_PUZZLE} from "./common-test-data";
 
 
 describe("#getPuzzleTypeData behaviour", function () {
@@ -18,9 +22,31 @@ describe("#getPuzzleTypeData behaviour", function () {
             });
         });
 
+        context("with puzzle type argument 'Test'", function () {
+            it("should return the Test puzzle data", function () {
+                const result = getPuzzleTypeData("Test");
+                expect(result).to.eql(testPuzzle);
+            });
+        });
+
+        context("with puzzle type argument 'Pocket'", function () {
+            it("should return the Pocket puzzle data", function () {
+                const result = getPuzzleTypeData("Pocket");
+                expect(result).to.eql(pocketPuzzle);
+            });
+        });
+
+        context("with puzzle type argument 'Great'", function () {
+            it("should return the Great puzzle data", function () {
+                const result = getPuzzleTypeData("Great");
+                expect(result).to.eql(greatPuzzle);
+            });
+        });
+
     });
 
 });
+
 
 describe("#getTileSelection behaviour", function () {
 
@@ -35,9 +61,34 @@ describe("#getTileSelection behaviour", function () {
             });
         });
 
+        context("with the Tile Selection argument 'Random'", function () {
+            it("should return a random Tile", function () {
+                const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+                const tile = getTileSelection(components.tilePool, "Random");
+                expect(tile).to.be.an.instanceOf(Tile);
+            });
+        });
+
+        context("with the Tile Selection argument 'Sequential'", function () {
+            it("should return the first sequential Tile", function () {
+                const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+                const tile = getTileSelection(components.tilePool, "Sequential");
+                expect(tile.id).to.equal(1);
+            });
+        });
+
+        context("with the Tile Selection argument 'Test'", function () {
+            it("should return the test Tile", function () {
+                const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+                const tile = getTileSelection(components.tilePool, "Test");
+                expect(tile.id).to.equal(0);
+            });
+        });
+
     });
 
 });
+
 
 describe("#placeTile() behaviour", function () {
 
