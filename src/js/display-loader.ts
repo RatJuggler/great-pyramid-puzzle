@@ -19,7 +19,7 @@ function getDisplayData(puzzleType: string): DisplayData {
 }
 
 function getDisplayManager(displayElement: string | HTMLElement, displayData: DisplayData | string) {
-    if (displayData instanceof String) {
+    if (typeof(displayData) === "string") {
         displayData = getDisplayData(<string> displayData);
     }
     return new DisplayManager(displayElement, <DisplayData> displayData);
