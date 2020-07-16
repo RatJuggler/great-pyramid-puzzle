@@ -111,7 +111,7 @@ describe("Tetrahedron behaviour", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_1);
+                expect(result.tile).to.equal(TILE_1);
             });
         });
 
@@ -128,7 +128,7 @@ describe("Tetrahedron behaviour", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_2);
+                expect(result.tile).to.equal(TILE_2);
             });
         });
 
@@ -141,12 +141,10 @@ describe("Tetrahedron behaviour", function () {
                 assert.isNotNull(tetrahedron.placeTileRandomly(tile));
                 tile = tilePool.randomTile;
             }
-            const result = tetrahedron.placeTileRandomly(TILE_1);
-            it("should not be placed", function () {
-                expect(tetrahedron.toString()).to.not.contain(TILE_1.toString());
-            });
-            it("should return null", function () {
-                expect(result).to.be.null;
+            it("should throw an error", function () {
+                expect(function () {
+                    tetrahedron.placeTileRandomly(TILE_1);
+                }).to.throw(Error, "No empty TilePositions on the Tetrahedron!");
             });
         });
 
@@ -166,7 +164,7 @@ describe("Tetrahedron behaviour", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_1);
+                expect(result.tile).to.equal(TILE_1);
             });
         });
 
@@ -183,7 +181,7 @@ describe("Tetrahedron behaviour", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_2);
+                expect(result.tile).to.equal(TILE_2);
             });
         });
 
@@ -196,12 +194,10 @@ describe("Tetrahedron behaviour", function () {
                 assert.isNotNull(tetrahedron.placeTileSequentially(tile));
                 tile = tilePool.randomTile;
             }
-            const result = tetrahedron.placeTileSequentially(TILE_1);
-            it("should not be placed", function () {
-                expect(tetrahedron.toString()).to.not.contain(TILE_1.toString());
-            });
-            it("should return null", function () {
-                expect(result).to.be.null;
+            it("should throw an error", function () {
+                expect(function () {
+                    tetrahedron.placeTileSequentially(TILE_1);
+                }).to.throw(Error, "No empty TilePositions on the Tetrahedron!");
             });
         });
 

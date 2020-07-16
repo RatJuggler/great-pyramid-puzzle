@@ -67,8 +67,12 @@ export class Tetrahedron {
         return this._name;
     }
 
-    private get facesWithEmptyPositions() {
-        return Array.from(this._faces.values()).filter(face => face.hasEmptyTilePositions());
+    private get facesWithEmptyPositions(): Face[] {
+        const emptyFaces = Array.from(this._faces.values()).filter(face => face.hasEmptyTilePositions());
+        if (emptyFaces.length === 0) {
+            throw new Error("No empty TilePositions on the Tetrahedron!");
+        }
+        return emptyFaces;
     }
 
     getFace(name: string): Face {
@@ -78,20 +82,13 @@ export class Tetrahedron {
         throw new Error(`Face (${name}) not found on Tetrahedron!`);
     }
 
-    placeTileRandomly(tile: Tile): TilePosition | null {
+    placeTileRandomly(tile: Tile): TilePosition {
         const emptyFaces = this.facesWithEmptyPositions;
-        if (emptyFaces.length === 0) {
-            return null;
-        }
         return emptyFaces[getRandomInt(emptyFaces.length)].placeTileRandomly(tile);
     }
 
-    placeTileSequentially(tile: Tile): TilePosition | null {
-        const emptyFaces = this.facesWithEmptyPositions;
-        if (emptyFaces.length === 0) {
-            return null;
-        }
-        return emptyFaces[0].placeTileSequentially(tile);
+    placeTileSequentially(tile: Tile): TilePosition {
+        return this.facesWithEmptyPositions[0].placeTileSequentially(tile);
     }
 
     toString(): string {

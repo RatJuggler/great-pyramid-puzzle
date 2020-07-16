@@ -123,19 +123,19 @@ export class Face {
         return this.emptyTilePositions.length > 0;
     }
 
-    private placeTile(tile: Tile, position: number): TilePosition | null {
+    private placeTile(tile: Tile, position: number): TilePosition {
         const emptyPositions = this.emptyTilePositions;
         if (emptyPositions.length === 0) {
-            return null;
+            throw new Error("No empty TilePositions on the Face!");
         }
         return emptyPositions[position].placeTile(tile);
     }
 
-    placeTileRandomly(tile: Tile): TilePosition | null {
+    placeTileRandomly(tile: Tile): TilePosition {
         return this.placeTile(tile, getRandomInt(this.emptyTilePositions.length));
     }
 
-    placeTileSequentially(tile: Tile): TilePosition | null {
+    placeTileSequentially(tile: Tile): TilePosition {
         return this.placeTile(tile, 0);
     }
 
