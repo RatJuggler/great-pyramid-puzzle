@@ -14,9 +14,6 @@ describe("Puzzle data sources behaviour", function () {
         it("should have tile data", function () {
             expect(testPuzzle).to.haveOwnProperty("tileData");
         });
-        it("should have display data", function () {
-            expect(testPuzzle).to.haveOwnProperty("displayData");
-        });
     })
 
     context("for the Pocket Puzzle", function () {
@@ -26,9 +23,6 @@ describe("Puzzle data sources behaviour", function () {
         it("should have tile data", function () {
             expect(pocketPuzzle).to.haveOwnProperty("tileData");
         });
-        it("should have display data", function () {
-            expect(pocketPuzzle).to.haveOwnProperty("displayData");
-        });
     })
 
     context("for the Great Puzzle", function () {
@@ -37,9 +31,6 @@ describe("Puzzle data sources behaviour", function () {
         });
         it("should have tile data", function () {
             expect(greatPuzzle).to.haveOwnProperty("tileData");
-        });
-        it("should have display data", function () {
-            expect(greatPuzzle).to.haveOwnProperty("displayData");
         });
     })
 

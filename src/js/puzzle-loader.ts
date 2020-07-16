@@ -3,8 +3,6 @@ import { TileData } from "./tile-data-schema";
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
 import { PuzzleDataElements, PuzzleComponents } from "./common-data-schema";
-import { DisplayData } from "./display-data-schema";
-import { DisplayManager } from "./display";
 
 
 function getTilePool(tileData: TileData): TilePool {
@@ -20,11 +18,7 @@ function getTetrahedron(layoutData: LayoutData): Tetrahedron {
     return tetrahedron;
 }
 
-function getDisplayManager(displayElement: string | HTMLElement, displayData: DisplayData) {
-    return new DisplayManager(displayElement, displayData);
-}
-
-function getPuzzleComponents(puzzleTypeData: PuzzleDataElements, displayElement: string | HTMLElement): PuzzleComponents {
+function getPuzzleComponents(puzzleTypeData: PuzzleDataElements): PuzzleComponents {
     const tilePool = getTilePool(puzzleTypeData.tileData);
     const tetrahedron = getTetrahedron(puzzleTypeData.layoutData);
     if (tilePool.tileCount !== tetrahedron.tilePositionCount) {
@@ -32,8 +26,7 @@ function getPuzzleComponents(puzzleTypeData: PuzzleDataElements, displayElement:
     }
     return {
         tilePool: tilePool,
-        tetrahedron: tetrahedron,
-        displayManager: getDisplayManager(displayElement, puzzleTypeData.displayData)
+        tetrahedron: tetrahedron
     }
 }
 

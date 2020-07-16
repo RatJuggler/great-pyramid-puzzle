@@ -28,7 +28,7 @@ describe("#getTileSelection behaviour", function () {
 
         context("with an invalid tile selection", function () {
             it("should throw an error", function () {
-                const components = getPuzzleComponents(VALID_TEST_PUZZLE, "test");
+                const components = getPuzzleComponents(VALID_TEST_PUZZLE);
                 expect(function () {
                     getTileSelection(components.tilePool, "error");
                 }).to.throw(Error, "Invalid tile selection option!");
@@ -45,7 +45,7 @@ describe("#placeTile() behaviour", function () {
 
         context("with an invalid tile placement", function () {
             it("should throw an error", function () {
-                const components = getPuzzleComponents(VALID_TEST_PUZZLE, "test");
+                const components = getPuzzleComponents(VALID_TEST_PUZZLE);
                 expect(function () {
                     placeTile(components.tilePool.nextTile!, components.tetrahedron, "error", "Random");
                 }).to.throw(Error, "Invalid tile placement option!");
@@ -54,7 +54,7 @@ describe("#placeTile() behaviour", function () {
 
         context("with an invalid tile rotation", function () {
             it("should throw an error", function () {
-                const components = getPuzzleComponents(VALID_TEST_PUZZLE, "test");
+                const components = getPuzzleComponents(VALID_TEST_PUZZLE);
                 expect(function () {
                     placeTile(components.tilePool.nextTile!, components.tetrahedron, "Random", "error");
                 }).to.throw(Error, "Invalid tile rotation option!");

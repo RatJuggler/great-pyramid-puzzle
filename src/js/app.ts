@@ -1,6 +1,8 @@
 import { getPuzzleTypeData, createSolverPromise } from "./app-options";
 import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
+import { getDisplayManager } from "./display-loader";
+import { DisplayManager } from "./display";
 import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
 
 
@@ -18,7 +20,7 @@ function getSelector(name: string): string {
     throw new Error("Expected radio option to be selected!");
 }
 
-function attachRotateEvents(puzzle: PuzzleComponents): void {
+function attachRotateEvents(puzzle: PuzzleComponents, displayManager: DisplayManager): void {
     document.querySelectorAll("g")
         .forEach(function (svgGroup) {
             const tpId = svgGroup.id.match(/^([1-4])-([1-9])$/);
@@ -27,35 +29,35 @@ function attachRotateEvents(puzzle: PuzzleComponents): void {
                     const tilePosition = puzzle.tetrahedron.getFace(tpId[1]).getTilePosition(tpId[2]);
                     if (!tilePosition.isEmpty()) {
                         tilePosition.rotateTile();
-                        puzzle.displayManager.rotateTile(<HTMLElement> e.target);
+                        displayManager.rotateTile(<HTMLElement> e.target);
                     }
                 });
             }
         });
 }
 
-function animateSolve(puzzle: PuzzleComponents, solver: Solver): void {
+function animateSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: DisplayManager): void {
     // Schedule a series of events to place tiles on the puzzle.
     animatedDisplayId = setTimeout( () => {
         const updatedTilePosition = solver.nextState();
         if (updatedTilePosition) {
-            puzzle.displayManager.redrawTilePosition(updatedTilePosition!);
-            animateSolve(puzzle, solver);
+            displayManager.redrawTilePosition(updatedTilePosition!);
+            animateSolve(puzzle, solver, displayManager);
         } else {
-            attachRotateEvents(puzzle);
+            attachRotateEvents(puzzle, displayManager);
         }
     }, 1000);
 }
 
-function completeSolve(puzzle: PuzzleComponents, solver: Solver): void {
+function completeSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: DisplayManager): void {
     // Set the overlay to prevent further UI interaction.
     showElement("overlay");
     // Start the solving process.
     const solving = createSolverPromise(solver);
     solving.promise.then((resolvedValue) => {
         // Show the final puzzle state and attach the rotate events.
-        puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
-        attachRotateEvents(puzzle);
+        displayManager.displayPuzzle(puzzle.tetrahedron);
+        attachRotateEvents(puzzle, displayManager);
         // Remove the overlay.
         hideElement("overlay");
         return resolvedValue;
@@ -91,24 +93,28 @@ function solvePuzzle(): void {
     if (animatedDisplayId) {
         clearInterval(animatedDisplayId);
     }
+    // Determine the type of puzzle.
+    const puzzleType = getSelector("puzzle-type");
     // Determine the data required for the puzzle.
-    const puzzleTypeData = getPuzzleTypeData(getSelector("puzzle-type"));
+    const puzzleTypeData = getPuzzleTypeData(puzzleType);
+    // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
+    const puzzle = getPuzzleComponents(puzzleTypeData);
     // Find where we want the puzzle displayed.
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
-    // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
-    const puzzle = getPuzzleComponents(puzzleTypeData, displayElement);
+    // Build a display manager.
+    const displayManager = getDisplayManager(displayElement, puzzleType)
     // Show the initial puzzle state.
-    puzzle.displayManager.displayPuzzle(puzzle.tetrahedron);
+    displayManager.displayPuzzle(puzzle.tetrahedron);
     // Build the solver to use.
     const solver = getSolveAlgorithm(puzzle);
     // Solve the puzzle depending on the display.
     const display = getSelector("puzzle-display");
     switch (display) {
         case "Completed":
-            completeSolve(puzzle, solver);
+            completeSolve(puzzle, solver, displayManager);
             break;
         case "Animated":
-            animateSolve(puzzle, solver);
+            animateSolve(puzzle, solver, displayManager);
             break;
         default:
             throw new Error("Invalid solve display option!");
