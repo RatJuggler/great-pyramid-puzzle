@@ -35,11 +35,22 @@ html, body {
 header {
   position: fixed;
   top: 0;
-  display: flex;
   z-index: 3;
+  display: flex;
   font-size: 2em;
   margin: .25em 0 .25em 8px;
   white-space: nowrap;
+}
+
+#github {
+  position: fixed;
+  right: 0;
+  font-size: .75em;
+  padding: .25em;
+  text-decoration: none;
+}
+#github:hover {
+  background-color: #E6E6E6;
 }
 
 .content {
