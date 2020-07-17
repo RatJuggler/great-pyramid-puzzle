@@ -19,11 +19,11 @@ html, body {
   padding-left: 0;
 }
 #layout.active #menu {
-  left: 150px;
-  width: 150px;
+  left: 160px;
+  width: 160px;
 }
 #layout.active .menu-link {
-  left: 150px;
+  left: 160px;
 }
 
 /* The main content area. */
@@ -49,7 +49,7 @@ footer {
   position: fixed;
   bottom: 0;
   z-index: 3;
-  font-size: 1.5em;
+  font-size: 1.25em;
   margin: .25em 0 .25em 8px;
   white-space: nowrap;
 }
@@ -57,8 +57,8 @@ footer {
 /* The menu that appears on the left side of the page. */
 
 #menu {
-  margin-left: -150px;
-  width: 150px;
+  margin-left: -160px;
+  width: 160px;
   position: fixed;
   top: 0;
   left: 0;
@@ -101,13 +101,16 @@ footer {
   padding: .5em .67em;
   width: 100%
 }
+.selector label:hover {
+  background: #AAAAAA;
+}
 .selector label.disable {
-  color: #ACACAC;
+  color: #888888;
   cursor: default;
 }
 .selector input[type=radio]:checked + label {
   color: #E6E6E6;
-  background-color: #675f6b;
+  background-color: #675F6B;
 }
 
 /* Dynamic button to show/hide the menu. */
@@ -115,14 +118,13 @@ footer {
 .menu-link {
   display: inline-block;
   z-index: 10;
-  background: #777777;
+  background: #000000;
   width: 1em;
   padding: 0 .5em;
   margin-right: 0.25em;
 }
-.menu-link:hover,
-.menu-link:focus {
-  background: #000000;
+.menu-link:hover {
+  background: #E6E6E6;
 }
 .menu-link div {
   height: 3px;
@@ -135,22 +137,22 @@ footer {
 @media (min-width: 48em) {
 
   #layout {
-    padding-left: 150px;
+    padding-left: 160px;
     left: 0;
   }
 
   #menu {
-    left: 150px;
+    left: 160px;
   }
 
   .menu-link {
     position: fixed;
-    left: 150px;
+    left: 160px;
     display: none;
   }
 
   #layout.active .menu-link {
-    left: 150px;
+    left: 160px;
   }
 
 }
@@ -159,7 +161,7 @@ footer {
 
   #layout.active {
     position: relative;
-    left: 150px;
+    left: 160px;
   }
 
   header a {
