@@ -147,10 +147,10 @@ document.getElementById("option-solve")!.addEventListener("click", () => toggleO
 function toggleMenu(): void {
     toggleActive("layout");
     toggleActive("menu");
-    toggleActive("menuLink");
+    toggleActive("menu-toggle");
 }
 
-document.getElementById("menuLink")!.addEventListener('click', () => toggleMenu());
+document.getElementById("menu-toggle")!.addEventListener('click', () => toggleMenu());
 
 function addStatusInfoEvent(id: string, statusInfo: string) {
     const element = document.getElementById(id);
