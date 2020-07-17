@@ -161,12 +161,11 @@ export class DisplayManager {
             });
     }
 
-    rotateTile(tpElement: HTMLElement): void {
-        // Take the tile position element and get the center data.
+    rotateTile(tpElement: SVGGElement): void {
         const tpGroup = SVG(tpElement) as G;
         const tpCenter = tpGroup.dom.tpCenter;
         // Rotate the child tile group.
-        const tGroup = SVG(tpElement.children[1]) as G;
+        const tGroup = SVG(tpGroup.children()[1]) as G;
         // @ts-ignore
         tGroup.animate({duration: 1000, ease: "<>"}).rotate(120, tpCenter.x, tpCenter.y);
     }

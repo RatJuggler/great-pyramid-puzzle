@@ -25,11 +25,11 @@ function attachRotateEvents(puzzle: PuzzleComponents, displayManager: DisplayMan
         .forEach(function (svgGroup) {
             const tpId = svgGroup.id.match(/^([1-4])-([1-9])$/);
             if (tpId) {
-                svgGroup.addEventListener("click", (e) => {
+                svgGroup.addEventListener("click", () => {
                     const tilePosition = puzzle.tetrahedron.getFace(tpId[1]).getTilePosition(tpId[2]);
                     if (!tilePosition.isEmpty()) {
                         tilePosition.rotateTile();
-                        displayManager.rotateTile(<HTMLElement> e.target);
+                        displayManager.rotateTile(svgGroup);
                     }
                 });
             }
