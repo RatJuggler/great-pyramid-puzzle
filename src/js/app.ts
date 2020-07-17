@@ -125,7 +125,7 @@ function toggleActive(id: string): void {
     document.getElementById(id)!.classList.toggle("active");
 }
 
-function swapOptions(): void {
+function toggleOptions(): void {
     const mainOption = getSelector("puzzle-option");
     switch (mainOption) {
         case "Test":
@@ -141,8 +141,8 @@ function swapOptions(): void {
     }
 }
 
-document.getElementById("option-test")!.addEventListener("click", () => swapOptions());
-document.getElementById("option-solve")!.addEventListener("click", () => swapOptions());
+document.getElementById("option-test")!.addEventListener("click", () => toggleOptions());
+document.getElementById("option-solve")!.addEventListener("click", () => toggleOptions());
 
 function toggleMenu(): void {
     toggleActive("layout");
