@@ -14,27 +14,18 @@
   <meta name="og:image" content="https://github.com/RatJuggler/great-pyramid-puzzle/blob/master/images/screenshot.png?raw=true">
 
   <link rel="stylesheet" href="../node_modules/purecss/build/pure.css">
-  <link rel="stylesheet" href="../node_modules/purecss/build/grids-responsive.css">
   <link rel="stylesheet" href="./css/main.css">
 </head>
 
 <body>
 
-<header class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-  <span class="pure-menu-heading">Solving The Great Pyramid Puzzle</span>
-  <ul class="pure-menu-list">
-    <li class="pure-menu-item pure-menu-selected">
-      <a href="https://github.com/RatJuggler/great-pyramid-puzzle" class="pure-menu-link">Github</a>
-    </li>
-  </ul>
-</header>
+<div id="layout">
 
-<div id="layout" class="pure-g">
-
-  <div class="sidebar pure-u-1 pure-u-md-1-8">
-    <div id="puzzle-options">
-      <ul id="puzzle-selection">
-        <li id="puzzle-type">
+  <div id="menu">
+    <div class="pure-menu">
+      <button id="go" class="pure-button">Go!</button>
+      <ul id="puzzle-selection" class="pure-menu-list">
+        <li id="puzzle-type" class="pure-menu-item">
           <p>Puzzle type:</p>
           <div class="selector">
             <input type="radio" id="puzzle-test" name="puzzle-type" value="Test" checked>
@@ -45,7 +36,7 @@
             <label for="puzzle-great">Great</label>
           </div>
         </li>
-        <li id="puzzle-display">
+        <li id="puzzle-display" class="pure-menu-item">
           <p>Display:</p>
           <div class="selector">
             <input type="radio" id="puzzle-completed" name="puzzle-display" value="Completed" checked>
@@ -54,7 +45,7 @@
             <label for="puzzle-animated">Animated</label>
           </div>
         </li>
-        <li id="puzzle-option">
+        <li id="puzzle-option" class="pure-menu-item">
           <p>Option:</p>
           <div class="selector">
             <input type="radio" id="option-test" name="puzzle-option" value="Test" checked>
@@ -64,8 +55,8 @@
           </div>
         </li>
       </ul>
-      <ul id="solve-puzzle">
-        <li id="solve-algorithm">
+      <ul id="solve-puzzle" class="pure-menu-list">
+        <li id="solve-algorithm" class="pure-menu-item">
           <p>Algorithm:</p>
           <div class="selector">
             <input type="radio" id="algorithm-brute" name="solve-algorithm" value="Brute" checked>
@@ -75,8 +66,8 @@
           </div>
         </li>
       </ul>
-      <ul id="test-puzzle">
-        <li id="tile-selection">
+      <ul id="test-puzzle" class="pure-menu-list">
+        <li id="tile-selection" class="pure-menu-item">
           <p>Tile selection:</p>
           <div class="selector">
             <input type="radio" id="selection-random" name="tile-selection" value="Random" checked>
@@ -87,7 +78,7 @@
             <label for="selection-test">Display Test</label>
           </div>
         </li>
-        <li id="tile-placement">
+        <li id="tile-placement" class="pure-menu-item">
           <p>Tile placement:</p>
           <div class="selector">
             <input type="radio" id="placement-random" name="tile-placement" value="Random" checked>
@@ -96,7 +87,7 @@
             <label for="placement-sequential">Sequential</label>
           </div>
         </li>
-        <li id="tile-rotation">
+        <li id="tile-rotation" class="pure-menu-item">
           <p>Tile rotation:</p>
           <div class="selector">
             <input type="radio" id="rotation-none" name="tile-rotation" value="None" checked>
@@ -106,21 +97,31 @@
           </div>
         </li>
       </ul>
-      <ul>
-        <li>
-          <button id="go" class="pure-button">Go!</button>
-        </li>
-      </ul>
     </div>
   </div>
 
-  <div class="content pure-u-1 pure-u-md-7-8">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="-90 -95 130 145" id="puzzle-display-area">
-      <!--SVG.js will add nodes in here...-->
-    </svg>
-    <footer class="pure-menu pure-menu-horizontal">
-      <span id="show-info" class="pure-menu-heading"></span>
+  <div id="main">
+
+    <header>
+      <a href="#menu" id="menuLink" class="menu-link">
+        <div></div>
+        <div></div>
+        <div></div>
+      </a>
+      <span>Solving The Great Pyramid Puzzle</span>
+      <a href="https://github.com/RatJuggler/great-pyramid-puzzle">Github</a>
+    </header>
+
+    <div class="content">
+      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="-90 -95 130 145" id="puzzle-display-area">
+        <!--SVG.js will add nodes in here...-->
+      </svg>
+    </div>
+
+    <footer>
+      <span id="show-info"></span>
     </footer>
+
   </div>
 
 </div>
@@ -130,6 +131,7 @@
 </div>
 
 <script src="./js/app.ts"></script>
+<script src="./js/ui.js"></script>
 
 </body>
 

@@ -2,46 +2,85 @@ html, body {
   height: 100%;
 }
 
-.home-menu {
-  font-size: 1.5em;
+/* Add transition to containers so they can push in and out. */
+
+#layout,
+#menu,
+.menu-link {
+  transition: all 0.2s ease-out;
 }
 
-.home-menu ul {
-  float: right;
-}
+/* This overall layout that contains the menu and the content area. */
 
-.pure-menu-heading {
-  padding-left: .5em;
-}
-
-.pure-g {
+#layout {
+  position: relative;
   height: 100%;
+  left: 0;
+  padding-left: 0;
+}
+#layout.active #menu {
+  left: 150px;
+  width: 150px;
+}
+#layout.active .menu-link {
+  left: 150px;
+}
+
+/* The main content area. */
+
+#main {
+  height: 100%;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  z-index: 3;
+  font-size: 2em;
+  margin: .25em 0 .25em 8px;
+  white-space: nowrap;
 }
 
 .content {
   height: 100%;
 }
 
-#puzzle-options {
-  padding-top: 2em;
+footer {
+  position: fixed;
+  bottom: 0;
+  z-index: 3;
+  font-size: 1.5em;
+  margin: .25em 0 .25em 8px;
+  white-space: nowrap;
 }
 
-#puzzle-options ul {
-  padding-left: 1em;
-  padding-right: 1em;
-  list-style-type: none;
-}
+/* The menu that appears on the left side of the page. */
 
-#puzzle-options p {
-  margin-top: .5em;
-  margin-bottom: .25em;
+#menu {
+  margin-left: -150px;
+  width: 150px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  overflow-y: auto;
 }
-
-#puzzle-options .pure-button {
+#menu .pure-button {
   width: 100%;
   font-size: 1.5em;
 }
-
+#menu .pure-menu ul {
+  border: none;
+  padding-left: .5em;
+  padding-right: .5em;
+  list-style-type: none;
+  background: transparent;
+}
+#menu .pure-menu p {
+  margin-top: .5em;
+  margin-bottom: .25em;
+}
 .selector {
   border: 2px solid #999999;
   display: inline-block;
@@ -49,13 +88,11 @@ html, body {
   overflow: hidden;
   width: 100%
 }
-
 .selector input[type=radio] {
   position: absolute;
   visibility: hidden;
   display: none;
 }
-
 .selector label {
   background-color: #E6E6E6;
   color: #000000;
@@ -64,23 +101,74 @@ html, body {
   padding: .5em .67em;
   width: 100%
 }
-
 .selector label.disable {
   color: #ACACAC;
   cursor: default;
 }
-
 .selector input[type=radio]:checked + label {
   color: #E6E6E6;
   background-color: #675f6b;
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  z-index: 3;
-  padding-left: .5em;
+/* Dynamic button to show/hide the menu. */
+
+.menu-link {
+  display: inline-block;
+  z-index: 10;
+  background: #777777;
+  width: 1em;
+  padding: 0 .5em;
+  margin-right: 0.25em;
 }
+.menu-link:hover,
+.menu-link:focus {
+  background: #000000;
+}
+.menu-link div {
+  height: 3px;
+  background: white;
+  margin: 6px 0;
+}
+
+/* Media Queries to control when the menu is shown. */
+
+@media (min-width: 48em) {
+
+  #layout {
+    padding-left: 150px;
+    left: 0;
+  }
+
+  #menu {
+    left: 150px;
+  }
+
+  .menu-link {
+    position: fixed;
+    left: 150px;
+    display: none;
+  }
+
+  #layout.active .menu-link {
+    left: 150px;
+  }
+
+}
+
+@media (max-width: 48em) {
+
+  #layout.active {
+    position: relative;
+    left: 150px;
+  }
+
+  header a {
+    display: none;
+  }
+
+}
+
+/* The overlay for blocking UI interaction while processing. */
 
 #overlay {
   position: fixed;
@@ -95,7 +183,6 @@ footer {
   z-index: 2;
   cursor: default;
 }
-
 #overlay p {
   position: absolute;
   top: 50%;
