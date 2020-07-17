@@ -66,7 +66,7 @@
           </div>
         </li>
       </ul>
-      <ul id="test-puzzle" class="pure-menu-list">
+      <ul id="test-puzzle" class="pure-menu-list active">
         <li id="tile-selection" class="pure-menu-item">
           <p>Tile selection:</p>
           <div class="selector">
@@ -90,10 +90,10 @@
         <li id="tile-rotation" class="pure-menu-item">
           <p>Tile rotation:</p>
           <div class="selector">
-            <input type="radio" id="rotation-none" name="tile-rotation" value="None" checked>
-            <label for="rotation-none">None</label>
-            <input type="radio" id="rotation-random" name="tile-rotation" value="Random">
+            <input type="radio" id="rotation-random" name="tile-rotation" value="Random" checked>
             <label for="rotation-random">Random</label>
+            <input type="radio" id="rotation-none" name="tile-rotation" value="None">
+            <label for="rotation-none">None</label>
           </div>
         </li>
       </ul>
@@ -131,7 +131,6 @@
 </div>
 
 <script src="./js/app.ts"></script>
-<script src="./js/ui.js"></script>
 
 </body>
 

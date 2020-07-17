@@ -81,6 +81,18 @@ footer {
   margin-top: .5em;
   margin-bottom: .25em;
 }
+#solve-puzzle {
+  display: none;
+}
+#solve-puzzle.active {
+  display: block;
+}
+#test-puzzle {
+  display: none;
+}
+#test-puzzle.active {
+  display: block;
+}
 .selector {
   border: 2px solid #999999;
   display: inline-block;
@@ -184,6 +196,9 @@ footer {
   background-color: rgba(0,0,0,0.5);
   z-index: 2;
   cursor: default;
+}
+#overlay.active {
+  display: block;
 }
 #overlay p {
   position: absolute;

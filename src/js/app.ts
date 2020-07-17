@@ -51,7 +51,7 @@ function animateSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: 
 
 function completeSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: DisplayManager): void {
     // Set the overlay to prevent further UI interaction.
-    showElement("overlay");
+    toggleActive("overlay");
     // Start the solving process.
     const solving = createSolverPromise(solver);
     solving.promise.then((resolvedValue) => {
@@ -59,10 +59,10 @@ function completeSolve(puzzle: PuzzleComponents, solver: Solver, displayManager:
         displayManager.displayPuzzle(puzzle.tetrahedron);
         attachRotateEvents(puzzle, displayManager);
         // Remove the overlay.
-        hideElement("overlay");
+        toggleActive("overlay");
         return resolvedValue;
     }).catch((err) => {
-        hideElement("overlay");
+        toggleActive("overlay");
         return err;
     });
     // Attach cancel trigger to required element.
@@ -121,33 +121,36 @@ function solvePuzzle(): void {
     }
 }
 
+function toggleActive(id: string): void {
+    document.getElementById(id)!.classList.toggle("active");
+}
+
 function swapOptions(): void {
     const mainOption = getSelector("puzzle-option");
     switch (mainOption) {
         case "Test":
-            hideElement("solve-puzzle");
-            showElement("test-puzzle");
+            toggleActive("solve-puzzle");
+            toggleActive("test-puzzle");
             break;
         case "Solve":
-            showElement("solve-puzzle");
-            hideElement("test-puzzle");
+            toggleActive("solve-puzzle");
+            toggleActive("test-puzzle");
             break;
         default:
             throw new Error("Invalid puzzle option!");
     }
 }
 
-function showElement(id: string): void {
-    document.getElementById(id)!.style.display = "block";
-}
-
-function hideElement(id: string): void {
-    document.getElementById(id)!.style.display = "none";
-}
-
-swapOptions();
 document.getElementById("option-test")!.addEventListener("click", () => swapOptions());
 document.getElementById("option-solve")!.addEventListener("click", () => swapOptions());
+
+function toggleMenu(): void {
+    toggleActive("layout");
+    toggleActive("menu");
+    toggleActive("menuLink");
+}
+
+document.getElementById("menuLink")!.addEventListener('click', () => toggleMenu());
 
 function addStatusInfoEvent(id: string, statusInfo: string) {
     const element = document.getElementById(id);
