@@ -121,42 +121,30 @@ function solvePuzzle(): void {
     }
 }
 
-function toggleActive(id: string): void {
-    document.getElementById(id)!.classList.toggle("active");
+function toggleActive(...ids: Array<string>): void {
+    ids.forEach((id) => document.getElementById(id)!.classList.toggle("active"));
 }
 
 function toggleOptions(): void {
-    const mainOption = getSelector("puzzle-option");
-    switch (mainOption) {
-        case "Test":
-            toggleActive("solve-puzzle");
-            toggleActive("test-puzzle");
-            break;
-        case "Solve":
-            toggleActive("solve-puzzle");
-            toggleActive("test-puzzle");
-            break;
-        default:
-            throw new Error("Invalid puzzle option!");
-    }
+    toggleActive("solve-puzzle", "test-puzzle");
 }
 
-document.getElementById("option-test")!.addEventListener("click", () => toggleOptions());
-document.getElementById("option-solve")!.addEventListener("click", () => toggleOptions());
+document.getElementById("option-test")!.addEventListener("click", toggleOptions);
+document.getElementById("option-solve")!.addEventListener("click", toggleOptions);
 
-function toggleMenu(): void {
-    toggleActive("layout");
-    toggleActive("menu");
-    toggleActive("menu-toggle");
+document.getElementById("menu-toggle")!.addEventListener('click', () => {
+    toggleActive("layout", "menu", "menu-toggle")
+});
+
+function updateStatusInfo(innerText: string) {
+    document.getElementById("show-info")!.innerText = innerText;
 }
-
-document.getElementById("menu-toggle")!.addEventListener('click', () => toggleMenu());
 
 function addStatusInfoEvent(id: string, statusInfo: string) {
     const element = document.getElementById(id);
     if (element) {
         element.addEventListener("mouseenter", () => {
-            document.getElementById("show-info")!.innerText = statusInfo;
+            updateStatusInfo(statusInfo);
         });
     }
 }
@@ -171,7 +159,7 @@ addStatusInfoEvent("tile-rotation", "If tiles are randomly rotated before being 
 addStatusInfoEvent("go", "Proceed with the selected options.");
 
 document.getElementById("menu")!.addEventListener("mouseleave", () => {
-    document.getElementById("show-info")!.innerText = "";
+    updateStatusInfo("");
 });
 
-document.getElementById("go")!.addEventListener("click", () => solvePuzzle());
+document.getElementById("go")!.addEventListener("click", solvePuzzle);
