@@ -8,6 +8,7 @@ import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
 import { VALID_TEST_PUZZLE} from "./common-test-data";
+import {TilePosition} from "../../src/js/tile-position";
 
 
 describe("#getPuzzleTypeData behaviour", function () {
@@ -64,8 +65,8 @@ describe("#getTileSelection behaviour", function () {
         context("with the Tile Selection argument 'Random'", function () {
             it("should return a random Tile", function () {
                 const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-                const tile = getTileSelection(components.tilePool, "Random");
-                expect(tile).to.be.an.instanceOf(Tile);
+                const result = getTileSelection(components.tilePool, "Random");
+                expect(result).to.be.an.instanceOf(Tile);
             });
         });
 
@@ -109,6 +110,17 @@ describe("#placeTile() behaviour", function () {
                 expect(function () {
                     placeTile(components.tilePool.nextTile!, components.tetrahedron, "Random", "error");
                 }).to.throw(Error, "Invalid tile rotation option!");
+            });
+        });
+
+        context("with valid placement options", function () {
+            it("should return an updated TilePosition", function () {
+                const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+                const tileToPlace = components.tilePool.nextTile!
+                const result = placeTile(tileToPlace, components.tetrahedron, "Sequential", "None");
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result.id).to.equal("1-1");
+                expect(result.tile).to.eql(tileToPlace);
             });
         });
 
