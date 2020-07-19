@@ -29,7 +29,7 @@ function attachRotateEvents(puzzle: PuzzleComponents, displayManager: DisplayMan
                     const tilePosition = puzzle.tetrahedron.getFace(tpId[1]).getTilePosition(tpId[2]);
                     if (!tilePosition.isEmpty()) {
                         tilePosition.rotateTile();
-                        displayManager.rotateTile(svgGroup);
+                        displayManager.animateRotateTile(svgGroup);
                     }
                 });
             }
@@ -41,7 +41,7 @@ function animateSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: 
     animatedDisplayId = setTimeout( () => {
         const updatedTilePosition = solver.nextState();
         if (updatedTilePosition) {
-            displayManager.redrawTilePosition(updatedTilePosition!);
+            displayManager.animatePlaceTile(updatedTilePosition!);
             animateSolve(puzzle, solver, displayManager);
         } else {
             attachRotateEvents(puzzle, displayManager);

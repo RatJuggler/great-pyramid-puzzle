@@ -7,10 +7,12 @@ import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
 export class DisplayManager {
 
+    private static readonly ANIMATE_DURATION = 500;
+
     private readonly _draw: Svg;
     private readonly _scaleFace: number = this._displayData.faceScale;
     private readonly _scaleTile: number = this._displayData.tileScale * this._displayData.faceScale;
-    private readonly _ntCenter: CenterPointData = {
+    private readonly _startCenter: CenterPointData = {
         x: -2 * this._scaleFace,
         y: -1 * this._scaleFace,
         r: 0
@@ -66,15 +68,12 @@ export class DisplayManager {
         return tGroup;
     }
 
-    private static setTPDescription(tpGroup: G, tilePosition: TilePosition): void {
-        // Information about the tile position.
+    private drawTilePosition(tpGroup: G, tilePosition: TilePosition, tpCenter: CenterPointData): void {
+        // Clear any existing tile position drawing.
+        tpGroup.clear();
+        // Set the tile description.
         const desc = "Position: " + tilePosition.name + ", Tile: " + (tilePosition.isEmpty() ? "Empty" : tilePosition.tile.id);
         tpGroup.element('title').words(desc);
-    }
-
-    private drawTilePosition(tpGroup: G, tilePosition: TilePosition, tpCenter: CenterPointData): void {
-        // Set the tile description.
-        DisplayManager.setTPDescription(tpGroup, tilePosition);
         // Draw the tile if present or an outline if not.
         if (tilePosition.isEmpty()) {
             this.drawTriangle(tpGroup, tpCenter, this._scaleTile, '#C0C0C0', {width: 0.4, color: '#000000'});
@@ -135,39 +134,58 @@ export class DisplayManager {
         });
         // New tile area group must be created last.
         const ntGroup = this._draw.group().id("newtile");
-        ntGroup.element('title').words("Next tile to be placed.");
-        this.drawTriangle(ntGroup, this._ntCenter, this._scaleTile, '#DCDCDC', {width: 0.4, color: '#000000'});
+        ntGroup.element('title').words("Next tile to be placed/removed.");
+        this.drawTriangle(ntGroup, this._startCenter, this._scaleTile, '#DCDCDC', {width: 0.4, color: '#000000'});
         return this._draw;
     }
 
-    redrawTilePosition(tilePosition: TilePosition): void {
-        // Find the tile position display to update.
+    animatePlaceTile(tilePosition: TilePosition): void {
+        // Find the destination tile position of the new tile.
         const tpElement = this._draw.findOne("[id='" + tilePosition.id + "']");
         const tpGroup = SVG(tpElement) as G;
         const tpCenter = tpGroup.dom.tpCenter;
-        tpGroup.clear();
-        // Draw the new tile at the starting position.
-        const newTile = this.drawTile(tilePosition, this._ntCenter);
-        // Animate the tile moving into position.
+        // Draw the tile to be placed at the starting position.
+        const placeTile = this.drawTile(tilePosition, this._startCenter);
+        // Animate the tile moving from the start to the destination.
         const matrix = new Matrix()
-            .translateO(tpCenter.x - this._ntCenter.x, tpCenter.y - this._ntCenter.y)
+            .translate(tpCenter.x - this._startCenter.x, tpCenter.y - this._startCenter.y)
             .rotate(tpCenter.r, tpCenter.x, tpCenter.y);
         // @ts-ignore
-        newTile.animate({duration: 500}).transform(matrix)
+        placeTile.animate({duration: DisplayManager.ANIMATE_DURATION}).transform(matrix)
             .after(() => {
-                // Remove the animated tile and redraw the position.
-                newTile.remove();
+                // Remove the animated tile then redraw the tile position with the placed tile.
+                placeTile.remove();
                 this.drawTilePosition(tpGroup, tilePosition, tpCenter);
             });
     }
 
-    rotateTile(tpElement: SVGGElement): void {
+    animateRemoveTile(tilePosition: TilePosition): void {
+        // Find the tile position of the new tile to be removed.
+        const tpElement = this._draw.findOne("[id='" + tilePosition.id + "']");
+        const tpGroup = SVG(tpElement) as G;
+        const tpCenter = tpGroup.dom.tpCenter;
+        // Redraw the tile position without the removed tile then draw the tile to be removed at it's old tile position.
+        this.drawTilePosition(tpGroup, tilePosition, tpCenter);
+        const removeTile = this.drawTile(tilePosition, this._startCenter);
+        // Animate the tile moving from it's old position back to the start.
+        const matrix = new Matrix()
+            .translate(this._startCenter.x - tpCenter.x, this._startCenter.y - tpCenter.y)
+            .rotate(-tpCenter.r, this._startCenter.x, this._startCenter.y);
+        // @ts-ignore
+        removeTile.animate({duration: DisplayManager.ANIMATE_DURATION}).transform(matrix)
+            .after(() => {
+                // Remove the animated tile.
+                removeTile.remove();
+            });
+    }
+
+    animateRotateTile(tpElement: SVGGElement): void {
         const tpGroup = SVG(tpElement) as G;
         const tpCenter = tpGroup.dom.tpCenter;
         // Rotate the child tile group.
         const tGroup = SVG(tpGroup.children()[1]) as G;
         // @ts-ignore
-        tGroup.animate({duration: 1000, ease: "<>"}).rotate(120, tpCenter.x, tpCenter.y);
+        tGroup.animate({duration: DisplayManager.ANIMATE_DURATION, ease: "<>"}).rotate(120, tpCenter.x, tpCenter.y);
     }
 
 }
