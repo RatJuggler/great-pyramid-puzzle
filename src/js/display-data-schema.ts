@@ -12,7 +12,7 @@ type TilePositionDisplayData = {
 }
 
 type FaceDisplayData = {
-    readonly id: string,
+    readonly name: string,
     readonly center: CenterPointData,
     readonly tilePositions: TilePositionDisplayData[]
 }

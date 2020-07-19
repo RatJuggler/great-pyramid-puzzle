@@ -99,8 +99,8 @@ export class DisplayManager {
             r: fData.center.r
         }
         // Create a group for the elements on a face.
-        const fGroup = this._draw.group().id(face.id);
-        fGroup.element('title').words("Face " + face.name);
+        const fGroup = this._draw.group().id("face" + fData.name);
+        fGroup.element('title').words("Face " + fData.name);
         this.drawTriangle(fGroup, fCenter, this._scaleFace, '#808080', {width: 0.4, color: '#000000'});
         // Draw each tile position on the face.
         fData.tilePositions.forEach((tpData) => {
@@ -129,7 +129,7 @@ export class DisplayManager {
         this._draw.clear();
         // Display each face of the puzzle.
         this._displayData.faces.forEach((fData) => {
-            const face = puzzleToDisplay.getFace(fData.id);
+            const face = puzzleToDisplay.getFace(fData.name);
             this.displayFace(face, fData)
         });
         // New tile area group must be created last.

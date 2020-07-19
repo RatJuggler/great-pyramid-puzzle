@@ -62,10 +62,6 @@ export class Face {
         return faceIntegrity;
     }
 
-    get id(): string {
-        return "face" + this._name;
-    }
-
     get name(): string {
         return this._name;
     }

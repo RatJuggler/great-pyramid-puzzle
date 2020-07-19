@@ -19,7 +19,7 @@
     "pegScale": 7,
     "faces": [
         {
-            "id": "1",
+            "name": "1",
             "center": {"x": 0, "y": 0, "r": 60},
             "tilePositions": [
                 {
@@ -29,7 +29,7 @@
             ]
         },
         {
-            "id": "2",
+            "name": "2",
             "center": {"x": 0, "y": -1.05, "r": 0},
             "tilePositions": [
                 {
@@ -39,7 +39,7 @@
             ]
         },
         {
-            "id": "3",
+            "name": "3",
             "center": {"x": 0.916025, "y": 0.525, "r": 120},
             "tilePositions": [
                 {
@@ -49,7 +49,7 @@
             ]
         },
         {
-            "id": "4",
+            "name": "4",
             "center": {"x": -0.916025, "y": 0.525, "r": -120},
             "tilePositions": [
                 {
