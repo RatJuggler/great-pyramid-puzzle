@@ -29,7 +29,7 @@ function attachRotateEvents(puzzle: PuzzleComponents, displayManager: DisplayMan
                     const tilePosition = puzzle.tetrahedron.getFace(tpId[1]).getTilePosition(tpId[2]);
                     if (!tilePosition.isEmpty()) {
                         tilePosition.rotateTile();
-                        displayManager.animateRotateTile(svgGroup);
+                        displayManager.animateRotateTile(tpId[0]);
                     }
                 });
             }

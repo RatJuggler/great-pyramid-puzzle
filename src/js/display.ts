@@ -1,4 +1,4 @@
-import { CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema"
+import { CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema";
 import { Face } from "./face";
 import { Tetrahedron } from "./tetrahedron";
 import { TilePosition } from "./tile-position";
@@ -149,38 +149,55 @@ export class DisplayManager {
         return this._draw;
     }
 
+    private getTilePosition(tilePositionId: string): { group: G; center: CenterPointData; } {
+        const element = this._draw.findOne("[id='" + tilePositionId + "']");
+        const group = SVG(element) as G;
+        const center = group.dom.tpCenter;
+        return {group, center};
+    }
+
+    placeTile(tilePosition: TilePosition): void {
+        // Find the destination tile position of the new tile.
+        const tpDisplay = this.getTilePosition(tilePosition.id);
+        // Redraw the tile position with the placed tile.
+        this.drawTilePosition(tpDisplay.group, tilePosition, tpDisplay.center);
+    }
+
     animatePlaceTile(tilePosition: TilePosition): void {
         // Find the destination tile position of the new tile.
-        const tpElement = this._draw.findOne("[id='" + tilePosition.id + "']");
-        const tpGroup = SVG(tpElement) as G;
-        const tpCenter = tpGroup.dom.tpCenter;
+        const tpDisplay = this.getTilePosition(tilePosition.id);
         // Draw the tile to be placed at the starting position.
         const placeTile = this.drawTile(tilePosition, this._startCenter);
         // Animate the tile moving from the start to the destination.
         const matrix = new Matrix()
-            .translate(tpCenter.x - this._startCenter.x, tpCenter.y - this._startCenter.y)
-            .rotate(tpCenter.r, tpCenter.x, tpCenter.y);
+            .translate(tpDisplay.center.x - this._startCenter.x, tpDisplay.center.y - this._startCenter.y)
+            .rotate(tpDisplay.center.r, tpDisplay.center.x, tpDisplay.center.y);
         // @ts-ignore
         placeTile.animate({duration: DisplayManager.ANIMATE_DURATION}).transform(matrix)
             .after(() => {
                 // Remove the animated tile then redraw the tile position with the placed tile.
                 placeTile.remove();
-                this.drawTilePosition(tpGroup, tilePosition, tpCenter);
+                this.drawTilePosition(tpDisplay.group, tilePosition, tpDisplay.center);
             });
     }
 
+    removeTile(tilePosition: TilePosition): void {
+        // Find the tile position of the tile to be removed.
+        const tpDisplay = this.getTilePosition(tilePosition.id);
+        // Redraw the tile position with the tile removed.
+        this.drawTilePosition(tpDisplay.group, tilePosition, tpDisplay.center);
+    }
+
     animateRemoveTile(tilePosition: TilePosition): void {
-        // Find the tile position of the new tile to be removed.
-        const tpElement = this._draw.findOne("[id='" + tilePosition.id + "']");
-        const tpGroup = SVG(tpElement) as G;
-        const tpCenter = tpGroup.dom.tpCenter;
-        // Redraw the tile position without the removed tile then draw the tile to be removed at it's old tile position.
-        this.drawTilePosition(tpGroup, tilePosition, tpCenter);
+        // Find the tile position of the tile to be removed.
+        const tpDisplay = this.getTilePosition(tilePosition.id);
+        // Redraw the tile position with the tile removed then draw the tile at the tile position ready to be animated.
+        this.drawTilePosition(tpDisplay.group, tilePosition, tpDisplay.center);
         const removeTile = this.drawTile(tilePosition, this._startCenter);
         // Animate the tile moving from it's old position back to the start.
         const matrix = new Matrix()
-            .translate(this._startCenter.x - tpCenter.x, this._startCenter.y - tpCenter.y)
-            .rotate(-tpCenter.r, this._startCenter.x, this._startCenter.y);
+            .translate(this._startCenter.x - tpDisplay.center.x, this._startCenter.y - tpDisplay.center.y)
+            .rotate(-tpDisplay.center.r, this._startCenter.x, this._startCenter.y);
         // @ts-ignore
         removeTile.animate({duration: DisplayManager.ANIMATE_DURATION}).transform(matrix)
             .after(() => {
@@ -189,13 +206,13 @@ export class DisplayManager {
             });
     }
 
-    animateRotateTile(tpElement: SVGGElement): void {
-        const tpGroup = SVG(tpElement) as G;
-        const tpCenter = tpGroup.dom.tpCenter;
+    animateRotateTile(tilePositionId: string): void {
+        // Find the tile position of the tile to be rotated.
+        const tpDisplay = this.getTilePosition(tilePositionId);
         // Rotate the child tile group.
-        const tGroup = SVG(tpGroup.children()[1]) as G;
+        const tGroup = SVG(tpDisplay.group.children()[1]) as G;
         // @ts-ignore
-        tGroup.animate({duration: DisplayManager.ANIMATE_DURATION, ease: "<>"}).rotate(120, tpCenter.x, tpCenter.y);
+        tGroup.animate({duration: DisplayManager.ANIMATE_DURATION, ease: "<>"}).rotate(120, tpDisplay.center.x, tpDisplay.center.y);
     }
 
 }
