@@ -18,51 +18,6 @@ abstract class SolverBase implements Solver {
         }
     }
 
-    getTileSelection(tileSelection: string): Tile {
-        switch (tileSelection) {
-            case "Random":
-                return this._tilePool.randomTile;
-            case "Sequential":
-                return this._tilePool.nextTile;
-            case "Test":
-                return this._tilePool.testTile;
-            default:
-                throw new Error("Invalid tile selection option!");
-        }
-    }
-
-    private static rotateTile(tilePosition: TilePosition, tileRotation: string): TilePosition {
-        switch (tileRotation) {
-            case "None":
-                return tilePosition;
-            case "Random":
-                for (let i = getRandomInt(3); i > 0; --i) {
-                    tilePosition.rotateTile();
-                }
-                return tilePosition;
-            default:
-                throw new Error("Invalid tile rotation option!");
-        }
-    }
-
-    placeTile(tile: Tile, tilePlacement: string, tileRotation: string): TilePosition  {
-        let tilePlacedPosition;
-        switch (tilePlacement) {
-            case "Random":
-                tilePlacedPosition = this._tetrahedron.placeTileRandomly(tile);
-                break;
-            case "Sequential":
-                tilePlacedPosition = this._tetrahedron.placeTileSequentially(tile);
-                break;
-            default:
-                throw new Error("Invalid tile placement option!");
-        }
-        if (!tilePlacedPosition) {
-            throw new Error("Failed to place tile on puzzle!");
-        }
-        return SolverBase.rotateTile(tilePlacedPosition, tileRotation);
-    }
-
     nextState(): TilePosition | null {
         return null;
     }
@@ -77,12 +32,57 @@ class NoMatchingSolver extends SolverBase {
         super(tetrahedron, tilePool);
     }
 
+    getTileSelection(): Tile {
+        switch (this._tileSelection) {
+            case "Random":
+                return this._tilePool.randomTile;
+            case "Sequential":
+                return this._tilePool.nextTile;
+            case "Test":
+                return this._tilePool.testTile;
+            default:
+                throw new Error("Invalid tile selection option!");
+        }
+    }
+
+    private rotateTile(tilePosition: TilePosition): TilePosition {
+        switch (this._tileRotation) {
+            case "None":
+                return tilePosition;
+            case "Random":
+                for (let i = getRandomInt(3); i > 0; --i) {
+                    tilePosition.rotateTile();
+                }
+                return tilePosition;
+            default:
+                throw new Error("Invalid tile rotation option!");
+        }
+    }
+
+    placeTile(tile: Tile): TilePosition  {
+        let tilePlacedPosition;
+        switch (this._tilePlacement) {
+            case "Random":
+                tilePlacedPosition = this._tetrahedron.placeTileRandomly(tile);
+                break;
+            case "Sequential":
+                tilePlacedPosition = this._tetrahedron.placeTileSequentially(tile);
+                break;
+            default:
+                throw new Error("Invalid tile placement option!");
+        }
+        if (!tilePlacedPosition) {
+            throw new Error("Failed to place tile on puzzle!");
+        }
+        return this.rotateTile(tilePlacedPosition);
+    }
+
     nextState(): TilePosition | null {
         if (this._tilePool.isEmpty) {
             return null;
         }
-        const tile = this.getTileSelection(this._tileSelection);
-        return this.placeTile(tile, this._tilePlacement, this._tileRotation);
+        const tile = this.getTileSelection();
+        return this.placeTile(tile);
     }
 
 }

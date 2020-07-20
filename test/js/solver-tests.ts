@@ -3,13 +3,13 @@ import invalid_tile_data from "../invalid-tile-data3.json";
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { SolverBase, NoMatchingSolver, BruteForceSolver } from "../../src/js/solver";
 import { Tetrahedron } from "../../src/js/tetrahedron";
+import { Tile } from "../../src/js/tile";
 import { TilePool } from "../../src/js/tile-pool";
 import { TilePosition } from "../../src/js/tile-position";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
 import { VALID_TEST_PUZZLE } from "./common-test-data";
-import {Tile} from "../../src/js/tile";
 
 
 class MockSolver extends SolverBase {}
@@ -32,83 +32,6 @@ describe("SolverBase behaviour using MockSolver", function () {
 
     });
 
-    describe("when #getTileSelection() is called", function () {
-
-        context("with an invalid tile selection", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new MockSolver(components.tetrahedron, components.tilePool);
-            it("should throw an error", function () {
-                expect(function () {
-                    solver.getTileSelection("error");
-                }).to.throw(Error, "Invalid tile selection option!");
-            });
-        });
-
-        context("with the Tile Selection argument 'Random'", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new MockSolver(components.tetrahedron, components.tilePool);
-            const result = solver.getTileSelection("Random");
-            it("should return a random Tile", function () {
-                expect(result).to.be.an.instanceOf(Tile);
-            });
-        });
-
-        context("with the Tile Selection argument 'Sequential'", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new MockSolver(components.tetrahedron, components.tilePool);
-            const tile = solver.getTileSelection("Sequential");
-            it("should return the first sequential Tile", function () {
-                expect(tile.id).to.equal(1);
-            });
-        });
-
-        context("with the Tile Selection argument 'Test'", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new MockSolver(components.tetrahedron, components.tilePool);
-            const tile = solver.getTileSelection("Test");
-            it("should return the test Tile", function () {
-                expect(tile.id).to.equal(0);
-            });
-        });
-
-    });
-
-    describe("if #placeTile() is called", function () {
-
-        context("with an invalid tile placement", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new MockSolver(components.tetrahedron, components.tilePool);
-            it("should throw an error", function () {
-                expect(function () {
-                    solver.placeTile(components.tilePool.nextTile!, "error", "Random");
-                }).to.throw(Error, "Invalid tile placement option!");
-            });
-        });
-
-        context("with an invalid tile rotation", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new MockSolver(components.tetrahedron, components.tilePool);
-            it("should throw an error", function () {
-                expect(function () {
-                    solver.placeTile(components.tilePool.nextTile!, "Random", "error");
-                }).to.throw(Error, "Invalid tile rotation option!");
-            });
-        });
-
-        context("with valid placement options", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new MockSolver(components.tetrahedron, components.tilePool);
-            const tileToPlace = components.tilePool.nextTile!
-            const result = solver.placeTile(tileToPlace, "Sequential", "None");
-            it("should return an updated TilePosition", function () {
-                expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result.id).to.equal("1-1");
-                expect(result.tile).to.eql(tileToPlace);
-            });
-        });
-
-    });
-
     describe("if the #nextState() placeholder is called", function () {
 
         context("on a properly instantiated instance", function () {
@@ -124,6 +47,90 @@ describe("SolverBase behaviour using MockSolver", function () {
 
 
 describe("NoMatchingSolver behaviour", function () {
+
+    describe("when #getTileSelection() is called", function () {
+
+        context("with an invalid tile selection", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
+                "error", "Random", "None");
+            it("should throw an error", function () {
+                expect(function () {
+                    solver.getTileSelection();
+                }).to.throw(Error, "Invalid tile selection option!");
+            });
+        });
+
+        context("with the Tile Selection argument 'Random'", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
+                "Random", "Random", "None");
+            const result = solver.getTileSelection();
+            it("should return a random Tile", function () {
+                expect(result).to.be.an.instanceOf(Tile);
+            });
+        });
+
+        context("with the Tile Selection argument 'Sequential'", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
+                "Sequential", "Random", "None");
+            const tile = solver.getTileSelection();
+            it("should return the first sequential Tile", function () {
+                expect(tile.id).to.equal(1);
+            });
+        });
+
+        context("with the Tile Selection argument 'Test'", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
+                "Test", "Random", "None");
+            const tile = solver.getTileSelection();
+            it("should return the test Tile", function () {
+                expect(tile.id).to.equal(0);
+            });
+        });
+
+    });
+
+    describe("if #placeTile() is called", function () {
+
+        context("with an invalid tile placement", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
+                "Random", "error", "None");
+            it("should throw an error", function () {
+                expect(function () {
+                    solver.placeTile(components.tilePool.nextTile!);
+                }).to.throw(Error, "Invalid tile placement option!");
+            });
+        });
+
+        context("with an invalid tile rotation", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
+                "Random", "Random", "error");
+            it("should throw an error", function () {
+                expect(function () {
+                    solver.placeTile(components.tilePool.nextTile!);
+                }).to.throw(Error, "Invalid tile rotation option!");
+            });
+        });
+
+        context("with valid placement options", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
+                "Sequential", "Sequential", "None");
+            const tileToPlace = components.tilePool.nextTile!
+            const result = solver.placeTile(tileToPlace);
+            it("should return an updated TilePosition", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result.id).to.equal("1-1");
+                expect(result.tile).to.eql(tileToPlace);
+            });
+        });
+
+    });
 
     describe("if #nextState() is called", function () {
 
