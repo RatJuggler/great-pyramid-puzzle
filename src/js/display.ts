@@ -11,6 +11,7 @@ export class DisplayManager {
     private static readonly START_POSITION_COLOUR = '#DCDCDC';
     private static readonly TILE_COLOUR = '#FFFFFF';
     private static readonly SEGMENT_COLOUR = '#FF0000';
+    private static readonly PEG_COLOUR = '#BEBEBE';
     private static readonly ANIMATE_DURATION = 500;
 
     private readonly _draw: Svg;
@@ -68,7 +69,7 @@ export class DisplayManager {
         // Draw the peg in the middle.
         tGroup.circle(this._displayData.pegScale)
             .center(tpCenter.x, tpCenter.y)
-            .fill('#bebebe')
+            .fill(DisplayManager.PEG_COLOUR)
             .stroke('none');
         return tGroup;
     }
@@ -135,7 +136,7 @@ export class DisplayManager {
         this._draw.circle(1)
             .id("center" + fData.name)
             .center(fCenter.x, fCenter.y)
-            .fill('#000000')
+            .fill(DisplayManager.LINE_COLOUR)
             .stroke('none')
             .element('title')
             .words("Center of Face " + fData.name);
