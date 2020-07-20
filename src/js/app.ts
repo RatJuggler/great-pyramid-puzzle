@@ -56,7 +56,7 @@ function completeSolve(puzzle: PuzzleComponents, solver: Solver, displayManager:
     const solving = createSolverPromise(solver);
     solving.promise.then((resolvedValue) => {
         // Show the final puzzle state and attach the rotate events.
-        displayManager.displayPuzzle(puzzle.tetrahedron);
+        displayManager.displayTilePositions(puzzle.tetrahedron.tilePositions);
         attachRotateEvents(puzzle, displayManager);
         // Remove the overlay.
         toggleActive("overlay");
@@ -103,7 +103,7 @@ function solvePuzzle(): void {
     // Build a display manager.
     const displayManager = getDisplayManager(displayElement, puzzleType)
     // Show the initial puzzle state.
-    displayManager.displayPuzzle(puzzle.tetrahedron);
+    displayManager.displayEmptyPuzzle();
     // Build the solver to use.
     const solver = getSolveAlgorithm(puzzle);
     // Solve the puzzle depending on the display.

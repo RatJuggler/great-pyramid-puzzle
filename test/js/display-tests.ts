@@ -25,9 +25,8 @@ describe("Puzzle display functionality", function () {
             const window = createSVGWindow();
             const document = window.document;
             registerWindow(window, document);
-            const puzzle = getPuzzleComponents(puzzleTypeData)
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
-            const canvas = displayManager.displayPuzzle(puzzle.tetrahedron);
+            const canvas = displayManager.displayEmptyPuzzle();
             console.log(canvas.svg());
             it("should have 4 faces, 4 empty tile positions and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(9);
@@ -47,7 +46,8 @@ describe("Puzzle display functionality", function () {
             const tile2 = puzzle.tilePool.randomTile;
             assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile2));
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
-            const canvas = displayManager.displayPuzzle(puzzle.tetrahedron);
+            const canvas = displayManager.displayEmptyPuzzle();
+            displayManager.displayTilePositions(puzzle.tetrahedron.tilePositions);
             console.log(canvas.svg());
             it("should have 4 faces, 2 empty tile positions, 2 tile positions with tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(11);
@@ -67,7 +67,8 @@ describe("Puzzle display functionality", function () {
                 assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile));
             }
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
-            const canvas = displayManager.displayPuzzle(puzzle.tetrahedron);
+            const canvas = displayManager.displayEmptyPuzzle();
+            displayManager.displayTilePositions(puzzle.tetrahedron.tilePositions);
             console.log(canvas.svg());
             it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(13);

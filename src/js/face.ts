@@ -70,6 +70,10 @@ export class Face {
         return this._tilePositions.size;
     }
 
+    get tilePositions(): Array<TilePosition> {
+        return Array.from(this._tilePositions.values());
+    }
+
     getTilePosition(position: string): TilePosition {
         if (this._tilePositions.has(position)) {
             return this._tilePositions.get(position)!;

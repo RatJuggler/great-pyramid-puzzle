@@ -1,6 +1,4 @@
 import { CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema";
-import { Face } from "./face";
-import { Tetrahedron } from "./tetrahedron";
 import { TilePosition } from "./tile-position";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
@@ -91,14 +89,7 @@ export class DisplayManager {
         }
     }
 
-    private displayTilePosition(tilePosition: TilePosition, tpCenter: CenterPointData): G {
-        // Group the elements showing at a tile position.
-        const tpGroup = this._draw.group().id(tilePosition.id).setData({tpCenter: tpCenter});
-        this.drawTilePosition(tpGroup, tilePosition, tpCenter);
-        return tpGroup;
-    }
-
-    private displayFace(face: Face, fData: FaceDisplayData): void {
+    private displayEmptyFace(fData: FaceDisplayData): void {
         // Scale the face center point.
         const fCenter = {
             x: fData.center.x * this._scaleFace,
@@ -119,28 +110,28 @@ export class DisplayManager {
                 r: fCenter.r + tpData.center.r
             };
             fGroup.add(
-                this.displayTilePosition(face.getTilePosition(tpData.id), tpCenter)
+                // Create a group for the elements to be shown at the tile position.
+                this._draw.group().id(fData.name + '-' + tpData.id).setData({tpCenter: tpCenter})
             );
         });
         // Outline the face.
         this.drawTriangle(fGroup, fCenter, this._scaleFace, 'none', 0.4);
         // Draw a point to show the center of the face last so it always shows up.
         this._draw.circle(1)
-            .id("center" + face.name)
+            .id("center" + fData.name)
             .center(fCenter.x, fCenter.y)
             .fill('#000000')
             .stroke('none')
             .element('title')
-            .words("Center of Face " + face.name);
+            .words("Center of Face " + fData.name);
     }
 
-    displayPuzzle(puzzleToDisplay: Tetrahedron): Svg {
+    displayEmptyPuzzle(): Svg {
         // Clear any existing display.
         this._draw.clear();
         // Display each face of the puzzle.
         this._displayData.faces.forEach((fData) => {
-            const face = puzzleToDisplay.getFace(fData.name);
-            this.displayFace(face, fData)
+            this.displayEmptyFace(fData)
         });
         // New tile area group must be created last.
         const ntGroup = this._draw.group().id("newtile");
@@ -154,6 +145,10 @@ export class DisplayManager {
         const group = SVG(element) as G;
         const center = group.dom.tpCenter;
         return {group, center};
+    }
+
+    displayTilePositions(tilePositions: Array<TilePosition>): void {
+        tilePositions.forEach((tilePosition) => this.placeTile(tilePosition));
     }
 
     placeTile(tilePosition: TilePosition): void {
