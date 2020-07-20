@@ -40,9 +40,8 @@ function attachRotateEvents(puzzle: PuzzleComponents, displayManager: DisplayMan
 function animateSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: DisplayManager): void {
     // Schedule a series of events to place tiles on the puzzle.
     animatedDisplayId = setTimeout( () => {
-        const updatedTilePosition = solver.nextState();
-        if (updatedTilePosition) {
-            const displayChange = buildDisplayChange(updatedTilePosition);
+        const displayChange = solver.nextState();
+        if (displayChange) {
             displayManager.animatePlaceTile(displayChange!);
             animateSolve(puzzle, solver, displayManager);
         } else {
@@ -58,10 +57,9 @@ function completeSolve(puzzle: PuzzleComponents, solver: Solver, displayManager:
     const solving = createSolverPromise(solver);
     solving.promise.then((resolvedValue) => {
         // Show the final puzzle state and attach the rotate events.
-        puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
-            const tpChange = buildDisplayChange(tilePosition);
-            displayManager.placeTile(tpChange)
-        });
+        puzzle.tetrahedron.tilePositions
+            .map((tilePosition) => buildDisplayChange(tilePosition))
+            .forEach((displayChange) => displayManager.placeTile(displayChange));
         attachRotateEvents(puzzle, displayManager);
         // Remove the overlay.
         toggleActive("overlay");

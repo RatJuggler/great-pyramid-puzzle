@@ -1,12 +1,14 @@
+import { DisplayChange } from "./display-change";
 import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
+import { buildDisplayChange } from "./tile-position-change";
 import { getRandomInt } from "./utils";
 
 
 interface Solver {
-    nextState: () => TilePosition | null
+    nextState: () => DisplayChange | null
 }
 
 
@@ -18,7 +20,7 @@ abstract class SolverBase implements Solver {
         }
     }
 
-    nextState(): TilePosition | null {
+    nextState(): DisplayChange | null {
         return null;
     }
 
@@ -77,12 +79,13 @@ class NoMatchingSolver extends SolverBase {
         return this.rotateTile(tilePlacedPosition);
     }
 
-    nextState(): TilePosition | null {
+    nextState(): DisplayChange | null {
         if (this._tilePool.isEmpty) {
             return null;
         }
         const tile = this.getTileSelection();
-        return this.placeTile(tile);
+        const tilePosition = this.placeTile(tile);
+        return buildDisplayChange(tilePosition);
     }
 
 }
@@ -141,7 +144,7 @@ class BruteForceSolver extends SolverBase {
         return false;
     }
 
-    nextState(): TilePosition | null {
+    nextState(): DisplayChange | null {
         this.nextTilePosition(this._emptyTilePositions, this._unusedTiles);
         return null;
     }

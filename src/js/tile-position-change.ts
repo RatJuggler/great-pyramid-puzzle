@@ -1,5 +1,5 @@
-import {TilePosition} from "./tile-position";
-import {DisplayChange} from "./display-change";
+import { TilePosition } from "./tile-position";
+import { DisplayChange } from "./display-change";
 
 
 function buildDisplayChange(tilePosition: TilePosition): DisplayChange {
