@@ -7,6 +7,12 @@ import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
 export class DisplayManager {
 
+    private static readonly LINE_COLOUR = '#000000';
+    private static readonly FACE_COLOUR = '#808080';
+    private static readonly TILE_POSITION_COLOUR = '#C0C0C0';
+    private static readonly START_POSITION_COLOUR = '#DCDCDC';
+    private static readonly TILE_COLOUR = '#FFFFFF';
+    private static readonly SEGMENT_COLOUR = '#FF0000';
     private static readonly ANIMATE_DURATION = 500;
 
     private readonly _draw: Svg;
@@ -36,29 +42,31 @@ export class DisplayManager {
         return scaledTriangle;
     }
 
-    private drawTriangle(draw: G, tpCenter: CenterPointData, scale: number, fill: string, outline: number): void {
+    private drawTriangle(draw: G, tpCenter: CenterPointData, scale: number, fill: string, outline: number = 0.2): void {
         draw.polygon(this.scaleTriangle(scale))
             .dmove(tpCenter.x, tpCenter.y)
             .rotate(tpCenter.r, tpCenter.x, tpCenter.y)
             .fill(fill)
-            .stroke({ width: outline, color: '#000000'});
+            .stroke({ width: outline, color: DisplayManager.LINE_COLOUR});
     }
 
     private drawTile(tilePosition: TilePosition, tpCenter: CenterPointData): G {
         // Group the elements which make up a tile position.
         const tGroup = this._draw.group().id("tile" + tilePosition.tile.id);
-        // Draw a white tile.
-        this.drawTriangle(tGroup, tpCenter, this._scaleTile, '#FFFFFF', 0.2);
+        // Fill in the tile colour.
+        this.drawTriangle(tGroup, tpCenter, this._scaleTile, DisplayManager.TILE_COLOUR, 0);
         // Draw the red segments.
         const segments = tilePosition.getRotatedSegments();
         for (let segN = 0; segN < segments.length; segN++) {
             if (segments.charAt(segN) === '1') {
                 tGroup.polygon(this.scaleSegment(segN, tpCenter, this._scaleTile))
                     .rotate(tpCenter.r, tpCenter.x, tpCenter.y)
-                    .fill('#ff0000')
+                    .fill(DisplayManager.SEGMENT_COLOUR)
                     .stroke('none');
             }
         }
+        // Outline the tile.
+        this.drawTriangle(tGroup, tpCenter, this._scaleTile, 'none');
         // Draw the peg in the middle.
         tGroup.circle(this._displayData.pegScale)
             .center(tpCenter.x, tpCenter.y)
@@ -73,9 +81,9 @@ export class DisplayManager {
         // Set the tile description.
         const desc = "Position: " + tilePosition.name + ", Tile: " + (tilePosition.isEmpty() ? "Empty" : tilePosition.tile.id);
         tpGroup.element('title').words(desc);
-        // Draw the tile if present or an outline if not.
+        // Draw the tile if present or an empty tile position if not.
         if (tilePosition.isEmpty()) {
-            this.drawTriangle(tpGroup, tpCenter, this._scaleTile, '#C0C0C0', 0.2);
+            this.drawTriangle(tpGroup, tpCenter, this._scaleTile, DisplayManager.TILE_POSITION_COLOUR);
         } else {
             tpGroup.add(
                 this.drawTile(tilePosition, tpCenter)
@@ -100,7 +108,8 @@ export class DisplayManager {
         // Create a group for the elements on a face.
         const fGroup = this._draw.group().id("face" + fData.name);
         fGroup.element('title').words("Face " + fData.name);
-        this.drawTriangle(fGroup, fCenter, this._scaleFace, '#808080', 0);
+        // Fill in the face colour.
+        this.drawTriangle(fGroup, fCenter, this._scaleFace, DisplayManager.FACE_COLOUR, 0);
         // Draw each tile position on the face.
         fData.tilePositions.forEach((tpData) => {
             // Scale the tile position center point.
@@ -113,8 +122,8 @@ export class DisplayManager {
                 this.displayTilePosition(face.getTilePosition(tpData.id), tpCenter)
             );
         });
-        // Draw an outline.
-        this.drawTriangle(fGroup, fCenter, this._scaleFace, 'none', 0.2);
+        // Outline the face.
+        this.drawTriangle(fGroup, fCenter, this._scaleFace, 'none', 0.4);
         // Draw a point to show the center of the face last so it always shows up.
         this._draw.circle(1)
             .id("center" + face.name)
@@ -136,7 +145,7 @@ export class DisplayManager {
         // New tile area group must be created last.
         const ntGroup = this._draw.group().id("newtile");
         ntGroup.element('title').words("Next tile to be placed/removed.");
-        this.drawTriangle(ntGroup, this._startCenter, this._scaleTile, '#DCDCDC', 0.2);
+        this.drawTriangle(ntGroup, this._startCenter, this._scaleTile, DisplayManager.START_POSITION_COLOUR);
         return this._draw;
     }
 
