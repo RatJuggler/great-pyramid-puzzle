@@ -23,4 +23,42 @@ describe("if #getPuzzleComponents() is called", function () {
         });
     });
 
+    context("with an invalid puzzle type", function () {
+        it("should throw an error", function () {
+            expect(function () {
+                getPuzzleComponents("error");
+            }).to.throw(Error, "Invalid puzzle type option!");
+        });
+    });
+
+    context("with puzzle type argument 'Test'", function () {
+        const result = getPuzzleComponents("Test");
+        it("should return the Test puzzle data", function () {
+            expect(result).to.have.property("tilePool");
+            expect(result.tilePool.tileCount).to.equal(4);
+            expect(result).to.have.property("tetrahedron");
+            expect(result.tetrahedron.tilePositionCount).to.equal(4);
+        });
+    });
+
+    context("with puzzle type argument 'Pocket'", function () {
+        const result = getPuzzleComponents("Pocket");
+        it("should return the Pocket puzzle data", function () {
+            expect(result).to.have.property("tilePool");
+            expect(result.tilePool.tileCount).to.equal(16);
+            expect(result).to.have.property("tetrahedron");
+            expect(result.tetrahedron.tilePositionCount).to.equal(16);
+        });
+    });
+
+    context("with puzzle type argument 'Great'", function () {
+        const result = getPuzzleComponents("Great");
+        it("should return the Great puzzle data", function () {
+            expect(result).to.have.property("tilePool");
+            expect(result.tilePool.tileCount).to.equal(36);
+            expect(result).to.have.property("tetrahedron");
+            expect(result.tetrahedron.tilePositionCount).to.equal(36);
+        });
+    });
+
 });

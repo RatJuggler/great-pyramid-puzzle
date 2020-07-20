@@ -1,4 +1,4 @@
-import { getPuzzleTypeData, createSolverPromise } from "./app-options";
+import { createSolverPromise } from "./app-options";
 import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
 import { getDisplayManager } from "./display-loader";
@@ -95,10 +95,9 @@ function solvePuzzle(): void {
     }
     // Determine the type of puzzle.
     const puzzleType = getSelector("puzzle-type");
-    // Determine the data required for the puzzle.
-    const puzzleTypeData = getPuzzleTypeData(puzzleType);
-    // Build internal puzzle representation, pool of tiles waiting to be placed on it and a display manager to show it.
-    const puzzle = getPuzzleComponents(puzzleTypeData);
+    // Determine the data required for the puzzle and build the internal puzzle
+    // representation with the pool of tiles waiting to be placed on it.
+    const puzzle = getPuzzleComponents(puzzleType);
     // Find where we want the puzzle displayed.
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Build a display manager.

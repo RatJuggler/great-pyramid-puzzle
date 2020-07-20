@@ -1,22 +1,5 @@
-import { testPuzzle } from "./test-puzzle";
-import { pocketPuzzle } from "./pocket-puzzle";
-import { greatPuzzle } from "./great-puzzle";
-import { PuzzleDataElements } from "./common-data-schema";
 import { Solver } from "./solver";
 
-
-function getPuzzleTypeData(puzzleType: string): PuzzleDataElements {
-    switch (puzzleType) {
-        case "Test":
-            return testPuzzle;
-        case "Pocket":
-            return pocketPuzzle;
-        case "Great":
-            return greatPuzzle;
-        default:
-            throw new Error("Invalid puzzle type option!");
-    }
-}
 
 function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cancel: () => void; } {
     // Define completion flag and cancel trigger.
@@ -61,4 +44,4 @@ function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cance
     return { promise, cancel }
 }
 
-export { getPuzzleTypeData, createSolverPromise }
+export { createSolverPromise }

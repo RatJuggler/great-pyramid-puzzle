@@ -1,3 +1,6 @@
+import { testPuzzle } from "./test-puzzle";
+import { pocketPuzzle } from "./pocket-puzzle";
+import { greatPuzzle } from "./great-puzzle";
 import { LayoutData } from "./layout-data-schema";
 import { TileData } from "./tile-data-schema";
 import { Tetrahedron } from "./tetrahedron";
@@ -18,7 +21,26 @@ function getTetrahedron(layoutData: LayoutData): Tetrahedron {
     return tetrahedron;
 }
 
-function getPuzzleComponents(puzzleTypeData: PuzzleDataElements): PuzzleComponents {
+function getPuzzleTypeData(puzzleType: string): PuzzleDataElements {
+    switch (puzzleType) {
+        case "Test":
+            return testPuzzle;
+        case "Pocket":
+            return pocketPuzzle;
+        case "Great":
+            return greatPuzzle;
+        default:
+            throw new Error("Invalid puzzle type option!");
+    }
+}
+
+function getPuzzleComponents(puzzleType: string | PuzzleDataElements): PuzzleComponents {
+    let puzzleTypeData;
+    if (typeof(puzzleType) === "string") {
+        puzzleTypeData = getPuzzleTypeData(puzzleType);
+    } else {
+        puzzleTypeData = puzzleType;
+    }
     const tilePool = getTilePool(puzzleTypeData.tileData);
     const tetrahedron = getTetrahedron(puzzleTypeData.layoutData);
     if (tilePool.tileCount !== tetrahedron.tilePositionCount) {
