@@ -3,6 +3,7 @@ import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display";
+import { buildDisplayChange } from "./tile-position-change";
 import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
 
 
@@ -41,7 +42,8 @@ function animateSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: 
     animatedDisplayId = setTimeout( () => {
         const updatedTilePosition = solver.nextState();
         if (updatedTilePosition) {
-            displayManager.animatePlaceTile(updatedTilePosition!);
+            const displayChange = buildDisplayChange(updatedTilePosition);
+            displayManager.animatePlaceTile(displayChange!);
             animateSolve(puzzle, solver, displayManager);
         } else {
             attachRotateEvents(puzzle, displayManager);
@@ -56,7 +58,10 @@ function completeSolve(puzzle: PuzzleComponents, solver: Solver, displayManager:
     const solving = createSolverPromise(solver);
     solving.promise.then((resolvedValue) => {
         // Show the final puzzle state and attach the rotate events.
-        displayManager.displayTilePositions(puzzle.tetrahedron.tilePositions);
+        puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
+            const tpChange = buildDisplayChange(tilePosition);
+            displayManager.placeTile(tpChange)
+        });
         attachRotateEvents(puzzle, displayManager);
         // Remove the overlay.
         toggleActive("overlay");

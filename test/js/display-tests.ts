@@ -10,6 +10,7 @@ import 'mocha';
 import { createSVGWindow } from 'svgdom';
 // @ts-ignore
 import { registerWindow } from "@svgdotjs/svg.js";
+import {buildDisplayChange} from "../../src/js/tile-position-change";
 
 
 describe("Puzzle display functionality", function () {
@@ -47,7 +48,10 @@ describe("Puzzle display functionality", function () {
             assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile2));
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             const canvas = displayManager.displayEmptyPuzzle();
-            displayManager.displayTilePositions(puzzle.tetrahedron.tilePositions);
+            puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
+                const tpChange = buildDisplayChange(tilePosition);
+                displayManager.placeTile(tpChange)
+            });
             console.log(canvas.svg());
             it("should have 4 faces, 2 empty tile positions, 2 tile positions with tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(11);
@@ -68,7 +72,10 @@ describe("Puzzle display functionality", function () {
             }
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             const canvas = displayManager.displayEmptyPuzzle();
-            displayManager.displayTilePositions(puzzle.tetrahedron.tilePositions);
+            puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
+                const tpChange = buildDisplayChange(tilePosition);
+                displayManager.placeTile(tpChange)
+            });
             console.log(canvas.svg());
             it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(13);

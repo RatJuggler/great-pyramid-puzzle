@@ -1,5 +1,4 @@
-import {CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema";
-import { TilePosition } from "./tile-position";
+import { CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema";
 import { DisplayChange } from "./display-change";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
@@ -163,23 +162,6 @@ export class DisplayManager {
         return {group, center};
     }
 
-    private static buildTilePositionChange(tilePosition: TilePosition): DisplayChange {
-        return {
-            eventType: "Test",
-            tilePositionId: tilePosition.id,
-            empty: tilePosition.isEmpty(),
-            tileId: tilePosition.isEmpty() ? null : tilePosition.tile.id,
-            rotatedSegments: tilePosition.isEmpty() ? null : tilePosition.getRotatedSegments()
-        }
-    }
-
-    displayTilePositions(tilePositions: Array<TilePosition>): void {
-        tilePositions.forEach((tilePosition) => {
-            const tpChange = DisplayManager.buildTilePositionChange(tilePosition);
-            this.placeTile(tpChange)
-        });
-    }
-
     placeTile(tpChange: DisplayChange): void {
         // Find the destination tile position of the new tile.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
@@ -187,8 +169,7 @@ export class DisplayManager {
         this.drawTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
     }
 
-    animatePlaceTile(tilePosition: TilePosition): void {
-        const tpChange = DisplayManager.buildTilePositionChange(tilePosition);
+    animatePlaceTile(tpChange: DisplayChange): void {
         // Find the destination tile position of the new tile.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Draw the tile to be placed at the starting position.
