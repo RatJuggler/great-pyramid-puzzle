@@ -1,5 +1,6 @@
 import { CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema";
 import { TilePosition } from "./tile-position";
+import { TilePositionChange } from "./tile-position-change";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
 
@@ -48,13 +49,13 @@ export class DisplayManager {
             .stroke({ width: outline, color: DisplayManager.LINE_COLOUR});
     }
 
-    private drawTile(tilePosition: TilePosition, tpCenter: CenterPointData): G {
+    private drawTile(tpChange: TilePositionChange, tpCenter: CenterPointData): G {
         // Group the elements which make up a tile position.
-        const tGroup = this._draw.group().id("tile" + tilePosition.tile.id);
+        const tGroup = this._draw.group().id("tile" + tpChange.tileId);
         // Fill in the tile colour.
         this.drawTriangle(tGroup, tpCenter, this._scaleTile, DisplayManager.TILE_COLOUR, 0);
         // Draw the red segments.
-        const segments = tilePosition.getRotatedSegments();
+        const segments = tpChange.rotatedSegments!;
         for (let segN = 0; segN < segments.length; segN++) {
             if (segments.charAt(segN) === '1') {
                 tGroup.polygon(this.scaleSegment(segN, tpCenter, this._scaleTile))
@@ -73,18 +74,18 @@ export class DisplayManager {
         return tGroup;
     }
 
-    private drawTilePosition(tpGroup: G, tilePosition: TilePosition, tpCenter: CenterPointData): void {
+    private drawTilePosition(tpGroup: G, tpChange: TilePositionChange, tpCenter: CenterPointData): void {
         // Clear any existing tile position drawing.
         tpGroup.clear();
         // Set the tile description.
-        const desc = "Position: " + tilePosition.name + ", Tile: " + (tilePosition.isEmpty() ? "Empty" : tilePosition.tile.id);
+        const desc = "Position: " + tpChange.tilePositionId + ", Tile: " + (tpChange.empty ? "Empty" : tpChange.tileId);
         tpGroup.element('title').words(desc);
         // Draw the tile if present or an empty tile position if not.
-        if (tilePosition.isEmpty()) {
+        if (tpChange.empty) {
             this.drawTriangle(tpGroup, tpCenter, this._scaleTile, DisplayManager.TILE_POSITION_COLOUR);
         } else {
             tpGroup.add(
-                this.drawTile(tilePosition, tpCenter)
+                this.drawTile(tpChange, tpCenter)
             );
         }
     }
@@ -147,22 +148,34 @@ export class DisplayManager {
         return {group, center};
     }
 
+    private static buildTilePositionChange(tilePosition: TilePosition): TilePositionChange {
+        return {
+            eventType: "Test",
+            tilePositionId: tilePosition.id,
+            empty: tilePosition.isEmpty(),
+            tileId: tilePosition.isEmpty() ? null : tilePosition.tile.id,
+            rotatedSegments: tilePosition.isEmpty() ? null : tilePosition.getRotatedSegments()
+        }
+    }
+
     displayTilePositions(tilePositions: Array<TilePosition>): void {
         tilePositions.forEach((tilePosition) => this.placeTile(tilePosition));
     }
 
     placeTile(tilePosition: TilePosition): void {
+        const tpChange = DisplayManager.buildTilePositionChange(tilePosition);
         // Find the destination tile position of the new tile.
-        const tpDisplay = this.getTilePosition(tilePosition.id);
+        const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the placed tile.
-        this.drawTilePosition(tpDisplay.group, tilePosition, tpDisplay.center);
+        this.drawTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
     }
 
     animatePlaceTile(tilePosition: TilePosition): void {
+        const tpChange = DisplayManager.buildTilePositionChange(tilePosition);
         // Find the destination tile position of the new tile.
-        const tpDisplay = this.getTilePosition(tilePosition.id);
+        const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Draw the tile to be placed at the starting position.
-        const placeTile = this.drawTile(tilePosition, this._startCenter);
+        const placeTile = this.drawTile(tpChange, this._startCenter);
         // Animate the tile moving from the start to the destination.
         const matrix = new Matrix()
             .translate(tpDisplay.center.x - this._startCenter.x, tpDisplay.center.y - this._startCenter.y)
@@ -172,23 +185,25 @@ export class DisplayManager {
             .after(() => {
                 // Remove the animated tile then redraw the tile position with the placed tile.
                 placeTile.remove();
-                this.drawTilePosition(tpDisplay.group, tilePosition, tpDisplay.center);
+                this.drawTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
             });
     }
 
     removeTile(tilePosition: TilePosition): void {
+        const tpChange = DisplayManager.buildTilePositionChange(tilePosition);
         // Find the tile position of the tile to be removed.
-        const tpDisplay = this.getTilePosition(tilePosition.id);
+        const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the tile removed.
-        this.drawTilePosition(tpDisplay.group, tilePosition, tpDisplay.center);
+        this.drawTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
     }
 
     animateRemoveTile(tilePosition: TilePosition): void {
+        const tpChange = DisplayManager.buildTilePositionChange(tilePosition);
         // Find the tile position of the tile to be removed.
-        const tpDisplay = this.getTilePosition(tilePosition.id);
+        const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the tile removed then draw the tile at the tile position ready to be animated.
-        this.drawTilePosition(tpDisplay.group, tilePosition, tpDisplay.center);
-        const removeTile = this.drawTile(tilePosition, this._startCenter);
+        this.drawTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
+        const removeTile = this.drawTile(tpChange, this._startCenter);
         // Animate the tile moving from it's old position back to the start.
         const matrix = new Matrix()
             .translate(this._startCenter.x - tpDisplay.center.x, this._startCenter.y - tpDisplay.center.y)
