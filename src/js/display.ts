@@ -1,4 +1,4 @@
-import { CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema";
+import {CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema";
 import { TilePosition } from "./tile-position";
 import { TilePositionChange } from "./tile-position-change";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
@@ -90,6 +90,22 @@ export class DisplayManager {
         }
     }
 
+    private displayEmptyTilePosition(tilePositionId: string, tpCenter: CenterPointData): G {
+        // Create a group for the elements to be shown at the tile position.
+        const tpGroup = this._draw.group().id(tilePositionId).setData({tpCenter: tpCenter});
+        // Display an empty tile position.
+        const tpChange = {
+            eventType: "Test",
+            tilePositionId: tilePositionId,
+            empty: true,
+            tileId: null,
+            rotatedSegments: null
+
+        }
+        this.drawTilePosition(tpGroup, tpChange, tpCenter);
+        return tpGroup;
+    }
+
     private displayEmptyFace(fData: FaceDisplayData): void {
         // Scale the face center point.
         const fCenter = {
@@ -111,8 +127,7 @@ export class DisplayManager {
                 r: fCenter.r + tpData.center.r
             };
             fGroup.add(
-                // Create a group for the elements to be shown at the tile position.
-                this._draw.group().id(fData.name + '-' + tpData.id).setData({tpCenter: tpCenter})
+                this.displayEmptyTilePosition(fData.name + '-' + tpData.id, tpCenter)
             );
         });
         // Outline the face.
@@ -159,11 +174,13 @@ export class DisplayManager {
     }
 
     displayTilePositions(tilePositions: Array<TilePosition>): void {
-        tilePositions.forEach((tilePosition) => this.placeTile(tilePosition));
+        tilePositions.forEach((tilePosition) => {
+            const tpChange = DisplayManager.buildTilePositionChange(tilePosition);
+            this.placeTile(tpChange)
+        });
     }
 
-    placeTile(tilePosition: TilePosition): void {
-        const tpChange = DisplayManager.buildTilePositionChange(tilePosition);
+    placeTile(tpChange: TilePositionChange): void {
         // Find the destination tile position of the new tile.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the placed tile.
@@ -189,16 +206,14 @@ export class DisplayManager {
             });
     }
 
-    removeTile(tilePosition: TilePosition): void {
-        const tpChange = DisplayManager.buildTilePositionChange(tilePosition);
+    removeTile(tpChange: TilePositionChange): void {
         // Find the tile position of the tile to be removed.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the tile removed.
         this.drawTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
     }
 
-    animateRemoveTile(tilePosition: TilePosition): void {
-        const tpChange = DisplayManager.buildTilePositionChange(tilePosition);
+    animateRemoveTile(tpChange: TilePositionChange): void {
         // Find the tile position of the tile to be removed.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the tile removed then draw the tile at the tile position ready to be animated.
