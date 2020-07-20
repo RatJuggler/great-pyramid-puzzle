@@ -1,6 +1,6 @@
 import {CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema";
 import { TilePosition } from "./tile-position";
-import { TilePositionChange } from "./tile-position-change";
+import { DisplayChange } from "./display-change";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
 
@@ -49,7 +49,7 @@ export class DisplayManager {
             .stroke({ width: outline, color: DisplayManager.LINE_COLOUR});
     }
 
-    private drawTile(tpChange: TilePositionChange, tpCenter: CenterPointData): G {
+    private drawTile(tpChange: DisplayChange, tpCenter: CenterPointData): G {
         // Group the elements which make up a tile position.
         const tGroup = this._draw.group().id("tile" + tpChange.tileId);
         // Fill in the tile colour.
@@ -74,7 +74,7 @@ export class DisplayManager {
         return tGroup;
     }
 
-    private drawTilePosition(tpGroup: G, tpChange: TilePositionChange, tpCenter: CenterPointData): void {
+    private drawTilePosition(tpGroup: G, tpChange: DisplayChange, tpCenter: CenterPointData): void {
         // Clear any existing tile position drawing.
         tpGroup.clear();
         // Set the tile description.
@@ -163,7 +163,7 @@ export class DisplayManager {
         return {group, center};
     }
 
-    private static buildTilePositionChange(tilePosition: TilePosition): TilePositionChange {
+    private static buildTilePositionChange(tilePosition: TilePosition): DisplayChange {
         return {
             eventType: "Test",
             tilePositionId: tilePosition.id,
@@ -180,7 +180,7 @@ export class DisplayManager {
         });
     }
 
-    placeTile(tpChange: TilePositionChange): void {
+    placeTile(tpChange: DisplayChange): void {
         // Find the destination tile position of the new tile.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the placed tile.
@@ -206,14 +206,14 @@ export class DisplayManager {
             });
     }
 
-    removeTile(tpChange: TilePositionChange): void {
+    removeTile(tpChange: DisplayChange): void {
         // Find the tile position of the tile to be removed.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the tile removed.
         this.drawTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
     }
 
-    animateRemoveTile(tpChange: TilePositionChange): void {
+    animateRemoveTile(tpChange: DisplayChange): void {
         // Find the tile position of the tile to be removed.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the tile removed then draw the tile at the tile position ready to be animated.

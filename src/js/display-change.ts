@@ -1,6 +1,6 @@
 
 
-type TilePositionChange = {
+type DisplayChange = {
     eventType: string;
     tilePositionId: string;
     empty: boolean;
@@ -8,4 +8,4 @@ type TilePositionChange = {
     rotatedSegments: string | null;
 }
 
-export { TilePositionChange }
+export { DisplayChange }
