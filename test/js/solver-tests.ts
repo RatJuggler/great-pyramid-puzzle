@@ -9,6 +9,7 @@ import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
 import { VALID_TEST_PUZZLE } from "./common-test-data";
+import {Tile} from "../../src/js/tile";
 
 
 class MockSolver extends SolverBase {}
@@ -26,6 +27,47 @@ describe("SolverBase behaviour using MockSolver", function () {
                 expect(function () {
                     new MockSolver(tetrahedron, tilePool);
                 }).to.throw(Error, "There must be enough Tiles to cover the Tetrahedron!");
+            });
+        });
+
+    });
+
+    describe("when #getTileSelection() is called", function () {
+
+        context("with an invalid tile selection", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new MockSolver(components.tetrahedron, components.tilePool);
+            it("should throw an error", function () {
+                expect(function () {
+                    solver.getTileSelection("error");
+                }).to.throw(Error, "Invalid tile selection option!");
+            });
+        });
+
+        context("with the Tile Selection argument 'Random'", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new MockSolver(components.tetrahedron, components.tilePool);
+            const result = solver.getTileSelection("Random");
+            it("should return a random Tile", function () {
+                expect(result).to.be.an.instanceOf(Tile);
+            });
+        });
+
+        context("with the Tile Selection argument 'Sequential'", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new MockSolver(components.tetrahedron, components.tilePool);
+            const tile = solver.getTileSelection("Sequential");
+            it("should return the first sequential Tile", function () {
+                expect(tile.id).to.equal(1);
+            });
+        });
+
+        context("with the Tile Selection argument 'Test'", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new MockSolver(components.tetrahedron, components.tilePool);
+            const tile = solver.getTileSelection("Test");
+            it("should return the test Tile", function () {
+                expect(tile.id).to.equal(0);
             });
         });
 

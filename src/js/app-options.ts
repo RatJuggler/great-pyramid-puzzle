@@ -2,8 +2,6 @@ import { testPuzzle } from "./test-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
 import { PuzzleDataElements } from "./common-data-schema";
-import { Tile } from "./tile";
-import { TilePool } from "./tile-pool";
 import { Solver } from "./solver";
 
 
@@ -17,19 +15,6 @@ function getPuzzleTypeData(puzzleType: string): PuzzleDataElements {
             return greatPuzzle;
         default:
             throw new Error("Invalid puzzle type option!");
-    }
-}
-
-function getTileSelection(tilePool: TilePool, tileSelection: string): Tile {
-    switch (tileSelection) {
-        case "Random":
-            return tilePool.randomTile;
-        case "Sequential":
-            return tilePool.nextTile;
-        case "Test":
-            return tilePool.testTile;
-        default:
-            throw new Error("Invalid tile selection option!");
     }
 }
 
@@ -76,4 +61,4 @@ function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cance
     return { promise, cancel }
 }
 
-export { getPuzzleTypeData, getTileSelection, createSolverPromise }
+export { getPuzzleTypeData, createSolverPromise }

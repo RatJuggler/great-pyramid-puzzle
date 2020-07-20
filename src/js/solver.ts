@@ -2,7 +2,6 @@ import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
-import { getTileSelection } from "./app-options";
 import { getRandomInt } from "./utils";
 
 
@@ -16,6 +15,19 @@ abstract class SolverBase implements Solver {
     constructor(protected _tetrahedron: Tetrahedron, protected _tilePool: TilePool) {
         if (this._tilePool.tileCount !== this._tetrahedron.tilePositionCount) {
             throw new Error("There must be enough Tiles to cover the Tetrahedron!");
+        }
+    }
+
+    getTileSelection(tileSelection: string): Tile {
+        switch (tileSelection) {
+            case "Random":
+                return this._tilePool.randomTile;
+            case "Sequential":
+                return this._tilePool.nextTile;
+            case "Test":
+                return this._tilePool.testTile;
+            default:
+                throw new Error("Invalid tile selection option!");
         }
     }
 
@@ -69,7 +81,7 @@ class NoMatchingSolver extends SolverBase {
         if (this._tilePool.isEmpty) {
             return null;
         }
-        const tile = getTileSelection(this._tilePool, this._tileSelection);
+        const tile = this.getTileSelection(this._tileSelection);
         return this.placeTile(tile, this._tilePlacement, this._tileRotation);
     }
 
