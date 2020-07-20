@@ -2,13 +2,12 @@ import { testPuzzle } from "../../src/js/test-puzzle";
 import { pocketPuzzle } from "../../src/js/pocket-puzzle";
 import { greatPuzzle } from "../../src/js/great-puzzle";
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
-import { getPuzzleTypeData, getTileSelection, placeTile } from "../../src/js/app-options";
+import { getPuzzleTypeData, getTileSelection } from "../../src/js/app-options";
 import { Tile } from "../../src/js/tile";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
 import { VALID_TEST_PUZZLE} from "./common-test-data";
-import {TilePosition} from "../../src/js/tile-position";
 
 
 describe("#getPuzzleTypeData behaviour", function () {
@@ -83,44 +82,6 @@ describe("#getTileSelection behaviour", function () {
                 const components = getPuzzleComponents(VALID_TEST_PUZZLE);
                 const tile = getTileSelection(components.tilePool, "Test");
                 expect(tile.id).to.equal(0);
-            });
-        });
-
-    });
-
-});
-
-
-describe("#placeTile() behaviour", function () {
-
-    describe("when called", function () {
-
-        context("with an invalid tile placement", function () {
-            it("should throw an error", function () {
-                const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-                expect(function () {
-                    placeTile(components.tilePool.nextTile!, components.tetrahedron, "error", "Random");
-                }).to.throw(Error, "Invalid tile placement option!");
-            });
-        });
-
-        context("with an invalid tile rotation", function () {
-            it("should throw an error", function () {
-                const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-                expect(function () {
-                    placeTile(components.tilePool.nextTile!, components.tetrahedron, "Random", "error");
-                }).to.throw(Error, "Invalid tile rotation option!");
-            });
-        });
-
-        context("with valid placement options", function () {
-            it("should return an updated TilePosition", function () {
-                const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-                const tileToPlace = components.tilePool.nextTile!
-                const result = placeTile(tileToPlace, components.tetrahedron, "Sequential", "None");
-                expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result.id).to.equal("1-1");
-                expect(result.tile).to.eql(tileToPlace);
             });
         });
 

@@ -31,6 +31,42 @@ describe("SolverBase behaviour using MockSolver", function () {
 
     });
 
+    describe("if #placeTile() is called", function () {
+
+        context("with an invalid tile placement", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new MockSolver(components.tetrahedron, components.tilePool);
+            it("should throw an error", function () {
+                expect(function () {
+                    solver.placeTile(components.tilePool.nextTile!, "error", "Random");
+                }).to.throw(Error, "Invalid tile placement option!");
+            });
+        });
+
+        context("with an invalid tile rotation", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new MockSolver(components.tetrahedron, components.tilePool);
+            it("should throw an error", function () {
+                expect(function () {
+                    solver.placeTile(components.tilePool.nextTile!, "Random", "error");
+                }).to.throw(Error, "Invalid tile rotation option!");
+            });
+        });
+
+        context("with valid placement options", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new MockSolver(components.tetrahedron, components.tilePool);
+            const tileToPlace = components.tilePool.nextTile!
+            const result = solver.placeTile(tileToPlace, "Sequential", "None");
+            it("should return an updated TilePosition", function () {
+                expect(result).to.be.an.instanceOf(TilePosition);
+                expect(result.id).to.equal("1-1");
+                expect(result.tile).to.eql(tileToPlace);
+            });
+        });
+
+    });
+
     describe("if the #nextState() placeholder is called", function () {
 
         context("on a properly instantiated instance", function () {

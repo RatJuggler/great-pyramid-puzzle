@@ -2,7 +2,8 @@ import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
-import { getTileSelection, placeTile } from "./app-options";
+import { getTileSelection } from "./app-options";
+import { getRandomInt } from "./utils";
 
 
 interface Solver {
@@ -16,6 +17,38 @@ abstract class SolverBase implements Solver {
         if (this._tilePool.tileCount !== this._tetrahedron.tilePositionCount) {
             throw new Error("There must be enough Tiles to cover the Tetrahedron!");
         }
+    }
+
+    private static rotateTile(tilePosition: TilePosition, tileRotation: string): TilePosition {
+        switch (tileRotation) {
+            case "None":
+                return tilePosition;
+            case "Random":
+                for (let i = getRandomInt(3); i > 0; --i) {
+                    tilePosition.rotateTile();
+                }
+                return tilePosition;
+            default:
+                throw new Error("Invalid tile rotation option!");
+        }
+    }
+
+    placeTile(tile: Tile, tilePlacement: string, tileRotation: string): TilePosition  {
+        let tilePlacedPosition;
+        switch (tilePlacement) {
+            case "Random":
+                tilePlacedPosition = this._tetrahedron.placeTileRandomly(tile);
+                break;
+            case "Sequential":
+                tilePlacedPosition = this._tetrahedron.placeTileSequentially(tile);
+                break;
+            default:
+                throw new Error("Invalid tile placement option!");
+        }
+        if (!tilePlacedPosition) {
+            throw new Error("Failed to place tile on puzzle!");
+        }
+        return SolverBase.rotateTile(tilePlacedPosition, tileRotation);
     }
 
     nextState(): TilePosition | null {
@@ -37,7 +70,7 @@ class NoMatchingSolver extends SolverBase {
             return null;
         }
         const tile = getTileSelection(this._tilePool, this._tileSelection);
-        return placeTile(tile, this._tetrahedron, this._tilePlacement, this._tileRotation);
+        return this.placeTile(tile, this._tilePlacement, this._tileRotation);
     }
 
 }
@@ -45,7 +78,7 @@ class NoMatchingSolver extends SolverBase {
 
 class BruteForceSolver extends SolverBase {
 
-    private _emptyTilePositions: Array<TilePosition>;
+    private readonly _emptyTilePositions: Array<TilePosition>;
     private _unusedTiles: Array<Tile> = [];
 
     constructor(tetrahedron: Tetrahedron, tilePool: TilePool) {
@@ -61,7 +94,6 @@ class BruteForceSolver extends SolverBase {
             return true;
         }
         const tilePosition = emptyTilePositions.shift()!;
-        console.log("On: " + tilePosition.toString());
         const untriedTiles = [...unusedTiles];
         const rejectedTiles = new Array<Tile>();
         while (untriedTiles.length > 0) {
@@ -90,11 +122,9 @@ class BruteForceSolver extends SolverBase {
                     return true;
                 }
             }
-            console.log("No Match: " + tilePosition.toString());
             tilePosition.removeTile();
             rejectedTiles.push(tile);
         }
-        console.log("No Tile: " + tilePosition.toString());
         emptyTilePositions.unshift(tilePosition);
         return false;
     }

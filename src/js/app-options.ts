@@ -4,10 +4,7 @@ import { greatPuzzle } from "./great-puzzle";
 import { PuzzleDataElements } from "./common-data-schema";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
-import { TilePosition } from "./tile-position";
-import { Tetrahedron } from "./tetrahedron";
 import { Solver } from "./solver";
-import { getRandomInt } from "./utils";
 
 
 function getPuzzleTypeData(puzzleType: string): PuzzleDataElements {
@@ -34,38 +31,6 @@ function getTileSelection(tilePool: TilePool, tileSelection: string): Tile {
         default:
             throw new Error("Invalid tile selection option!");
     }
-}
-
-function rotateTile(tilePosition: TilePosition, tileRotation: string): TilePosition {
-    switch (tileRotation) {
-        case "None":
-            return tilePosition;
-        case "Random":
-            for (let i = getRandomInt(3); i > 0; --i) {
-                tilePosition.rotateTile();
-            }
-            return tilePosition;
-        default:
-            throw new Error("Invalid tile rotation option!");
-    }
-}
-
-function placeTile(tile: Tile, tetrahedron: Tetrahedron, tilePlacement: string, tileRotation: string): TilePosition  {
-    let tilePlacedPosition;
-    switch (tilePlacement) {
-        case "Random":
-            tilePlacedPosition = tetrahedron.placeTileRandomly(tile);
-            break;
-        case "Sequential":
-            tilePlacedPosition = tetrahedron.placeTileSequentially(tile);
-            break;
-        default:
-            throw new Error("Invalid tile placement option!");
-    }
-    if (!tilePlacedPosition) {
-        throw new Error("Failed to place tile on puzzle!");
-    }
-    return rotateTile(tilePlacedPosition, tileRotation);
 }
 
 function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cancel: () => void; } {
@@ -111,4 +76,4 @@ function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cance
     return { promise, cancel }
 }
 
-export { getPuzzleTypeData, getTileSelection, placeTile, createSolverPromise }
+export { getPuzzleTypeData, getTileSelection, createSolverPromise }
