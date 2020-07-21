@@ -3,7 +3,7 @@ import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display";
-import { buildDisplayChange } from "./tile-position-change";
+import { placeDisplayChange, rotateDisplayChange } from "./tile-position-change";
 import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
 
 
@@ -30,7 +30,8 @@ function attachRotateEvents(puzzle: PuzzleComponents, displayManager: DisplayMan
                     const tilePosition = puzzle.tetrahedron.getFace(tpId[1]).getTilePosition(tpId[2]);
                     if (!tilePosition.isEmpty()) {
                         tilePosition.rotateTile();
-                        displayManager.animateRotateTile(tpId[0]);
+                        const tpChange = rotateDisplayChange(tilePosition);
+                        displayManager.displayChange(tpChange);
                     }
                 });
             }
@@ -42,7 +43,7 @@ function animateSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: 
     animatedDisplayId = setTimeout( () => {
         const displayChange = solver.nextState();
         if (displayChange) {
-            displayManager.animatePlaceTile(displayChange!);
+            displayManager.displayChange(displayChange!);
             animateSolve(puzzle, solver, displayManager);
         } else {
             attachRotateEvents(puzzle, displayManager);
@@ -58,7 +59,7 @@ function completeSolve(puzzle: PuzzleComponents, solver: Solver, displayManager:
     solving.promise.then((resolvedValue) => {
         // Show the final puzzle state and attach the rotate events.
         puzzle.tetrahedron.tilePositions
-            .map((tilePosition) => buildDisplayChange(tilePosition))
+            .map((tilePosition) => placeDisplayChange(tilePosition))
             .forEach((displayChange) => displayManager.placeTile(displayChange));
         attachRotateEvents(puzzle, displayManager);
         // Remove the overlay.

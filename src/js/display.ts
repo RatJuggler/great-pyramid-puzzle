@@ -170,7 +170,7 @@ export class DisplayManager {
         this.drawTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
     }
 
-    animatePlaceTile(tpChange: DisplayChange): void {
+    private animatePlaceTile(tpChange: DisplayChange): void {
         // Find the destination tile position of the new tile.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Draw the tile to be placed at the starting position.
@@ -213,13 +213,26 @@ export class DisplayManager {
             });
     }
 
-    animateRotateTile(tilePositionId: string): void {
+    private animateRotateTile(tpChange: DisplayChange): void {
         // Find the tile position of the tile to be rotated.
-        const tpDisplay = this.getTilePosition(tilePositionId);
+        const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Rotate the child tile group.
         const tGroup = SVG(tpDisplay.group.children()[1]) as G;
         // @ts-ignore
         tGroup.animate({duration: DisplayManager.ANIMATE_DURATION, ease: "<>"}).rotate(120, tpDisplay.center.x, tpDisplay.center.y);
+    }
+
+    displayChange(displayChange: DisplayChange) {
+        switch (displayChange.eventType) {
+            case "Place":
+                this.animatePlaceTile(displayChange)
+                break;
+            case "Rotate":
+                this.animateRotateTile(displayChange);
+                break;
+            default:
+                throw new Error("Unknown display change event!");
+        }
     }
 
 }

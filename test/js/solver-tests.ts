@@ -112,7 +112,7 @@ describe("NoMatchingSolver behaviour", function () {
                 "Random", "Random", "error");
             it("should throw an error", function () {
                 expect(function () {
-                    solver.placeTile(components.tilePool.nextTile!);
+                    solver.tileRotations();
                 }).to.throw(Error, "Invalid tile rotation option!");
             });
         });

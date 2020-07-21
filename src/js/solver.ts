@@ -3,7 +3,7 @@ import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
-import { buildDisplayChange } from "./tile-position-change";
+import { placeDisplayChange, rotateDisplayChange } from "./tile-position-change";
 import { getRandomInt } from "./utils";
 
 
@@ -29,6 +29,9 @@ abstract class SolverBase implements Solver {
 
 class NoMatchingSolver extends SolverBase {
 
+    private _tilePosition: TilePosition | null = null;
+    private _rotating: number = 0;
+
     constructor(tetrahedron: Tetrahedron, tilePool: TilePool,
                 private _tileSelection: string, private _tilePlacement: string, private _tileRotation: string) {
         super(tetrahedron, tilePool);
@@ -47,15 +50,12 @@ class NoMatchingSolver extends SolverBase {
         }
     }
 
-    private rotateTile(tilePosition: TilePosition): TilePosition {
+    tileRotations(): number {
         switch (this._tileRotation) {
             case "None":
-                return tilePosition;
+                return 0;
             case "Random":
-                for (let i = getRandomInt(3); i > 0; --i) {
-                    tilePosition.rotateTile();
-                }
-                return tilePosition;
+                return getRandomInt(3);
             default:
                 throw new Error("Invalid tile rotation option!");
         }
@@ -76,16 +76,25 @@ class NoMatchingSolver extends SolverBase {
         if (!tilePlacedPosition) {
             throw new Error("Failed to place tile on puzzle!");
         }
-        return this.rotateTile(tilePlacedPosition);
+        return tilePlacedPosition;
     }
 
     nextState(): DisplayChange | null {
+        if (this._rotating > 0) {
+            if (this._tilePosition === null) {
+                throw new Error("No tile to rotate!");
+            }
+            this._rotating--;
+            this._tilePosition.rotateTile();
+            return rotateDisplayChange(this._tilePosition);
+        }
         if (this._tilePool.isEmpty) {
             return null;
         }
         const tile = this.getTileSelection();
-        const tilePosition = this.placeTile(tile);
-        return buildDisplayChange(tilePosition);
+        this._tilePosition = this.placeTile(tile);
+        this._rotating = this.tileRotations();
+        return placeDisplayChange(this._tilePosition);
     }
 
 }

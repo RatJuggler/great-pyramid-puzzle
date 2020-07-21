@@ -2,9 +2,9 @@ import { TilePosition } from "./tile-position";
 import { DisplayChange } from "./display-change";
 
 
-function buildDisplayChange(tilePosition: TilePosition): DisplayChange {
+function placeDisplayChange(tilePosition: TilePosition): DisplayChange {
     return {
-        eventType: "Test",
+        eventType: "Place",
         tilePositionId: tilePosition.id,
         empty: tilePosition.isEmpty(),
         tileId: tilePosition.isEmpty() ? null : tilePosition.tile.id,
@@ -12,4 +12,14 @@ function buildDisplayChange(tilePosition: TilePosition): DisplayChange {
     }
 }
 
-export { buildDisplayChange }
+function rotateDisplayChange(tilePosition: TilePosition): DisplayChange {
+    return {
+        eventType: "Rotate",
+        tilePositionId: tilePosition.id,
+        empty: tilePosition.isEmpty(),
+        tileId: tilePosition.isEmpty() ? null : tilePosition.tile.id,
+        rotatedSegments: tilePosition.isEmpty() ? null : tilePosition.getRotatedSegments()
+    }
+}
+
+export { placeDisplayChange, rotateDisplayChange }

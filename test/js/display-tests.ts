@@ -4,13 +4,13 @@ import valid_display1 from "../valid-test-display-data1.json";
 import { PuzzleDataElements } from "../../src/js/common-data-schema";
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { getDisplayManager } from "../../src/js/display-loader";
+import { placeDisplayChange } from "../../src/js/tile-position-change";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
 import { createSVGWindow } from 'svgdom';
 // @ts-ignore
 import { registerWindow } from "@svgdotjs/svg.js";
-import {buildDisplayChange} from "../../src/js/tile-position-change";
 
 
 describe("Puzzle display functionality", function () {
@@ -49,7 +49,7 @@ describe("Puzzle display functionality", function () {
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             const canvas = displayManager.displayEmptyPuzzle();
             puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
-                const tpChange = buildDisplayChange(tilePosition);
+                const tpChange = placeDisplayChange(tilePosition);
                 displayManager.placeTile(tpChange)
             });
             console.log(canvas.svg());
@@ -73,7 +73,7 @@ describe("Puzzle display functionality", function () {
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             const canvas = displayManager.displayEmptyPuzzle();
             puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
-                const tpChange = buildDisplayChange(tilePosition);
+                const tpChange = placeDisplayChange(tilePosition);
                 displayManager.placeTile(tpChange)
             });
             console.log(canvas.svg());
