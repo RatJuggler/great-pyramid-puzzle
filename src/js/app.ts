@@ -2,7 +2,7 @@ import { createSolverPromise } from "./app-options";
 import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
 import { getDisplayManager } from "./display-loader";
-import { DisplayManager } from "./display";
+import { DisplayManager } from "./display-manager";
 import { TilePositionChange } from "./tile-position-change";
 import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
 
