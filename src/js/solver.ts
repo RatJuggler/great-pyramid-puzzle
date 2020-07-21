@@ -1,14 +1,13 @@
-import { DisplayChange } from "./display-change";
 import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
-import { placeDisplayChange, rotateDisplayChange } from "./tile-position-change";
+import { TilePositionChange, createTilePositionChange, createTileChange } from "./tile-position-change";
 import { getRandomInt } from "./utils";
 
 
 interface Solver {
-    nextState: () => DisplayChange | null
+    nextState: () => TilePositionChange | null
 }
 
 
@@ -20,7 +19,7 @@ abstract class SolverBase implements Solver {
         }
     }
 
-    nextState(): DisplayChange | null {
+    nextState(): TilePositionChange | null {
         return null;
     }
 
@@ -79,14 +78,14 @@ class NoMatchingSolver extends SolverBase {
         return tilePlacedPosition;
     }
 
-    nextState(): DisplayChange | null {
+    nextState(): TilePositionChange | null {
         if (this._rotating > 0) {
             if (this._tilePosition === null) {
                 throw new Error("No tile to rotate!");
             }
             this._rotating--;
             this._tilePosition.rotateTile();
-            return rotateDisplayChange(this._tilePosition);
+            return createTilePositionChange("Rotate", this._tilePosition);
         }
         if (this._tilePool.isEmpty) {
             return null;
@@ -94,7 +93,7 @@ class NoMatchingSolver extends SolverBase {
         const tile = this.getTileSelection();
         this._tilePosition = this.placeTile(tile);
         this._rotating = this.tileRotations();
-        return placeDisplayChange(this._tilePosition);
+        return createTileChange("Place", this._tilePosition);
     }
 
 }
@@ -153,7 +152,7 @@ class BruteForceSolver extends SolverBase {
         return false;
     }
 
-    nextState(): DisplayChange | null {
+    nextState(): TilePositionChange | null {
         this.nextTilePosition(this._emptyTilePositions, this._unusedTiles);
         return null;
     }

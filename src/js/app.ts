@@ -3,7 +3,8 @@ import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display";
-import { DisplayChange, TileDisplayChange, TilePositionDisplayChange } from "./display-change";
+import { display } from "./display-change";
+import { createTilePositionChange, createTileChange } from "./tile-position-change";
 import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
 
 
@@ -30,8 +31,7 @@ function attachRotateEvents(puzzle: PuzzleComponents, displayManager: DisplayMan
                     const tilePosition = puzzle.tetrahedron.getFace(tpId[1]).getTilePosition(tpId[2]);
                     if (!tilePosition.isEmpty()) {
                         tilePosition.rotateTile();
-                        const tpChange = new TilePositionDisplayChange("Rotate", tilePosition.id);
-                        displayManager.displayChange(tpChange);
+                        display(displayManager, createTilePositionChange("Rotate", tilePosition));
                     }
                 });
             }
@@ -41,9 +41,9 @@ function attachRotateEvents(puzzle: PuzzleComponents, displayManager: DisplayMan
 function animateSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: DisplayManager): void {
     // Schedule a series of events to place tiles on the puzzle.
     animatedDisplayId = setTimeout( () => {
-        const displayChange = solver.nextState();
-        if (displayChange) {
-            displayManager.displayChange(displayChange!);
+        const tilePositionChange = solver.nextState();
+        if (tilePositionChange) {
+            display(displayManager, tilePositionChange);
             animateSolve(puzzle, solver, displayManager);
         } else {
             attachRotateEvents(puzzle, displayManager);
@@ -59,8 +59,8 @@ function completeSolve(puzzle: PuzzleComponents, solver: Solver, displayManager:
     solving.promise.then((resolvedValue) => {
         // Show the final puzzle state and attach the rotate events.
         puzzle.tetrahedron.tilePositions
-            .map((tilePosition) => new TileDisplayChange("Final", tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments()))
-            .forEach((displayChange) => displayManager.displayChange(displayChange));
+            .map((tilePosition) => createTileChange("Final", tilePosition))
+            .forEach((displayChange) => display(displayManager, displayChange));
         attachRotateEvents(puzzle, displayManager);
         // Remove the overlay.
         toggleActive("overlay");
@@ -107,7 +107,7 @@ function solvePuzzle(): void {
     // Build a display manager.
     const displayManager = getDisplayManager(displayElement, puzzleType)
     // Show the initial puzzle state.
-    displayManager.displayChange(new DisplayChange("Initial"));
+    displayManager.initialDisplay();
     // Build the solver to use.
     const solver = getSolveAlgorithm(puzzle);
     // Solve the puzzle depending on the display.

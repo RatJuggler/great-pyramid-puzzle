@@ -1,13 +1,26 @@
 import { TilePosition } from "./tile-position";
-import { DisplayChange, TileDisplayChange, TilePositionDisplayChange } from "./display-change";
 
 
-function placeDisplayChange(tilePosition: TilePosition): DisplayChange {
-    return new TileDisplayChange("Place", tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
+class TilePositionChange {
+
+    constructor(readonly type: string, readonly tilePositionId: string) {}
+
 }
 
-function rotateDisplayChange(tilePosition: TilePosition): DisplayChange {
-    return new TilePositionDisplayChange("Rotate", tilePosition.id);
+class TileChange extends TilePositionChange {
+
+    constructor(type: string, tilePositionId: string, readonly tileId: number, readonly rotatedSegments: string) {
+        super(type, tilePositionId);
+    }
+
 }
 
-export { placeDisplayChange, rotateDisplayChange }
+function createTileChange(type: string, tilePosition: TilePosition): TilePositionChange {
+    return new TileChange(type, tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
+}
+
+function createTilePositionChange(type: string, tilePosition: TilePosition): TilePositionChange {
+    return new TilePositionChange(type, tilePosition.id);
+}
+
+export { TilePositionChange, TileChange, createTileChange, createTilePositionChange }

@@ -6,7 +6,7 @@ import { Tetrahedron } from "../../src/js/tetrahedron";
 import { Tile } from "../../src/js/tile";
 import { TilePool } from "../../src/js/tile-pool";
 import { TilePosition } from "../../src/js/tile-position";
-import { DisplayChange } from "../../src/js/display-change";
+import { TilePositionChange } from "../../src/js/tile-position-change";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -139,17 +139,17 @@ describe("NoMatchingSolver behaviour", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
                 "Random", "Random", "None");
-            it("should first return an instance of DisplayChange", function () {
-                expect(solver.nextState()).to.be.an.instanceOf(DisplayChange);
+            it("should first return an instance of TilePositionChange", function () {
+                expect(solver.nextState()).to.be.an.instanceOf(TilePositionChange);
             });
-            it("should then return another instance of DisplayChange", function () {
-                expect(solver.nextState()).to.be.an.instanceOf(DisplayChange);
+            it("should then return another instance of TilePositionChange", function () {
+                expect(solver.nextState()).to.be.an.instanceOf(TilePositionChange);
             });
-            it("should then return another instance of DisplayChange", function () {
-                expect(solver.nextState()).to.be.an.instanceOf(DisplayChange);
+            it("should then return another instance of TilePositionChange", function () {
+                expect(solver.nextState()).to.be.an.instanceOf(TilePositionChange);
             });
-            it("should then return another instance of DisplayChange", function () {
-                expect(solver.nextState()).to.be.an.instanceOf(DisplayChange);
+            it("should then return another instance of TilePositionChange", function () {
+                expect(solver.nextState()).to.be.an.instanceOf(TilePositionChange);
             });
             it("should then finally return null", function () {
                 expect(solver.nextState()).to.be.null;
