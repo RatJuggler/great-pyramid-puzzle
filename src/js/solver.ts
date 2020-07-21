@@ -2,12 +2,13 @@ import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
-import { TilePositionChange, createTilePositionChange, createTileChange } from "./tile-position-change";
+import { TilePositionChange, TileChange } from "./tile-position-change";
 import { getRandomInt } from "./utils";
 
 
 interface Solver {
-    nextState: () => TilePositionChange | null
+    nextState: () => TilePositionChange | null;
+    finalState: () => Array<TilePositionChange>;
 }
 
 
@@ -19,8 +20,21 @@ abstract class SolverBase implements Solver {
         }
     }
 
+    protected static createTileChange(type: string, tilePosition: TilePosition): TilePositionChange {
+        return new TileChange(type, tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
+    }
+
+    protected static createTilePositionChange(type: string, tilePosition: TilePosition): TilePositionChange {
+        return new TilePositionChange(type, tilePosition.id);
+    }
+
     nextState(): TilePositionChange | null {
         return null;
+    }
+
+    finalState(): Array<TilePositionChange> {
+        return this._tetrahedron.tilePositions
+            .map((tilePosition) => SolverBase.createTileChange("Final", tilePosition));
     }
 
 }
@@ -85,7 +99,7 @@ class NoMatchingSolver extends SolverBase {
             }
             this._rotating--;
             this._tilePosition.rotateTile();
-            return createTilePositionChange("Rotate", this._tilePosition);
+            return SolverBase.createTilePositionChange("Rotate", this._tilePosition);
         }
         if (this._tilePool.isEmpty) {
             return null;
@@ -93,7 +107,7 @@ class NoMatchingSolver extends SolverBase {
         const tile = this.getTileSelection();
         this._tilePosition = this.placeTile(tile);
         this._rotating = this.tileRotations();
-        return createTileChange("Place", this._tilePosition);
+        return SolverBase.createTileChange("Place", this._tilePosition);
     }
 
 }

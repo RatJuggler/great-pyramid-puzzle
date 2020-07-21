@@ -4,7 +4,7 @@ import { PuzzleComponents } from "./common-data-schema";
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display";
 import { display } from "./display-change";
-import { createTilePositionChange, createTileChange } from "./tile-position-change";
+import { TilePositionChange } from "./tile-position-change";
 import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
 
 
@@ -13,7 +13,7 @@ let animatedDisplayId: number;
 
 
 function getSelector(name: string): string {
-    const selection  = <NodeListOf<HTMLInputElement>>document.querySelectorAll(`input[name = "${name}"]`)!;
+    const selection  = document.querySelectorAll(`input[name = "${name}"]`) as NodeListOf<HTMLInputElement>;
     for (const rb of selection) {
         if (rb.checked) {
             return rb.value;
@@ -22,49 +22,43 @@ function getSelector(name: string): string {
     throw new Error("Expected radio option to be selected!");
 }
 
-function attachRotateEvents(puzzle: PuzzleComponents, displayManager: DisplayManager): void {
+function attachRotateEvents(displayManager: DisplayManager): void {
     document.querySelectorAll("g")
         .forEach(function (svgGroup) {
-            const tpId = svgGroup.id.match(/^([1-4])-([1-9])$/);
+            const tpId = svgGroup.id.match(/^[1-4]-[1-9]$/);
             if (tpId) {
-                svgGroup.addEventListener("click", () => {
-                    const tilePosition = puzzle.tetrahedron.getFace(tpId[1]).getTilePosition(tpId[2]);
-                    if (!tilePosition.isEmpty()) {
-                        tilePosition.rotateTile();
-                        display(displayManager, createTilePositionChange("Rotate", tilePosition));
-                    }
-                });
+                svgGroup.addEventListener("click", () =>
+                    display(displayManager, new TilePositionChange("Rotate", tpId[0]))
+                );
             }
         });
 }
 
-function animateSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: DisplayManager): void {
+function animateSolve(solver: Solver, displayManager: DisplayManager): void {
     // Schedule a series of events to place tiles on the puzzle.
     animatedDisplayId = setTimeout( () => {
         const tilePositionChange = solver.nextState();
         if (tilePositionChange) {
             display(displayManager, tilePositionChange);
-            animateSolve(puzzle, solver, displayManager);
+            animateSolve(solver, displayManager);
         } else {
-            attachRotateEvents(puzzle, displayManager);
+            attachRotateEvents(displayManager);
         }
     }, 1000);
 }
 
-function completeSolve(puzzle: PuzzleComponents, solver: Solver, displayManager: DisplayManager): void {
+function completeSolve(solver: Solver, displayManager: DisplayManager): void {
     // Set the overlay to prevent further UI interaction.
     toggleActive("overlay");
     // Start the solving process.
     const solving = createSolverPromise(solver);
-    solving.promise.then((resolvedValue) => {
+    solving.promise.then((finalState) => {
         // Show the final puzzle state and attach the rotate events.
-        puzzle.tetrahedron.tilePositions
-            .map((tilePosition) => createTileChange("Final", tilePosition))
-            .forEach((displayChange) => display(displayManager, displayChange));
-        attachRotateEvents(puzzle, displayManager);
+        (finalState as Array<TilePositionChange>).forEach((tpChange) => display(displayManager, tpChange));
+        attachRotateEvents(displayManager);
         // Remove the overlay.
         toggleActive("overlay");
-        return resolvedValue;
+        return finalState;
     }).catch((err) => {
         toggleActive("overlay");
         return err;
@@ -114,10 +108,10 @@ function solvePuzzle(): void {
     const display = getSelector("puzzle-display");
     switch (display) {
         case "Completed":
-            completeSolve(puzzle, solver, displayManager);
+            completeSolve(solver, displayManager);
             break;
         case "Animated":
-            animateSolve(puzzle, solver, displayManager);
+            animateSolve(solver, displayManager);
             break;
         default:
             throw new Error("Invalid solve display option!");

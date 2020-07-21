@@ -1,4 +1,4 @@
-import { TilePosition } from "./tile-position";
+// These change value objects allow us to keep the solving and display code separate.
 
 
 class TilePositionChange {
@@ -15,12 +15,4 @@ class TileChange extends TilePositionChange {
 
 }
 
-function createTileChange(type: string, tilePosition: TilePosition): TilePositionChange {
-    return new TileChange(type, tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
-}
-
-function createTilePositionChange(type: string, tilePosition: TilePosition): TilePositionChange {
-    return new TilePositionChange(type, tilePosition.id);
-}
-
-export { TilePositionChange, TileChange, createTileChange, createTilePositionChange }
+export { TilePositionChange, TileChange }

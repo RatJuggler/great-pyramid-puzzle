@@ -4,8 +4,8 @@ import valid_display1 from "../valid-test-display-data1.json";
 import { PuzzleDataElements } from "../../src/js/common-data-schema";
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { getDisplayManager } from "../../src/js/display-loader";
-import { createTileChange, createTilePositionChange } from "../../src/js/tile-position-change";
 import { display } from "../../src/js/display-change";
+import { TileChange, TilePositionChange } from "../../src/js/tile-position-change";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -52,9 +52,9 @@ describe("Puzzle display functionality", function () {
             puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
                 let tpChange;
                 if (tilePosition.isEmpty()) {
-                    tpChange = createTilePositionChange("Empty", tilePosition);
+                    tpChange = new TilePositionChange("Empty", tilePosition.id);
                 } else {
-                    tpChange = createTileChange("Final", tilePosition);
+                    tpChange = new TileChange("Final", tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
                 }
                 display(displayManager, tpChange);
             });
@@ -79,7 +79,8 @@ describe("Puzzle display functionality", function () {
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             const canvas = displayManager.initialDisplay();
             puzzle.tetrahedron.tilePositions
-                .map((tilePosition) => createTileChange("Final", tilePosition))
+                .map((tilePosition) =>
+                    new TileChange("Final", tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments()))
                 .forEach((displayChange) => display(displayManager, displayChange));
             console.log(canvas.svg());
             it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {

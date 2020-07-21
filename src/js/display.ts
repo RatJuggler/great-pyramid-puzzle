@@ -1,3 +1,4 @@
+import { TileChange } from "./tile-position-change";
 import { DisplayData, FaceDisplayData, CenterPointData } from "./display-data-schema";
 import { SVG, Svg, G } from "@svgdotjs/svg.js";
 
@@ -75,15 +76,15 @@ export class DisplayManager {
         return tGroup;
     }
 
-    drawTilePosition(tpGroup: G, tpCenter: CenterPointData, tilePositionId: string, tileId: number, rotatedSegments: string): void {
+    drawTilePosition(tpGroup: G, tpCenter: CenterPointData, tChange: TileChange): void {
         // Clear any existing tile position drawing.
         tpGroup.clear();
         // Set the tile description.
-        const desc = "Position: " + tilePositionId + ", Tile: " + tileId;
+        const desc = "Position: " + tChange.tilePositionId + ", Tile: " + tChange.tileId;
         tpGroup.element('title').words(desc);
         // Draw the tile.
         tpGroup.add(
-            this.drawTile(tpCenter, tileId, rotatedSegments)
+            this.drawTile(tpCenter, tChange.tileId, tChange.rotatedSegments)
         );
     }
 
@@ -93,6 +94,7 @@ export class DisplayManager {
         // Set the tile description.
         const desc = "Position: " + tilePositionId + ", Tile: Empty";
         tpGroup.element('title').words(desc);
+        // Draw the empty tile position.
         this.drawTriangle(tpGroup, tpCenter, this._scaleTile, DisplayManager.TILE_POSITION_COLOUR);
     }
 

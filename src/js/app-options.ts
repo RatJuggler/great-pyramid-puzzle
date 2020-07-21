@@ -13,7 +13,7 @@ function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cance
             const updatedTilePosition = solver.nextState();
             if (!updatedTilePosition) {
                 clearInterval(id);
-                resolve();
+                resolve(solver.finalState());
             }
         }, 50);
         // Triggering the cancel.

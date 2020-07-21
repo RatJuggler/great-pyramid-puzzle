@@ -51,7 +51,7 @@ class FinalTilePosition extends DisplayChange {
         // Find the destination tile position of the new tile.
         const tpDisplay = this.displayManager.getTilePosition(this._tChange.tilePositionId);
         // Redraw the tile position with the placed tile.
-        this.displayManager.drawTilePosition(tpDisplay.group, tpDisplay.center, this._tChange.tilePositionId, this._tChange.tileId, this._tChange.rotatedSegments);
+        this.displayManager.drawTilePosition(tpDisplay.group, tpDisplay.center, this._tChange);
     }
 
 }
@@ -78,7 +78,7 @@ class PlaceTilePosition extends DisplayChange {
             .after(() => {
                 // Remove the animated tile then redraw the tile position with the placed tile.
                 placeTile.remove();
-                this.displayManager.drawTilePosition(tpDisplay.group, tpDisplay.center, this._tChange.tilePositionId, this._tChange.tileId, this._tChange.rotatedSegments);
+                this.displayManager.drawTilePosition(tpDisplay.group, tpDisplay.center, this._tChange);
             });
     }
 
@@ -139,19 +139,19 @@ function display(displayManager: DisplayManager, tpChange: TilePositionChange) {
             action = new EmptyTilePosition(displayManager, tpChange);
             break;
         case "Final":
-            action = new FinalTilePosition(displayManager, <TileChange> tpChange);
+            action = new FinalTilePosition(displayManager, tpChange as TileChange);
             break;
         case "Place":
-            action = new PlaceTilePosition(displayManager, <TileChange> tpChange);
+            action = new PlaceTilePosition(displayManager, tpChange as TileChange);
             break;
         case "Rotate":
             action = new RotateTilePosition(displayManager, tpChange);
             break;
         case "Remove":
-            action = new RemoveTilePosition(displayManager, <TileChange> tpChange);
+            action = new RemoveTilePosition(displayManager, tpChange as TileChange);
             break;
         default:
-            throw new Error("");
+            throw new Error("Unknown tile position change!");
     }
     action.show();
 }
