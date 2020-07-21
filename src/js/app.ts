@@ -3,7 +3,6 @@ import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display";
-import { display } from "./display-change";
 import { TilePositionChange } from "./tile-position-change";
 import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
 
@@ -28,7 +27,7 @@ function attachRotateEvents(displayManager: DisplayManager): void {
             const tpId = svgGroup.id.match(/^[1-4]-[1-9]$/);
             if (tpId) {
                 svgGroup.addEventListener("click", () =>
-                    display(displayManager, new TilePositionChange("Rotate", tpId[0]))
+                    displayManager.display(new TilePositionChange("Rotate", tpId[0]))
                 );
             }
         });
@@ -39,7 +38,7 @@ function animateSolve(solver: Solver, displayManager: DisplayManager): void {
     animatedDisplayId = setTimeout( () => {
         const tilePositionChange = solver.nextState();
         if (tilePositionChange) {
-            display(displayManager, tilePositionChange);
+            displayManager.display(tilePositionChange);
             animateSolve(solver, displayManager);
         } else {
             attachRotateEvents(displayManager);
@@ -54,7 +53,7 @@ function completeSolve(solver: Solver, displayManager: DisplayManager): void {
     const solving = createSolverPromise(solver);
     solving.promise.then((finalState) => {
         // Show the final puzzle state and attach the rotate events.
-        (finalState as Array<TilePositionChange>).forEach((tpChange) => display(displayManager, tpChange));
+        (finalState as Array<TilePositionChange>).forEach((tpChange) => displayManager.display(tpChange));
         attachRotateEvents(displayManager);
         // Remove the overlay.
         toggleActive("overlay");

@@ -4,7 +4,6 @@ import valid_display1 from "../valid-test-display-data1.json";
 import { PuzzleDataElements } from "../../src/js/common-data-schema";
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { getDisplayManager } from "../../src/js/display-loader";
-import { display } from "../../src/js/display-change";
 import { TileChange, TilePositionChange } from "../../src/js/tile-position-change";
 import { assert, expect } from 'chai';
 import 'mocha';
@@ -56,7 +55,7 @@ describe("Puzzle display functionality", function () {
                 } else {
                     tpChange = new TileChange("Final", tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
                 }
-                display(displayManager, tpChange);
+                displayManager.display(tpChange);
             });
             console.log(canvas.svg());
             it("should have 4 faces, 2 empty tile positions, 2 tile positions with tiles and 1 new tile position", function () {
@@ -81,7 +80,7 @@ describe("Puzzle display functionality", function () {
             puzzle.tetrahedron.tilePositions
                 .map((tilePosition) =>
                     new TileChange("Final", tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments()))
-                .forEach((displayChange) => display(displayManager, displayChange));
+                .forEach((displayChange) => displayManager.display(displayChange));
             console.log(canvas.svg());
             it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(13);
