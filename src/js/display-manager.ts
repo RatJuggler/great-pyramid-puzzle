@@ -7,7 +7,7 @@
 // Remove - Animate removing the tile at a tile position
 
 import { TileChange, TilePositionChange } from "./tile-position-change";
-import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
+import { Matrix, Svg } from "@svgdotjs/svg.js";
 import { DisplayData } from "./display-data-schema";
 import { Display } from "./display";
 
@@ -95,10 +95,11 @@ class RotateTilePosition extends DisplayChange {
     show(): void {
         // Find the tile position of the tile to be rotated.
         const tpDisplay = this.display.getTilePosition(this._tpChange.tilePositionId);
-        // Rotate the child tile group.
-        const tGroup = SVG(tpDisplay.group.children()[1]) as G;
+        // Find the child tile.
+        const tile = tpDisplay.group.children()[1];
+        // Rotate the tile.
         // @ts-ignore
-        tGroup.animate({duration: this.ANIMATE_DURATION, ease: "<>"}).rotate(120, tpDisplay.center.x, tpDisplay.center.y);
+        tile.animate({duration: this.ANIMATE_DURATION, ease: "<>"}).rotate(120, tpDisplay.center.x, tpDisplay.center.y);
     }
 
 }
