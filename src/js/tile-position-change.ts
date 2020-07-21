@@ -1,25 +1,13 @@
 import { TilePosition } from "./tile-position";
-import { DisplayChange } from "./display-change";
+import { DisplayChange, TileDisplayChange, TilePositionDisplayChange } from "./display-change";
 
 
 function placeDisplayChange(tilePosition: TilePosition): DisplayChange {
-    return {
-        eventType: "Place",
-        tilePositionId: tilePosition.id,
-        empty: tilePosition.isEmpty(),
-        tileId: tilePosition.isEmpty() ? null : tilePosition.tile.id,
-        rotatedSegments: tilePosition.isEmpty() ? null : tilePosition.getRotatedSegments()
-    }
+    return new TileDisplayChange("Place", tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
 }
 
 function rotateDisplayChange(tilePosition: TilePosition): DisplayChange {
-    return {
-        eventType: "Rotate",
-        tilePositionId: tilePosition.id,
-        empty: tilePosition.isEmpty(),
-        tileId: tilePosition.isEmpty() ? null : tilePosition.tile.id,
-        rotatedSegments: tilePosition.isEmpty() ? null : tilePosition.getRotatedSegments()
-    }
+    return new TilePositionDisplayChange("Rotate", tilePosition.id);
 }
 
 export { placeDisplayChange, rotateDisplayChange }

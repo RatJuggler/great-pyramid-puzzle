@@ -1,5 +1,5 @@
 import { CenterPointData, FaceDisplayData, DisplayData } from "./display-data-schema";
-import { DisplayChange } from "./display-change";
+import {DisplayChange, TileDisplayChange, TilePositionDisplayChange} from "./display-change";
 import { G, Matrix, Svg, SVG } from "@svgdotjs/svg.js";
 
 
@@ -49,7 +49,7 @@ export class DisplayManager {
             .stroke({ width: outline, color: DisplayManager.LINE_COLOUR});
     }
 
-    private drawTile(tpChange: DisplayChange, tpCenter: CenterPointData): G {
+    private drawTile(tpChange: TileDisplayChange, tpCenter: CenterPointData): G {
         // Group the elements which make up a tile position.
         const tGroup = this._draw.group().id("tile" + tpChange.tileId);
         // Fill in the tile colour.
@@ -74,35 +74,33 @@ export class DisplayManager {
         return tGroup;
     }
 
-    private drawTilePosition(tpGroup: G, tpChange: DisplayChange, tpCenter: CenterPointData): void {
+    private drawTilePosition(tpGroup: G, tpChange: TileDisplayChange, tpCenter: CenterPointData): void {
         // Clear any existing tile position drawing.
         tpGroup.clear();
         // Set the tile description.
-        const desc = "Position: " + tpChange.tilePositionId + ", Tile: " + (tpChange.empty ? "Empty" : tpChange.tileId);
+        const desc = "Position: " + tpChange.tilePositionId + ", Tile: " + tpChange.tileId;
         tpGroup.element('title').words(desc);
-        // Draw the tile if present or an empty tile position if not.
-        if (tpChange.empty) {
-            this.drawTriangle(tpGroup, tpCenter, this._scaleTile, DisplayManager.TILE_POSITION_COLOUR);
-        } else {
-            tpGroup.add(
-                this.drawTile(tpChange, tpCenter)
-            );
-        }
+        // Draw the tile.
+        tpGroup.add(
+            this.drawTile(tpChange, tpCenter)
+        );
+    }
+
+    private drawEmptyTilePosition(tpGroup: G, tpChange: TilePositionDisplayChange, tpCenter: CenterPointData): void {
+        // Clear any existing tile position drawing.
+        tpGroup.clear();
+        // Set the tile description.
+        const desc = "Position: " + tpChange.tilePositionId + ", Tile: Empty";
+        tpGroup.element('title').words(desc);
+        this.drawTriangle(tpGroup, tpCenter, this._scaleTile, DisplayManager.TILE_POSITION_COLOUR);
     }
 
     private displayEmptyTilePosition(tilePositionId: string, tpCenter: CenterPointData): G {
         // Create a group for the elements to be shown at the tile position.
         const tpGroup = this._draw.group().id(tilePositionId).setData({tpCenter: tpCenter});
         // Display an empty tile position.
-        const tpChange = {
-            eventType: "Test",
-            tilePositionId: tilePositionId,
-            empty: true,
-            tileId: null,
-            rotatedSegments: null
-
-        }
-        this.drawTilePosition(tpGroup, tpChange, tpCenter);
+        const tpChange = new TilePositionDisplayChange("Empty", tilePositionId);
+        this.drawEmptyTilePosition(tpGroup, tpChange, tpCenter);
         return tpGroup;
     }
 
@@ -142,7 +140,7 @@ export class DisplayManager {
             .words("Center of Face " + fData.name);
     }
 
-    displayEmptyPuzzle(): Svg {
+    private displayEmptyPuzzle(): void {
         // Clear any existing display.
         this._draw.clear();
         // Display each face of the puzzle.
@@ -153,7 +151,6 @@ export class DisplayManager {
         const ntGroup = this._draw.group().id("newtile");
         ntGroup.element('title').words("Next tile to be placed/removed.");
         this.drawTriangle(ntGroup, this._startCenter, this._scaleTile, DisplayManager.START_POSITION_COLOUR);
-        return this._draw;
     }
 
     private getTilePosition(tilePositionId: string): { group: G; center: CenterPointData; } {
@@ -163,14 +160,14 @@ export class DisplayManager {
         return {group, center};
     }
 
-    placeTile(tpChange: DisplayChange): void {
+    private placeTile(tpChange: TileDisplayChange): void {
         // Find the destination tile position of the new tile.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the placed tile.
         this.drawTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
     }
 
-    private animatePlaceTile(tpChange: DisplayChange): void {
+    private animatePlaceTile(tpChange: TileDisplayChange): void {
         // Find the destination tile position of the new tile.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Draw the tile to be placed at the starting position.
@@ -188,14 +185,14 @@ export class DisplayManager {
             });
     }
 
-    removeTile(tpChange: DisplayChange): void {
-        // Find the tile position of the tile to be removed.
+    private emptyTilePosition(tpChange: TilePositionDisplayChange): void {
+        // Find the tile position to be displayed empty.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
-        // Redraw the tile position with the tile removed.
-        this.drawTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
+        // Redraw the empty tile position.
+        this.drawEmptyTilePosition(tpDisplay.group, tpChange, tpDisplay.center);
     }
 
-    animateRemoveTile(tpChange: DisplayChange): void {
+    private animateRemoveTile(tpChange: TileDisplayChange): void {
         // Find the tile position of the tile to be removed.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Redraw the tile position with the tile removed then draw the tile at the tile position ready to be animated.
@@ -213,7 +210,7 @@ export class DisplayManager {
             });
     }
 
-    private animateRotateTile(tpChange: DisplayChange): void {
+    private animateRotateTile(tpChange: TilePositionDisplayChange): void {
         // Find the tile position of the tile to be rotated.
         const tpDisplay = this.getTilePosition(tpChange.tilePositionId);
         // Rotate the child tile group.
@@ -222,17 +219,30 @@ export class DisplayManager {
         tGroup.animate({duration: DisplayManager.ANIMATE_DURATION, ease: "<>"}).rotate(120, tpDisplay.center.x, tpDisplay.center.y);
     }
 
-    displayChange(displayChange: DisplayChange) {
-        switch (displayChange.eventType) {
+    displayChange(displayChange: DisplayChange): Svg {
+        switch (displayChange.type) {
+            case "Initial":
+                this.displayEmptyPuzzle();
+                break;
+            case "Empty":
+                this.emptyTilePosition(<TilePositionDisplayChange> displayChange);
+                break;
+            case "Final":
+                this.placeTile(<TileDisplayChange> displayChange);
+                break;
             case "Place":
-                this.animatePlaceTile(displayChange)
+                this.animatePlaceTile(<TileDisplayChange> displayChange);
                 break;
             case "Rotate":
-                this.animateRotateTile(displayChange);
+                this.animateRotateTile(<TilePositionDisplayChange> displayChange);
+                break;
+            case "Remove":
+                this.animateRemoveTile(<TileDisplayChange> displayChange);
                 break;
             default:
                 throw new Error("Unknown display change event!");
         }
+        return this._draw;
     }
 
 }
