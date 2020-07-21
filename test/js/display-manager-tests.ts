@@ -109,17 +109,46 @@ describe("Puzzle display functionality", function () {
             });
         });
 
-        context("using the Empty change type on the test puzzle with all tiles", function () {
+        context("using the Place change type on a puzzle with no tiles", function () {
+            const document = createDocument();
+            const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
+            displayManager.initialDisplay();
+            const tpChange = new TileChange("Place", "1-1", 1, "000100100100");
+            displayManager.display(tpChange);
+            it("should have 4 faces, 3 empty tile position, 1 tile and 1 new tile position", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(10);
+            });
+            it("should have 4 face center and 1 tile center points", function () {
+                expect(document.getElementsByTagName("circle")).to.have.length(5);
+            });
+        });
+
+        context("using the Rotate change type on the test puzzle with all tiles", function () {
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay();
             puzzleWithAllTiles(puzzleTypeData, displayManager);
-            const tpChange = new TilePositionChange("Empty", "1-1");
+            const tpChange = new TilePositionChange("Rotate", "1-1");
             displayManager.display(tpChange);
-            it("should have 4 faces, 4 tile position, 3 tiles and 1 new tile position", function () {
+            it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(13);
+            });
+            it("should have 4 face center and 4 tile center points", function () {
+                expect(document.getElementsByTagName("circle")).to.have.length(8);
+            });
+        });
+
+        context("using the Remove change type on the test puzzle with all tiles", function () {
+            const document = createDocument();
+            const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
+            displayManager.initialDisplay();
+            puzzleWithAllTiles(puzzleTypeData, displayManager);
+            const tpChange = new TileChange("Remove", "1-1", 1, "000100100100");
+            displayManager.display(tpChange);
+            it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(12);
             });
-            it("should have 4 face center and 3 tile center points", function () {
+            it("should have 4 face center and 4 tile center points", function () {
                 expect(document.getElementsByTagName("circle")).to.have.length(7);
             });
         });
