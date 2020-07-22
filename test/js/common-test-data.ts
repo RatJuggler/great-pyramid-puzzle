@@ -1,15 +1,18 @@
+import layout_data from "../valid-test-layout-data1.json";
+import tile_data from "../valid-test-tile-data1.json";
+import invalid_tile_data from "../invalid-tile-data3.json";
 import { TileDefinition } from "../../src/js/tile-data-schema";
 import { TilePositionData } from "../../src/js/layout-data-schema";
 import { Tile } from "../../src/js/tile";
+import { PuzzleDataElements } from "../../src/js/common-data-schema";
 
-
-// See the test puzzle layout for how the tiles fit together.
+// See the test puzzle layout diagram for how the tiles fit together.
 
 const TILE_1_DATA: TileDefinition = {
     "tile": 101,
-    "sideA": "0010",
+    "sideA": "1010",
     "sideB": "0010",
-    "sideC": "1010"
+    "sideC": "0010"
 };
 const TILE_1 = new Tile(TILE_1_DATA);
 
@@ -31,9 +34,9 @@ const TILE_3 = new Tile(TILE_3_DATA);
 
 const TILE_4_DATA: TileDefinition = {
     "tile": 104,
-    "sideA": "0101",
-    "sideB": "0010",
-    "sideC": "0100"
+    "sideA": "0010",
+    "sideB": "0100",
+    "sideC": "0101"
 };
 const TILE_4 = new Tile(TILE_4_DATA);
 
@@ -48,5 +51,15 @@ const FOUR_TILE_POSITION_DATA = [
     {"position": "4", "joins": []}
 ];
 
+const VALID_TEST_PUZZLE: PuzzleDataElements = {
+    layoutData: layout_data.testLayoutData,
+    tileData: tile_data.testTileData
+}
 
-export { TILE_1, TILE_1_DATA, TILE_2, TILE_2_DATA, TILE_3, TILE_3_DATA, TILE_4, TILE_4_DATA, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA }
+const INVALID_TEST_PUZZLE: PuzzleDataElements = {
+    layoutData: layout_data.testLayoutData,
+    tileData: invalid_tile_data.testTileData
+}
+
+export { TILE_1, TILE_1_DATA, TILE_2, TILE_2_DATA, TILE_3, TILE_3_DATA, TILE_4, TILE_4_DATA,
+    ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA, VALID_TEST_PUZZLE, INVALID_TEST_PUZZLE }

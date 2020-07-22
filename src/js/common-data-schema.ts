@@ -1,27 +1,20 @@
 import { LayoutData } from "./layout-data-schema";
 import { TileData } from "./tile-data-schema";
-import { DisplayData } from "./puzzle-display-schema";
 import { TilePool } from "./tile-pool";
 import { Tetrahedron } from "./tetrahedron";
-import { DisplayManager } from "./puzzle-display";
 
-// Interface/types used across the application.
+// Types used across the application.
 
-
-interface PuzzleDataElements {
+type PuzzleDataElements = {
     readonly layoutData: LayoutData,
-    readonly tileData: TileData,
-    readonly displayData: DisplayData
+    readonly tileData: TileData
 }
 
-interface PuzzleComponents {
+type PuzzleComponents = {
     readonly tilePool: TilePool,
-    readonly tetrahedron: Tetrahedron,
-    readonly displayElement: HTMLElement
-    readonly displayManager: DisplayManager,
+    readonly tetrahedron: Tetrahedron
 }
 
 type IntegrityCheckResult = [boolean, string];
-
 
 export { PuzzleDataElements, PuzzleComponents, IntegrityCheckResult }

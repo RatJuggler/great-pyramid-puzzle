@@ -1,10 +1,11 @@
+import { testPuzzle } from "./test-puzzle";
+import { pocketPuzzle } from "./pocket-puzzle";
+import { greatPuzzle } from "./great-puzzle";
 import { LayoutData } from "./layout-data-schema";
 import { TileData } from "./tile-data-schema";
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
 import { PuzzleDataElements, PuzzleComponents } from "./common-data-schema";
-import { DisplayData } from "./puzzle-display-schema";
-import { DisplayManager } from "./puzzle-display";
 
 
 function getTilePool(tileData: TileData): TilePool {
@@ -20,16 +21,34 @@ function getTetrahedron(layoutData: LayoutData): Tetrahedron {
     return tetrahedron;
 }
 
-function getDisplayManager(displayElement: HTMLElement, displayData: DisplayData) {
-    return new DisplayManager(displayElement, displayData);
+function getPuzzleTypeData(puzzleType: string): PuzzleDataElements {
+    switch (puzzleType) {
+        case "Test":
+            return testPuzzle;
+        case "Pocket":
+            return pocketPuzzle;
+        case "Great":
+            return greatPuzzle;
+        default:
+            throw new Error("Invalid puzzle type option!");
+    }
 }
 
-function getPuzzleComponents(puzzleTypeData: PuzzleDataElements, displayElement: HTMLElement): PuzzleComponents {
+function getPuzzleComponents(puzzleType: string | PuzzleDataElements): PuzzleComponents {
+    let puzzleTypeData;
+    if (typeof(puzzleType) === "string") {
+        puzzleTypeData = getPuzzleTypeData(puzzleType);
+    } else {
+        puzzleTypeData = puzzleType;
+    }
+    const tilePool = getTilePool(puzzleTypeData.tileData);
+    const tetrahedron = getTetrahedron(puzzleTypeData.layoutData);
+    if (tilePool.tileCount !== tetrahedron.tilePositionCount) {
+        throw new Error("There must be enough Tiles to cover the Tetrahedron!");
+    }
     return {
-        tilePool: getTilePool(puzzleTypeData.tileData),
-        tetrahedron: getTetrahedron(puzzleTypeData.layoutData),
-        displayElement: displayElement,
-        displayManager: getDisplayManager(displayElement, puzzleTypeData.displayData)
+        tilePool: tilePool,
+        tetrahedron: tetrahedron
     }
 }
 

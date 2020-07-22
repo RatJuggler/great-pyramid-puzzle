@@ -18,13 +18,13 @@ describe("Face behavior", function () {
             it("should return the correct toString result", function () {
                 const expectedToString =
                     "Face: 1, Tile Positions: 1, Joins: \n" +
-                    "TilePosition: 1, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: \n";
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: \n";
                 expect(face.toString()).to.equal(expectedToString);
             });
             it("should fail the integrity check", function () {
                 const expectedFailure = [false,
                     "Face joins not complete: Face: 1, Tile Positions: 1, Joins: \n" +
-                    "TilePosition: 1, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: \n"];
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: \n"];
                 expect(face.integrityCheck()).to.eql(expectedFailure)
             });
         });
@@ -64,7 +64,7 @@ describe("Face behavior", function () {
             it("should return the correct toString result", function () {
                 const expectedToString =
                     "Face: 1, Tile Positions: 1, Joins: (1-A->2-B)(1-B->3-C)(1-C->4-A)\n" +
-                    "TilePosition: 1, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: \n";
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: \n";
                 expect(face1WithOneTilePosition.toString()).to.equal(expectedToString);
             });
             it("should pass the integrity check", function () {
@@ -133,13 +133,13 @@ describe("Face behavior", function () {
             it("should join the Faces in the direction given", function () {
                 const face1ExpectedToString =
                     "Face: 1, Tile Positions: 1, Joins: (1-A->2-B)\n" +
-                    "TilePosition: 1, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: \n";
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: \n";
                 expect(face1WithOneTilePosition.toString()).to.equal(face1ExpectedToString);
             });
             it("should not join the Faces in the opposite direction", function () {
                 const face2ExpectedToString =
                     "Face: 2, Tile Positions: 1, Joins: \n" +
-                    "TilePosition: 1, On Face: 2, Contains Tile: [null], Rotated: 0, Joins: \n";
+                    "TilePosition: 1, On Face: 2, Contains Tile: [Empty], Rotated: 0, Joins: \n";
                 expect(face2WithOneTilePosition.toString()).to.equal(face2ExpectedToString);
             });
         });
@@ -246,7 +246,7 @@ describe("Face behavior", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_1);
+                expect(result.tile).to.equal(TILE_1);
             });
         });
 
@@ -262,19 +262,17 @@ describe("Face behavior", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_2);
+                expect(result.tile).to.equal(TILE_2);
             });
         });
 
         context("and the Face has no remaining empty Tile Positions", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
             assert.isNotNull(faceWithOneTilePosition.placeTileRandomly(TILE_1));
-            const result = faceWithOneTilePosition.placeTileRandomly(TILE_2);
-            it("should not be placed", function () {
-                expect(faceWithOneTilePosition.toString()).to.not.contain(TILE_2.toString());
-            });
-            it("should return null", function () {
-                expect(result).to.be.null;
+            it("should throw an error", function () {
+                expect(function () {
+                    faceWithOneTilePosition.placeTileRandomly(TILE_2);
+                }).to.throw(Error, "No empty TilePositions on the Face!");
             });
         });
 
@@ -293,7 +291,7 @@ describe("Face behavior", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_1);
+                expect(result.tile).to.equal(TILE_1);
             });
         });
 
@@ -309,19 +307,17 @@ describe("Face behavior", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_2);
+                expect(result.tile).to.equal(TILE_2);
             });
         });
 
         context("and the Face has no remaining empty Tile Positions", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
             assert.isNotNull(faceWithOneTilePosition.placeTileSequentially(TILE_1));
-            const result = faceWithOneTilePosition.placeTileSequentially(TILE_2);
-            it("should not be placed", function () {
-                expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
-            });
-            it("should return null", function () {
-                expect(result).to.be.null;
+            it("should throw an error", function () {
+                expect(function () {
+                    faceWithOneTilePosition.placeTileSequentially(TILE_2);
+                }).to.throw(Error, "No empty TilePositions on the Face!");
             });
         });
 

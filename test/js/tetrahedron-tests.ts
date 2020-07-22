@@ -27,21 +27,24 @@ describe("Tetrahedron behaviour", function () {
             });
             it("should have set the puzzle instance name", function () {
                 expect(tetrahedron.name).to.equal("test-valid");
-            })
-            it("should return the correct toString result", function () {
-                const expectedToString = "Puzzle Type: test-valid\n" +
-                    "Face: 1, Tile Positions: 1, Joins: (1-A->3-B)(1-B->4-B)(1-C->2-B)\n" +
-                    "TilePosition: 1, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: (1-A->3-1-B)(1-B->4-1-B)(1-C->2-1-B)\n" +
-                    "Face: 2, Tile Positions: 1, Joins: (2-A->3-C)(2-B->1-C)(2-C->4-A)\n" +
-                    "TilePosition: 1, On Face: 2, Contains Tile: [null], Rotated: 0, Joins: (1-A->3-1-C)(1-B->1-1-C)(1-C->4-1-A)\n" +
-                    "Face: 3, Tile Positions: 1, Joins: (3-A->4-C)(3-B->1-A)(3-C->2-A)\n" +
-                    "TilePosition: 1, On Face: 3, Contains Tile: [null], Rotated: 0, Joins: (1-A->4-1-C)(1-B->1-1-A)(1-C->2-1-A)\n" +
-                    "Face: 4, Tile Positions: 1, Joins: (4-A->2-C)(4-B->1-B)(4-C->3-A)\n" +
-                    "TilePosition: 1, On Face: 4, Contains Tile: [null], Rotated: 0, Joins: (1-A->2-1-C)(1-B->1-1-B)(1-C->3-1-A)\n";
-                expect(tetrahedron.toString()).to.equal(expectedToString);
+            });
+            it("should have the correct number of Tile Positions on it", function () {
+                expect(tetrahedron.tilePositionCount).to.equal(validLayoutData.numberOfTilesPerFace * 4);
             });
             it("should pass the integrity check", function () {
                 expect(tetrahedron.integrityCheck()).to.eql([true, "Passed"]);
+            });
+            it("should return the correct toString result", function () {
+                const expectedToString = "Puzzle Type: test-valid\n" +
+                    "Face: 1, Tile Positions: 1, Joins: (1-A->3-B)(1-B->4-B)(1-C->2-B)\n" +
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: (1-A->3-1-B)(1-B->4-1-B)(1-C->2-1-B)\n" +
+                    "Face: 2, Tile Positions: 1, Joins: (2-A->3-C)(2-B->1-C)(2-C->4-A)\n" +
+                    "TilePosition: 1, On Face: 2, Contains Tile: [Empty], Rotated: 0, Joins: (1-A->3-1-C)(1-B->1-1-C)(1-C->4-1-A)\n" +
+                    "Face: 3, Tile Positions: 1, Joins: (3-A->4-C)(3-B->1-A)(3-C->2-A)\n" +
+                    "TilePosition: 1, On Face: 3, Contains Tile: [Empty], Rotated: 0, Joins: (1-A->4-1-C)(1-B->1-1-A)(1-C->2-1-A)\n" +
+                    "Face: 4, Tile Positions: 1, Joins: (4-A->2-C)(4-B->1-B)(4-C->3-A)\n" +
+                    "TilePosition: 1, On Face: 4, Contains Tile: [Empty], Rotated: 0, Joins: (1-A->2-1-C)(1-B->1-1-B)(1-C->3-1-A)\n";
+                expect(tetrahedron.toString()).to.equal(expectedToString);
             });
         });
 
@@ -60,7 +63,7 @@ describe("Tetrahedron behaviour", function () {
             it("should fail the integrity check", function () {
                 const expectedFailure = [false,
                     "Face joins not complete: Face: 1, Tile Positions: 1, Joins: \n" +
-                    "TilePosition: 1, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: \n"];
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: \n"];
                 expect(tetrahedron.integrityCheck()).to.eql(expectedFailure)
             });
         });
@@ -77,7 +80,7 @@ describe("Tetrahedron behaviour", function () {
                 expect(face).to.be.an.instanceOf(Face);
                 const expectedToString =
                     "Face: 3, Tile Positions: 1, Joins: (3-A->4-C)(3-B->1-A)(3-C->2-A)\n" +
-                    "TilePosition: 1, On Face: 3, Contains Tile: [null], Rotated: 0, Joins: (1-A->4-1-C)(1-B->1-1-A)(1-C->2-1-A)\n";
+                    "TilePosition: 1, On Face: 3, Contains Tile: [Empty], Rotated: 0, Joins: (1-A->4-1-C)(1-B->1-1-A)(1-C->2-1-A)\n";
                 expect(face.toString()).to.equal(expectedToString);
             });
         });
@@ -108,7 +111,7 @@ describe("Tetrahedron behaviour", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_1);
+                expect(result.tile).to.equal(TILE_1);
             });
         });
 
@@ -125,7 +128,7 @@ describe("Tetrahedron behaviour", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_2);
+                expect(result.tile).to.equal(TILE_2);
             });
         });
 
@@ -133,17 +136,14 @@ describe("Tetrahedron behaviour", function () {
             const tetrahedron =
                 new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
-            let tile = tilePool.randomTile;
-            while (tile) {
+            while (!tilePool.isEmpty) {
+                let tile = tilePool.randomTile;
                 assert.isNotNull(tetrahedron.placeTileRandomly(tile));
-                tile = tilePool.randomTile;
             }
-            const result = tetrahedron.placeTileRandomly(TILE_1);
-            it("should not be placed", function () {
-                expect(tetrahedron.toString()).to.not.contain(TILE_1.toString());
-            });
-            it("should return null", function () {
-                expect(result).to.be.null;
+            it("should throw an error", function () {
+                expect(function () {
+                    tetrahedron.placeTileRandomly(TILE_1);
+                }).to.throw(Error, "No empty TilePositions on the Tetrahedron!");
             });
         });
 
@@ -163,7 +163,7 @@ describe("Tetrahedron behaviour", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_1);
+                expect(result.tile).to.equal(TILE_1);
             });
         });
 
@@ -180,7 +180,7 @@ describe("Tetrahedron behaviour", function () {
             });
             it("should return the updated Position", function () {
                 expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result!.tile).to.equal(TILE_2);
+                expect(result.tile).to.equal(TILE_2);
             });
         });
 
@@ -188,17 +188,14 @@ describe("Tetrahedron behaviour", function () {
             const tetrahedron =
                 new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
-            let tile = tilePool.randomTile;
-            while (tile) {
+            while (!tilePool.isEmpty) {
+                let tile = tilePool.randomTile;
                 assert.isNotNull(tetrahedron.placeTileSequentially(tile));
-                tile = tilePool.randomTile;
             }
-            const result = tetrahedron.placeTileSequentially(TILE_1);
-            it("should not be placed", function () {
-                expect(tetrahedron.toString()).to.not.contain(TILE_1.toString());
-            });
-            it("should return null", function () {
-                expect(result).to.be.null;
+            it("should throw an error", function () {
+                expect(function () {
+                    tetrahedron.placeTileSequentially(TILE_1);
+                }).to.throw(Error, "No empty TilePositions on the Tetrahedron!");
             });
         });
 

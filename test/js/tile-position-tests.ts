@@ -1,9 +1,11 @@
-import {TilePosition} from '../../src/js/tile-position';
+import { TilePosition } from '../../src/js/tile-position';
 import { Side } from "../../src/js/side";
-import {assert, expect} from 'chai';
+import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1, TILE_2, TILE_3, TILE_4} from "./common-test-data";
+import { TILE_1, TILE_2, TILE_3, TILE_4 } from "./common-test-data";
+import {Tetrahedron} from "../../src/js/tetrahedron";
+import valid_layout_config1 from "../valid-test-layout-data1.json";
 
 
 describe("TilePosition behaviour", function () {
@@ -19,12 +21,12 @@ describe("TilePosition behaviour", function () {
                 expect(tilePosition.isEmpty());
             });
             it("should return the correct toString result", function () {
-                const expectedToString = "TilePosition: XYZ, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: ";
+                const expectedToString = "TilePosition: XYZ, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: ";
                 expect(tilePosition.toString()).to.equal(expectedToString);
             });
             it("should fail the integrity check", function () {
                 const expectedFailure =
-                    [false, "Tile position joins not complete: TilePosition: XYZ, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: "];
+                    [false, "Tile position joins not complete: TilePosition: XYZ, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: "];
                 expect(tilePosition.integrityCheck()).to.eql(expectedFailure)
             });
         });
@@ -42,7 +44,7 @@ describe("TilePosition behaviour", function () {
             });
             it("should return the correct toString result", function () {
                 const expectedToString =
-                    "TilePosition: XYZ, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: (XYZ-A->1-TP1-B)(XYZ-B->1-TP2-C)(XYZ-C->1-TP3-A)";
+                    "TilePosition: XYZ, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: (XYZ-A->1-TP1-B)(XYZ-B->1-TP2-C)(XYZ-C->1-TP3-A)";
                 expect(tilePosition.toString()).to.equal(expectedToString);
             });
             it("should pass the integrity check", function () {
@@ -80,11 +82,11 @@ describe("TilePosition behaviour", function () {
             const tilePosition2 = new TilePosition("TP2", "1");
             tilePosition1.join("A", "B", tilePosition2);
             it("should join the TilePositions in the direction given", function () {
-                const tile1ExpectedToString = "TilePosition: TP1, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: (TP1-A->1-TP2-B)";
+                const tile1ExpectedToString = "TilePosition: TP1, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: (TP1-A->1-TP2-B)";
                 expect(tilePosition1.toString()).to.equal(tile1ExpectedToString);
             });
             it("should not join the TilePositions in the opposite direction", function () {
-                const tile2ExpectedToString = "TilePosition: TP2, On Face: 1, Contains Tile: [null], Rotated: 0, Joins: ";
+                const tile2ExpectedToString = "TilePosition: TP2, On Face: 1, Contains Tile: [Empty], Rotated: 0, Joins: ";
                 expect(tilePosition2.toString()).to.equal(tile2ExpectedToString);
             });
         });
@@ -204,7 +206,10 @@ describe("TilePosition behaviour", function () {
         context("with a newly placed Tile", function () {
             const tilePosition = new TilePosition("TP", "1");
             tilePosition.placeTile(TILE_1);
-            tilePosition.rotateTile();
+            const result = tilePosition.rotateTile();
+            it("should return true", function () {
+                expect(result).to.be.true;
+            });
             it("should track the Tile as being rotated once", function () {
                 const expectedTileSegments = TILE_1.getSegments(Side.SideC, Side.SideA, Side.SideB);
                 expect(tilePosition.getRotatedSegments()).to.equal(expectedTileSegments);
@@ -214,9 +219,12 @@ describe("TilePosition behaviour", function () {
         context("and the TilePosition has already been rotated twice", function () {
             const tilePosition = new TilePosition("TP", "1");
             tilePosition.placeTile(TILE_1);
-            tilePosition.rotateTile();
-            tilePosition.rotateTile();
-            tilePosition.rotateTile();
+            assert.isTrue(tilePosition.rotateTile());
+            assert.isTrue(tilePosition.rotateTile());
+            const result = tilePosition.rotateTile();
+            it("should return false", function () {
+                expect(result).to.be.false;
+            });
             it("should reset the rotation back to 0", function () {
                 const expectedTileSegments = TILE_1.getSegments(Side.SideA, Side.SideB, Side.SideC);
                 expect(tilePosition.getRotatedSegments()).to.equal(expectedTileSegments);
@@ -239,7 +247,7 @@ describe("TilePosition behaviour", function () {
         context("and the TilePosition has been rotated once", function () {
             const tilePosition = new TilePosition("TP", "1");
             tilePosition.placeTile(TILE_2);
-            tilePosition.rotateTile();
+            assert.isTrue(tilePosition.rotateTile());
             it("should return the segments rotated once", function () {
                 const expectedTileSegments = TILE_2.getSegments(Side.SideC, Side.SideA, Side.SideB);
                 expect(tilePosition.getRotatedSegments()).to.equal(expectedTileSegments);
@@ -252,12 +260,10 @@ describe("TilePosition behaviour", function () {
 
         context("and the TilePosition is empty", function () {
             const tilePosition = new TilePosition("TP", "1");
-            const result = tilePosition.removeTile();
-            it("should remain empty", function () {
-                expect(tilePosition.isEmpty()).to.be.true;
-            });
-            it("should return False", function () {
-                expect(result).to.be.false;
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePosition.removeTile();
+                }).to.throw(Error, "No Tile to remove!");
             });
         });
 
@@ -268,24 +274,20 @@ describe("TilePosition behaviour", function () {
             it("should remove the Tile", function () {
                 expect(tilePosition.isEmpty()).to.be.true;
             });
-            it("should return True", function () {
-                expect(result).to.be.true;
+            it("should return Tile", function () {
+                expect(result).to.eql(TILE_1);
             });
         });
 
     });
 
-    describe("if #matches() is called to check if the Tile at the current TilePosition matches with any surrounding Tiles", function () {
+    describe("if #matches() is called to check if the Tile at a TilePosition matches with an adjoining TilePosition", function () {
 
         const tilePosition1 = new TilePosition("TP1", "1");
         const tilePosition2 = new TilePosition("TP2", "2");
-        const tilePosition3 = new TilePosition("TP3", "3");
-        const tilePosition4 = new TilePosition("TP4", "4");
-        tilePosition1.join("A", "B", tilePosition3);
-        tilePosition1.join("B", "B", tilePosition4);
         tilePosition1.join("C", "B", tilePosition2);
 
-        context("and the TilePosition is empty", function () {
+        context("and the TilePosition being checked is empty", function () {
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.matches();
@@ -293,65 +295,150 @@ describe("TilePosition behaviour", function () {
             });
         });
 
-        context("and the TilePosition has a Tile in it with no surrounding Tiles", function () {
+        context("and the TilePosition being checked has a Tile in it but the adjoining TilePosition doesn't", function () {
             assert.isNotNull(tilePosition1.placeTile(TILE_1));
             const result = tilePosition1.matches();
-            it("should return true", function () {
+            it("should return true for the first TilePosition", function () {
                 expect(result).to.be.true;
             });
-            assert.isTrue(tilePosition1.removeTile());
+            assert.strictEqual(tilePosition1.removeTile(), TILE_1);
         });
 
-        context("and the TilePosition has a Tile in it with one surrounding Tile which doesn't match", function () {
+        context("and the two adjoining TilePositions each have a Tile, but the sides don't match", function () {
             assert.isNotNull(tilePosition1.placeTile(TILE_1));
-            assert.isNotNull(tilePosition3.placeTile(TILE_3));
-            const result = tilePosition1.matches();
-            it("should return false", function () {
-                expect(result).to.be.false;
-            });
-            assert.isTrue(tilePosition1.removeTile());
-            assert.isTrue(tilePosition3.removeTile());
-        });
-
-        context("and the TilePosition has a Tile in it with one surrounding Tile which matches", function () {
-            assert.isNotNull(tilePosition1.placeTile(TILE_2));
             assert.isNotNull(tilePosition2.placeTile(TILE_3));
             const result = tilePosition1.matches();
-            it("should return true", function () {
-                expect(result).to.be.true;
-            });
-            assert.isTrue(tilePosition1.removeTile());
-            assert.isTrue(tilePosition2.removeTile());
-        });
-
-        context("and the TilePosition has a Tile in it with surrounding Tiles which don't match", function () {
-            assert.isNotNull(tilePosition1.placeTile(TILE_4));
-            assert.isNotNull(tilePosition2.placeTile(TILE_2));
-            assert.isNotNull(tilePosition3.placeTile(TILE_3));
-            assert.isNotNull(tilePosition4.placeTile(TILE_1));
-            const result = tilePosition1.matches();
             it("should return false", function () {
                 expect(result).to.be.false;
             });
-            assert.isTrue(tilePosition1.removeTile());
-            assert.isTrue(tilePosition2.removeTile());
-            assert.isTrue(tilePosition3.removeTile());
-            assert.isTrue(tilePosition4.removeTile());
+            assert.strictEqual(tilePosition1.removeTile(), TILE_1);
+            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
         });
 
-        context("and the TilePosition has a Tile in it with surrounding Tiles which all match", function () {
+        context("and the two adjoining TilePositions each have a Tile, and the sides match", function () {
+            assert.isNotNull(tilePosition1.placeTile(TILE_1));
+            assert.isNotNull(tilePosition2.placeTile(TILE_2));
+            const result = tilePosition1.matches();
+            it("should return true", function () {
+                expect(result).to.be.true;
+            });
+            assert.strictEqual(tilePosition1.removeTile(), TILE_1);
+            assert.strictEqual(tilePosition2.removeTile(), TILE_2);
+        });
+
+    });
+
+    describe("if #matches() is called to check a Tile and there are three adjoining TilePositions", function () {
+
+        const tilePosition1 = new TilePosition("TP1", "1");
+        const tilePosition2 = new TilePosition("TP2", "2");
+        const tilePosition3 = new TilePosition("TP3", "3");
+        const tilePosition4 = new TilePosition("TP4", "4");
+        tilePosition1.join("C", "B", tilePosition2);
+        tilePosition1.join("A", "B", tilePosition3);
+        tilePosition1.join("B", "B", tilePosition4);
+
+        context("and the three adjoining TilePositions each have a Tile, but not all the sides match", function () {
             assert.isNotNull(tilePosition1.placeTile(TILE_2));
             assert.isNotNull(tilePosition2.placeTile(TILE_3));
             assert.isNotNull(tilePosition3.placeTile(TILE_1));
             assert.isNotNull(tilePosition4.placeTile(TILE_4));
             const result = tilePosition1.matches();
+            it("should return false", function () {
+                expect(result).to.be.false;
+            });
+            assert.strictEqual(tilePosition1.removeTile(), TILE_2);
+            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
+            assert.strictEqual(tilePosition3.removeTile(), TILE_1);
+            assert.strictEqual(tilePosition4.removeTile(), TILE_4);
+        });
+
+        context("and the three adjoining TilePositions each have a Tile, and all the sides match", function () {
+            assert.isNotNull(tilePosition1.placeTile(TILE_2));
+            assert.isNotNull(tilePosition2.placeTile(TILE_3));
+            assert.isNotNull(tilePosition3.placeTile(TILE_1));
+            assert.isTrue(tilePosition3.rotateTile());
+            assert.isTrue(tilePosition3.rotateTile());
+            assert.isNotNull(tilePosition4.placeTile(TILE_4));
+            assert.isTrue(tilePosition4.rotateTile());
+            const result = tilePosition1.matches();
             it("should return true", function () {
                 expect(result).to.be.true;
             });
-            assert.isTrue(tilePosition1.removeTile());
-            assert.isTrue(tilePosition2.removeTile());
-            assert.isTrue(tilePosition3.removeTile());
-            assert.isTrue(tilePosition4.removeTile());
+            assert.strictEqual(tilePosition1.removeTile(), TILE_2);
+            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
+            assert.strictEqual(tilePosition3.removeTile(), TILE_1);
+            assert.strictEqual(tilePosition4.removeTile(), TILE_4);
+        });
+
+    });
+
+    describe("if #matches() is called on all the TilePositions of a Test puzzle", function () {
+
+        const validLayoutData = valid_layout_config1.testLayoutData;
+        const tetrahedron =
+            new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
+        const tilePositions = tetrahedron.tilePositions;
+        const tilePosition1 = tilePositions[0];
+        const tilePosition2 = tilePositions[1];
+        const tilePosition3 = tilePositions[2];
+        const tilePosition4 = tilePositions[3];
+
+        context("and the three adjoining TilePositions each with a Tile, but not all the sides match", function () {
+            assert.isNotNull(tilePosition1.placeTile(TILE_2));
+            assert.isNotNull(tilePosition2.placeTile(TILE_3));
+            assert.isNotNull(tilePosition3.placeTile(TILE_1));
+            assert.isNotNull(tilePosition4.placeTile(TILE_4));
+            const result1 = tilePosition1.matches();
+            const result2 = tilePosition2.matches();
+            const result3 = tilePosition3.matches();
+            const result4 = tilePosition4.matches();
+            it("should return false for the first TilePosition", function () {
+                expect(result1).to.be.false;
+            });
+            it("should return false for the second TilePosition", function () {
+                expect(result2).to.be.false;
+            });
+            it("should return false for the third TilePosition", function () {
+                expect(result3).to.be.false;
+            });
+            it("should return false for the fourth TilePosition", function () {
+                expect(result4).to.be.false;
+            });
+            assert.strictEqual(tilePosition1.removeTile(), TILE_2);
+            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
+            assert.strictEqual(tilePosition3.removeTile(), TILE_1);
+            assert.strictEqual(tilePosition4.removeTile(), TILE_4);
+        });
+
+        context("and the three adjoining TilePositions each with a Tile, and all the sides match", function () {
+            assert.isNotNull(tilePosition1.placeTile(TILE_2));
+            assert.isNotNull(tilePosition2.placeTile(TILE_3));
+            assert.isNotNull(tilePosition3.placeTile(TILE_1));
+            assert.isTrue(tilePosition3.rotateTile());
+            assert.isTrue(tilePosition3.rotateTile());
+            assert.isNotNull(tilePosition4.placeTile(TILE_4));
+            assert.isTrue(tilePosition4.rotateTile());
+            const result1 = tilePosition1.matches();
+            const result2 = tilePosition2.matches();
+            const result3 = tilePosition3.matches();
+            const result4 = tilePosition4.matches();
+            it("should return true for the first TilePosition", function () {
+                expect(result1).to.be.true;
+            });
+            it("should return true for the second TilePosition", function () {
+                expect(result2).to.be.true;
+            });
+            it("should return true for the third TilePosition", function () {
+                expect(result3).to.be.true;
+            });
+            it("should return true for the fourth TilePosition", function () {
+                expect(result4).to.be.true;
+            });
+            assert.strictEqual(tilePosition1.removeTile(), TILE_2);
+            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
+            assert.strictEqual(tilePosition3.removeTile(), TILE_1);
+            assert.strictEqual(tilePosition4.removeTile(), TILE_4);
         });
 
     });

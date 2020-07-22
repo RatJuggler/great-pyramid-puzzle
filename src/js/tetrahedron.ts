@@ -43,6 +43,10 @@ export class Tetrahedron {
         if (this._faces.size !== Tetrahedron.FACES) {
             return [false, `Tetrahedron not configured with 4 faces: ${this.toString()}`];
         }
+        //  Each face must have the same number of tile positions.
+        if (this.tilePositionCount % Tetrahedron.FACES !== 0) {
+            return [false, `Faces have differing Tile Position counts!`];
+        }
         // The faces must all pass their full integrity checks.
         for (const face of this._faces.values()) {
             const faceIntegrity = face.fullIntegrityCheck();
@@ -53,18 +57,34 @@ export class Tetrahedron {
         return [true, "Passed"];
     }
 
-    toString(): string {
-        let tetrahedronString = `Puzzle Type: ${this._name}\n`;
-        this._faces.forEach(face => tetrahedronString += face.toString());
-        return tetrahedronString;
+    get tilePositionCount(): number {
+        let tilePositions = 0;
+        this._faces.forEach(face => tilePositions += face.tilePositionCount);
+        return tilePositions;
     }
 
     get name(): string {
         return this._name;
     }
 
-    private get facesWithEmptyPositions() {
-        return Array.from(this._faces.values()).filter(face => face.hasEmptyTilePositions());
+    get tilePositions(): Array<TilePosition> {
+        let tilePositions: Array<TilePosition> = [];
+        this._faces.forEach((face) => tilePositions = tilePositions.concat(face.tilePositions))
+        return tilePositions;
+    }
+
+    get emptyTilePositions(): Array<TilePosition> {
+        let tilePositions: Array<TilePosition> = [];
+        this._faces.forEach((face) => tilePositions = tilePositions.concat(face.emptyTilePositions))
+        return tilePositions;
+    }
+
+    private get facesWithEmptyPositions(): Face[] {
+        const emptyFaces = Array.from(this._faces.values()).filter(face => face.hasEmptyTilePositions());
+        if (emptyFaces.length === 0) {
+            throw new Error("No empty TilePositions on the Tetrahedron!");
+        }
+        return emptyFaces;
     }
 
     getFace(name: string): Face {
@@ -74,20 +94,19 @@ export class Tetrahedron {
         throw new Error(`Face (${name}) not found on Tetrahedron!`);
     }
 
-    placeTileRandomly(tile: Tile): TilePosition | null {
+    placeTileRandomly(tile: Tile): TilePosition {
         const emptyFaces = this.facesWithEmptyPositions;
-        if (emptyFaces.length === 0) {
-            return null;
-        }
         return emptyFaces[getRandomInt(emptyFaces.length)].placeTileRandomly(tile);
     }
 
-    placeTileSequentially(tile: Tile): TilePosition | null {
-        const emptyFaces = this.facesWithEmptyPositions;
-        if (emptyFaces.length === 0) {
-            return null;
-        }
-        return emptyFaces[0].placeTileSequentially(tile);
+    placeTileSequentially(tile: Tile): TilePosition {
+        return this.facesWithEmptyPositions[0].placeTileSequentially(tile);
+    }
+
+    toString(): string {
+        let tetrahedronString = `Puzzle Type: ${this._name}\n`;
+        this._faces.forEach(face => tetrahedronString += face.toString());
+        return tetrahedronString;
     }
 
 }

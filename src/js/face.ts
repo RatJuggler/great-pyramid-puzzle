@@ -6,7 +6,7 @@ import { IntegrityCheckResult } from "./common-data-schema";
 import { Side, SIDES } from "./side";
 
 
-interface FaceJoinProperties {
+type FaceJoinProperties = {
     readonly toSide: Side;
     readonly ofFace: Face;
 }
@@ -62,25 +62,16 @@ export class Face {
         return faceIntegrity;
     }
 
-    toString(): string {
-        let faceString = `Face: ${this._name}, Tile Positions: ${this.tilePositionCount}, Joins: `;
-        this._joins.forEach((join, side) =>
-            faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
-        faceString += '\n';
-        this._tilePositions.forEach(tilePosition => faceString += tilePosition.toString() + '\n');
-        return faceString;
-    }
-
-    get id(): string {
-        return "face" + this._name;
-    }
-
     get name(): string {
         return this._name;
     }
 
     get tilePositionCount(): number {
         return this._tilePositions.size;
+    }
+
+    get tilePositions(): Array<TilePosition> {
+        return Array.from(this._tilePositions.values());
     }
 
     getTilePosition(position: string): TilePosition {
@@ -115,7 +106,7 @@ export class Face {
         });
     }
 
-    private get emptyTilePositions(): TilePosition[] {
+    get emptyTilePositions(): TilePosition[] {
         return Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.isEmpty());
     }
 
@@ -123,20 +114,29 @@ export class Face {
         return this.emptyTilePositions.length > 0;
     }
 
-    private placeTile(tile: Tile, position: number): TilePosition | null {
+    private placeTile(tile: Tile, position: number): TilePosition {
         const emptyPositions = this.emptyTilePositions;
         if (emptyPositions.length === 0) {
-            return null;
+            throw new Error("No empty TilePositions on the Face!");
         }
         return emptyPositions[position].placeTile(tile);
     }
 
-    placeTileRandomly(tile: Tile): TilePosition | null {
+    placeTileRandomly(tile: Tile): TilePosition {
         return this.placeTile(tile, getRandomInt(this.emptyTilePositions.length));
     }
 
-    placeTileSequentially(tile: Tile): TilePosition | null {
+    placeTileSequentially(tile: Tile): TilePosition {
         return this.placeTile(tile, 0);
+    }
+
+    toString(): string {
+        let faceString = `Face: ${this._name}, Tile Positions: ${this.tilePositionCount}, Joins: `;
+        this._joins.forEach((join, side) =>
+            faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
+        faceString += '\n';
+        this._tilePositions.forEach(tilePosition => faceString += tilePosition.toString() + '\n');
+        return faceString;
     }
 
 }

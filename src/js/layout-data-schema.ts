@@ -1,31 +1,30 @@
-// Interfaces defining the puzzle layout data structures used in the layout configuration files.
+// Types defining the puzzle layout data structures used in the layout configuration files.
 
-
-interface TilePositionJoinData {
+type TilePositionJoinData = {
     readonly fromSide: string;
     readonly toSide: string;
     readonly ofTilePosition: string;
     readonly onFace: string;
 }
 
-interface TilePositionData {
+type TilePositionData = {
     readonly position: string;
     readonly joins: TilePositionJoinData[];
 }
 
-interface FaceJoinData {
+type FaceJoinData = {
     readonly fromSide: string;
     readonly toSide: string;
     readonly ofFace: string;
 }
 
-interface FaceData {
+type FaceData = {
     readonly name: string;
     readonly joins: FaceJoinData[];
     readonly tilePositions: TilePositionData[];
 }
 
-interface LayoutData {
+type LayoutData = {
     readonly puzzle: string;
     readonly numberOfTilesPerFace: number;
     readonly faces: FaceData[];

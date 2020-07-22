@@ -1,0 +1,105 @@
+{
+  "tesDescription": "Duplicated tile data.",
+  "testTileData": {
+    "puzzle": "tiles-invalid",
+    "totalNumberOfTiles": 16,
+    "tiles": [
+      {
+        "tile": 1,
+        "sideA": "1010",
+        "sideB": "0010",
+        "sideC": "0010"
+      },
+      {
+        "tile": 2,
+        "sideA": "0100",
+        "sideB": "0100",
+        "sideC": "1001"
+      },
+      {
+        "tile": 3,
+        "sideA": "0101",
+        "sideB": "1001",
+        "sideC": "1010"
+      },
+      {
+        "tile": 4,
+        "sideA": "0010",
+        "sideB": "0100",
+        "sideC": "0101"
+      },
+      {
+        "tile": 5,
+        "sideA": "1010",
+        "sideB": "0010",
+        "sideC": "0010"
+      },
+      {
+        "tile": 6,
+        "sideA": "0100",
+        "sideB": "0100",
+        "sideC": "1001"
+      },
+      {
+        "tile": 7,
+        "sideA": "0101",
+        "sideB": "1001",
+        "sideC": "1010"
+      },
+      {
+        "tile": 8,
+        "sideA": "0010",
+        "sideB": "0100",
+        "sideC": "0101"
+      },
+      {
+        "tile": 9,
+        "sideA": "1010",
+        "sideB": "0010",
+        "sideC": "0010"
+      },
+      {
+        "tile": 10,
+        "sideA": "0100",
+        "sideB": "0100",
+        "sideC": "1001"
+      },
+      {
+        "tile": 11,
+        "sideA": "0101",
+        "sideB": "1001",
+        "sideC": "1010"
+      },
+      {
+        "tile": 12,
+        "sideA": "0010",
+        "sideB": "0100",
+        "sideC": "0101"
+      },
+      {
+        "tile": 13,
+        "sideA": "1010",
+        "sideB": "0010",
+        "sideC": "0010"
+      },
+      {
+        "tile": 14,
+        "sideA": "0100",
+        "sideB": "0100",
+        "sideC": "1001"
+      },
+      {
+        "tile": 15,
+        "sideA": "0101",
+        "sideB": "1001",
+        "sideC": "1010"
+      },
+      {
+        "tile": 16,
+        "sideA": "0010",
+        "sideB": "0100",
+        "sideC": "0101"
+      }
+    ]
+  }
+}

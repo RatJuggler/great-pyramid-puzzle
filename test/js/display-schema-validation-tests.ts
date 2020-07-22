@@ -1,8 +1,8 @@
 import display_schema from "../../src/display-data-schema.json";
-import valid_test_display from "../valid-test-display-data1.json";
 import test_display from "../../src/test-display-data.json";
 import pocket_display from "../../src/pocket-display-data.json";
 import great_display from "../../src/great-display-data.json";
+import valid_test_display from "../valid-test-display-data1.json";
 import Ajv from 'ajv';
 import { expect } from 'chai';
 import 'mocha';
@@ -28,7 +28,7 @@ describe("Validate display data definition files", function () {
         context("when loaded", function () {
             it("should validate", function () {
                 let ajv = new Ajv();
-                let valid = ajv.validate(display_schema, valid_test_display);
+                let valid = ajv.validate(display_schema, valid_test_display.testDisplayData);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
             });

@@ -13,22 +13,23 @@ real face_gap = 0.05;
 real tile_gap = 0.05;
 pen face_colour = palegray;
 pen peg_colour = linewidth(15) + lightgray;
-pen side_label = fontsize(12pt);
+pen side_label = fontsize(9pt);
 pen tile_label = fontsize(12pt);
 pen note_label = fontsize(8pt);
 pen title_label = fontsize(14pt);
 
 
 void draw_segment(transform toPosition, point sp1, point sp2, point sp3, point sp4, point sp5, string code) {
-    fill(toPosition * ((0, 0)--sp1--sp2--cycle), substr(code, 0, 1) == "0" ? white : red);
-    fill(toPosition * ((0, 0)--sp2--sp3--cycle), substr(code, 1, 1) == "0" ? white : red);
-    fill(toPosition * ((0, 0)--sp3--sp4--cycle), substr(code, 2, 1) == "0" ? white : red);
-    fill(toPosition * ((0, 0)--sp4--sp5--cycle), substr(code, 3, 1) == "0" ? white : red);
+    fill(toPosition * ((0, 0)--sp1--sp2--cycle), substr(code, 0, 1) == "0" ? white : rgb("FF9090"));
+    fill(toPosition * ((0, 0)--sp2--sp3--cycle), substr(code, 1, 1) == "0" ? white : rgb("FF9090"));
+    fill(toPosition * ((0, 0)--sp3--sp4--cycle), substr(code, 2, 1) == "0" ? white : rgb("FF9090"));
+    fill(toPosition * ((0, 0)--sp4--sp5--cycle), substr(code, 3, 1) == "0" ? white : rgb("FF9090"));
 }
 
 void drawTileAtPosition(real offset, real scale, int rotate, string id,
         align a_align, align b_align, align c_align,
-        string codeA, string codeB, string codeC) {
+        string codeA, string codeB, string codeC,
+        string labelA, string labelB, string labelC) {
     path tile = scale(scale) * polygon(3);
     // Points
     point A = point(tile, 1);
@@ -63,9 +64,9 @@ void drawTileAtPosition(real offset, real scale, int rotate, string id,
     draw_segment(toPosition, B, seg5, seg6, seg7, C, codeB);
     draw_segment(toPosition, C, seg9, seg10, seg11, A, codeC);
     draw(toPosition * tile, black);
-    label("A", toPosition * sideA, side_label);
-    label("B", toPosition * sideB, side_label);
-    label("C", toPosition * sideC, side_label);
+    label(labelA, toPosition * sideA, side_label);
+    label(labelB, toPosition * sideB, side_label);
+    label(labelC, toPosition * sideC, side_label);
     dot(center, peg_colour);
     label(id, center, tile_label);
 }
@@ -93,13 +94,14 @@ path face_4 = drawFace(fOffset, 120);
 real face_side = length(point(ref, 0)--point(ref, 1));
 real tile_scale = (face_side - (tile_gap * 2)) / face_side;
 
-drawTileAtPosition(0, tile_scale, -60, "Tile 2", W, E, S, "0100", "0100", "1001");
-drawTileAtPosition(fOffset, tile_scale, 0, "Tile 3", W, N, E, "0101", "1001", "1010");
-drawTileAtPosition(fOffset, tile_scale, -120, "Tile 1", N, E, W, "0010", "0010", "1010");
-drawTileAtPosition(fOffset, tile_scale, 120, "Tile 4", E, W, N, "0101", "0010", "0100");
+drawTileAtPosition(0, tile_scale, -60, "Tile 2(0)", W, E, S, "0100", "0100", "1001", "A(a)", "B(b)", "C(c)");
+drawTileAtPosition(fOffset, tile_scale, 0, "Tile 3(0)", W, N, E, "0101", "1001", "1010", "A(a)", "B(b)", "C(c)");
+drawTileAtPosition(fOffset, tile_scale, -120, "Tile 1(2)", N, E, W, "0010", "0010", "1010", "A(b)", "B(c)", "C(a)");
+drawTileAtPosition(fOffset, tile_scale, 120, "Tile 4(1)", E, W, N, "0101", "0010", "0100", "A(c)", "B(a)", "C(b)");
 
 // Notes
 label("*Outward facing surfaces shown.", (point(face_4, 1).x, point(face_2, 1).y), E, note_label);
+label("*Rotated tile sides in brackets.", (point(face_4, 1).x, point(face_2, 1).y - 0.12), E, note_label);
 
 // Title
 label("Test puzzle tile layout.", (0, point(face_1, 0).y - 0.4), N, title_label);

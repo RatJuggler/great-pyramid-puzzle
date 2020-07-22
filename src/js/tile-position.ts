@@ -3,7 +3,7 @@ import {IntegrityCheckResult} from "./common-data-schema";
 import {Side, SIDES} from "./side";
 
 
-interface TilePositionJoinProperties {
+type TilePositionJoinProperties = {
     readonly toSide: Side;
     readonly ofTilePosition: TilePosition;
 }
@@ -46,14 +46,6 @@ export class TilePosition {
         return this._tile;
     }
 
-    toString(): string {
-        let tileString = `TilePosition: ${this._name}, On Face: ${this._onFace}, ` +
-            `Contains Tile: [${this._tile}], Rotated: ${this._tileRotation}, Joins: `;
-        this._joins.forEach((join, side) =>
-            tileString += `(${this._name}-${side}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide})`);
-        return tileString;
-    }
-
     join(fromSide: string, toSide: string, ofTilePosition: TilePosition) : void {
         if (this._joins.size === SIDES.numberOfSides) {
             throw new Error("TilePositions can only join to three other TilePositions!");
@@ -85,8 +77,9 @@ export class TilePosition {
         return this;
     }
 
-    rotateTile(): void {
+    rotateTile(): boolean {
         this._tileRotation = ++this._tileRotation % TilePosition.TILE_ROTATION.length;
+        return this._tileRotation !== 0;
     }
 
     private mapRotationToTile(mapFrom: Side): Side {
@@ -100,31 +93,52 @@ export class TilePosition {
             this.mapRotationToTile(Side.SideC));
     }
 
-    removeTile(): boolean {
+    removeTile(): Tile {
         if (this.isEmpty()) {
-            return false;
+            throw new Error("No Tile to remove!");
         }
+        let tileToRemove = this._tile!;
         this._tile = null;
         this._tileRotation = 0;
-        return true;
+        return tileToRemove;
     }
 
     matches(): boolean {
         if (this.isEmpty()) {
             throw new Error("Can't check if a TilePosition matches when there is no Tile to match from!");
         }
+        // Check match for each join to another TilePosition.
         for (const join of this._joins.entries()) {
-            if (!join[1].ofTilePosition.isEmpty()) {
+            // If the other TilePosition is empty then that will count as a match.
+            const otherTilePosition = join[1].ofTilePosition;
+            if (!otherTilePosition.isEmpty()) {
+                // At this TilePosition we need the side of the Tile facing the other TilePosition.
+                // We also need to take into account that the Tile might be rotated.
                 const mapThisSide = this.mapRotationToTile(join[0]);
+                // We can then get the segments on the Tile for this side.
                 const thisSegment = this.tile.getSideSegments(mapThisSide);
-                const mapThatSide = this.mapRotationToTile(join[1].toSide);
-                const thatSegment = join[1].ofTilePosition.tile.getSideSegmentsToMatchWith(mapThatSide);
-                if (thisSegment !== thatSegment) {
+                // For the other TilePosition we then need the side of the Tile there facing this TilePosition.
+                const mapOtherSide = otherTilePosition.mapRotationToTile(join[1].toSide);
+                // And from that the segments on the other Tile for this side.
+                // Because segments are stored clockwise round the Tile sides (A,B,C)
+                // we also need to reverse one set for the comparison to be valid.
+                const otherSegment = otherTilePosition.tile.getSideSegmentsToMatchWith(mapOtherSide);
+                // Finally we can make the comparison. Any failure means the current Tile doesn't match at this TilePosition.
+                if (thisSegment !== otherSegment) {
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    toString(): string {
+        const tileString = this._tile ? this._tile.toStringRotated(this.mapRotationToTile(Side.SideA), this.mapRotationToTile(Side.SideB), this.mapRotationToTile(Side.SideC)) : "Empty"
+        let tilePositionString = `TilePosition: ${this._name}, On Face: ${this._onFace}, ` +
+            `Contains Tile: [${tileString}], Rotated: ${this._tileRotation}, Joins: `;
+        this._joins.forEach((join, side) =>
+            tilePositionString += `(${this._name}-${side}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide})`);
+        return tilePositionString;
     }
 
 }

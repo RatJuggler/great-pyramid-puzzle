@@ -81,10 +81,10 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "center", "tilePositions"],
+        "required": ["name", "center", "tilePositions"],
         "properties": {
-          "id": {
-            "description": "The id of the face.",
+          "name": {
+            "description": "The name of a face on the tetrahedron.",
             "type": "string"
           },
           "center": {
