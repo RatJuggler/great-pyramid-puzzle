@@ -10,9 +10,9 @@ import { PuzzleDataElements } from "../../src/js/common-data-schema";
 
 const TILE_1_DATA: TileDefinition = {
     "tile": 101,
-    "sideA": "0010",
+    "sideA": "1010",
     "sideB": "0010",
-    "sideC": "1010"
+    "sideC": "0010"
 };
 const TILE_1 = new Tile(TILE_1_DATA);
 
@@ -34,9 +34,9 @@ const TILE_3 = new Tile(TILE_3_DATA);
 
 const TILE_4_DATA: TileDefinition = {
     "tile": 104,
-    "sideA": "0101",
-    "sideB": "0010",
-    "sideC": "0100"
+    "sideA": "0010",
+    "sideB": "0100",
+    "sideC": "0101"
 };
 const TILE_4 = new Tile(TILE_4_DATA);
 

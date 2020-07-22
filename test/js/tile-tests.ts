@@ -20,7 +20,7 @@ describe("Tile behaviour", function () {
                 expect(tile.id).to.equal(TILE_1_DATA.tile);
             });
             it("should also return the correct toString result from this instance", function () {
-                const expectedToString = "Id: 101, Side-A: 0010, Side-B: 0010, Side-C: 1010";
+                const expectedToString = "Id: 101, Side-A: 1010, Side-B: 0010, Side-C: 0010";
                 expect(tile.toString()).to.equal(expectedToString);
             });
         });
