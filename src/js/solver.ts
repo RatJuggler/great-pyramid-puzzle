@@ -139,6 +139,20 @@ class BruteForceSolver extends SolverBase {
         }
     }
 
+    private rotateOrRemove(tilePosition: TilePosition, rejectedTiles: Array<Tile>): TilePositionChange {
+        // Try rotating the current tile.
+        if (this._currentState.rotations < 2) {
+            this._currentState.rotations++;
+            tilePosition.rotateTile();
+            return SolverBase.createTilePositionChange("Rotate", tilePosition);
+        }
+        // If we've tried all the rotations and none match then reject this tile.
+        const displayChange = SolverBase.createTileChange("Remove", tilePosition);
+        const tile = tilePosition.removeTile();
+        rejectedTiles.push(tile);
+        return displayChange;
+    }
+
     nextState(): TilePositionChange | null {
         if (this._emptyTilePositions.length === 0) {
             return null;
@@ -159,17 +173,8 @@ class BruteForceSolver extends SolverBase {
                 }
                 return this.nextState();
             }
-            // Otherwise we can try rotating the tile.
-            if (this._currentState.rotations < 3) {
-                this._currentState.rotations++;
-                tilePosition.rotateTile();
-                return SolverBase.createTilePositionChange("Rotate", tilePosition);
-            }
-            // If we've tried all the rotations and none match then reject this tile.
-            const displayChange = SolverBase.createTileChange("Remove", tilePosition);
-            const tile = tilePosition.removeTile();
-            rejectedTiles.push(tile);
-            return displayChange;
+            // Otherwise try cycling through the rotations or remove the tile if nothing matches.
+            return this.rotateOrRemove(tilePosition, rejectedTiles);
         }
         // Try the next tile.
         if (untriedTiles.length > 0) {
@@ -181,7 +186,8 @@ class BruteForceSolver extends SolverBase {
         // If we've tried all the tiles and nothing matches we need to move back a tile position and try the next rotation/tile from there.
         this._emptyTilePositions.unshift(tilePosition);
         this._currentState = this._solverStack.pop()!;
-        return this.nextState();
+        // Cycle through the rotations or remove the tile if nothing matches.
+        return this.rotateOrRemove(this._currentState.tilePosition, this._currentState.rejectedTiles);
     }
 
 }
