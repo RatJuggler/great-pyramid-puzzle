@@ -27,27 +27,27 @@ the tetrahedron with the tiles such that all the adjacent tiles match along thei
 
 There was also a smaller version, called the Great Pyramid Pocket Puzzle, with 16 tiles and four tiles on each face.
 
-![Image of Great Pyramid](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/great-pyramid.jpg)
-![Image of Pocket Pyramid](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/pocket-pyramid.jpg)
+![Image of Great Pyramid](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/main/images/great-pyramid.jpg)
+![Image of Pocket Pyramid](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/main/images/pocket-pyramid.jpg)
 
 The tiles are regular triangles which are split into 12 segments by six lines, the three bisectors and three lines parallel to the
 sides. The four segments along each side are either red or white.
 
-![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-segments.svg)
+![Image of Tile Segments](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/main/images/tile-segments.svg)
 
 ## Diagrams
 These are some diagrams I made while trying to get my head round the problem. They include the layout of a simple test puzzle with
 only one tile per side that I'm using to help with testing.
 
-![Image of Tetrahedron Faces](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tetrahedron-faces.svg)
+![Image of Tetrahedron Faces](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/main/images/tetrahedron-faces.svg)
 
-![Image of Tile Positions for Test](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-positions-test.svg)
+![Image of Tile Positions for Test](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/main/images/tile-positions-test.svg)
 
-![Image of Test Tile Layout](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-test-layout.svg)
+![Image of Test Tile Layout](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/main/images/tile-test-layout.svg)
 
-![Image of Tile Positions for Pocket](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-positions-pocket.svg)
+![Image of Tile Positions for Pocket](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/main/images/tile-positions-pocket.svg)
 
-![Image of Tile Positions for Great](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/master/images/tile-positions-great.svg)
+![Image of Tile Positions for Great](https://raw.githubusercontent.com/RatJuggler/great-pyramid-puzzle/main/images/tile-positions-great.svg)
 
 ### Resources
 - A quick overview on [equilateral triangle](https://en.wikipedia.org/wiki/Equilateral_triangle) geometry.
