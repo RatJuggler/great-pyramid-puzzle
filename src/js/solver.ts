@@ -28,9 +28,7 @@ abstract class SolverBase implements Solver {
         return new TilePositionChange(type, tilePosition.id);
     }
 
-    nextState(): TilePositionChange | null {
-        return null;
-    }
+    abstract nextState(): TilePositionChange | null;
 
     finalState(): Array<TilePositionChange> {
         return this._tetrahedron.tilePositions
@@ -95,7 +93,7 @@ class NoMatchingSolver extends SolverBase {
     nextState(): TilePositionChange | null {
         if (this._rotating > 0) {
             if (this._tilePosition === null) {
-                throw new Error("No tile to rotate!");
+                throw new Error("No tile position to rotate!");
             }
             this._rotating--;
             this._tilePosition.rotateTile();
@@ -113,10 +111,19 @@ class NoMatchingSolver extends SolverBase {
 }
 
 
+type SolverState = {
+    tilePosition: TilePosition,
+    rotations: number,
+    untriedTiles: Array<Tile>,
+    rejectedTiles: Array<Tile>
+}
+
 class BruteForceSolver extends SolverBase {
 
     private readonly _emptyTilePositions: Array<TilePosition>;
-    private _unusedTiles: Array<Tile> = [];
+    private readonly _unusedTiles: Array<Tile> = [];
+    private readonly _solverStack: Array<SolverState> = [];
+    private _currentState: SolverState;
 
     constructor(tetrahedron: Tetrahedron, tilePool: TilePool) {
         super(tetrahedron, tilePool);
@@ -124,51 +131,57 @@ class BruteForceSolver extends SolverBase {
         while (!this._tilePool.isEmpty) {
             this._unusedTiles.push(this._tilePool.nextTile);
         }
-    }
-
-    nextTilePosition(emptyTilePositions: Array<TilePosition>, unusedTiles: Array<Tile>): boolean {
-        if (emptyTilePositions.length === 0) {
-            return true;
+        this._currentState = {
+            tilePosition: this._emptyTilePositions.shift()!,
+            rotations: 0,
+            untriedTiles: [...this._unusedTiles],
+            rejectedTiles: new Array<Tile>()
         }
-        const tilePosition = emptyTilePositions.shift()!;
-        const untriedTiles = [...unusedTiles];
-        const rejectedTiles = new Array<Tile>();
-        while (untriedTiles.length > 0) {
-            const tile = untriedTiles.shift()!;
-            tilePosition.placeTile(tile);
-            if (tilePosition.matches()) {
-                console.log("Matched: " + tilePosition.toString());
-                const unusedTilesNow = untriedTiles.concat(rejectedTiles);
-                if (this.nextTilePosition(emptyTilePositions, unusedTilesNow)) {
-                    return true;
-                }
-            }
-            tilePosition.rotateTile();
-            if (tilePosition.matches()) {
-                console.log("Matched: " + tilePosition.toString());
-                const unusedTilesNow = untriedTiles.concat(rejectedTiles);
-                if (this.nextTilePosition(emptyTilePositions, unusedTilesNow)) {
-                    return true;
-                }
-            }
-            tilePosition.rotateTile();
-            if (tilePosition.matches()) {
-                console.log("Matched: " + tilePosition.toString());
-                const unusedTilesNow = untriedTiles.concat(rejectedTiles);
-                if (this.nextTilePosition(emptyTilePositions, unusedTilesNow)) {
-                    return true;
-                }
-            }
-            tilePosition.removeTile();
-            rejectedTiles.push(tile);
-        }
-        emptyTilePositions.unshift(tilePosition);
-        return false;
     }
 
     nextState(): TilePositionChange | null {
-        this.nextTilePosition(this._emptyTilePositions, this._unusedTiles);
-        return null;
+        if (this._emptyTilePositions.length === 0) {
+            return null;
+        }
+        const tilePosition = this._currentState.tilePosition;
+        const untriedTiles = this._currentState.untriedTiles;
+        const rejectedTiles = this._currentState.rejectedTiles;
+        // If we have a tile at the current tile position.
+        if (!tilePosition.isEmpty()) {
+            // And everything matches then move on to the next tile position.
+            if (tilePosition.matches()) {
+                this._solverStack.push(this._currentState);
+                this._currentState = {
+                    tilePosition: this._emptyTilePositions.shift()!,
+                    rotations: 0,
+                    untriedTiles: [...untriedTiles.concat(rejectedTiles)],
+                    rejectedTiles: new Array<Tile>()
+                }
+                return this.nextState();
+            }
+            // Otherwise we can try rotating the tile.
+            if (this._currentState.rotations < 3) {
+                this._currentState.rotations++;
+                tilePosition.rotateTile();
+                return SolverBase.createTilePositionChange("Rotate", tilePosition);
+            }
+            // If we've tried all the rotations and none match then reject this tile.
+            const displayChange = SolverBase.createTileChange("Remove", tilePosition);
+            const tile = tilePosition.removeTile();
+            rejectedTiles.push(tile);
+            return displayChange;
+        }
+        // Try the next tile.
+        if (untriedTiles.length > 0) {
+            const nextTile = untriedTiles.shift()!;
+            tilePosition.placeTile(nextTile);
+            this._currentState.rotations = 0;
+            return SolverBase.createTileChange("Place", tilePosition);
+        }
+        // If we've tried all the tiles and nothing matches we need to move back a tile position and try the next rotation/tile from there.
+        this._emptyTilePositions.unshift(tilePosition);
+        this._currentState = this._solverStack.pop()!;
+        return this.nextState();
     }
 
 }
