@@ -150,9 +150,6 @@ class BruteForceSolver extends SolverBase {
     }
 
     nextState(): TilePositionChange | null {
-        if (this._emptyTilePositions.length === 0) {
-            return null;
-        }
         const tilePosition = this._currentState.tilePosition;
         const untriedTiles = this._currentState.untriedTiles;
         const rejectedTiles = this._currentState.rejectedTiles;
@@ -160,6 +157,11 @@ class BruteForceSolver extends SolverBase {
         if (!tilePosition.isEmpty()) {
             // And everything matches then move on to the next tile position.
             if (tilePosition.matches()) {
+                // If there aren't any more tile positions a solution has been reached!
+                if (this._emptyTilePositions.length === 0) {
+                    return null;
+                }
+                // Save the current state, initialise a new state and move on.
                 this._solverStack.push(this._currentState);
                 this._currentState = {
                     tilePosition: this._emptyTilePositions.shift()!,
