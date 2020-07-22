@@ -204,7 +204,10 @@ describe("TilePosition behaviour", function () {
         context("with a newly placed Tile", function () {
             const tilePosition = new TilePosition("TP", "1");
             tilePosition.placeTile(TILE_1);
-            tilePosition.rotateTile();
+            const result = tilePosition.rotateTile();
+            it("should return true", function () {
+                expect(result).to.be.true;
+            });
             it("should track the Tile as being rotated once", function () {
                 const expectedTileSegments = TILE_1.getSegments(Side.SideC, Side.SideA, Side.SideB);
                 expect(tilePosition.getRotatedSegments()).to.equal(expectedTileSegments);
@@ -214,9 +217,12 @@ describe("TilePosition behaviour", function () {
         context("and the TilePosition has already been rotated twice", function () {
             const tilePosition = new TilePosition("TP", "1");
             tilePosition.placeTile(TILE_1);
-            tilePosition.rotateTile();
-            tilePosition.rotateTile();
-            tilePosition.rotateTile();
+            assert.isTrue(tilePosition.rotateTile());
+            assert.isTrue(tilePosition.rotateTile());
+            const result = tilePosition.rotateTile();
+            it("should return false", function () {
+                expect(result).to.be.false;
+            });
             it("should reset the rotation back to 0", function () {
                 const expectedTileSegments = TILE_1.getSegments(Side.SideA, Side.SideB, Side.SideC);
                 expect(tilePosition.getRotatedSegments()).to.equal(expectedTileSegments);
@@ -239,7 +245,7 @@ describe("TilePosition behaviour", function () {
         context("and the TilePosition has been rotated once", function () {
             const tilePosition = new TilePosition("TP", "1");
             tilePosition.placeTile(TILE_2);
-            tilePosition.rotateTile();
+            assert.isTrue(tilePosition.rotateTile());
             it("should return the segments rotated once", function () {
                 const expectedTileSegments = TILE_2.getSegments(Side.SideC, Side.SideA, Side.SideB);
                 expect(tilePosition.getRotatedSegments()).to.equal(expectedTileSegments);

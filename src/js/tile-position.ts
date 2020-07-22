@@ -77,8 +77,9 @@ export class TilePosition {
         return this;
     }
 
-    rotateTile(): void {
+    rotateTile(): boolean {
         this._tileRotation = ++this._tileRotation % TilePosition.TILE_ROTATION.length;
+        return this._tileRotation !== 0;
     }
 
     private mapRotationToTile(mapFrom: Side): Side {
