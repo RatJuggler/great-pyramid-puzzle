@@ -15,7 +15,7 @@ function createSolverPromise(solver: Solver): { promise: Promise<unknown>; cance
                 clearInterval(id);
                 resolve(solver.finalState());
             }
-        }, 50);
+        }, 25);
         // Triggering the cancel.
         cancel = (): void => {
             // If already completed no need to cancel.

@@ -14,7 +14,7 @@ import { Display } from "./display";
 
 abstract class DisplayChange {
 
-    protected static readonly ANIMATE_DURATION = 500;
+    protected static readonly ANIMATE_DURATION = 250;
 
     protected constructor(protected readonly display: Display) {}
 

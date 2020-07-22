@@ -43,7 +43,7 @@ function animateSolve(solver: Solver, displayManager: DisplayManager): void {
         } else {
             attachRotateEvents(displayManager);
         }
-    }, 1000);
+    }, 500);
 }
 
 function completeSolve(solver: Solver, displayManager: DisplayManager): void {
