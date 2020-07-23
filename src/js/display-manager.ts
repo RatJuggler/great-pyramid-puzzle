@@ -14,8 +14,6 @@ import { Display } from "./display";
 
 abstract class DisplayChange {
 
-    protected static readonly ANIMATE_DURATION = 250;
-
     protected constructor(protected readonly display: Display) {}
 
     abstract show(): void;
@@ -60,7 +58,8 @@ class FinalTilePosition extends DisplayChange {
 class PlaceTilePosition extends DisplayChange {
 
     constructor(display: Display,
-                private readonly _tChange: TileChange) {
+                private readonly _tChange: TileChange,
+                private readonly _animationDuration: number) {
         super(display);
     }
 
@@ -74,7 +73,7 @@ class PlaceTilePosition extends DisplayChange {
             .translate(tpDisplay.center.x - this.display.startCenter.x, tpDisplay.center.y - this.display.startCenter.y)
             .rotate(tpDisplay.center.r, tpDisplay.center.x, tpDisplay.center.y);
         // @ts-ignore
-        placeTile.animate({duration: this.ANIMATE_DURATION}).transform(matrix)
+        placeTile.animate({duration: this._animationDuration}).transform(matrix)
             .after(() => {
                 // Remove the animated tile then redraw the tile position with the placed tile.
                 placeTile.remove();
@@ -88,7 +87,8 @@ class PlaceTilePosition extends DisplayChange {
 class RotateTilePosition extends DisplayChange {
 
     constructor(display: Display,
-                private readonly _tpChange: TilePositionChange) {
+                private readonly _tpChange: TilePositionChange,
+                private readonly _animationDuration: number) {
         super(display);
     }
 
@@ -98,8 +98,9 @@ class RotateTilePosition extends DisplayChange {
         // Find the child tile.
         const tile = tpDisplay.group.children()[1];
         // Rotate the tile.
-        // @ts-ignore
-        tile.animate({duration: this.ANIMATE_DURATION, ease: "<>"}).rotate(120, tpDisplay.center.x, tpDisplay.center.y);
+        tile.animate({duration: this._animationDuration, ease: "<>"})
+            // @ts-ignore
+            .rotate(120, tpDisplay.center.x, tpDisplay.center.y);
     }
 
 }
@@ -108,7 +109,8 @@ class RotateTilePosition extends DisplayChange {
 class RemoveTilePosition extends DisplayChange {
 
     constructor(display: Display,
-                private readonly _tChange: TileChange) {
+                private readonly _tChange: TileChange,
+                private readonly _animationDuration: number) {
         super(display);
     }
 
@@ -123,7 +125,7 @@ class RemoveTilePosition extends DisplayChange {
             .translate(- (tpDisplay.center.x - this.display.startCenter.x), - (tpDisplay.center.y - this.display.startCenter.y))
             .rotate(-tpDisplay.center.r, this.display.startCenter.x, this.display.startCenter.y);
         // @ts-ignore
-        removeTile.animate({duration: this.ANIMATE_DURATION}).transform(matrix)
+        removeTile.animate({duration: this._animationDuration}).transform(matrix)
             .after(() => {
                 // Remove the animated tile.
                 removeTile.remove();
@@ -135,10 +137,18 @@ class RemoveTilePosition extends DisplayChange {
 
 export class DisplayManager {
 
+    private static readonly DEFAULT_ANIMATION_DURATION = 250;
+
     private readonly _display: Display;
 
-    constructor(rootElement: string | HTMLElement, displayData: DisplayData) {
+    constructor(rootElement: string | HTMLElement,
+                displayData: DisplayData,
+                private _animationDuration: number = DisplayManager.DEFAULT_ANIMATION_DURATION) {
         this._display = new Display(rootElement, displayData)
+    }
+
+    set animationDuration(duration: number) {
+        this._animationDuration = duration;
     }
 
     initialDisplay(): Svg {
@@ -155,13 +165,13 @@ export class DisplayManager {
                 action = new FinalTilePosition(this._display, tpChange as TileChange);
                 break;
             case "Place":
-                action = new PlaceTilePosition(this._display, tpChange as TileChange);
+                action = new PlaceTilePosition(this._display, tpChange as TileChange, this._animationDuration);
                 break;
             case "Rotate":
-                action = new RotateTilePosition(this._display, tpChange);
+                action = new RotateTilePosition(this._display, tpChange, this._animationDuration);
                 break;
             case "Remove":
-                action = new RemoveTilePosition(this._display, tpChange as TileChange);
+                action = new RemoveTilePosition(this._display, tpChange as TileChange, this._animationDuration);
                 break;
             default:
                 throw new Error("Unknown tile position change!");

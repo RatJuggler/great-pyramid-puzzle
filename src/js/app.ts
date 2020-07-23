@@ -33,7 +33,7 @@ function attachRotateEvents(displayManager: DisplayManager): void {
         });
 }
 
-function animateSolve(solver: Solver, displayManager: DisplayManager, solverInterval: number): void {
+function animateSolve(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
     // Schedule a series of events to place tiles on the puzzle.
     solverIntervalId = setInterval( () => {
         const tilePositionChange = solver.nextState();
@@ -43,7 +43,7 @@ function animateSolve(solver: Solver, displayManager: DisplayManager, solverInte
             clearInterval(solverIntervalId)
             attachRotateEvents(displayManager);
         }
-    }, solverInterval);
+    }, animateDuration + 50);
 }
 
 function completeSolve(solver: Solver, displayManager: DisplayManager): void {
@@ -95,14 +95,14 @@ function solvePuzzle(): void {
     // Determine the data required for the puzzle and build the internal puzzle
     // representation with the pool of tiles waiting to be placed on it.
     const puzzle = getPuzzleComponents(puzzleType);
+    // Build the solver to use.
+    const solver = getSolveAlgorithm(puzzle);
     // Find where we want the puzzle displayed.
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Build a display manager.
-    const displayManager = getDisplayManager(displayElement, puzzleType)
+    const displayManager = getDisplayManager(displayElement, puzzleType);
     // Show the initial puzzle state.
     displayManager.initialDisplay();
-    // Build the solver to use.
-    const solver = getSolveAlgorithm(puzzle);
     // Solve the puzzle depending on the display.
     const display = getSelector("display-option");
     switch (display) {
@@ -110,7 +110,9 @@ function solvePuzzle(): void {
             completeSolve(solver, displayManager);
             break;
         case "Animated":
-            animateSolve(solver, displayManager, 500);
+            const animateDuration = parseInt(getSelector("animation-speed"));
+            displayManager.animationDuration = animateDuration;
+            animateSolve(solver, displayManager, animateDuration);
             break;
         default:
             throw new Error("Invalid solve display option!");
