@@ -121,12 +121,19 @@ function toggleActive(...ids: Array<string>): void {
     ids.forEach((id) => document.getElementById(id)!.classList.toggle("active"));
 }
 
-function toggleOptions(): void {
+function togglePuzzleOptions(): void {
     toggleActive("solve-puzzle", "test-puzzle");
 }
 
-document.getElementById("option-solve")!.addEventListener("click", toggleOptions);
-document.getElementById("option-test")!.addEventListener("click", toggleOptions);
+function toggleAnimationOptions(): void {
+    toggleActive("animation-options");
+}
+
+document.getElementById("option-solve")!.addEventListener("click", togglePuzzleOptions);
+document.getElementById("option-test")!.addEventListener("click", togglePuzzleOptions);
+
+document.getElementById("display-animated")!.addEventListener("click", toggleAnimationOptions);
+document.getElementById("display-completed")!.addEventListener("click", toggleAnimationOptions);
 
 document.getElementById("menu-toggle")!.addEventListener('click', () => {
     toggleActive("layout", "menu", "menu-toggle")
@@ -145,14 +152,15 @@ function addStatusInfoEvent(id: string, statusInfo: string) {
     }
 }
 
+addStatusInfoEvent("go", "Proceed with the selected options.");
 addStatusInfoEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
-addStatusInfoEvent("puzzle-option", "Select to try the various test display options, without solving the puzzle, or to try and solve the puzzle.");
-addStatusInfoEvent("puzzle-display", "Display the completed puzzle as soon as possible or show an animation of the completion process.");
-addStatusInfoEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle. NOTE: DOES NOT CURRENTLY SOLVE THE PUZZLE!");
+addStatusInfoEvent("puzzle-option", "Select to try and solve the puzzle or to test the various display options without solving it.");
+addStatusInfoEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
 addStatusInfoEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
 addStatusInfoEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
 addStatusInfoEvent("tile-rotation", "If tiles are randomly rotated before being placed on the test display.");
-addStatusInfoEvent("go", "Proceed with the selected options.");
+addStatusInfoEvent("puzzle-display", "Show an animation of the puzzle being completed or just display the finished solution.");
+addStatusInfoEvent("animation-speed", "How fast you want the animation to run.");
 
 document.getElementById("menu")!.addEventListener("mouseleave", () => {
     updateStatusInfo("");

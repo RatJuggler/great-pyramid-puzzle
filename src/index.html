@@ -36,15 +36,6 @@
             <label for="puzzle-great">Great</label>
           </div>
         </li>
-        <li id="puzzle-display" class="pure-menu-item">
-          <p>Display:</p>
-          <div class="selector">
-            <input type="radio" id="puzzle-animated" name="puzzle-display" value="Animated" checked>
-            <label for="puzzle-animated">Animated</label>
-            <input type="radio" id="puzzle-completed" name="puzzle-display" value="Completed">
-            <label for="puzzle-completed">Completed</label>
-          </div>
-        </li>
         <li id="puzzle-option" class="pure-menu-item">
           <p>Option:</p>
           <div class="selector">
@@ -94,6 +85,28 @@
             <label for="rotation-random">Random</label>
             <input type="radio" id="rotation-none" name="tile-rotation" value="None">
             <label for="rotation-none">None</label>
+          </div>
+        </li>
+      </ul>
+      <ul id="puzzle-display" class="pure-menu-list active">
+        <li id="display-option" class="pure-menu-item">
+          <p>Display:</p>
+          <div class="selector">
+            <input type="radio" id="display-animated" name="display-option" value="Animated" checked>
+            <label for="display-animated">Animated</label>
+            <input type="radio" id="display-completed" name="display-option" value="Completed">
+            <label for="display-completed">Completed</label>
+          </div>
+        </li>
+      </ul>
+      <ul id="animation-options" class="pure-menu-list active">
+        <li id="animation-speed" class="pure-menu-item">
+          <p>Animation speed:</p>
+          <div class="selector">
+            <input type="radio" id="animation-slow" name="animation-speed" value="Animated" checked>
+            <label for="animation-slow">Slow</label>
+            <input type="radio" id="animation-fast" name="animation-speed" value="Completed">
+            <label for="animation-fast">Fast</label>
           </div>
         </li>
       </ul>

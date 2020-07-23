@@ -97,6 +97,12 @@ footer {
 #test-puzzle.active {
   display: block;
 }
+#animation-options {
+  display: none;
+}
+#animation-options.active {
+  display: block;
+}
 .selector {
   border: 2px solid #999999;
   display: inline-block;
