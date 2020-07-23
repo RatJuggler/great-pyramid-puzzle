@@ -1,9 +1,8 @@
-import { getPuzzleComponents } from "./puzzle-loader";
-import { PuzzleComponents } from "./common-data-schema";
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
 import { TilePositionChange } from "./tile-position-change";
-import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
+import { Solver } from "./solver";
+import { buildSolver } from "./solver-factory";
 
 
 // Track solver ticks.
@@ -66,25 +65,6 @@ function runSolver(solver: Solver, displayManager: DisplayManager, animateDurati
     }, animateDuration + 20);
 }
 
-function getSolveAlgorithm(puzzle: PuzzleComponents): Solver {
-    const mainOption = getSelector("puzzle-option");
-    switch (mainOption) {
-        case "Test":
-            return new NoMatchingSolver(puzzle.tetrahedron, puzzle.tilePool,
-                getSelector("tile-selection"), getSelector("tile-placement"), getSelector("tile-rotation"));
-        case "Solve":
-            const solveAlgorithm = getSelector("solve-algorithm");
-            switch (solveAlgorithm) {
-                case "Brute":
-                    return new BruteForceSolver(puzzle.tetrahedron, puzzle.tilePool);
-                default:
-                    throw new Error("Invalid solve algorithm option!");
-            }
-        default:
-            throw new Error("Invalid puzzle option!");
-    }
-}
-
 function getSpeed(): number {
     const display = getSelector("display-option");
     switch (display) {
@@ -104,11 +84,13 @@ function solvePuzzle(): void {
     }
     // Determine the type of puzzle.
     const puzzleType = getSelector("puzzle-type");
-    // Determine the data required for the puzzle and build the internal puzzle
-    // representation with the pool of tiles waiting to be placed on it.
-    const puzzle = getPuzzleComponents(puzzleType);
     // Build the solver to use.
-    const solver = getSolveAlgorithm(puzzle);
+    const solver = buildSolver(puzzleType,
+        getSelector("puzzle-option"),
+        getSelector("tile-selection"),
+        getSelector("tile-placement"),
+        getSelector("tile-rotation"),
+        getSelector("solve-algorithm"));
     // Decide on the speed.
     const animationDuration = getSpeed();
     // Find where we want the puzzle displayed.
