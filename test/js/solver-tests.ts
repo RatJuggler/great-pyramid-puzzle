@@ -16,7 +16,7 @@ import { VALID_TEST_PUZZLE } from "./common-test-data";
 class MockSolver extends SolverBase {
 
     nextState(): PuzzleChange {
-        return PuzzleChange.createPuzzleChange("Test");
+        return PuzzleChange.INITIAL;
     }
 
 }
@@ -49,7 +49,7 @@ describe("SolverBase behaviour using MockSolver", function () {
                 expect(result).to.be.an.instanceof(PuzzleChange);
             });
             it("should have a type of Test", function () {
-                expect(result.type).to.equal("Test");
+                expect(result).to.equal(PuzzleChange.INITIAL);
             });
         });
 

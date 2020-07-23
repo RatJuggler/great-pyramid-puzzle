@@ -24,8 +24,8 @@ abstract class SolverBase implements Solver {
 
     finalState(): Array<PuzzleChange> {
         return this._tetrahedron.tilePositions
-            .map((tilePosition) => PuzzleChange.createTileChange("Final",
-                tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments()));
+            .map((tilePosition) =>
+                PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments()));
     }
 
 }
@@ -90,7 +90,7 @@ class NoMatchingSolver extends SolverBase {
             }
             this._rotating--;
             this._tilePosition.rotateTile();
-            return PuzzleChange.createTilePositionChange("Rotate", this._tilePosition.id);
+            return PuzzleChange.rotate(this._tilePosition.id);
         }
         if (this._tilePool.isEmpty) {
             return PuzzleChange.SOLVED;
@@ -98,8 +98,7 @@ class NoMatchingSolver extends SolverBase {
         const tile = this.getTileSelection();
         this._tilePosition = this.placeTile(tile);
         this._rotating = this.tileRotations();
-        return PuzzleChange.createTileChange("Place",
-            this._tilePosition.id, this._tilePosition.tile.id, this._tilePosition.getRotatedSegments());
+        return PuzzleChange.place(this._tilePosition.id, this._tilePosition.tile.id, this._tilePosition.getRotatedSegments());
     }
 
 }
@@ -134,11 +133,10 @@ class BruteForceSolver extends SolverBase {
     private static rotateOrRemove(tilePosition: TilePosition, rejectedTiles: Array<Tile>): PuzzleChange {
         // Try rotating the current tile.
         if (tilePosition.rotateTile()) {
-            return PuzzleChange.createTilePositionChange("Rotate", tilePosition.id);
+            return PuzzleChange.rotate(tilePosition.id);
         }
         // If we've tried all the rotations and none match then reject this tile.
-        const displayChange = PuzzleChange.createTileChange("Remove",
-            tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
+        const displayChange = PuzzleChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
         const tile = tilePosition.removeTile();
         rejectedTiles.push(tile);
         return displayChange;
@@ -172,7 +170,7 @@ class BruteForceSolver extends SolverBase {
         if (untriedTiles.length > 0) {
             const nextTile = untriedTiles.shift()!;
             tilePosition.placeTile(nextTile);
-            return PuzzleChange.createTileChange("Place", tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
+            return PuzzleChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
         }
         // If we've tried all the tiles and nothing matches we need to move back a tile position and try the next rotation/tile from there.
         this._emptyTilePositions.unshift(tilePosition);

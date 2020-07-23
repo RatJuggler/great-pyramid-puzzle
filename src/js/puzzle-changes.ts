@@ -31,7 +31,7 @@ class PuzzleChange {
     constructor(readonly type: PuzzleChangeType) {}
 
     static empty(tilePositionId: string): PuzzleChange {
-        return new TilePositionChange(PuzzleChangeType.Final, tilePositionId);
+        return new TilePositionChange(PuzzleChangeType.Empty, tilePositionId);
     }
 
     static final(tilePositionId: string, tileId: number, rotatedSegments: string): PuzzleChange {
