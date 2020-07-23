@@ -6,7 +6,7 @@ import { Tetrahedron } from "../../src/js/tetrahedron";
 import { Tile } from "../../src/js/tile";
 import { TilePool } from "../../src/js/tile-pool";
 import { TilePosition } from "../../src/js/tile-position";
-import { PuzzleChange, TilePositionChange, TileChange } from "../../src/js/tile-position-change";
+import { PuzzleChange, TilePositionChange, TileChange } from "../../src/js/puzzle-changes";
 import {assert, expect} from 'chai';
 import 'mocha';
 // @ts-ignore

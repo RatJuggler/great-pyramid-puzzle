@@ -1,6 +1,6 @@
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
-import { TilePositionChange } from "./tile-position-change";
+import { TilePositionChange } from "./puzzle-changes";
 import { Solver } from "./solver";
 import { SolverOptions, buildSolver } from "./solver-factory";
 

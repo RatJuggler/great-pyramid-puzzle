@@ -6,7 +6,7 @@
 // Rotate - Animate rotating a tile at a tile position
 // Remove - Animate removing the tile at a tile position
 
-import { PuzzleChange, TileChange, TilePositionChange } from "./tile-position-change";
+import { PuzzleChange, TileChange, TilePositionChange } from "./puzzle-changes";
 import { Matrix, Svg } from "@svgdotjs/svg.js";
 import { DisplayData } from "./display-data-schema";
 import { Display } from "./display";

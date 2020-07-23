@@ -5,7 +5,7 @@ import { PuzzleComponents, PuzzleDataElements } from "../../src/js/common-data-s
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { getDisplayManager } from "../../src/js/display-loader";
 import { DisplayManager } from "../../src/js/display-manager";
-import { TileChange, TilePositionChange } from "../../src/js/tile-position-change";
+import { TileChange, TilePositionChange } from "../../src/js/puzzle-changes";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore

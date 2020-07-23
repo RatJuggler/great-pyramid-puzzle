@@ -2,7 +2,7 @@ import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
-import { PuzzleChange, TilePositionChange, TileChange } from "./tile-position-change";
+import { PuzzleChange, TilePositionChange, TileChange } from "./puzzle-changes";
 import { getRandomInt } from "./utils";
 
 
