@@ -2,11 +2,13 @@ import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
 import { TilePositionChange } from "./tile-position-change";
 import { Solver } from "./solver";
-import { buildSolver } from "./solver-factory";
+import {buildSolver, SolverOptions} from "./solver-factory";
 
 
 // Track solver ticks.
 let solverIntervalId: number;
+// Track solver workers.
+let solverWorker: Worker;
 
 
 function getSelector(name: string): string {
@@ -31,17 +33,30 @@ function attachRotateEvents(displayManager: DisplayManager): void {
         });
 }
 
-function startSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
-    if (animateDuration === 0) {
-        // Set the overlay to prevent further UI interaction.
-        addActive("overlay");
-        // Attach cancel trigger to the overlay.
-        document.getElementById("overlay")!.addEventListener("click", () => {
-            clearInterval(solverIntervalId);
-            removeActive("overlay");
-        });
+function startAnimatedSolver(solverOptions: SolverOptions, displayManager: DisplayManager, animationDuration: number): void {
+    // Build the solver to use.
+    const solver = buildSolver(solverOptions);
+    // Kick off the solver.
+    runSolver(solver, displayManager, animationDuration);
+}
+
+function startWorkerSolver(solverOptions: SolverOptions, displayManager: DisplayManager): void {
+    // Set the overlay to prevent further UI interaction.
+    addActive("overlay");
+    //
+    solverWorker = new Worker("worker.ts");
+    solverWorker.onmessage = (e) => {
+        const finalState = <Array<TilePositionChange>> e.data;
+        // Show the final puzzle state.
+        finalState.forEach((tpChange) => displayManager.display(tpChange));
+        removeActive("overlay");
     }
-    runSolver(solver, displayManager, animateDuration);
+    solverWorker.postMessage(solverOptions);
+    // Attach cancel trigger to the overlay.
+    document.getElementById("overlay")!.addEventListener("click", () => {
+        solverWorker.terminate();
+        removeActive("overlay");
+    });
 }
 
 function runSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
@@ -49,17 +64,10 @@ function runSolver(solver: Solver, displayManager: DisplayManager, animateDurati
     solverIntervalId = setTimeout( () => {
         const tilePositionChange = solver.nextState();
         if (tilePositionChange) {
-            if (animateDuration > 0) {
-                displayManager.display(tilePositionChange);
-            }
+            displayManager.display(tilePositionChange);
             runSolver(solver, displayManager, animateDuration);
         } else {
             clearInterval(solverIntervalId)
-            if (animateDuration === 0) {
-                removeActive("overlay");
-                // Show the final puzzle state.
-                solver.finalState().forEach((tpChange) => displayManager.display(tpChange));
-            }
             attachRotateEvents(displayManager);
         }
     }, animateDuration + 20);
@@ -82,26 +90,31 @@ function solvePuzzle(): void {
     if (solverIntervalId) {
         clearInterval(solverIntervalId);
     }
-    // Determine the type of puzzle.
-    const puzzleType = getSelector("puzzle-type");
-    // Build the solver to use.
-    const solver = buildSolver({
-        puzzleType: puzzleType,
+    if (solverWorker) {
+        solverWorker.terminate();
+    }
+    // Determine the puzzle solver options.
+    const solverOptions = {
+        puzzleType: getSelector("puzzle-type"),
         solveAlgorithm: getSelector("solve-algorithm"),
         tileSelection: getSelector("tile-selection"),
         tilePlacement: getSelector("tile-placement"),
         tileRotation: getSelector("tile-rotation")
-    });
-    // Decide on the speed.
+    };
+    // Decide on the animation speed.
     const animationDuration = getSpeed();
     // Find where we want the puzzle displayed.
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Build a display manager.
-    const displayManager = getDisplayManager(displayElement, puzzleType, animationDuration);
+    const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, animationDuration);
     // Show the initial puzzle state.
     displayManager.initialDisplay();
     // Start the solving process.
-    startSolver(solver, displayManager, animationDuration);
+    if (animationDuration === 0) {
+        startWorkerSolver(solverOptions, displayManager);
+    } else {
+        startAnimatedSolver(solverOptions, displayManager, animationDuration);
+    }
 }
 
 function toggleActive(...ids: Array<string>): void {

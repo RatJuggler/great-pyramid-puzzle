@@ -145,6 +145,10 @@ export class DisplayManager {
         this._display = new Display(rootElement, displayData)
     }
 
+    set animationDuration(duration: number) {
+        this._animationDuration = duration;
+    }
+
     initialDisplay(): Svg {
         return this._display.createInitialDisplay();
     }
