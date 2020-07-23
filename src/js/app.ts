@@ -35,11 +35,11 @@ function attachRotateEvents(displayManager: DisplayManager): void {
 function startSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
     if (animateDuration === 0) {
         // Set the overlay to prevent further UI interaction.
-        toggleActive("overlay");
+        addActive("overlay");
         // Attach cancel trigger to the overlay.
         document.getElementById("overlay")!.addEventListener("click", () => {
             clearInterval(solverIntervalId);
-            toggleActive("overlay");
+            removeActive("overlay");
         });
     }
     runSolver(solver, displayManager, animateDuration);
@@ -57,7 +57,7 @@ function runSolver(solver: Solver, displayManager: DisplayManager, animateDurati
         } else {
             clearInterval(solverIntervalId)
             if (animateDuration === 0) {
-                toggleActive("overlay");
+                removeActive("overlay");
                 // Show the final puzzle state.
                 solver.finalState().forEach((tpChange) => displayManager.display(tpChange));
             }
@@ -124,20 +124,32 @@ function solvePuzzle(): void {
 function toggleActive(...ids: Array<string>): void {
     ids.forEach((id) => document.getElementById(id)!.classList.toggle("active"));
 }
-
-function togglePuzzleOptions(): void {
-    toggleActive("solve-puzzle", "test-puzzle");
+function addActive(id: string): void {
+    document.getElementById(id)!.classList.add("active");
+}
+function removeActive(id: string): void {
+    document.getElementById(id)!.classList.remove("active");
+}
+function swapActive(id1: string, id2: string): void {
+    if (!document.getElementById(id1)!.classList.contains("active")) {
+        addActive(id1);
+        removeActive(id2);
+    }
 }
 
-function toggleAnimationOptions(): void {
-    toggleActive("animation-options");
-}
+document.getElementById("option-solve")!.addEventListener("click", () => {
+    swapActive("solve-puzzle", "test-puzzle");
+});
+document.getElementById("option-test")!.addEventListener("click", () => {
+    swapActive("test-puzzle", "solve-puzzle");
+});
 
-document.getElementById("option-solve")!.addEventListener("click", togglePuzzleOptions);
-document.getElementById("option-test")!.addEventListener("click", togglePuzzleOptions);
-
-document.getElementById("display-animated")!.addEventListener("click", toggleAnimationOptions);
-document.getElementById("display-completed")!.addEventListener("click", toggleAnimationOptions);
+document.getElementById("display-animated")!.addEventListener("click", () => {
+    addActive("animation-options");
+});
+document.getElementById("display-completed")!.addEventListener("click", () => {
+    removeActive("animation-options");
+});
 
 document.getElementById("menu-toggle")!.addEventListener('click', () => {
     toggleActive("layout", "menu", "menu-toggle")
