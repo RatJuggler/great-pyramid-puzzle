@@ -2,15 +2,7 @@ html, body {
   height: 100%;
 }
 
-/* Add transition to containers so they can push in and out. */
-
-#layout,
-#menu,
-.menu-toggle {
-  transition: all 0.2s ease-out;
-}
-
-/* This overall layout that contains the menu and the content area. */
+/* The overall layout that contains the menu and the content area. */
 
 #layout {
   position: relative;
@@ -154,6 +146,14 @@ footer {
   height: 3px;
   background: white;
   margin: 6px 0;
+}
+
+/* Animate layout changes. */
+
+#layout,
+#menu,
+.menu-toggle {
+  transition: all 0.2s ease-out;
 }
 
 /* Media Queries to control when the menu is shown. */

@@ -125,8 +125,8 @@ function toggleOptions(): void {
     toggleActive("solve-puzzle", "test-puzzle");
 }
 
-document.getElementById("option-test")!.addEventListener("click", toggleOptions);
 document.getElementById("option-solve")!.addEventListener("click", toggleOptions);
+document.getElementById("option-test")!.addEventListener("click", toggleOptions);
 
 document.getElementById("menu-toggle")!.addEventListener('click', () => {
     toggleActive("layout", "menu", "menu-toggle")
