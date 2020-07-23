@@ -14,7 +14,7 @@ function buildSolver(options: SolverOptions): Solver {
     // Determine the data required for the puzzle and build the internal puzzle
     // representation with the pool of tiles waiting to be placed on it.
     const puzzle = getPuzzleComponents(options.puzzleType);
-    // Use the UI options to build a solver with the puzzle data.
+    // Use the options from the UI to build a solver with the puzzle data.
     switch (options.solveAlgorithm) {
         case "Test":
             return new NoMatchingSolver(puzzle.tetrahedron, puzzle.tilePool,

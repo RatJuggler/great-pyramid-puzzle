@@ -2,7 +2,7 @@ import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
 import { TilePositionChange } from "./tile-position-change";
 import { Solver } from "./solver";
-import {buildSolver, SolverOptions} from "./solver-factory";
+import { SolverOptions, buildSolver } from "./solver-factory";
 
 
 // Track solver ticks.
@@ -33,44 +33,46 @@ function attachRotateEvents(displayManager: DisplayManager): void {
         });
 }
 
-function startAnimatedSolver(solverOptions: SolverOptions, displayManager: DisplayManager, animationDuration: number): void {
-    // Build the solver to use.
-    const solver = buildSolver(solverOptions);
-    // Kick off the solver.
-    runSolver(solver, displayManager, animationDuration);
-}
-
 function startWorkerSolver(solverOptions: SolverOptions, displayManager: DisplayManager): void {
     // Set the overlay to prevent further UI interaction.
     addActive("overlay");
-    //
+    // Create a new work and an event to deal with the result.
     solverWorker = new Worker("worker.ts");
     solverWorker.onmessage = (e) => {
         const finalState = <Array<TilePositionChange>> e.data;
         // Show the final puzzle state.
         finalState.forEach((tpChange) => displayManager.display(tpChange));
+        attachRotateEvents(displayManager);
         removeActive("overlay");
     }
-    solverWorker.postMessage(solverOptions);
-    // Attach cancel trigger to the overlay.
+    // Attach a cancel trigger to the overlay.
     document.getElementById("overlay")!.addEventListener("click", () => {
         solverWorker.terminate();
         removeActive("overlay");
     });
+    // Kick off the worker solver.
+    solverWorker.postMessage(solverOptions);
 }
 
-function runSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
-    // Schedule a series of events to place tiles on the puzzle.
+function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
+    // Schedule a series of events to animate placing tiles on the puzzle.
     solverIntervalId = setTimeout( () => {
         const tilePositionChange = solver.nextState();
         if (tilePositionChange) {
             displayManager.display(tilePositionChange);
-            runSolver(solver, displayManager, animateDuration);
+            runAnimatedSolver(solver, displayManager, animateDuration);
         } else {
             clearInterval(solverIntervalId)
             attachRotateEvents(displayManager);
         }
     }, animateDuration + 20);
+}
+
+function startAnimatedSolver(solverOptions: SolverOptions, displayManager: DisplayManager, animationDuration: number): void {
+    // Build the solver to use.
+    const solver = buildSolver(solverOptions);
+    // Kick off the animated solver.
+    runAnimatedSolver(solver, displayManager, animationDuration);
 }
 
 function getSpeed(): number {
