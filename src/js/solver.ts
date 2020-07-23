@@ -2,7 +2,7 @@ import { Tetrahedron } from "./tetrahedron";
 import { Tile } from "./tile";
 import { TilePool } from "./tile-pool";
 import { TilePosition } from "./tile-position";
-import { PuzzleChange, TilePositionChange, TileChange } from "./puzzle-changes";
+import { PuzzleChange } from "./puzzle-changes";
 import { getRandomInt } from "./utils";
 
 
@@ -20,23 +20,11 @@ abstract class SolverBase implements Solver {
         }
     }
 
-    protected static createTileChange(type: string, tilePosition: TilePosition): PuzzleChange {
-        return new TileChange(type, tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
-    }
-
-    protected static createTilePositionChange(type: string, tilePosition: TilePosition): PuzzleChange {
-        return new TilePositionChange(type, tilePosition.id);
-    }
-
-    protected static createPuzzleChange(type: string): PuzzleChange {
-        return new PuzzleChange(type);
-    }
-
     abstract nextState(): PuzzleChange;
 
     finalState(): Array<PuzzleChange> {
         return this._tetrahedron.tilePositions
-            .map((tilePosition) => SolverBase.createTileChange("Final", tilePosition));
+            .map((tilePosition) => PuzzleChange.createTileChange("Final", tilePosition));
     }
 
 }
@@ -101,15 +89,15 @@ class NoMatchingSolver extends SolverBase {
             }
             this._rotating--;
             this._tilePosition.rotateTile();
-            return SolverBase.createTilePositionChange("Rotate", this._tilePosition);
+            return PuzzleChange.createTilePositionChange("Rotate", this._tilePosition);
         }
         if (this._tilePool.isEmpty) {
-            return SolverBase.createPuzzleChange("Solved");
+            return PuzzleChange.SOLVED;
         }
         const tile = this.getTileSelection();
         this._tilePosition = this.placeTile(tile);
         this._rotating = this.tileRotations();
-        return SolverBase.createTileChange("Place", this._tilePosition);
+        return PuzzleChange.createTileChange("Place", this._tilePosition);
     }
 
 }
@@ -144,10 +132,10 @@ class BruteForceSolver extends SolverBase {
     private static rotateOrRemove(tilePosition: TilePosition, rejectedTiles: Array<Tile>): PuzzleChange {
         // Try rotating the current tile.
         if (tilePosition.rotateTile()) {
-            return SolverBase.createTilePositionChange("Rotate", tilePosition);
+            return PuzzleChange.createTilePositionChange("Rotate", tilePosition);
         }
         // If we've tried all the rotations and none match then reject this tile.
-        const displayChange = SolverBase.createTileChange("Remove", tilePosition);
+        const displayChange = PuzzleChange.createTileChange("Remove", tilePosition);
         const tile = tilePosition.removeTile();
         rejectedTiles.push(tile);
         return displayChange;
@@ -163,7 +151,7 @@ class BruteForceSolver extends SolverBase {
             if (tilePosition.matches()) {
                 // If there aren't any more tile positions a solution has been reached!
                 if (this._emptyTilePositions.length === 0) {
-                    return SolverBase.createPuzzleChange("Solved");
+                    return PuzzleChange.SOLVED;
                 }
                 // Save the current state, initialise a new state and move on.
                 this._solverStack.push(this._currentState);
@@ -181,12 +169,12 @@ class BruteForceSolver extends SolverBase {
         if (untriedTiles.length > 0) {
             const nextTile = untriedTiles.shift()!;
             tilePosition.placeTile(nextTile);
-            return SolverBase.createTileChange("Place", tilePosition);
+            return PuzzleChange.createTileChange("Place", tilePosition);
         }
         // If we've tried all the tiles and nothing matches we need to move back a tile position and try the next rotation/tile from there.
         this._emptyTilePositions.unshift(tilePosition);
         if (this._solverStack.length === 0) {
-            return SolverBase.createPuzzleChange("Completed")
+            return PuzzleChange.COMPLETED;
         }
         this._currentState = this._solverStack.pop()!;
         // Cycle through the rotations or remove the tile if nothing matches.
