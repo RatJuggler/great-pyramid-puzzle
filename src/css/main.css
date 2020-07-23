@@ -85,16 +85,10 @@ footer {
   margin-top: .5em;
   margin-bottom: .25em;
 }
-#solve-puzzle {
+#test-options {
   display: none;
 }
-#solve-puzzle.active {
-  display: block;
-}
-#test-puzzle {
-  display: none;
-}
-#test-puzzle.active {
+#test-options.active {
   display: block;
 }
 #animation-options {

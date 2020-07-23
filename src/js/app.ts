@@ -86,11 +86,10 @@ function solvePuzzle(): void {
     const puzzleType = getSelector("puzzle-type");
     // Build the solver to use.
     const solver = buildSolver(puzzleType,
-        getSelector("puzzle-option"),
+        getSelector("solve-algorithm"),
         getSelector("tile-selection"),
         getSelector("tile-placement"),
-        getSelector("tile-rotation"),
-        getSelector("solve-algorithm"));
+        getSelector("tile-rotation"));
     // Decide on the speed.
     const animationDuration = getSpeed();
     // Find where we want the puzzle displayed.
@@ -112,18 +111,12 @@ function addActive(id: string): void {
 function removeActive(id: string): void {
     document.getElementById(id)!.classList.remove("active");
 }
-function swapActive(id1: string, id2: string): void {
-    if (!document.getElementById(id1)!.classList.contains("active")) {
-        addActive(id1);
-        removeActive(id2);
-    }
-}
 
-document.getElementById("option-solve")!.addEventListener("click", () => {
-    swapActive("solve-puzzle", "test-puzzle");
+document.getElementById("algorithm-test")!.addEventListener("click", () => {
+    addActive("test-options");
 });
-document.getElementById("option-test")!.addEventListener("click", () => {
-    swapActive("test-puzzle", "solve-puzzle");
+document.getElementById("algorithm-brute")!.addEventListener("click", () => {
+    removeActive("test-options");
 });
 
 document.getElementById("display-animated")!.addEventListener("click", () => {
@@ -152,7 +145,6 @@ function addStatusInfoEvent(id: string, statusInfo: string) {
 
 addStatusInfoEvent("go", "Proceed with the selected options.");
 addStatusInfoEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
-addStatusInfoEvent("puzzle-option", "Select to try and solve the puzzle or to test the various display options without solving it.");
 addStatusInfoEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
 addStatusInfoEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
 addStatusInfoEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
