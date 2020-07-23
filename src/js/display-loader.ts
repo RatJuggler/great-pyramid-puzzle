@@ -20,7 +20,7 @@ function getDisplayData(puzzleType: string): DisplayData {
 
 function getDisplayManager(displayElement: string | HTMLElement,
                            displayData: DisplayData | string,
-                           animationDuration: number) {
+                           animationDuration: number = 250) {
     if (typeof(displayData) === "string") {
         displayData = getDisplayData(<string> displayData);
     }

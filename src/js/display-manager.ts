@@ -137,18 +137,12 @@ class RemoveTilePosition extends DisplayChange {
 
 export class DisplayManager {
 
-    private static readonly DEFAULT_ANIMATION_DURATION = 250;
-
     private readonly _display: Display;
 
     constructor(rootElement: string | HTMLElement,
                 displayData: DisplayData,
-                private _animationDuration: number = DisplayManager.DEFAULT_ANIMATION_DURATION) {
+                private _animationDuration: number) {
         this._display = new Display(rootElement, displayData)
-    }
-
-    set animationDuration(duration: number) {
-        this._animationDuration = duration;
     }
 
     initialDisplay(): Svg {
