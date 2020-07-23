@@ -6,7 +6,7 @@ import { Tetrahedron } from "../../src/js/tetrahedron";
 import { Tile } from "../../src/js/tile";
 import { TilePool } from "../../src/js/tile-pool";
 import { TilePosition } from "../../src/js/tile-position";
-import { TilePositionChange, TileChange } from "../../src/js/tile-position-change";
+import { PuzzleChange, TilePositionChange, TileChange } from "../../src/js/tile-position-change";
 import {assert, expect} from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -15,8 +15,8 @@ import { VALID_TEST_PUZZLE } from "./common-test-data";
 
 class MockSolver extends SolverBase {
 
-    nextState(): TilePositionChange | null {
-        return null;
+    nextState(): PuzzleChange {
+        return SolverBase.createPuzzleChange("Test");
     }
 
 }
@@ -44,8 +44,12 @@ describe("SolverBase behaviour using MockSolver", function () {
         context("on a properly instantiated instance", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             const solver = new MockSolver(components.tetrahedron, components.tilePool);
-            it("should return null", function () {
-                expect(solver.nextState()).to.be.null;
+            const result = solver.nextState();
+            it("should return an instance of PuzzleChange", function () {
+                expect(result).to.be.an.instanceof(PuzzleChange);
+            });
+            it("should have a type of Test", function () {
+                expect(result.type).to.equal("Test");
             });
         });
 
@@ -200,8 +204,11 @@ describe("NoMatchingSolver behaviour", function () {
         });
         context("for the fifth time on an instance instantiated for the test puzzle", function () {
             const result = solver.nextState() as TileChange;
-            it("should finally return null", function () {
-                expect(result).to.be.null;
+            it("should return an instance of PuzzleChange", function () {
+                expect(result).to.be.an.instanceof(PuzzleChange);
+            });
+            it("should have a type of Solved", function () {
+                expect(result.type).to.equal("Solved");
             });
         });
 

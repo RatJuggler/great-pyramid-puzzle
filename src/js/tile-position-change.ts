@@ -1,9 +1,25 @@
 // These change value objects allow us to keep the solving and display code separate.
 
 
-class TilePositionChange {
+class PuzzleChange {
 
-    constructor(readonly type: string, readonly tilePositionId: string) {}
+    constructor(readonly type: string) {}
+
+    isSolved(): boolean {
+        return this.type === "Solved";
+    }
+
+    isComplete(): boolean {
+        return this.type === "Complete";
+    }
+
+}
+
+class TilePositionChange extends PuzzleChange {
+
+    constructor(type: string, readonly tilePositionId: string) {
+        super(type);
+    }
 
 }
 
@@ -15,4 +31,4 @@ class TileChange extends TilePositionChange {
 
 }
 
-export { TilePositionChange, TileChange }
+export { PuzzleChange, TilePositionChange, TileChange }

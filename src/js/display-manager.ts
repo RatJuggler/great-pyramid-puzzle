@@ -6,7 +6,7 @@
 // Rotate - Animate rotating a tile at a tile position
 // Remove - Animate removing the tile at a tile position
 
-import { TileChange, TilePositionChange } from "./tile-position-change";
+import { PuzzleChange, TileChange, TilePositionChange } from "./tile-position-change";
 import { Matrix, Svg } from "@svgdotjs/svg.js";
 import { DisplayData } from "./display-data-schema";
 import { Display } from "./display";
@@ -153,11 +153,11 @@ export class DisplayManager {
         return this._display.createInitialDisplay();
     }
 
-    display(tpChange: TilePositionChange) {
+    display(tpChange: PuzzleChange) {
         let action;
         switch (tpChange.type) {
             case "Empty":
-                action = new EmptyTilePosition(this._display, tpChange);
+                action = new EmptyTilePosition(this._display, tpChange as TilePositionChange);
                 break;
             case "Final":
                 action = new FinalTilePosition(this._display, tpChange as TileChange);
@@ -166,7 +166,7 @@ export class DisplayManager {
                 action = new PlaceTilePosition(this._display, tpChange as TileChange, this._animationDuration);
                 break;
             case "Rotate":
-                action = new RotateTilePosition(this._display, tpChange, this._animationDuration);
+                action = new RotateTilePosition(this._display, tpChange as TilePositionChange, this._animationDuration);
                 break;
             case "Remove":
                 action = new RemoveTilePosition(this._display, tpChange as TileChange, this._animationDuration);

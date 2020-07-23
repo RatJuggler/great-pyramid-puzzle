@@ -7,7 +7,10 @@ onmessage = function (e) {
     // Build the solver to use.
     const solver = buildSolver(solverOptions);
     // Run the solver until a solution is found.
-    while (solver.nextState()) {}
+    let puzzleChange = solver.nextState();
+    while (!puzzleChange.isSolved()) {
+        puzzleChange = solver.nextState();
+    }
     // Return the result for display.
     // @ts-ignore
     postMessage(solver.finalState());

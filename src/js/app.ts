@@ -57,13 +57,13 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
 function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
     // Schedule a series of events to animate placing tiles on the puzzle.
     solverIntervalId = setTimeout( () => {
-        const tilePositionChange = solver.nextState();
-        if (tilePositionChange) {
-            displayManager.display(tilePositionChange);
-            runAnimatedSolver(solver, displayManager, animateDuration);
-        } else {
+        const puzzleChange = solver.nextState();
+        if (puzzleChange.isSolved()) {
             clearInterval(solverIntervalId)
             attachRotateEvents(displayManager);
+        } else {
+            displayManager.display(puzzleChange);
+            runAnimatedSolver(solver, displayManager, animateDuration);
         }
     }, animateDuration + 20);
 }
