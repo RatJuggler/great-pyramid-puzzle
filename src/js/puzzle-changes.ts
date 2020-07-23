@@ -1,8 +1,6 @@
 // These change value objects allow us to keep the solving and display code separate.
 
 
-import {TilePosition} from "./tile-position";
-
 class PuzzleChange {
 
     static readonly SOLVED = PuzzleChange.createPuzzleChange("Solved");
@@ -14,12 +12,12 @@ class PuzzleChange {
         return new PuzzleChange(type);
     }
 
-    static createTilePositionChange(type: string, tilePosition: TilePosition): PuzzleChange {
-        return new TilePositionChange(type, tilePosition.id);
+    static createTilePositionChange(type: string, tilePositionId: string): PuzzleChange {
+        return new TilePositionChange(type, tilePositionId);
     }
 
-    static createTileChange(type: string, tilePosition: TilePosition): PuzzleChange {
-        return new TileChange(type, tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
+    static createTileChange(type: string, tilePositionId: string, tileId: number, rotatedSegments: string): PuzzleChange {
+        return new TileChange(type, tilePositionId, tileId, rotatedSegments);
     }
 
     isSolved(): boolean {
