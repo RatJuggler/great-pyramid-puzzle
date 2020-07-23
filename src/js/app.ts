@@ -1,6 +1,6 @@
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
-import { TilePositionChange } from "./puzzle-changes";
+import { PuzzleChange } from "./puzzle-changes";
 import { Solver } from "./solver";
 import { SolverOptions, buildSolver } from "./solver-factory";
 
@@ -27,7 +27,7 @@ function attachRotateEvents(displayManager: DisplayManager): void {
             const tpId = svgGroup.id.match(/^[1-4]-[1-9]$/);
             if (tpId) {
                 svgGroup.addEventListener("click", () =>
-                    displayManager.display(new TilePositionChange("Rotate", tpId[0]))
+                    displayManager.display(PuzzleChange.rotate(tpId[0]))
                 );
             }
         });
@@ -39,7 +39,7 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
     // Create a new work and an event to deal with the result.
     solverWorker = new Worker("worker.ts");
     solverWorker.onmessage = (e) => {
-        const finalState = <Array<TilePositionChange>> e.data;
+        const finalState = <Array<PuzzleChange>> e.data;
         // Show the final puzzle state.
         finalState.forEach((tpChange) => displayManager.display(tpChange));
         attachRotateEvents(displayManager);

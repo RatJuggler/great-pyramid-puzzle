@@ -5,7 +5,7 @@ import { PuzzleComponents, PuzzleDataElements } from "../../src/js/common-data-s
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { getDisplayManager } from "../../src/js/display-loader";
 import { DisplayManager } from "../../src/js/display-manager";
-import { TileChange, TilePositionChange } from "../../src/js/puzzle-changes";
+import { PuzzleChange } from "../../src/js/puzzle-changes";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -28,8 +28,7 @@ function puzzleWithAllTiles(puzzleTypeData: PuzzleDataElements, displayManager: 
         assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile));
     }
     puzzle.tetrahedron.tilePositions
-        .map((tilePosition) =>
-            new TileChange("Final", tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments()))
+        .map((tilePosition) => PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments()))
         .forEach((displayChange) => displayManager.display(displayChange));
     return puzzle;
 }
@@ -67,9 +66,9 @@ describe("Puzzle display functionality", function () {
             puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
                 let tpChange;
                 if (tilePosition.isEmpty()) {
-                    tpChange = new TilePositionChange("Empty", tilePosition.id);
+                    tpChange = PuzzleChange.empty(tilePosition.id);
                 } else {
-                    tpChange = new TileChange("Final", tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
+                    tpChange = PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
                 }
                 displayManager.display(tpChange);
             });
@@ -98,22 +97,11 @@ describe("Puzzle display functionality", function () {
 
     describe("DisplayChange behaviour", function () {
 
-        context("with an invalid change type", function () {
-            const document = createDocument();
-            const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
-            const tpChange = new TilePositionChange("error", "1-1");
-            it("should throw an error", function () {
-                expect(function () {
-                    displayManager.display(tpChange);
-                }).to.throw(Error, "Unknown tile position change!");
-            });
-        });
-
         context("using the Place change type on a puzzle with no tiles", function () {
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay();
-            const tpChange = new TileChange("Place", "1-1", 1, "000100100100");
+            const tpChange = PuzzleChange.place("1-1", 1, "000100100100");
             displayManager.display(tpChange);
             it("should have 4 faces, 3 empty tile position, 1 tile and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(10);
@@ -128,7 +116,7 @@ describe("Puzzle display functionality", function () {
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay();
             puzzleWithAllTiles(puzzleTypeData, displayManager);
-            const tpChange = new TilePositionChange("Rotate", "1-1");
+            const tpChange = PuzzleChange.rotate("1-1");
             displayManager.display(tpChange);
             it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(13);
@@ -143,7 +131,7 @@ describe("Puzzle display functionality", function () {
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay();
             puzzleWithAllTiles(puzzleTypeData, displayManager);
-            const tpChange = new TileChange("Remove", "1-1", 1, "000100100100");
+            const tpChange = PuzzleChange.remove("1-1", 1, "000100100100");
             displayManager.display(tpChange);
             it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(12);

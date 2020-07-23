@@ -1,12 +1,4 @@
-// Display Events/Changes:
-// Initial - Draw an empty puzzle
-// Empty - Draw an empty tile position
-// Final - Draw a tile at it's final tile position (no animation)
-// Place - Animate placing a tile at a tile position
-// Rotate - Animate rotating a tile at a tile position
-// Remove - Animate removing the tile at a tile position
-
-import { PuzzleChange, TileChange, TilePositionChange } from "./puzzle-changes";
+import { PuzzleChange, PuzzleChangeType, TileChange, TilePositionChange } from "./puzzle-changes";
 import { Matrix, Svg } from "@svgdotjs/svg.js";
 import { DisplayData } from "./display-data-schema";
 import { Display } from "./display";
@@ -156,19 +148,19 @@ export class DisplayManager {
     display(tpChange: PuzzleChange) {
         let action;
         switch (tpChange.type) {
-            case "Empty":
+            case PuzzleChangeType.Empty:
                 action = new EmptyTilePosition(this._display, tpChange as TilePositionChange);
                 break;
-            case "Final":
+            case PuzzleChangeType.Final:
                 action = new FinalTilePosition(this._display, tpChange as TileChange);
                 break;
-            case "Place":
+            case PuzzleChangeType.Place:
                 action = new PlaceTilePosition(this._display, tpChange as TileChange, this._animationDuration);
                 break;
-            case "Rotate":
+            case PuzzleChangeType.Rotate:
                 action = new RotateTilePosition(this._display, tpChange as TilePositionChange, this._animationDuration);
                 break;
-            case "Remove":
+            case PuzzleChangeType.Remove:
                 action = new RemoveTilePosition(this._display, tpChange as TileChange, this._animationDuration);
                 break;
             default:
