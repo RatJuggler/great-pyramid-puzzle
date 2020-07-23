@@ -18,11 +18,13 @@ function getDisplayData(puzzleType: string): DisplayData {
     }
 }
 
-function getDisplayManager(displayElement: string | HTMLElement, displayData: DisplayData | string) {
+function getDisplayManager(displayElement: string | HTMLElement,
+                           displayData: DisplayData | string,
+                           animationDuration: number) {
     if (typeof(displayData) === "string") {
         displayData = getDisplayData(<string> displayData);
     }
-    return new DisplayManager(displayElement, <DisplayData> displayData);
+    return new DisplayManager(displayElement, <DisplayData> displayData, animationDuration);
 }
 
 export { getDisplayManager }

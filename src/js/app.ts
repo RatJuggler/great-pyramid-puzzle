@@ -82,6 +82,18 @@ function getSolveAlgorithm(puzzle: PuzzleComponents): Solver {
     }
 }
 
+function getSpeed(): number {
+    const display = getSelector("display-option");
+    switch (display) {
+        case "Completed":
+            return 0;
+        case "Animated":
+            return parseInt(getSelector("animation-speed"));
+        default:
+            throw new Error("Invalid solve display option!");
+    }
+}
+
 function solvePuzzle(): void {
     // Clear any previous solvers.
     if (solverIntervalId) {
@@ -94,26 +106,16 @@ function solvePuzzle(): void {
     const puzzle = getPuzzleComponents(puzzleType);
     // Build the solver to use.
     const solver = getSolveAlgorithm(puzzle);
+    // Decide on the speed.
+    const animationDuration = getSpeed();
     // Find where we want the puzzle displayed.
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Build a display manager.
-    const displayManager = getDisplayManager(displayElement, puzzleType);
+    const displayManager = getDisplayManager(displayElement, puzzleType, animationDuration);
     // Show the initial puzzle state.
     displayManager.initialDisplay();
-    // Solve the puzzle depending on the display.
-    const display = getSelector("display-option");
-    switch (display) {
-        case "Completed":
-            startSolver(solver, displayManager, 0);
-            break;
-        case "Animated":
-            const animateDuration = parseInt(getSelector("animation-speed"));
-            displayManager.animationDuration = animateDuration;
-            startSolver(solver, displayManager, animateDuration);
-            break;
-        default:
-            throw new Error("Invalid solve display option!");
-    }
+    // Start the solving process.
+    startSolver(solver, displayManager, animationDuration);
 }
 
 function toggleActive(...ids: Array<string>): void {
