@@ -36,14 +36,24 @@ function startSolver(solver: Solver, displayManager: DisplayManager, animateDura
     if (animateDuration === 0) {
         // Set the overlay to prevent further UI interaction.
         toggleActive("overlay");
+        // Attach cancel trigger to the overlay.
+        document.getElementById("overlay")!.addEventListener("click", () => {
+            clearInterval(solverIntervalId);
+            toggleActive("overlay");
+        });
     }
+    runSolver(solver, displayManager, animateDuration);
+}
+
+function runSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
     // Schedule a series of events to place tiles on the puzzle.
-    solverIntervalId = setInterval( () => {
+    solverIntervalId = setTimeout( () => {
         const tilePositionChange = solver.nextState();
         if (tilePositionChange) {
             if (animateDuration > 0) {
                 displayManager.display(tilePositionChange);
             }
+            runSolver(solver, displayManager, animateDuration);
         } else {
             clearInterval(solverIntervalId)
             if (animateDuration === 0) {
@@ -54,13 +64,6 @@ function startSolver(solver: Solver, displayManager: DisplayManager, animateDura
             attachRotateEvents(displayManager);
         }
     }, animateDuration + 20);
-    if (animateDuration === 0) {
-        // Attach cancel trigger to required element.
-        document.getElementById("overlay")!.addEventListener("click", () => {
-            clearInterval(solverIntervalId);
-            toggleActive("overlay");
-        });
-    }
 }
 
 function getSolveAlgorithm(puzzle: PuzzleComponents): Solver {
