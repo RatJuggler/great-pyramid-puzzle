@@ -85,11 +85,13 @@ function solvePuzzle(): void {
     // Determine the type of puzzle.
     const puzzleType = getSelector("puzzle-type");
     // Build the solver to use.
-    const solver = buildSolver(puzzleType,
-        getSelector("solve-algorithm"),
-        getSelector("tile-selection"),
-        getSelector("tile-placement"),
-        getSelector("tile-rotation"));
+    const solver = buildSolver({
+        puzzleType: puzzleType,
+        solveAlgorithm: getSelector("solve-algorithm"),
+        tileSelection: getSelector("tile-selection"),
+        tilePlacement: getSelector("tile-placement"),
+        tileRotation: getSelector("tile-rotation")
+    });
     // Decide on the speed.
     const animationDuration = getSpeed();
     // Find where we want the puzzle displayed.
