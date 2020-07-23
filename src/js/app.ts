@@ -7,8 +7,8 @@ import { TilePositionChange } from "./tile-position-change";
 import { Solver, NoMatchingSolver, BruteForceSolver } from "./solver";
 
 
-// Track animated display event timer.
-let animatedDisplayId: number;
+// Track solver ticks.
+let solverIntervalId: number;
 
 
 function getSelector(name: string): string {
@@ -33,17 +33,17 @@ function attachRotateEvents(displayManager: DisplayManager): void {
         });
 }
 
-function animateSolve(solver: Solver, displayManager: DisplayManager): void {
+function animateSolve(solver: Solver, displayManager: DisplayManager, solverInterval: number): void {
     // Schedule a series of events to place tiles on the puzzle.
-    animatedDisplayId = setTimeout( () => {
+    solverIntervalId = setInterval( () => {
         const tilePositionChange = solver.nextState();
         if (tilePositionChange) {
             displayManager.display(tilePositionChange);
-            animateSolve(solver, displayManager);
         } else {
+            clearInterval(solverIntervalId)
             attachRotateEvents(displayManager);
         }
-    }, 500);
+    }, solverInterval);
 }
 
 function completeSolve(solver: Solver, displayManager: DisplayManager): void {
@@ -86,9 +86,9 @@ function getSolveAlgorithm(puzzle: PuzzleComponents): Solver {
 }
 
 function solvePuzzle(): void {
-    // Clear any previous display animations.
-    if (animatedDisplayId) {
-        clearInterval(animatedDisplayId);
+    // Clear any previous solvers.
+    if (solverIntervalId) {
+        clearInterval(solverIntervalId);
     }
     // Determine the type of puzzle.
     const puzzleType = getSelector("puzzle-type");
@@ -104,13 +104,13 @@ function solvePuzzle(): void {
     // Build the solver to use.
     const solver = getSolveAlgorithm(puzzle);
     // Solve the puzzle depending on the display.
-    const display = getSelector("puzzle-display");
+    const display = getSelector("display-option");
     switch (display) {
         case "Completed":
             completeSolve(solver, displayManager);
             break;
         case "Animated":
-            animateSolve(solver, displayManager);
+            animateSolve(solver, displayManager, 500);
             break;
         default:
             throw new Error("Invalid solve display option!");
