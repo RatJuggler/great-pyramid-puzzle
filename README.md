@@ -11,9 +11,9 @@ The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I t
 - Captured data representing the Pocket and Great version of the puzzle and a simple test version.
 - Built basic data structures to hold the puzzle data and state.
 - Built mechanisms to add tiles to the puzzle, randomly or in sequence without matching, as well as matching with adjacent tiles. 
-- Built a display renderer to show the puzzle in a given state using SVG.
-- Built a UI with test options for tiles selection and placing, and including an animation of the tile placement.
-- DOESN'T ACTUALLY SOLVE ANYTHING YET!
+- Built a display renderer using SVG to show the puzzle in a given state and to animate tiles as they are placed and removed.
+- Built a UI with options to control the display and solving process. 
+- Brute force solver working (I think).
 
 You can see the latest release in action [here](https://ratjuggler.github.io/great-pyramid-puzzle/).
 
