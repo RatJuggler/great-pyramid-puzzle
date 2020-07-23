@@ -1,4 +1,3 @@
-import { createSolverPromise } from "./app-options";
 import { getPuzzleComponents } from "./puzzle-loader";
 import { PuzzleComponents } from "./common-data-schema";
 import { getDisplayManager } from "./display-loader";
@@ -33,37 +32,35 @@ function attachRotateEvents(displayManager: DisplayManager): void {
         });
 }
 
-function animateSolve(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
+function startSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
+    if (animateDuration === 0) {
+        // Set the overlay to prevent further UI interaction.
+        toggleActive("overlay");
+    }
     // Schedule a series of events to place tiles on the puzzle.
     solverIntervalId = setInterval( () => {
         const tilePositionChange = solver.nextState();
         if (tilePositionChange) {
-            displayManager.display(tilePositionChange);
+            if (animateDuration > 0) {
+                displayManager.display(tilePositionChange);
+            }
         } else {
             clearInterval(solverIntervalId)
+            if (animateDuration === 0) {
+                toggleActive("overlay");
+                // Show the final puzzle state.
+                solver.finalState().forEach((tpChange) => displayManager.display(tpChange));
+            }
             attachRotateEvents(displayManager);
         }
-    }, animateDuration + 50);
-}
-
-function completeSolve(solver: Solver, displayManager: DisplayManager): void {
-    // Set the overlay to prevent further UI interaction.
-    toggleActive("overlay");
-    // Start the solving process.
-    const solving = createSolverPromise(solver);
-    solving.promise.then((finalState) => {
-        // Show the final puzzle state and attach the rotate events.
-        (finalState as Array<TilePositionChange>).forEach((tpChange) => displayManager.display(tpChange));
-        attachRotateEvents(displayManager);
-        // Remove the overlay.
-        toggleActive("overlay");
-        return finalState;
-    }).catch((err) => {
-        toggleActive("overlay");
-        return err;
-    });
-    // Attach cancel trigger to required element.
-    document.getElementById("overlay")!.addEventListener("click", () => solving.cancel());
+    }, animateDuration + 20);
+    if (animateDuration === 0) {
+        // Attach cancel trigger to required element.
+        document.getElementById("overlay")!.addEventListener("click", () => {
+            clearInterval(solverIntervalId);
+            toggleActive("overlay");
+        });
+    }
 }
 
 function getSolveAlgorithm(puzzle: PuzzleComponents): Solver {
@@ -107,12 +104,12 @@ function solvePuzzle(): void {
     const display = getSelector("display-option");
     switch (display) {
         case "Completed":
-            completeSolve(solver, displayManager);
+            startSolver(solver, displayManager, 0);
             break;
         case "Animated":
             const animateDuration = parseInt(getSelector("animation-speed"));
             displayManager.animationDuration = animateDuration;
-            animateSolve(solver, displayManager, animateDuration);
+            startSolver(solver, displayManager, animateDuration);
             break;
         default:
             throw new Error("Invalid solve display option!");
@@ -161,7 +158,7 @@ addStatusInfoEvent("solve-algorithm", "Select which algorithm to use when solvin
 addStatusInfoEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
 addStatusInfoEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
 addStatusInfoEvent("tile-rotation", "If tiles are randomly rotated before being placed on the test display.");
-addStatusInfoEvent("puzzle-display", "Show an animation of the puzzle being completed or just display the finished solution.");
+addStatusInfoEvent("puzzle-display", "Show an animation of the puzzle being solved or just display the completed solution.");
 addStatusInfoEvent("animation-speed", "How fast you want the animation to run.");
 
 document.getElementById("menu")!.addEventListener("mouseleave", () => {
