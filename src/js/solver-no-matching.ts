@@ -33,7 +33,7 @@ export class NoMatchingSolver extends SolverBase {
         }
     }
 
-    getTileSelection(): Tile {
+    private getTileSelection(): Tile {
         switch (this._tileSelection) {
             case "Random":
                 return this._tilePool.randomTile;
