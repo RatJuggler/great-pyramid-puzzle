@@ -22,11 +22,11 @@ function createDocument(): Document {
 }
 
 function puzzleWithAllTiles(puzzleTypeData: PuzzleDataElements, displayManager: DisplayManager): PuzzleComponents {
-    const puzzle = getPuzzleComponents(puzzleTypeData)
-    while (!puzzle.tilePool.isEmpty) {
+    const puzzle = getPuzzleComponents(puzzleTypeData);
+    puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
         let tile = puzzle.tilePool.randomTile;
-        assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile));
-    }
+        assert.isNotNull(tilePosition.placeTile(tile));
+    })
     puzzle.tetrahedron.tilePositions
         .map((tilePosition) => PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments()))
         .forEach((displayChange) => displayManager.display(displayChange));
@@ -56,10 +56,12 @@ describe("Puzzle display functionality", function () {
 
         context("with some tiles on it", function () {
             const puzzle = getPuzzleComponents(puzzleTypeData);
+            const tilePosition1 = puzzle.tetrahedron.tilePositions[0];
             const tile1 = puzzle.tilePool.randomTile;
-            assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile1));
+            assert.isNotNull(tilePosition1.placeTile(tile1));
+            const tilePosition2 = puzzle.tetrahedron.tilePositions[1];
             const tile2 = puzzle.tilePool.randomTile;
-            assert.isNotNull(puzzle.tetrahedron.placeTileRandomly(tile2));
+            assert.isNotNull(tilePosition2.placeTile(tile2));
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay()

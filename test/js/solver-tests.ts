@@ -5,9 +5,8 @@ import { SolverBase, NoMatchingSolver, BruteForceSolver } from "../../src/js/sol
 import { Tetrahedron } from "../../src/js/tetrahedron";
 import { Tile } from "../../src/js/tile";
 import { TilePool } from "../../src/js/tile-pool";
-import { TilePosition } from "../../src/js/tile-position";
 import { PuzzleChange, TilePositionChange, TileChange } from "../../src/js/puzzle-changes";
-import {assert, expect} from 'chai';
+import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
 import { VALID_TEST_PUZZLE } from "./common-test-data";
@@ -60,10 +59,10 @@ describe("SolverBase behaviour using MockSolver", function () {
         context("on a puzzle with all tile positions filled", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             const solver = new MockSolver(components.tetrahedron, components.tilePool);
-            while (!components.tilePool.isEmpty) {
+            components.tetrahedron.tilePositions.forEach((tilePosition) => {
                 let tile = components.tilePool.randomTile;
-                assert.isNotNull(components.tetrahedron.placeTileRandomly(tile));
-            }
+                assert.isNotNull(tilePosition.placeTile(tile));
+            })
             const result = solver.finalState();
             it("should return an array of tile position changes", function () {
                 expect(result).to.be.instanceof(Array);
@@ -125,15 +124,14 @@ describe("NoMatchingSolver behaviour", function () {
 
     });
 
-    describe("if #placeTile() is called", function () {
+    describe("if #nextState() is called on an improperly instantiated instance", function () {
 
         context("with an invalid tile placement", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
-                "Random", "error", "None");
             it("should throw an error", function () {
                 expect(function () {
-                    solver.placeTile(components.tilePool.nextTile!);
+                    new NoMatchingSolver(components.tetrahedron, components.tilePool,
+                        "Random", "error", "None");
                 }).to.throw(Error, "Invalid tile placement option!");
             });
         });
@@ -144,45 +142,20 @@ describe("NoMatchingSolver behaviour", function () {
                 "Random", "Random", "error");
             it("should throw an error", function () {
                 expect(function () {
-                    solver.tileRotations();
+                    solver.nextState();
                 }).to.throw(Error, "Invalid tile rotation option!");
-            });
-        });
-
-        context("with valid sequential placement options", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
-                "Sequential", "Sequential", "None");
-            const tileToPlace = components.tilePool.nextTile!
-            const result = solver.placeTile(tileToPlace);
-            it("should return an updated TilePosition", function () {
-                expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result.id).to.equal("1-1");
-                expect(result.tile).to.eql(tileToPlace);
-            });
-        });
-
-        context("with valid random placement options", function () {
-            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
-                "Random", "Random", "Random");
-            const tileToPlace = components.tilePool.nextTile!
-            const result = solver.placeTile(tileToPlace);
-            it("should return an updated TilePosition", function () {
-                expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result.tile).to.eql(tileToPlace);
             });
         });
 
     });
 
-    describe("if #nextState() is called", function () {
+    describe("if #nextState() is called on an instance properly instantiated with the text puzzle", function () {
 
         const components = getPuzzleComponents(VALID_TEST_PUZZLE);
         const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
             "Sequential", "Sequential", "None");
 
-        context("for the first time on an instance instantiated for the test puzzle", function () {
+        context("for the first time", function () {
             const result = solver.nextState() as TileChange;
             it("should return an instance of TileChange for position 1-1 with tile 1", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
@@ -190,7 +163,7 @@ describe("NoMatchingSolver behaviour", function () {
                 expect(result.tileId).to.equal(1);
             });
         });
-        context("for the second time on an instance instantiated for the test puzzle", function () {
+        context("for the second time", function () {
             const result = solver.nextState() as TileChange;
             it("should return an instance of TileChange for position 2-1 with tile 2", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
@@ -198,7 +171,7 @@ describe("NoMatchingSolver behaviour", function () {
                 expect(result.tileId).to.equal(2);
             });
         });
-        context("for the third time on an instance instantiated for the test puzzle", function () {
+        context("for the third time", function () {
             const result = solver.nextState() as TileChange;
             it("should return an instance of TileChange for position 3-1 with tile 3", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
@@ -206,7 +179,7 @@ describe("NoMatchingSolver behaviour", function () {
                 expect(result.tileId).to.equal(3);
             });
         });
-        context("for the fourth time on an instance instantiated for the test puzzle", function () {
+        context("for the fourth time", function () {
             const result = solver.nextState() as TileChange;
             it("should return an instance of TileChange for position 4-1 with tile 4", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
@@ -214,7 +187,7 @@ describe("NoMatchingSolver behaviour", function () {
                 expect(result.tileId).to.equal(4);
             });
         });
-        context("for the fifth time on an instance instantiated for the test puzzle", function () {
+        context("for the fifth time", function () {
             const result = solver.nextState() as PuzzleChange;
             it("should return an instance of PuzzleChange", function () {
                 expect(result).to.be.an.instanceof(PuzzleChange);
