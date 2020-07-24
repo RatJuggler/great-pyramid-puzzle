@@ -5,9 +5,9 @@ import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
 
 
-// Track solver ticks.
-let solverIntervalId: number;
-// Track solver workers.
+// Track animated solver timer.
+let solverTimeoutId: number;
+// Track solver worker.
 let solverWorker: Worker;
 
 
@@ -56,10 +56,10 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
 
 function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
     // Schedule a series of events to animate placing tiles on the puzzle.
-    solverIntervalId = setTimeout( () => {
+    solverTimeoutId = setTimeout( () => {
         const puzzleChange = solver.nextState();
         if (puzzleChange.isSolved()) {
-            clearInterval(solverIntervalId)
+            clearInterval(solverTimeoutId)
             attachRotateEvents(displayManager);
         } else {
             displayManager.display(puzzleChange);
@@ -89,8 +89,8 @@ function getSpeed(): number {
 
 function solvePuzzle(): void {
     // Clear any previous solvers.
-    if (solverIntervalId) {
-        clearInterval(solverIntervalId);
+    if (solverTimeoutId) {
+        clearInterval(solverTimeoutId);
     }
     if (solverWorker) {
         solverWorker.terminate();
