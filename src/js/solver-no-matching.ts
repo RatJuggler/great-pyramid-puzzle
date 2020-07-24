@@ -1,4 +1,4 @@
-import { SolverBase } from "./solver";
+import { SolverBase } from "./solver-base";
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
 import { Tile } from "./tile";

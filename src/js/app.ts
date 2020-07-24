@@ -1,7 +1,7 @@
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
 import { PuzzleChange } from "./puzzle-changes";
-import { Solver } from "./solver";
+import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
 
 

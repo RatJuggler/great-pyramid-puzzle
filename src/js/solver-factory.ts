@@ -1,5 +1,5 @@
 import { getPuzzleComponents } from "./puzzle-loader";
-import { Solver } from "./solver";
+import { Solver } from "./solver-base";
 import { NoMatchingSolver } from "./solver-no-matching";
 import { BruteForceSolver } from "./solver-brute-force";
 
