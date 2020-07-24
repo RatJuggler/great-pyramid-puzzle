@@ -3,12 +3,15 @@ import { DisplayManager } from "./display-manager";
 import { PuzzleChange } from "./puzzle-changes";
 import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
+import { Timer } from "./timer";
 
 
 // Track animated solver timer.
 let solverTimeoutId: number;
 // Track solver worker.
 let solverWorker: Worker;
+// Track how long solvers run for.
+const solverTimer = new Timer();
 
 
 function getSelector(name: string): string {
@@ -39,8 +42,11 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
     // Create a new work and an event to deal with the result.
     solverWorker = new Worker("worker.ts");
     solverWorker.onmessage = (e) => {
-        const finalState = <Array<PuzzleChange>> e.data;
+        // Stop the timer and log the result.
+        solverTimer.stop();
+        console.log("Elapsed time: " + solverTimer.elapsed());
         // Show the final puzzle state.
+        const finalState = <Array<PuzzleChange>> e.data;
         finalState.forEach((tpChange) => displayManager.display(tpChange));
         attachRotateEvents(displayManager);
         removeActive("overlay");
@@ -51,6 +57,7 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
         removeActive("overlay");
     });
     // Kick off the worker solver.
+    solverTimer.start();
     solverWorker.postMessage(solverOptions);
 }
 
@@ -60,6 +67,9 @@ function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, anima
         const puzzleChange = solver.nextState();
         if (puzzleChange.isSolved()) {
             clearInterval(solverTimeoutId)
+            // Stop the timer and log the result.
+            solverTimer.stop();
+            console.log("Elapsed time: " + solverTimer.elapsed());
             attachRotateEvents(displayManager);
         } else {
             displayManager.display(puzzleChange);
@@ -72,6 +82,7 @@ function startAnimatedSolver(solverOptions: SolverOptions, displayManager: Displ
     // Build the solver to use.
     const solver = buildSolver(solverOptions);
     // Kick off the animated solver.
+    solverTimer.start();
     runAnimatedSolver(solver, displayManager, animationDuration);
 }
 
