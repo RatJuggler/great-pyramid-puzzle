@@ -16,24 +16,20 @@ type SolverState = {
 export class BruteForceSolver extends SolverBase {
 
     private readonly _emptyTilePositions: Array<TilePosition>;
-    private readonly _unusedTiles: Array<Tile> = [];
     private readonly _solverStack: Array<SolverState> = [];
     private _currentState: SolverState;
 
     constructor(tetrahedron: Tetrahedron, tilePool: TilePool) {
         super(tetrahedron, tilePool);
         this._emptyTilePositions = this._tetrahedron.emptyTilePositions;
-        while (!this._tilePool.isEmpty) {
-            this._unusedTiles.push(this._tilePool.nextTile);
-        }
         this._currentState = {
             tilePosition: this._emptyTilePositions.shift()!,
-            untriedTiles: [...this._unusedTiles],
+            untriedTiles: [...tilePool.tiles],
             rejectedTiles: new Array<Tile>()
         }
     }
 
-    private static rotateAndRemove(tilePosition: TilePosition, rejectedTiles: Array<Tile>): PuzzleChange {
+    private static rotateOrRemove(tilePosition: TilePosition, rejectedTiles: Array<Tile>): PuzzleChange {
         // Try rotating the current tile.
         if (tilePosition.rotateTile()) {
             return PuzzleChange.rotate(tilePosition.id);
@@ -67,7 +63,7 @@ export class BruteForceSolver extends SolverBase {
                 return this.nextState();
             }
             // Otherwise try cycling through the rotations or remove the tile if nothing matches.
-            return BruteForceSolver.rotateAndRemove(tilePosition, rejectedTiles);
+            return BruteForceSolver.rotateOrRemove(tilePosition, rejectedTiles);
         }
         // Try the next tile.
         if (untriedTiles.length > 0) {
@@ -82,7 +78,7 @@ export class BruteForceSolver extends SolverBase {
         }
         this._currentState = this._solverStack.pop()!;
         // Cycle through the rotations or remove the tile if nothing matches.
-        return BruteForceSolver.rotateAndRemove(this._currentState.tilePosition, this._currentState.rejectedTiles);
+        return BruteForceSolver.rotateOrRemove(this._currentState.tilePosition, this._currentState.rejectedTiles);
     }
 
 }

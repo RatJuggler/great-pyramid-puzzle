@@ -43,6 +43,10 @@ export class TilePool {
         return this.tileCount === 0;
     }
 
+    get tiles(): Array<Tile> {
+        return Array.from(this._tiles.values());
+    }
+
     getTile(id: number): Tile {
         if (this._tiles.has(id)) {
             const tile = this._tiles.get(id)!;
