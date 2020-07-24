@@ -1,4 +1,4 @@
-import test_data from "../test-display-data.json";
+import simple_data from "../simple-display-data.json";
 import pocket_data from "../pocket-display-data.json";
 import great_data from "../great-display-data.json";
 import { DisplayData } from "./display-data-schema";
@@ -7,8 +7,8 @@ import { DisplayManager } from "./display-manager";
 
 function getDisplayData(puzzleType: string): DisplayData {
     switch (puzzleType) {
-        case "Test":
-            return test_data;
+        case "Simple":
+            return simple_data;
         case "Pocket":
             return pocket_data;
         case "Great":

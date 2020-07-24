@@ -9,7 +9,7 @@ describe("if #buildSolver() is called", function () {
 
     context("with an invalid solver algorithm", function () {
         const solverOptions = {
-            puzzleType: "Test",
+            puzzleType: "Simple",
             solveAlgorithm: "error",
             tileSelection: "Random",
             tilePlacement: "Random",
@@ -24,7 +24,7 @@ describe("if #buildSolver() is called", function () {
 
     context("with a valid set of test options", function () {
         const solverOptions = {
-            puzzleType: "Test",
+            puzzleType: "Simple",
             solveAlgorithm: "Test",
             tileSelection: "Random",
             tilePlacement: "Random",
@@ -38,7 +38,7 @@ describe("if #buildSolver() is called", function () {
 
     context("with a valid set of puzzle options", function () {
         const solverOptions = {
-            puzzleType: "Test",
+            puzzleType: "Simple",
             solveAlgorithm: "Brute",
             tileSelection: "",
             tilePlacement: "",

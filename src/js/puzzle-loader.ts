@@ -1,4 +1,4 @@
-import { testPuzzle } from "./test-puzzle";
+import { simplePuzzle } from "./simple-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
 import { LayoutData } from "./layout-data-schema";
@@ -23,8 +23,8 @@ function getTetrahedron(layoutData: LayoutData): Tetrahedron {
 
 function getPuzzleTypeData(puzzleType: string): PuzzleDataElements {
     switch (puzzleType) {
-        case "Test":
-            return testPuzzle;
+        case "Simple":
+            return simplePuzzle;
         case "Pocket":
             return pocketPuzzle;
         case "Great":

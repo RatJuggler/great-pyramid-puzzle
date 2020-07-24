@@ -31,8 +31,8 @@ describe("if #getPuzzleComponents() is called", function () {
         });
     });
 
-    context("with puzzle type argument 'Test'", function () {
-        const result = getPuzzleComponents("Test");
+    context("with puzzle type argument 'Simple'", function () {
+        const result = getPuzzleComponents("Simple");
         it("should return the Test puzzle data", function () {
             expect(result).to.have.property("tilePool");
             expect(result.tilePool.tileCount).to.equal(4);
