@@ -11,7 +11,7 @@ let solverTimeoutId: number;
 // Track solver worker.
 let solverWorker: Worker;
 // Track how long solvers run for.
-const solverTimer = new Timer();
+const solverTimer = new Timer(addEvent);
 
 
 function addEvent(event: string): void {
@@ -53,7 +53,6 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
     solverWorker.onmessage = (e) => {
         // Stop the timer and log the result.
         solverTimer.stop();
-        addEvent("Elapsed: " + solverTimer.elapsed());
         // Show the final puzzle state.
         const finalState = <Array<PuzzleChange>> e.data;
         finalState.forEach((tpChange) => displayManager.display(tpChange));
@@ -78,7 +77,6 @@ function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, anima
             clearInterval(solverTimeoutId)
             // Stop the timer and log the result.
             solverTimer.stop();
-            addEvent("Elapsed: " + solverTimer.elapsed());
             attachRotateEvents(displayManager);
         } else {
             displayManager.display(puzzleChange);
