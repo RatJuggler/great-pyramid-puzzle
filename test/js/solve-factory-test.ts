@@ -1,5 +1,6 @@
 import { buildSolver } from "../../src/js/solver-factory";
-import {BruteForceSolver, NoMatchingSolver} from "../../src/js/solver";
+import { NoMatchingSolver } from "../../src/js/solver-no-matching";
+import { BruteForceSolver } from "../../src/js/solver-brute-force";
 import { expect } from 'chai';
 import 'mocha';
 
