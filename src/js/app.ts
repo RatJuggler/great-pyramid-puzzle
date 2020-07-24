@@ -129,11 +129,11 @@ function removeActive(id: string): void {
     document.getElementById(id)!.classList.remove("active");
 }
 
-document.getElementById("algorithm-test")!.addEventListener("click", () => {
-    addActive("test-options");
+document.getElementById("algorithm-no-matching")!.addEventListener("click", () => {
+    addActive("no-matching-options");
 });
 document.getElementById("algorithm-brute")!.addEventListener("click", () => {
-    removeActive("test-options");
+    removeActive("no-matching-options");
 });
 
 document.getElementById("display-animated")!.addEventListener("click", () => {

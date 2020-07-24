@@ -18,7 +18,7 @@ function buildSolver(options: SolverOptions): Solver {
     const puzzle = getPuzzleComponents(options.puzzleType);
     // Use the options from the UI to build a solver with the puzzle data.
     switch (options.solveAlgorithm) {
-        case "Test":
+        case "NoMatching":
             return new NoMatchingSolver(puzzle.tetrahedron, puzzle.tilePool,
                 options.tileSelection, options.tilePlacement, options.tileRotation);
         case "Brute":

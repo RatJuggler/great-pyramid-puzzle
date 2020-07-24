@@ -25,7 +25,7 @@ describe("if #buildSolver() is called", function () {
     context("with a valid set of test options", function () {
         const solverOptions = {
             puzzleType: "Simple",
-            solveAlgorithm: "Test",
+            solveAlgorithm: "NoMatching",
             tileSelection: "Random",
             tilePlacement: "Random",
             tileRotation: "Random"

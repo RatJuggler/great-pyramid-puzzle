@@ -85,10 +85,10 @@ footer {
   margin-top: .5em;
   margin-bottom: .25em;
 }
-#test-options {
+#no-matching-options {
   display: none;
 }
-#test-options.active {
+#no-matching-options.active {
   display: block;
 }
 #animation-options {
