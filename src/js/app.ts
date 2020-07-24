@@ -145,6 +145,9 @@ document.getElementById("algorithm-no-matching")!.addEventListener("click", () =
 document.getElementById("algorithm-brute")!.addEventListener("click", () => {
     removeActive("no-matching-options");
 });
+document.getElementById("algorithm-only-valid")!.addEventListener("click", () => {
+    removeActive("no-matching-options");
+});
 
 document.getElementById("display-animated")!.addEventListener("click", () => {
     addActive("animation-options");

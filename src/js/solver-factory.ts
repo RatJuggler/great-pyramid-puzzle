@@ -2,6 +2,7 @@ import { getPuzzleComponents } from "./puzzle-loader";
 import { Solver } from "./solver-base";
 import { NoMatchingSolver } from "./solver-no-matching";
 import { BruteForceSolver } from "./solver-brute-force";
+import { OnlyValidSolver } from "./solver-only-valid";
 
 
 interface SolverOptions {
@@ -23,6 +24,8 @@ function buildSolver(options: SolverOptions): Solver {
                 options.tileSelection, options.tilePlacement, options.tileRotation);
         case "Brute":
             return new BruteForceSolver(puzzle.tetrahedron, puzzle.tilePool);
+        case "OnlyValid":
+            return new OnlyValidSolver(puzzle.tetrahedron, puzzle.tilePool);
         default:
             throw new Error("Invalid solve algorithm option!");
     }
