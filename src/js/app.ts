@@ -14,6 +14,15 @@ let solverWorker: Worker;
 const solverTimer = new Timer();
 
 
+function addEvent(event: string): void {
+    const eventList = document.getElementById("event-list")!;
+    const newLi = document.createElement("li");
+    const newP = document.createElement("p");
+    newP.innerText = event;
+    newLi.appendChild(newP);
+    eventList.appendChild(newLi);
+}
+
 function getSelector(name: string): string {
     const selection  = document.querySelectorAll(`input[name = "${name}"]`) as NodeListOf<HTMLInputElement>;
     for (const rb of selection) {
@@ -44,7 +53,7 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
     solverWorker.onmessage = (e) => {
         // Stop the timer and log the result.
         solverTimer.stop();
-        console.log("Elapsed time: " + solverTimer.elapsed());
+        addEvent("Elapsed: " + solverTimer.elapsed());
         // Show the final puzzle state.
         const finalState = <Array<PuzzleChange>> e.data;
         finalState.forEach((tpChange) => displayManager.display(tpChange));
@@ -69,7 +78,7 @@ function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, anima
             clearInterval(solverTimeoutId)
             // Stop the timer and log the result.
             solverTimer.stop();
-            console.log("Elapsed time: " + solverTimer.elapsed());
+            addEvent("Elapsed: " + solverTimer.elapsed());
             attachRotateEvents(displayManager);
         } else {
             displayManager.display(puzzleChange);
