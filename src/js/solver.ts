@@ -83,15 +83,16 @@ class NoMatchingSolver extends SolverBase {
         return tilePlacedPosition;
     }
 
-    nextState(): PuzzleChange {
-        if (this._rotating > 0) {
-            if (this._tilePosition === null) {
-                throw new Error("No tile position to rotate!");
-            }
-            this._rotating--;
-            this._tilePosition.rotateTile();
-            return PuzzleChange.rotate(this._tilePosition.id);
+    private rotateTile(): PuzzleChange {
+        if (this._tilePosition === null) {
+            throw new Error("No tile position to rotate!");
         }
+        this._rotating--;
+        this._tilePosition.rotateTile();
+        return PuzzleChange.rotate(this._tilePosition.id);
+    }
+
+    private nextTile(): PuzzleChange {
         if (this._tilePool.isEmpty) {
             return PuzzleChange.SOLVED;
         }
@@ -99,6 +100,16 @@ class NoMatchingSolver extends SolverBase {
         this._tilePosition = this.placeTile(tile);
         this._rotating = this.tileRotations();
         return PuzzleChange.place(this._tilePosition.id, this._tilePosition.tile.id, this._tilePosition.getRotatedSegments());
+    }
+
+    nextState(): PuzzleChange {
+        let change;
+        if (this._rotating > 0) {
+           change = this.rotateTile();
+        } else {
+           change = this.nextTile();
+        }
+        return change;
     }
 
 }
@@ -130,7 +141,7 @@ class BruteForceSolver extends SolverBase {
         }
     }
 
-    private static rotateOrRemove(tilePosition: TilePosition, rejectedTiles: Array<Tile>): PuzzleChange {
+    private static rotateAndRemove(tilePosition: TilePosition, rejectedTiles: Array<Tile>): PuzzleChange {
         // Try rotating the current tile.
         if (tilePosition.rotateTile()) {
             return PuzzleChange.rotate(tilePosition.id);
@@ -164,7 +175,7 @@ class BruteForceSolver extends SolverBase {
                 return this.nextState();
             }
             // Otherwise try cycling through the rotations or remove the tile if nothing matches.
-            return BruteForceSolver.rotateOrRemove(tilePosition, rejectedTiles);
+            return BruteForceSolver.rotateAndRemove(tilePosition, rejectedTiles);
         }
         // Try the next tile.
         if (untriedTiles.length > 0) {
@@ -179,11 +190,7 @@ class BruteForceSolver extends SolverBase {
         }
         this._currentState = this._solverStack.pop()!;
         // Cycle through the rotations or remove the tile if nothing matches.
-        return BruteForceSolver.rotateOrRemove(this._currentState.tilePosition, this._currentState.rejectedTiles);
-    }
-
-    startNextSolution(): PuzzleChange {
-        return BruteForceSolver.rotateOrRemove(this._currentState.tilePosition, this._currentState.rejectedTiles);
+        return BruteForceSolver.rotateAndRemove(this._currentState.tilePosition, this._currentState.rejectedTiles);
     }
 
 }
