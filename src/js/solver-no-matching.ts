@@ -39,8 +39,8 @@ export class NoMatchingSolver extends SolverBase {
                 return this._tilePool.randomTile;
             case "Sequential":
                 return this._tilePool.nextTile;
-            case "Test":
-                return this._tilePool.testTile;
+            case "DisplayTest":
+                return this._tilePool.displayTestTile;
             default:
                 throw new Error("Invalid tile selection option!");
         }

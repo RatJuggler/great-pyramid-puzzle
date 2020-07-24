@@ -267,12 +267,12 @@ describe("TilePool behavior", function () {
 
     });
 
-    describe("if #getTestTile() is called to return the display test Tile", function () {
+    describe("if #getDisplayTestTile() is called to return the Display test Tile", function () {
 
         context("while there are Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
             for (let i = 0; i < validTileData.totalNumberOfTiles; i++) {
-                const tile = tilePool.testTile;
+                const tile = tilePool.displayTestTile;
                 it("should always return the display test Tile", function () {
                     expect(tile.id).to.equal(0);
                 });
@@ -282,11 +282,11 @@ describe("TilePool behavior", function () {
         context("when there are no Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
             while (!tilePool.isEmpty) {
-                tilePool.testTile;
+                tilePool.displayTestTile;
             }
             it("should throw an error", function () {
                 expect(function () {
-                    tilePool.testTile;
+                    tilePool.displayTestTile;
                 }).to.throw(Error, "No more Tiles in the pool!");
             });
         });

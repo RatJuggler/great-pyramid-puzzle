@@ -201,11 +201,12 @@ describe("NoMatchingSolver behaviour", function () {
 
     });
 
-    describe("if #nextState() is called on a properly instantiated instance using the Test tile selection option", function () {
+    describe("if #nextState() is called on a properly instantiated instance using the Display Test tile selection option",
+        function () {
 
         const components = getPuzzleComponents(VALID_TEST_PUZZLE);
         const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
-            "Test", "Sequential", "None");
+            "DisplayTest", "Sequential", "None");
 
         context("for the first time", function () {
             const result = solver.nextState() as TileChange;

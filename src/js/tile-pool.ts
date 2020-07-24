@@ -6,7 +6,7 @@ import { getRandomInt } from "./utils";
 export class TilePool {
 
     // Static tile used to test the tile orientation display.
-    private static readonly TEST_TILE = new Tile({
+    private static readonly DISPLAY_TEST_TILE = new Tile({
         tile: 0,
         sideA: "1000",
         sideB: "0100",
@@ -70,14 +70,14 @@ export class TilePool {
         return this.getTile(id);
     }
 
-    get testTile(): Tile {
+    get displayTestTile(): Tile {
         if (this.isEmpty) {
             throw new Error("No more Tiles in the pool!");
         }
         // Discard a random tile.
         this.randomTile;
         // Always return the same test tile.
-        return TilePool.TEST_TILE;
+        return TilePool.DISPLAY_TEST_TILE;
     }
 
     returnTile(tile: Tile): void {
