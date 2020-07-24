@@ -4,6 +4,7 @@ import { PuzzleChange } from "./puzzle-changes";
 import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
 import { Timer } from "./timer";
+import {EventListManager} from "./event-list-manager";
 
 
 // Track animated solver timer.
@@ -11,17 +12,8 @@ let solverTimeoutId: number;
 // Track solver worker.
 let solverWorker: Worker;
 // Track how long solvers run for.
-const solverTimer = new Timer(addEvent);
+const solverTimer = new Timer(new EventListManager("event-list"));
 
-
-function addEvent(event: string): void {
-    const eventList = document.getElementById("event-list")!;
-    const newLi = document.createElement("li");
-    const newP = document.createElement("p");
-    newP.innerText = event;
-    newLi.appendChild(newP);
-    eventList.appendChild(newLi);
-}
 
 function getSelector(name: string): string {
     const selection  = document.querySelectorAll(`input[name = "${name}"]`) as NodeListOf<HTMLInputElement>;

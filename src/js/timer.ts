@@ -1,22 +1,26 @@
+import {EventList} from "./event-list-manager";
+
+
 export class Timer {
 
     private _startTime: number = 0;
     private _finishTime: number = 0;
 
-    constructor(private readonly _addEvent: (event: string) => void) {}
+    constructor(private readonly _eventList: EventList) {}
 
     start(): void {
+        this._eventList.clearEvents();
         const now = new Date();
         this._startTime = now.getTime();
         this._finishTime = 0;
-        this._addEvent("Started: " + Timer.formatTime(now));
+        this._eventList.addEvent("Started: " + Timer.formatTime(now));
     }
 
     stop(): void {
         const now = new Date();
         this._finishTime = now.getTime();
-        this._addEvent("Finished: " + Timer.formatTime(now));
-        this._addEvent("Elapsed: " + this.elapsed());
+        this._eventList.addEvent("Finished: " + Timer.formatTime(now));
+        this._eventList.addEvent("Elapsed: " + this.elapsed());
     }
 
     private elapsed(): string {
