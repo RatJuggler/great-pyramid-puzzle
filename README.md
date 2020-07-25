@@ -13,10 +13,22 @@ The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I t
 - Built mechanisms to add tiles to the puzzle, randomly or in sequence without matching, as well as matching with adjacent tiles. 
 - Built a display renderer using SVG to show the puzzle in a given state and to animate tiles as they are placed and removed.
 - Built a UI with options to control the display and solving process. 
-- Brute force solver working (finds solutions to the Test and Pocket puzzles).
+- Brute Force solver working (cycles through every single possible combination of tiles, positions and orientations).
+- Only Valid Tiles solver working (still cycles but only selects tiles to try which match existing tile sides). 
 - Allow solvers to run as dedicated web workers, without animation, for speed. 
 
 You can see the latest release in action [here](https://ratjuggler.github.io/great-pyramid-puzzle/).
+
+These are rough timings using the Completed option, no animation:
+
+| Algorithm        | Puzzle   | Time to first solution  |
+| ---------------- | -------- | ----------------------- |
+| Brute Force      | Test     | Instant                 |
+|                  | Pocket   | 2 Secs                  |
+|                  | Great    | ???                     |
+| Only Valid Tiles | Test     | Instant                 |
+|                  | Pocket   | 1 Sec                   |
+|                  | Great    | 24 Secs                 |
 
 ## Puzzle Overview
 There's an excellent overview of the puzzle on [Jaap's Puzzle Page](https://www.jaapsch.net/puzzles/pyramid.htm) but I'll repeat a
