@@ -6,7 +6,7 @@ import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { getDisplayManager } from "../../src/js/display-loader";
 import { DisplayManager } from "../../src/js/display-manager";
 import { PuzzleChange } from "../../src/js/puzzle-changes";
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
 import { createSVGWindow } from 'svgdom';
@@ -24,11 +24,10 @@ function createDocument(): Document {
 function puzzleWithAllTiles(puzzleTypeData: PuzzleDataElements, displayManager: DisplayManager): PuzzleComponents {
     const puzzle = getPuzzleComponents(puzzleTypeData);
     puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
-        let tile = puzzle.tilePool.randomTile;
-        assert.isNotNull(tilePosition.placeTile(tile));
+        tilePosition.tile = puzzle.tilePool.randomTile;
     })
     puzzle.tetrahedron.tilePositions
-        .map((tilePosition) => PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments()))
+        .map((tilePosition) => PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments()))
         .forEach((displayChange) => displayManager.display(displayChange));
     return puzzle;
 }
@@ -57,11 +56,9 @@ describe("Puzzle display functionality", function () {
         context("with some tiles on it", function () {
             const puzzle = getPuzzleComponents(puzzleTypeData);
             const tilePosition1 = puzzle.tetrahedron.tilePositions[0];
-            const tile1 = puzzle.tilePool.randomTile;
-            assert.isNotNull(tilePosition1.placeTile(tile1));
+            tilePosition1.tile = puzzle.tilePool.randomTile;
             const tilePosition2 = puzzle.tetrahedron.tilePositions[1];
-            const tile2 = puzzle.tilePool.randomTile;
-            assert.isNotNull(tilePosition2.placeTile(tile2));
+            tilePosition2.tile = puzzle.tilePool.randomTile;
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay()
@@ -70,7 +67,7 @@ describe("Puzzle display functionality", function () {
                 if (tilePosition.isEmpty()) {
                     tpChange = PuzzleChange.empty(tilePosition.id);
                 } else {
-                    tpChange = PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
+                    tpChange = PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments());
                 }
                 displayManager.display(tpChange);
             });

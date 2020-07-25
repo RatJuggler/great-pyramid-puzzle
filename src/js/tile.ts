@@ -1,11 +1,18 @@
-import { TileDefinition } from "./tile-data-schema";
-import { Side } from "./side";
+import {TileDefinition} from "./tile-data-schema";
+import {Side} from "./side";
 
 
 export class Tile {
 
+    private static readonly ROTATION_MAP = [
+        new Map<Side, Side>([[Side.SideA, Side.SideA], [Side.SideB, Side.SideB], [Side.SideC, Side.SideC]]),
+        new Map<Side, Side>([[Side.SideA, Side.SideC], [Side.SideB, Side.SideA], [Side.SideC, Side.SideB]]),
+        new Map<Side, Side>([[Side.SideA, Side.SideB], [Side.SideB, Side.SideC], [Side.SideC, Side.SideA]])
+    ];
+
     private readonly _id: number;
-    private readonly _sides = new Map<Side, string>() ;
+    private readonly _sideSegments = new Map<Side, string>();
+    private _rotation: number = 0;
 
     validateSegments(segments: string): string {
         if (segments.length !== 4) {
@@ -19,23 +26,38 @@ export class Tile {
 
     constructor(tileDetails: TileDefinition) {
         this._id = tileDetails.tile;
-        this._sides.set(Side.SideA, this.validateSegments(tileDetails.sideA));
-        this._sides.set(Side.SideB, this.validateSegments(tileDetails.sideB));
-        this._sides.set(Side.SideC, this.validateSegments(tileDetails.sideC));
+        this._sideSegments.set(Side.SideA, this.validateSegments(tileDetails.sideA));
+        this._sideSegments.set(Side.SideB, this.validateSegments(tileDetails.sideB));
+        this._sideSegments.set(Side.SideC, this.validateSegments(tileDetails.sideC));
     }
 
     get id(): number {
         return this._id;
     }
 
-    getSegments(side1: Side, side2: Side, side3: Side): string {
-        return this.getSideSegments(side1) +
-            this.getSideSegments(side2) +
-            this.getSideSegments(side3);
+    placed(): Tile {
+        this._rotation = 0;
+        return this;
+    }
+
+    rotate(): boolean {
+        this._rotation = ++this._rotation % this._sideSegments.size;
+        return this._rotation !== 0;
+    }
+
+    private mapRotationToTile(mapFrom: Side): Side {
+        return Tile.ROTATION_MAP[this._rotation].get(mapFrom)!;
     }
 
     getSideSegments(side: Side): string {
-        return this._sides.get(side)!;
+        const sideRotated = this.mapRotationToTile(side);
+        return this._sideSegments.get(sideRotated)!;
+    }
+
+    getSegments(): string {
+        return this.getSideSegments(Side.SideA) +
+            this.getSideSegments(Side.SideB) +
+            this.getSideSegments(Side.SideC);
     }
 
     getSideSegmentsToMatchWith(side: Side): string {
@@ -43,15 +65,20 @@ export class Tile {
         return sideSegments[3] + sideSegments[2] + sideSegments[1] + sideSegments[0];
     }
 
-    toString(): string {
-        return this.toStringRotated(Side.SideA, Side.SideB, Side.SideC);
+    hasSideSegments(findSideSegments: string): boolean {
+        for (const sideSegments of this._sideSegments.values()) {
+            if (sideSegments === findSideSegments) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    toStringRotated(side1: Side, side2: Side, side3: Side): string {
-        return `Id: ${this._id}, ` +
-            `Side-A: ${this.getSideSegments(side1)}, ` +
-            `Side-B: ${this.getSideSegments(side2)}, ` +
-            `Side-C: ${this.getSideSegments(side3)}`;
+    toString(): string {
+        return `Id: ${this._id}, Rotation: ${this._rotation}, ` +
+            `Side-A: ${this.getSideSegments(Side.SideA)}, ` +
+            `Side-B: ${this.getSideSegments(Side.SideB)}, ` +
+            `Side-C: ${this.getSideSegments(Side.SideC)}`;
     }
 
 }

@@ -5,7 +5,7 @@ import { SolverBase } from "../../src/js/solver-base";
 import { Tetrahedron } from "../../src/js/tetrahedron";
 import { TilePool } from "../../src/js/tile-pool";
 import { PuzzleChange } from "../../src/js/puzzle-changes";
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
 import { VALID_TEST_PUZZLE } from "./common-test-data";
@@ -59,8 +59,7 @@ describe("SolverBase behaviour using MockSolver", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             const solver = new MockSolver(components.tetrahedron, components.tilePool);
             components.tetrahedron.tilePositions.forEach((tilePosition) => {
-                let tile = components.tilePool.randomTile;
-                assert.isNotNull(tilePosition.placeTile(tile));
+                tilePosition.tile = components.tilePool.randomTile;
             })
             const result = solver.finalState();
             it("should return an array of tile position changes", function () {

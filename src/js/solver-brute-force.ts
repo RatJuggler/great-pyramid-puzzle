@@ -31,11 +31,11 @@ export class BruteForceSolver extends SolverBase {
 
     private static rotateOrRemove(tilePosition: TilePosition, rejectedTiles: Array<Tile>): PuzzleChange {
         // Try rotating the current tile.
-        if (tilePosition.rotateTile()) {
+        if (tilePosition.tile.rotate()) {
             return PuzzleChange.rotate(tilePosition.id);
         }
         // If we've tried all the rotations and none match then reject this tile.
-        const displayChange = PuzzleChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
+        const displayChange = PuzzleChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments());
         const tile = tilePosition.removeTile();
         rejectedTiles.push(tile);
         return displayChange;
@@ -67,9 +67,8 @@ export class BruteForceSolver extends SolverBase {
         }
         // Try the next tile.
         if (untriedTiles.length > 0) {
-            const nextTile = untriedTiles.shift()!;
-            tilePosition.placeTile(nextTile);
-            return PuzzleChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.getRotatedSegments());
+            tilePosition.tile = untriedTiles.shift()!;
+            return PuzzleChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments());
         }
         // If we've tried all the tiles and nothing matches we need to move back a tile position and try the next rotation/tile from there.
         this._emptyTilePositions.unshift(tilePosition);

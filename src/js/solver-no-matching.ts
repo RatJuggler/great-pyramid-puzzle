@@ -58,16 +58,15 @@ export class NoMatchingSolver extends SolverBase {
     }
 
     private placeTile(): PuzzleChange {
-        const tile = this.getTileSelection();
-        this._tilePosition.placeTile(tile);
+        this._tilePosition.tile = this.getTileSelection();
         this._rotating = this.tileRotations();
-        return PuzzleChange.place(this._tilePosition.id, this._tilePosition.tile.id, this._tilePosition.getRotatedSegments());
+        return PuzzleChange.place(this._tilePosition.id, this._tilePosition.tile.id, this._tilePosition.tile.getSegments());
     }
 
     private rotateOrNext(): PuzzleChange {
         if (this._rotating > 0) {
             this._rotating--;
-            this._tilePosition.rotateTile();
+            this._tilePosition.tile.rotate();
             return PuzzleChange.rotate(this._tilePosition.id);
         } else {
             if (this._emptyTilePositions.length === 0) {
