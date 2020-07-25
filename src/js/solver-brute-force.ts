@@ -29,55 +29,78 @@ export class BruteForceSolver extends SolverBase {
         }
     }
 
-    private static rotateOrRemove(tilePosition: TilePosition, rejectedTiles: Array<Tile>): PuzzleChange {
+    private static rotateOrRemove(state: SolverState): PuzzleChange {
+        let displayChange;
         // Try rotating the current tile.
+        const tilePosition = state.tilePosition;
         if (tilePosition.tile.rotate()) {
-            return PuzzleChange.rotate(tilePosition.id);
+            displayChange = PuzzleChange.rotate(tilePosition.id);
+        } else {
+            // If we've tried all the rotations and none match then reject this tile.
+            displayChange = PuzzleChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments());
+            const tile = tilePosition.removeTile();
+            state.rejectedTiles.push(tile);
         }
-        // If we've tried all the rotations and none match then reject this tile.
-        const displayChange = PuzzleChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments());
-        const tile = tilePosition.removeTile();
-        rejectedTiles.push(tile);
+        return displayChange;
+    }
+
+    private tryNextState(state: SolverState): PuzzleChange {
+        let displayChange;
+        // If there aren't any more tile positions a solution has been reached!
+        if (this._emptyTilePositions.length === 0) {
+            displayChange = PuzzleChange.SOLVED;
+        } else {
+            // Save the current state, initialise a new state and move on.
+            this._solverStack.push(state);
+            this._currentState = {
+                tilePosition: this._emptyTilePositions.shift()!,
+                untriedTiles: state.untriedTiles.concat(state.rejectedTiles),
+                rejectedTiles: new Array<Tile>()
+            }
+            displayChange = this.nextState();
+        }
+        return displayChange;
+    }
+
+    private tryNextTile(state: SolverState): PuzzleChange {
+        let displayChange;
+        // If we have any untried tiles then try the next one.
+        const tilePosition = state.tilePosition;
+        if (state.untriedTiles.length > 0) {
+            tilePosition.tile = state.untriedTiles.shift()!;
+            displayChange = PuzzleChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments());
+        } else {
+            // Otherwise if we've tried all the tiles and nothing matches we need to move back a tile position.
+            this._emptyTilePositions.unshift(tilePosition);
+            // If we can't move back then we've tried every combination!
+            if (this._solverStack.length === 0) {
+                displayChange = PuzzleChange.COMPLETED;
+            } else {
+                this._currentState = this._solverStack.pop()!;
+                // Cycle through the rotations or remove the tile if nothing matches.
+                displayChange = BruteForceSolver.rotateOrRemove(this._currentState);
+            }
+        }
         return displayChange;
     }
 
     nextState(): PuzzleChange {
+        let displayChange;
+        // If we don't have a tile at the current tile position.
         const tilePosition = this._currentState.tilePosition;
-        const untriedTiles = this._currentState.untriedTiles;
-        const rejectedTiles = this._currentState.rejectedTiles;
-        // If we have a tile at the current tile position.
-        if (!tilePosition.isEmpty()) {
-            // And everything matches then move on to the next tile position.
+        if (tilePosition.isEmpty()) {
+            // Try the next tile.
+            displayChange = this.tryNextTile(this._currentState);
+        } else {
+            // If everything matches then move on to the next tile position.
             if (tilePosition.matches()) {
-                // If there aren't any more tile positions a solution has been reached!
-                if (this._emptyTilePositions.length === 0) {
-                    return PuzzleChange.SOLVED;
-                }
-                // Save the current state, initialise a new state and move on.
-                this._solverStack.push(this._currentState);
-                this._currentState = {
-                    tilePosition: this._emptyTilePositions.shift()!,
-                    untriedTiles: [...untriedTiles.concat(rejectedTiles)],
-                    rejectedTiles: new Array<Tile>()
-                }
-                return this.nextState();
+                displayChange = this.tryNextState(this._currentState);
+            } else {
+                // Cycle through the rotations or remove the tile if nothing matches.
+                displayChange = BruteForceSolver.rotateOrRemove(this._currentState);
             }
-            // Otherwise try cycling through the rotations or remove the tile if nothing matches.
-            return BruteForceSolver.rotateOrRemove(tilePosition, rejectedTiles);
         }
-        // Try the next tile.
-        if (untriedTiles.length > 0) {
-            tilePosition.tile = untriedTiles.shift()!;
-            return PuzzleChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments());
-        }
-        // If we've tried all the tiles and nothing matches we need to move back a tile position and try the next rotation/tile from there.
-        this._emptyTilePositions.unshift(tilePosition);
-        if (this._solverStack.length === 0) {
-            return PuzzleChange.COMPLETED;
-        }
-        this._currentState = this._solverStack.pop()!;
-        // Cycle through the rotations or remove the tile if nothing matches.
-        return BruteForceSolver.rotateOrRemove(this._currentState.tilePosition, this._currentState.rejectedTiles);
+        return displayChange;
     }
 
 }

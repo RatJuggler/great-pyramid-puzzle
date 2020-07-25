@@ -1,6 +1,6 @@
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { BruteForceSolver } from "../../src/js/solver-brute-force";
-import {PuzzleChangeType, TileChange, TilePositionChange} from "../../src/js/puzzle-changes";
+import { PuzzleChangeType, TileChange, TilePositionChange } from "../../src/js/puzzle-changes";
 import { expect } from "chai";
 import 'mocha';
 // @ts-ignore
