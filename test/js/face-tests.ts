@@ -3,7 +3,7 @@ import { TilePosition } from "../../src/js/tile-position";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1, TILE_2, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA } from "./common-test-data";
+import { TILE_1, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA } from "./common-test-data";
 
 
 describe("Face behavior", function () {
@@ -98,7 +98,7 @@ describe("Face behavior", function () {
 
         context("with the id of an existing TilePosition which has a Tile in it", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isNotNull(faceWithOneTilePosition.placeTileRandomly(TILE_1));
+            assert.isNotNull(faceWithOneTilePosition.emptyTilePositions[0].placeTile(TILE_1));
             it("should return the Tile", function () {
                 expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
             });
@@ -225,99 +225,9 @@ describe("Face behavior", function () {
 
         context("and there aren't any empty Tile Positions", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isNotNull(faceWithOneTilePosition.placeTileSequentially(TILE_1));
+            assert.isNotNull(faceWithOneTilePosition.emptyTilePositions[0].placeTile(TILE_1));
             it("should return False", function () {
                 expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.false;
-            });
-        });
-
-    });
-
-    describe("if #placeTileRandomly() is called to place a Tile (without using matching)", function () {
-
-        context("and all the Tile Positions on the Face are empty", function () {
-            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            const result = faceWithOneTilePosition.placeTileRandomly(TILE_1);
-            it("should place the Tile in a random Position", function () {
-                expect(faceWithOneTilePosition.toString()).to.contain(TILE_1.toString());
-            });
-            it("should not return null", function () {
-                expect(result).to.not.be.null;
-            });
-            it("should return the updated Position", function () {
-                expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result.tile).to.equal(TILE_1);
-            });
-        });
-
-        context("and the Face already has some filled Tile Positions on it", function () {
-            const faceWithFourTilePositions = new Face("2", 4, FOUR_TILE_POSITION_DATA);
-            assert.isNotNull(faceWithFourTilePositions.placeTileRandomly(TILE_1));
-            const result = faceWithFourTilePositions.placeTileRandomly(TILE_2);
-            it("should place the Tile in a random empty Position", function () {
-                expect(faceWithFourTilePositions.toString()).to.contain(TILE_2.toString());
-            });
-            it("should not return null", function () {
-                expect(result).to.not.be.null;
-            });
-            it("should return the updated Position", function () {
-                expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result.tile).to.equal(TILE_2);
-            });
-        });
-
-        context("and the Face has no remaining empty Tile Positions", function () {
-            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isNotNull(faceWithOneTilePosition.placeTileRandomly(TILE_1));
-            it("should throw an error", function () {
-                expect(function () {
-                    faceWithOneTilePosition.placeTileRandomly(TILE_2);
-                }).to.throw(Error, "No empty TilePositions on the Face!");
-            });
-        });
-
-    });
-
-    describe("if #placeTileSequantially() is called to place a Tile (without using matching)", function () {
-
-        context("and all the Tile Positions on the Face are empty", function () {
-            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            const result = faceWithOneTilePosition.placeTileSequentially(TILE_1);
-            it("should place the Tile at Position 1", function () {
-                expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
-            });
-            it("should not return null", function () {
-                expect(result).to.not.be.null;
-            });
-            it("should return the updated Position", function () {
-                expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result.tile).to.equal(TILE_1);
-            });
-        });
-
-        context("and the Face already has some filled Tile Positions on it", function () {
-            const faceWithFourTilePositions = new Face("2", 4, FOUR_TILE_POSITION_DATA);
-            assert.isNotNull(faceWithFourTilePositions.placeTileSequentially(TILE_1));
-            const result = faceWithFourTilePositions.placeTileSequentially(TILE_2);
-            it("should place the Tile at the next sequentially free Position", function () {
-                expect(faceWithFourTilePositions.getTileAtPosition("2")).to.equal(TILE_2);
-            });
-            it("should not return null", function () {
-                expect(result).to.not.be.null;
-            });
-            it("should return the updated Position", function () {
-                expect(result).to.be.an.instanceOf(TilePosition);
-                expect(result.tile).to.equal(TILE_2);
-            });
-        });
-
-        context("and the Face has no remaining empty Tile Positions", function () {
-            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isNotNull(faceWithOneTilePosition.placeTileSequentially(TILE_1));
-            it("should throw an error", function () {
-                expect(function () {
-                    faceWithOneTilePosition.placeTileSequentially(TILE_2);
-                }).to.throw(Error, "No empty TilePositions on the Face!");
             });
         });
 
