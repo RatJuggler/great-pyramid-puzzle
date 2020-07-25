@@ -4,7 +4,7 @@ import {Side} from "../../src/js/side";
 import {expect} from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1_DATA, TILE_2_DATA, TILE_3_DATA, TILE_4_DATA } from "./common-test-data";
+import {TILE_1_DATA, TILE_2_DATA, TILE_3_DATA, TILE_4_DATA} from "./common-test-data";
 
 
 describe("Tile behaviour", function () {
@@ -173,7 +173,7 @@ describe("Tile behaviour", function () {
             const tile = new Tile(TILE_4_DATA);
             tile.placed();
             tile.rotate();
-            const expectedSegments = TILE_1_DATA.sideC.split("").reverse().join("");
+            const expectedSegments = TILE_4_DATA.sideC.split("").reverse().join("");
             it("should return the segments for the side reversed", function () {
                 expect(tile.getSideSegmentsToMatchWith(Side.SideA)).to.equal(expectedSegments);
             });
@@ -188,8 +188,9 @@ describe("Tile behaviour", function () {
             tile3.placed();
             const tile4 = new Tile(TILE_4_DATA);
             tile4.placed();
+            const findSegments = [tile4.getSideSegmentsToMatchWith(Side.SideA)];
             it("should return false", function () {
-                expect(tile3.hasSideSegments(tile4.getSideSegmentsToMatchWith(Side.SideA))).to.be.false;
+                expect(tile3.hasSideSegments(findSegments)).to.be.false;
             });
         });
 
@@ -198,8 +199,9 @@ describe("Tile behaviour", function () {
             tile3.placed();
             const tile4 = new Tile(TILE_4_DATA);
             tile4.placed();
+            const findSegments = [tile4.getSideSegmentsToMatchWith(Side.SideC)];
             it("should return true", function () {
-                expect(tile3.hasSideSegments(tile4.getSideSegmentsToMatchWith(Side.SideC))).to.be.true;
+                expect(tile3.hasSideSegments(findSegments)).to.be.true;
             });
         });
 

@@ -12,6 +12,7 @@ export class Tile {
 
     private readonly _id: number;
     private readonly _sideSegments = new Map<Side, string>();
+    private _sideValues: Array<string>;
     private _rotation: number = 0;
 
     validateSegments(segments: string): string {
@@ -29,6 +30,7 @@ export class Tile {
         this._sideSegments.set(Side.SideA, this.validateSegments(tileDetails.sideA));
         this._sideSegments.set(Side.SideB, this.validateSegments(tileDetails.sideB));
         this._sideSegments.set(Side.SideC, this.validateSegments(tileDetails.sideC));
+        this._sideValues = Array.from(this._sideSegments.values());
     }
 
     get id(): number {
@@ -65,9 +67,9 @@ export class Tile {
         return sideSegments[3] + sideSegments[2] + sideSegments[1] + sideSegments[0];
     }
 
-    hasSideSegments(findSideSegments: string): boolean {
-        for (const sideSegments of this._sideSegments.values()) {
-            if (sideSegments === findSideSegments) {
+    hasSideSegments(findSideSegments: Array<string>): boolean {
+        for (const findSegments of findSideSegments as Array<string>) {
+            if (this._sideValues.includes(findSegments)) {
                 return true;
             }
         }

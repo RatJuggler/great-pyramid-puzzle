@@ -24,7 +24,7 @@ export class BruteForceSolver extends SolverBase {
         this._emptyTilePositions = this._tetrahedron.emptyTilePositions;
         this._currentState = {
             tilePosition: this._emptyTilePositions.shift()!,
-            untriedTiles: [...tilePool.tiles],
+            untriedTiles: tilePool.tiles,
             rejectedTiles: new Array<Tile>()
         }
     }
@@ -44,6 +44,14 @@ export class BruteForceSolver extends SolverBase {
         return displayChange;
     }
 
+    private createNewState(state: SolverState): SolverState {
+        return {
+            tilePosition: this._emptyTilePositions.shift()!,
+            untriedTiles: state.untriedTiles.concat(state.rejectedTiles),
+            rejectedTiles: new Array<Tile>()
+        }
+    }
+
     private tryNextState(state: SolverState): PuzzleChange {
         let displayChange;
         // If there aren't any more tile positions a solution has been reached!
@@ -52,11 +60,7 @@ export class BruteForceSolver extends SolverBase {
         } else {
             // Save the current state, initialise a new state and move on.
             this._solverStack.push(state);
-            this._currentState = {
-                tilePosition: this._emptyTilePositions.shift()!,
-                untriedTiles: state.untriedTiles.concat(state.rejectedTiles),
-                rejectedTiles: new Array<Tile>()
-            }
+            this._currentState = this.createNewState(state);
             displayChange = this.nextState();
         }
         return displayChange;
