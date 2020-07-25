@@ -11,7 +11,7 @@ export class BruteForceSolver extends IterativeSolverBase {
         super(tetrahedron, tilePool);
     }
 
-    createNewState(state: SolverState, newTilePosition: TilePosition): SolverState {
+    protected createNewState(state: SolverState, newTilePosition: TilePosition): SolverState {
         return {
             tilePosition: newTilePosition,
             untriedTiles: state.untriedTiles.concat(state.rejectedTiles),

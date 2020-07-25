@@ -11,7 +11,7 @@ export class OnlyValidSolver extends IterativeSolverBase {
         super(tetrahedron, tilePool);
     }
 
-    createNewState(state: SolverState, newTilePosition: TilePosition): SolverState {
+    protected createNewState(state: SolverState, newTilePosition: TilePosition): SolverState {
         // Find existing sides to match.
         const segmentsToFind = newTilePosition.needToMatch();
         // Filter the unused tiles so we only try those that are relevant.

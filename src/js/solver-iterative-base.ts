@@ -19,7 +19,7 @@ abstract class IterativeSolverBase extends SolverBase {
     private readonly _solverStack: Array<SolverState> = [];
     private _currentState: SolverState;
 
-    constructor(tetrahedron: Tetrahedron, tilePool: TilePool) {
+    protected constructor(tetrahedron: Tetrahedron, tilePool: TilePool) {
         super(tetrahedron, tilePool);
         this._emptyTilePositions = this._tetrahedron.emptyTilePositions;
         this._currentState = {
@@ -44,7 +44,7 @@ abstract class IterativeSolverBase extends SolverBase {
         return displayChange;
     }
 
-    abstract createNewState(state: SolverState, tilePosition: TilePosition): SolverState;
+    protected abstract createNewState(state: SolverState, tilePosition: TilePosition): SolverState;
 
     private tryNextState(state: SolverState): PuzzleChange {
         let displayChange;
