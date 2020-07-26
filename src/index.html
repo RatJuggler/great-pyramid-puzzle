@@ -19,54 +19,46 @@
 
 <body>
 
-<div id="layout">
+<div id="layout" class="purge-g">
 
-  <div id="menu">
+  <header>
+    <a href="#menu" id="menu-toggle" class="menu-toggle">
+      <div></div>
+      <div></div>
+      <div></div>
+    </a>
+    <span>Solving The Great Pyramid Puzzle</span>
+    <a id="github" href="https://github.com/RatJuggler/great-pyramid-puzzle">Github</a>
+  </header>
+
+  <div id="menu" class="pure-u-1-8">
     <div class="pure-menu">
       <button id="go" class="pure-button">Go!</button>
       <ul id="puzzle-selection" class="pure-menu-list">
         <li id="puzzle-type" class="pure-menu-item">
           <p>Puzzle type:</p>
           <div class="selector">
-            <input type="radio" id="puzzle-test" name="puzzle-type" value="Test" checked>
-            <label for="puzzle-test">Test</label>
+            <input type="radio" id="puzzle-simple" name="puzzle-type" value="Simple" checked>
+            <label for="puzzle-simple">Simple</label>
             <input type="radio" id="puzzle-pocket" name="puzzle-type" value="Pocket">
             <label for="puzzle-pocket">Pocket</label>
             <input type="radio" id="puzzle-great" name="puzzle-type" value="Great">
             <label for="puzzle-great">Great</label>
           </div>
         </li>
-        <li id="puzzle-display" class="pure-menu-item">
-          <p>Display:</p>
-          <div class="selector">
-            <input type="radio" id="puzzle-completed" name="puzzle-display" value="Completed" checked>
-            <label for="puzzle-completed">Completed</label>
-            <input type="radio" id="puzzle-animated" name="puzzle-display" value="Animated">
-            <label for="puzzle-animated">Animated</label>
-          </div>
-        </li>
-        <li id="puzzle-option" class="pure-menu-item">
-          <p>Option:</p>
-          <div class="selector">
-            <input type="radio" id="option-test" name="puzzle-option" value="Test" checked>
-            <label for="option-test">Test Display</label>
-            <input type="radio" id="option-solve" name="puzzle-option" value="Solve">
-            <label for="option-solve">Solve Puzzle</label>
-          </div>
-        </li>
-      </ul>
-      <ul id="solve-puzzle" class="pure-menu-list">
         <li id="solve-algorithm" class="pure-menu-item">
           <p>Algorithm:</p>
           <div class="selector">
             <input type="radio" id="algorithm-brute" name="solve-algorithm" value="Brute" checked>
             <label for="algorithm-brute">Brute Force</label>
-            <input type="radio" id="algorithm-ai" name="solve-algorithm" value="Machine" disabled>
-            <label for="algorithm-ai" class="disable">A.I.</label>
+            <input type="radio" id="algorithm-only-valid" name="solve-algorithm" value="OnlyValid">
+            <label for="algorithm-only-valid">Only Valid Tiles</label>
+            <input type="radio" id="algorithm-no-matching" name="solve-algorithm" value="NoMatching">
+            <label for="algorithm-no-matching">No Matching</label>
           </div>
         </li>
       </ul>
-      <ul id="test-puzzle" class="pure-menu-list active">
+      <ul id="no-matching-options" class="pure-menu-list">
         <li id="tile-selection" class="pure-menu-item">
           <p>Tile selection:</p>
           <div class="selector">
@@ -74,8 +66,8 @@
             <label for="selection-random">Random</label>
             <input type="radio" id="selection-sequential" name="tile-selection" value="Sequential">
             <label for="selection-sequential">Sequential</label>
-            <input type="radio" id="selection-test" name="tile-selection" value="Test">
-            <label for="selection-test">Display Test</label>
+            <input type="radio" id="selection-display-test" name="tile-selection" value="DisplayTest">
+            <label for="selection-display-test">Display Test</label>
           </div>
         </li>
         <li id="tile-placement" class="pure-menu-item">
@@ -97,32 +89,47 @@
           </div>
         </li>
       </ul>
+      <ul id="puzzle-display" class="pure-menu-list active">
+        <li id="display-option" class="pure-menu-item">
+          <p>Display:</p>
+          <div class="selector">
+            <input type="radio" id="display-animated" name="display-option" value="Animated" checked>
+            <label for="display-animated">Animated</label>
+            <input type="radio" id="display-completed" name="display-option" value="Completed">
+            <label for="display-completed">Completed</label>
+          </div>
+        </li>
+      </ul>
+      <ul id="animation-options" class="pure-menu-list active">
+        <li id="animation-speed" class="pure-menu-item">
+          <p>Animation speed:</p>
+          <div class="selector">
+            <input type="radio" id="animation-slow" name="animation-speed" value="500" checked>
+            <label for="animation-slow">Slow</label>
+            <input type="radio" id="animation-fast" name="animation-speed" value="250">
+            <label for="animation-fast">Fast</label>
+            <input type="radio" id="animation-ludicrous" name="animation-speed" value="100">
+            <label for="animation-ludicrous">Ludicrous</label>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 
-  <div id="main">
-
-    <header>
-      <a href="#menu" id="menu-toggle" class="menu-toggle">
-        <div></div>
-        <div></div>
-        <div></div>
-      </a>
-      <span>Solving The Great Pyramid Puzzle</span>
-      <a id="github" href="https://github.com/RatJuggler/great-pyramid-puzzle">Github</a>
-    </header>
-
-    <div class="content">
-      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="-90 -95 130 145" id="puzzle-display-area">
-        <!--SVG.js will add nodes in here...-->
-      </svg>
-    </div>
-
-    <footer>
-      <span id="show-info"></span>
-    </footer>
-
+  <div id="status-display" class="pure-u-1-8">
+    <ul id="status-list">
+    </ul>
   </div>
+
+  <div id="main" class="pure-u-3-4">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-115 -83 190 130" id="puzzle-display-area">
+      <!--SVG.js will add nodes in here...-->
+    </svg>
+  </div>
+
+  <footer>
+    <span id="show-info"></span>
+  </footer>
 
 </div>
 

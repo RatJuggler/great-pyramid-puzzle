@@ -1,8 +1,6 @@
 import { Face } from "./face";
 import { FaceData } from "./layout-data-schema";
-import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
-import { getRandomInt } from "./utils";
 import { IntegrityCheckResult } from "./common-data-schema";
 
 
@@ -79,28 +77,11 @@ export class Tetrahedron {
         return tilePositions;
     }
 
-    private get facesWithEmptyPositions(): Face[] {
-        const emptyFaces = Array.from(this._faces.values()).filter(face => face.hasEmptyTilePositions());
-        if (emptyFaces.length === 0) {
-            throw new Error("No empty TilePositions on the Tetrahedron!");
-        }
-        return emptyFaces;
-    }
-
     getFace(name: string): Face {
         if (this._faces.has(name)) {
             return this._faces.get(name)!;
         }
         throw new Error(`Face (${name}) not found on Tetrahedron!`);
-    }
-
-    placeTileRandomly(tile: Tile): TilePosition {
-        const emptyFaces = this.facesWithEmptyPositions;
-        return emptyFaces[getRandomInt(emptyFaces.length)].placeTileRandomly(tile);
-    }
-
-    placeTileSequentially(tile: Tile): TilePosition {
-        return this.facesWithEmptyPositions[0].placeTileSequentially(tile);
     }
 
     toString(): string {

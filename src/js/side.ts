@@ -3,9 +3,9 @@ enum Side {SideA = 'A', SideB = 'B', SideC = 'C'}
 class Sides {
 
     private static readonly _sides = new Map<string, Side>([
-        [Side.SideA, Side.SideA],
-        [Side.SideB, Side.SideB],
-        [Side.SideC, Side.SideC]
+        [Side.SideA.toString(), Side.SideA],
+        [Side.SideB.toString(), Side.SideB],
+        [Side.SideC.toString(), Side.SideC]
     ]);
 
     constructor() {}

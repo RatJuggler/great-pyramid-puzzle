@@ -13,10 +13,10 @@ describe("TilePool behavior", function () {
 
     const validTileData = valid_tile_config1.testTileData;
     const validTilePoolToString = "TilePool:\n" +
-        "Id: 1, Side-A: 1010, Side-B: 0010, Side-C: 0010\n" +
-        "Id: 2, Side-A: 0100, Side-B: 0100, Side-C: 1001\n" +
-        "Id: 3, Side-A: 0101, Side-B: 1001, Side-C: 1010\n" +
-        "Id: 4, Side-A: 0010, Side-B: 0100, Side-C: 0101\n";
+        "Id: 1, Rotation: 0, Side-A: 1010, Side-B: 0010, Side-C: 0010\n" +
+        "Id: 2, Rotation: 0, Side-A: 0100, Side-B: 0100, Side-C: 1001\n" +
+        "Id: 3, Rotation: 0, Side-A: 0101, Side-B: 1001, Side-C: 1010\n" +
+        "Id: 4, Rotation: 0, Side-A: 0010, Side-B: 0100, Side-C: 0101\n";
 
 
     describe("if a new TilePool is created", function () {
@@ -267,12 +267,12 @@ describe("TilePool behavior", function () {
 
     });
 
-    describe("if #getTestTile() is called to return the display test Tile", function () {
+    describe("if #getDisplayTestTile() is called to return the Display test Tile", function () {
 
         context("while there are Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
             for (let i = 0; i < validTileData.totalNumberOfTiles; i++) {
-                const tile = tilePool.testTile;
+                const tile = tilePool.displayTestTile;
                 it("should always return the display test Tile", function () {
                     expect(tile.id).to.equal(0);
                 });
@@ -282,11 +282,11 @@ describe("TilePool behavior", function () {
         context("when there are no Tiles remaining in the TilePool", function () {
             const tilePool = new TilePool(validTileData.totalNumberOfTiles, validTileData.tiles);
             while (!tilePool.isEmpty) {
-                tilePool.testTile;
+                tilePool.displayTestTile;
             }
             it("should throw an error", function () {
                 expect(function () {
-                    tilePool.testTile;
+                    tilePool.displayTestTile;
                 }).to.throw(Error, "No more Tiles in the pool!");
             });
         });

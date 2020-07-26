@@ -1,5 +1,5 @@
 import tile_schema from "../../src/tile-data-schema.json";
-import test_tiles from "../../src/test-tile-data.json";
+import test_tiles from "../../src/simple-tile-data.json";
 import pocket_tiles from "../../src/pocket-tile-data.json";
 import great_tiles from "../../src/great-tile-data.json";
 import valid_test_tiles from "../valid-test-tile-data1.json";

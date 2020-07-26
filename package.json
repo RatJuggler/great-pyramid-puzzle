@@ -1,7 +1,7 @@
 {
   "Title": "The Great Pyramid Puzzle",
   "name": "great-pyramid-puzzle",
-  "version": "0.0.5",
+  "version": "0.2.0",
   "private": true,
   "description": "Solving The Great Pyramid Puzzle.",
   "main": "app.js",
@@ -29,7 +29,7 @@
     "purecss": "^2.0.3"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.11",
+    "@types/chai": "^4.2.12",
     "@types/mocha": "^8.0.0",
     "ajv": "^6.12.3",
     "chai": "^4.2.0",

@@ -1,7 +1,6 @@
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
 import { TilePositionData} from "./layout-data-schema";
-import { getRandomInt } from "./utils";
 import { IntegrityCheckResult } from "./common-data-schema";
 import { Side, SIDES } from "./side";
 
@@ -112,22 +111,6 @@ export class Face {
 
     hasEmptyTilePositions(): boolean {
         return this.emptyTilePositions.length > 0;
-    }
-
-    private placeTile(tile: Tile, position: number): TilePosition {
-        const emptyPositions = this.emptyTilePositions;
-        if (emptyPositions.length === 0) {
-            throw new Error("No empty TilePositions on the Face!");
-        }
-        return emptyPositions[position].placeTile(tile);
-    }
-
-    placeTileRandomly(tile: Tile): TilePosition {
-        return this.placeTile(tile, getRandomInt(this.emptyTilePositions.length));
-    }
-
-    placeTileSequentially(tile: Tile): TilePosition {
-        return this.placeTile(tile, 0);
     }
 
     toString(): string {

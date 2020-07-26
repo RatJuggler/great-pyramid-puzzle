@@ -8,9 +8,9 @@ import { createSVGWindow } from 'svgdom';
 
 describe("if #getDisplayManager() is called", function () {
 
-    context("with a puzzle type display data argument of 'Test'", function () {
+    context("with a puzzle type display data argument of 'Simple'", function () {
         const window = createSVGWindow();
-        const result = getDisplayManager(window.document,"Test");
+        const result = getDisplayManager(window.document,"Simple");
         it("should return a valid DisplayManager", function () {
             expect(result).to.be.an.instanceOf(DisplayManager);
         });

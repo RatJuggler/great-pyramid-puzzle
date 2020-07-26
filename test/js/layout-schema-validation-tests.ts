@@ -1,5 +1,5 @@
 import layout_schema from "../../src/layout-data-schema.json";
-import test_layout from "../../src/test-layout-data.json";
+import test_layout from "../../src/simple-layout-data.json";
 import pocket_layout from "../../src/pocket-layout-data.json";
 import great_layout from "../../src/great-layout-data.json";
 import valid_test_layout from "../valid-test-layout-data1.json";
