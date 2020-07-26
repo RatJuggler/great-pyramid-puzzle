@@ -98,6 +98,21 @@ describe("BruteForceSolver behaviour", function () {
                 expect(result.tileId).to.equal(3);
             });
         });
+        context("for the seventh time on an instance instantiated for the test puzzle", function () {
+            const result = solver.nextState() as TileChange;
+            it("should return an instance of TileChange", function () {
+                expect(result).to.be.an.instanceOf(TileChange);
+            });
+            it("should be for type Place", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Place);
+            });
+            it("should be for position 3-1", function () {
+                expect(result.tilePositionId).to.equal("3-1");
+            });
+            it("should be with tile 4", function () {
+                expect(result.tileId).to.equal(4);
+            });
+        });
 
     });
 
