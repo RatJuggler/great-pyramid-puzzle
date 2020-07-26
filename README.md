@@ -19,16 +19,16 @@ The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I t
 
 You can see the latest release in action [here](https://ratjuggler.github.io/great-pyramid-puzzle/).
 
-These are rough timings using the Completed option, no animation:
+Rough timings (time is to first solution):
 
-| Algorithm        | Puzzle   | Time to first solution  |
-| ---------------- | -------- | ----------------------- |
-| Brute Force      | Test     | Instant                 |
-|                  | Pocket   | 2 Secs                  |
-|                  | Great    | ???                     |
-| Only Valid Tiles | Test     | Instant                 |
-|                  | Pocket   | 1 Sec                   |
-|                  | Great    | 24 Secs                 |
+| Algorithm        | Puzzle   | Time (slow animated) | Time    |
+| ---------------- | -------- | -------------------- | ------- |
+| Brute Force      | Test     | 10 Secs              | Instant |
+|                  | Pocket   |                      | 2 Secs  |
+|                  | Great    |                      | ???     |
+| Only Valid Tiles | Test     | 5 Secs               | Instant |
+|                  | Pocket   |                      | Instant |
+|                  | Great    |                      | ???     |
 
 ## Puzzle Overview
 There's an excellent overview of the puzzle on [Jaap's Puzzle Page](https://www.jaapsch.net/puzzles/pyramid.htm) but I'll repeat a
