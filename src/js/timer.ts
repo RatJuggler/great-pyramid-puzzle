@@ -3,24 +3,25 @@ import { StatusList } from "./status-list-manager";
 
 export class Timer {
 
+    private static readonly STATUS_ID = "time-taken";
+
     private _startTime: number = 0;
     private _finishTime: number = 0;
 
     constructor(private readonly _statusList: StatusList) {}
 
     start(): void {
-        this._statusList.clearStatus();
         const now = new Date();
         this._startTime = now.getTime();
         this._finishTime = 0;
-        this._statusList.addStatus("Started: " + Timer.formatTime(now));
+        this._statusList.addStatus(Timer.STATUS_ID, "Timer", "Started: " + Timer.formatTime(now));
     }
 
     stop(): void {
         const now = new Date();
         this._finishTime = now.getTime();
-        this._statusList.addStatus("Finished: " + Timer.formatTime(now));
-        this._statusList.addStatus("Elapsed: " + this.elapsed());
+        this._statusList.addToStatus(Timer.STATUS_ID, "\nFinished: " + Timer.formatTime(now));
+        this._statusList.addToStatus(Timer.STATUS_ID, "\nElapsed: " + this.elapsed());
     }
 
     private elapsed(): string {

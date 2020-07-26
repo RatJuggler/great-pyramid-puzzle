@@ -11,8 +11,10 @@ import { StatusListManager } from "./status-list-manager";
 let solverTimeoutId: number;
 // Track solver worker.
 let solverWorker: Worker;
+// Status list manager.
+const statusList = new StatusListManager("status-list");
 // Track how long solvers run for.
-const solverTimer = new Timer(new StatusListManager("status-list"));
+const solverTimer = new Timer(statusList);
 
 
 function getSelector(name: string): string {
@@ -61,7 +63,7 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
     solverWorker.postMessage(solverOptions);
 }
 
-function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
+function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number, changeCounter: string, changeCount: number): void {
     // Schedule a series of events to animate placing tiles on the puzzle.
     solverTimeoutId = setTimeout( () => {
         const puzzleChange = solver.nextState();
@@ -72,7 +74,9 @@ function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, anima
             attachRotateEvents(displayManager);
         } else {
             displayManager.display(puzzleChange);
-            runAnimatedSolver(solver, displayManager, animateDuration);
+            changeCount++;
+            statusList.replaceStatus(changeCounter, changeCount.toString());
+            runAnimatedSolver(solver, displayManager, animateDuration, changeCounter, changeCount);
         }
     }, animateDuration + 20);
 }
@@ -80,9 +84,12 @@ function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, anima
 function startAnimatedSolver(solverOptions: SolverOptions, displayManager: DisplayManager, animationDuration: number): void {
     // Build the solver to use.
     const solver = buildSolver(solverOptions);
+    // Create a change count status card.
+    const changeCounter = "change-counter";
+    statusList.addStatus(changeCounter, "Display Changes", "0")
     // Kick off the animated solver.
     solverTimer.start();
-    runAnimatedSolver(solver, displayManager, animationDuration);
+    runAnimatedSolver(solver, displayManager, animationDuration, changeCounter, 0);
 }
 
 function getSpeed(): number {
@@ -121,6 +128,8 @@ function solvePuzzle(): void {
     const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, animationDuration);
     // Show the initial puzzle state.
     displayManager.initialDisplay();
+    // Clear the status list.
+    statusList.clearList();
     // Start the solving process.
     if (animationDuration === 0) {
         startWorkerSolver(solverOptions, displayManager);
