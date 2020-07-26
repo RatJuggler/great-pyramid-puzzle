@@ -28,7 +28,7 @@ export class Tile {
 
     private readonly _id: number;
     private readonly _sideSegments = new Array<SideSegments>();
-    private _rotation: number = 0;
+    private _rotations: number = 0;
 
     validateSegments(segments: string): string {
         if (segments.length !== 4) {
@@ -55,26 +55,26 @@ export class Tile {
         return this._id;
     }
 
+    get rotations(): number {
+        return this._rotations;
+    }
+
+    get segments(): string {
+        return this._sideSegments[0].toString();
+    }
+
     placed(): Tile {
-        this._rotation = 0;
+        this._rotations = 0;
         return this;
     }
 
     rotate(): boolean {
-        this._rotation = ++this._rotation % 3;
-        return this._rotation !== 0;
-    }
-
-    private getRotatedSegments(): SideSegments {
-        return this._sideSegments[this._rotation];
+        this._rotations = ++this._rotations % 3;
+        return this._rotations !== 0;
     }
 
     getSegmentsForSide(side: Side): string {
-        return this.getRotatedSegments()[side];
-    }
-
-    getSegments(): string {
-        return this.getRotatedSegments().toString();
+        return this._sideSegments[this._rotations][side];
     }
 
     getSegmentsForSideToMatchWith(side: Side): string {
@@ -92,7 +92,7 @@ export class Tile {
     }
 
     toString(): string {
-        return `Id: ${this._id}, Rotation: ${this._rotation}, ` +
+        return `Id: ${this._id}, Rotation: ${this._rotations}, ` +
             `Side-A: ${this.getSegmentsForSide(Side.SideA)}, ` +
             `Side-B: ${this.getSegmentsForSide(Side.SideB)}, ` +
             `Side-C: ${this.getSegmentsForSide(Side.SideC)}`;

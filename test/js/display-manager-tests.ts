@@ -5,7 +5,7 @@ import { PuzzleComponents, PuzzleDataElements } from "../../src/js/common-data-s
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { getDisplayManager } from "../../src/js/display-loader";
 import { DisplayManager } from "../../src/js/display-manager";
-import { PuzzleChange } from "../../src/js/puzzle-changes";
+import { TileChange, TilePositionChange } from "../../src/js/puzzle-changes";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -27,7 +27,7 @@ function puzzleWithAllTiles(puzzleTypeData: PuzzleDataElements, displayManager: 
         tilePosition.tile = puzzle.tilePool.randomTile;
     })
     puzzle.tetrahedron.tilePositions
-        .map((tilePosition) => PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments()))
+        .map((tilePosition) => TileChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments))
         .forEach((displayChange) => displayManager.display(displayChange));
     return puzzle;
 }
@@ -65,9 +65,9 @@ describe("Puzzle display functionality", function () {
             puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
                 let tpChange;
                 if (tilePosition.isEmpty()) {
-                    tpChange = PuzzleChange.empty(tilePosition.id);
+                    tpChange = TilePositionChange.empty(tilePosition.id);
                 } else {
-                    tpChange = PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments());
+                    tpChange = TileChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
                 }
                 displayManager.display(tpChange);
             });
@@ -100,7 +100,7 @@ describe("Puzzle display functionality", function () {
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay();
-            const tpChange = PuzzleChange.place("1-1", 1, "000100100100");
+            const tpChange = TileChange.place("1-1", 1, 0, "000100100100");
             displayManager.display(tpChange);
             it("should have 4 faces, 3 empty tile position, 1 tile and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(10);
@@ -115,7 +115,7 @@ describe("Puzzle display functionality", function () {
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay();
             puzzleWithAllTiles(puzzleTypeData, displayManager);
-            const tpChange = PuzzleChange.rotate("1-1");
+            const tpChange = TilePositionChange.rotate("1-1");
             displayManager.display(tpChange);
             it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(13);
@@ -130,7 +130,7 @@ describe("Puzzle display functionality", function () {
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay();
             puzzleWithAllTiles(puzzleTypeData, displayManager);
-            const tpChange = PuzzleChange.remove("1-1", 1, "000100100100");
+            const tpChange = TileChange.remove("1-1", 1, 0, "000100100100");
             displayManager.display(tpChange);
             it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(12);

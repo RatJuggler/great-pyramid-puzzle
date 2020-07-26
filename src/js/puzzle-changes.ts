@@ -30,26 +30,6 @@ class PuzzleChange {
 
     constructor(readonly type: PuzzleChangeType) {}
 
-    static empty(tilePositionId: string): PuzzleChange {
-        return new TilePositionChange(PuzzleChangeType.Empty, tilePositionId);
-    }
-
-    static final(tilePositionId: string, tileId: number, rotatedSegments: string): PuzzleChange {
-        return new TileChange(PuzzleChangeType.Final, tilePositionId, tileId, rotatedSegments);
-    }
-
-    static place(tilePositionId: string, tileId: number, rotatedSegments: string): PuzzleChange {
-        return new TileChange(PuzzleChangeType.Place, tilePositionId, tileId, rotatedSegments);
-    }
-
-    static rotate(tilePositionId: string): PuzzleChange {
-        return new TilePositionChange(PuzzleChangeType.Rotate, tilePositionId);
-    }
-
-    static remove(tilePositionId: string, tileId: number, rotatedSegments: string): PuzzleChange {
-        return new TileChange(PuzzleChangeType.Remove, tilePositionId, tileId, rotatedSegments);
-    }
-
     isSolved(): boolean {
         return this === PuzzleChange.SOLVED;
     }
@@ -62,6 +42,14 @@ class PuzzleChange {
 
 class TilePositionChange extends PuzzleChange {
 
+    static empty(tilePositionId: string): PuzzleChange {
+        return new TilePositionChange(PuzzleChangeType.Empty, tilePositionId);
+    }
+
+    static rotate(tilePositionId: string): PuzzleChange {
+        return new TilePositionChange(PuzzleChangeType.Rotate, tilePositionId);
+    }
+
     constructor(type: PuzzleChangeType, readonly tilePositionId: string) {
         super(type);
     }
@@ -70,7 +58,19 @@ class TilePositionChange extends PuzzleChange {
 
 class TileChange extends TilePositionChange {
 
-    constructor(type: PuzzleChangeType, tilePositionId: string, readonly tileId: number, readonly rotatedSegments: string) {
+    static final(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.Final, tilePositionId, tileId, rotations, segments);
+    }
+
+    static place(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.Place, tilePositionId, tileId, rotations, segments);
+    }
+
+    static remove(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.Remove, tilePositionId, tileId, rotations, segments);
+    }
+
+    constructor(type: PuzzleChangeType, tilePositionId: string, readonly tileId: number, readonly rotations: number, readonly segments: string) {
         super(type, tilePositionId);
     }
 

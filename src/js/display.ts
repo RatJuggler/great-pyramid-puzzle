@@ -52,16 +52,16 @@ export class Display {
             .stroke({ width: outline, color: Display.LINE_COLOUR});
     }
 
-    drawTile(tpCenter: CenterPointData, tileId: number, rotatedSegments: string): G {
+    drawTile(tpCenter: CenterPointData, tileId: number, rotations: number, segments: string): G {
         // Group the elements which make up a tile position.
         const tGroup = this._draw.group().id("tile" + tileId);
         // Fill in the tile colour.
         this.drawTriangle(tGroup, tpCenter, this._scaleTile, Display.TILE_COLOUR, 0);
         // Draw the red segments.
-        for (let segN = 0; segN < rotatedSegments.length; segN++) {
-            if (rotatedSegments.charAt(segN) === '1') {
+        for (let segN = 0; segN < segments.length; segN++) {
+            if (segments.charAt(segN) === '1') {
                 tGroup.polygon(this.scaleSegment(segN, tpCenter, this._scaleTile))
-                    .rotate(tpCenter.r, tpCenter.x, tpCenter.y)
+                    .rotate(tpCenter.r + (rotations * 120), tpCenter.x, tpCenter.y)
                     .fill(Display.SEGMENT_COLOUR)
                     .stroke('none');
             }
@@ -84,7 +84,7 @@ export class Display {
         tpGroup.element('title').words(desc);
         // Draw the tile.
         tpGroup.add(
-            this.drawTile(tpCenter, tChange.tileId, tChange.rotatedSegments)
+            this.drawTile(tpCenter, tChange.tileId, tChange.rotations, tChange.segments)
         );
     }
 

@@ -1,10 +1,10 @@
-import {Tile} from '../../src/js/tile';
-import {TileDefinition} from "../../src/js/tile-data-schema";
-import {Side} from "../../src/js/side";
-import {expect} from 'chai';
+import { Tile } from '../../src/js/tile';
+import { TileDefinition } from "../../src/js/tile-data-schema";
+import { Side } from "../../src/js/side";
+import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import {TILE_1_DATA, TILE_2_DATA, TILE_3_DATA, TILE_4_DATA} from "./common-test-data";
+import { TILE_1_DATA, TILE_2_DATA, TILE_3_DATA, TILE_4_DATA } from "./common-test-data";
 
 
 describe("Tile behaviour", function () {
@@ -55,24 +55,22 @@ describe("Tile behaviour", function () {
 
     });
 
-    describe("if #place() is called on a Tile", function () {
+    describe("if #placed() is called on a Tile", function () {
 
         context("and the Tile has not been rotated", function () {
             const tile = new Tile(TILE_1_DATA);
-            const expectedSegments = tile.getSegments();
             tile.placed();
             it("should not affect the Tile", function () {
-                expect(tile.getSegments()).to.equal(expectedSegments);
+                expect(tile.rotations).to.equal(0);
             });
         });
 
         context("and the Tile has been rotated", function () {
             const tile = new Tile(TILE_1_DATA);
-            const expectedSegments = tile.getSegments();
             tile.rotate();
             tile.placed();
             it("should reset the rotation", function () {
-                expect(tile.getSegments()).to.equal(expectedSegments);
+                expect(tile.rotations).to.equal(0);
             });
         });
 
@@ -88,8 +86,7 @@ describe("Tile behaviour", function () {
                 expect(result).to.be.true;
             });
             it("should track the Tile as being rotated once", function () {
-                const expectedSegments = TILE_1_DATA.sideC + TILE_1_DATA.sideA + TILE_1_DATA.sideB;
-                expect(tile.getSegments()).to.equal(expectedSegments);
+                expect(tile.rotations).to.equal(1);
             });
         });
 
@@ -103,30 +100,29 @@ describe("Tile behaviour", function () {
                 expect(result).to.be.false;
             });
             it("should reset the rotation back to 0", function () {
-                const expectedSegments = TILE_1_DATA.sideA + TILE_1_DATA.sideB + TILE_1_DATA.sideC;
-                expect(tile.getSegments()).to.equal(expectedSegments);
+                expect(tile.rotations).to.equal(0);
             });
         });
 
     });
 
-    describe("if #getSegmentsForSide() is called to get the segments for a side", function () {
+    describe("if #getSegmentsForSide() is called to get the segments for a side on a Tile that hasn't been rotated", function () {
 
-        context("with argument SideA and the Tile hasn't been rotated", function () {
+        context("with argument SideA", function () {
             const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideA", function () {
                 expect(tile.getSegmentsForSide(Side.SideA)).to.equal(TILE_3_DATA.sideA);
             });
         });
 
-        context("with argument SideB and the Tile hasn't been rotated", function () {
+        context("with argument SideB", function () {
             const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideB", function () {
                 expect(tile.getSegmentsForSide(Side.SideB)).to.equal(TILE_3_DATA.sideB);
             });
         });
 
-        context("with argument SideC and the Tile hasn't been rotated", function () {
+        context("with argument SideC", function () {
             const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideC", function () {
                 expect(tile.getSegmentsForSide(Side.SideC)).to.equal(TILE_3_DATA.sideC);
@@ -135,14 +131,73 @@ describe("Tile behaviour", function () {
 
     });
 
-    describe("if #getSegments() is called to get the rotated segment codings", function () {
+    describe("if #getSegmentsForSide() is called to get the segments for a side on a Tile that has been rotated once", function () {
+
+        context("with argument SideA", function () {
+            const tile = new Tile(TILE_3_DATA);
+            tile.rotate();
+            it("should return the segment coding for SideC", function () {
+                expect(tile.getSegmentsForSide(Side.SideA)).to.equal(TILE_3_DATA.sideC);
+            });
+        });
+
+        context("with argument SideB", function () {
+            const tile = new Tile(TILE_3_DATA);
+            tile.rotate();
+            it("should return the segment coding for SideA", function () {
+                expect(tile.getSegmentsForSide(Side.SideB)).to.equal(TILE_3_DATA.sideA);
+            });
+        });
+
+        context("with argument SideC", function () {
+            const tile = new Tile(TILE_3_DATA);
+            tile.rotate();
+            it("should return the segment coding for SideB", function () {
+                expect(tile.getSegmentsForSide(Side.SideC)).to.equal(TILE_3_DATA.sideB);
+            });
+        });
+
+    });
+
+    describe("if #getSegmentsForSide() is called to get the segments for a side on a Tile that has been rotated twice", function () {
+
+        context("with argument SideA", function () {
+            const tile = new Tile(TILE_3_DATA);
+            tile.rotate();
+            tile.rotate();
+            it("should return the segment coding for SideB", function () {
+                expect(tile.getSegmentsForSide(Side.SideA)).to.equal(TILE_3_DATA.sideB);
+            });
+        });
+
+        context("with argument SideB", function () {
+            const tile = new Tile(TILE_3_DATA);
+            tile.rotate();
+            tile.rotate();
+            it("should return the segment coding for SideC", function () {
+                expect(tile.getSegmentsForSide(Side.SideB)).to.equal(TILE_3_DATA.sideC);
+            });
+        });
+
+        context("with argument SideC", function () {
+            const tile = new Tile(TILE_3_DATA);
+            tile.rotate();
+            tile.rotate();
+            it("should return the segment coding for SideA", function () {
+                expect(tile.getSegmentsForSide(Side.SideC)).to.equal(TILE_3_DATA.sideA);
+            });
+        });
+
+    });
+
+    describe("if #getSegments() is called to get the segment codings", function () {
 
         context("with a newly placed Tile", function () {
-            const tile = new Tile(TILE_1_DATA);
+            const tile = new Tile(TILE_2_DATA);
             tile.placed();
-            const expectedSegments = TILE_1_DATA.sideA + TILE_1_DATA.sideB + TILE_1_DATA.sideC;
-            it("should return the segments in their initial position", function () {
-                expect(tile.getSegments()).to.equal(expectedSegments);
+            const expectedSegments = TILE_2_DATA.sideA + TILE_2_DATA.sideB + TILE_2_DATA.sideC;
+            it("should return the segments", function () {
+                expect(tile.segments).to.equal(expectedSegments);
             });
         });
 
@@ -150,9 +205,20 @@ describe("Tile behaviour", function () {
             const tile = new Tile(TILE_2_DATA);
             tile.placed();
             tile.rotate();
-            const expectedSegments = TILE_2_DATA.sideC + TILE_2_DATA.sideA + TILE_2_DATA.sideB;
-            it("should return the segments rotated once", function () {
-                expect(tile.getSegments()).to.equal(expectedSegments);
+            const expectedSegments = TILE_2_DATA.sideA + TILE_2_DATA.sideB + TILE_2_DATA.sideC;
+            it("should return the segments as normal", function () {
+                expect(tile.segments).to.equal(expectedSegments);
+            });
+        });
+
+        context("and the TilePosition has been rotated twice", function () {
+            const tile = new Tile(TILE_2_DATA);
+            tile.placed();
+            tile.rotate();
+            tile.rotate();
+            const expectedSegments = TILE_2_DATA.sideA + TILE_2_DATA.sideB + TILE_2_DATA.sideC;
+            it("should return the segments as normal", function () {
+                expect(tile.segments).to.equal(expectedSegments);
             });
         });
 

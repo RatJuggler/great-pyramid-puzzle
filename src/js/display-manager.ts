@@ -59,11 +59,11 @@ class PlaceTilePosition extends DisplayChange {
         // Find the destination tile position of the new tile.
         const tpDisplay = this.display.getTilePosition(this._tChange.tilePositionId);
         // Draw the tile to be placed at the starting position.
-        const placeTile = this.display.drawTile(this.display.startCenter, this._tChange.tileId, this._tChange.rotatedSegments);
+        const placeTile = this.display.drawTile(this.display.startCenter, this._tChange.tileId, 0, this._tChange.segments);
         // Animate the tile moving from the start to the destination.
         const matrix = new Matrix()
             .translate(tpDisplay.center.x - this.display.startCenter.x, tpDisplay.center.y - this.display.startCenter.y)
-            .rotate(tpDisplay.center.r, tpDisplay.center.x, tpDisplay.center.y);
+            .rotate(tpDisplay.center.r + (this._tChange.rotations * 120), tpDisplay.center.x, tpDisplay.center.y);
         // @ts-ignore
         placeTile.animate({duration: this._animationDuration}).transform(matrix)
             .after(() => {
@@ -111,7 +111,7 @@ class RemoveTilePosition extends DisplayChange {
         const tpDisplay = this.display.getTilePosition(this._tChange.tilePositionId);
         // Redraw the tile position with the tile removed then draw the tile at the tile position ready to be animated.
         this.display.drawEmptyTilePosition(tpDisplay.group, tpDisplay.center, this._tChange.tilePositionId);
-        const removeTile = this.display.drawTile(tpDisplay.center, this._tChange.tileId, this._tChange.rotatedSegments);
+        const removeTile = this.display.drawTile(tpDisplay.center, this._tChange.tileId, this._tChange.rotations, this._tChange.segments);
         // Animate the tile moving from it's old position back to the start.
         const matrix = new Matrix()
             .translate(- (tpDisplay.center.x - this.display.startCenter.x), - (tpDisplay.center.y - this.display.startCenter.y))

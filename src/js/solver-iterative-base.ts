@@ -3,7 +3,7 @@ import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
-import { PuzzleChange } from "./puzzle-changes";
+import { PuzzleChange, TileChange, TilePositionChange } from "./puzzle-changes";
 
 
 type SolverState = {
@@ -34,10 +34,10 @@ abstract class IterativeSolverBase extends SolverBase {
         // Try rotating the current tile.
         const tilePosition = state.tilePosition;
         if (tilePosition.tile.rotate()) {
-            displayChange = PuzzleChange.rotate(tilePosition.id);
+            displayChange = TilePositionChange.rotate(tilePosition.id);
         } else {
             // If we've tried all the rotations and none match then reject this tile.
-            displayChange = PuzzleChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments());
+            displayChange = TileChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
             const tile = tilePosition.removeTile();
             state.rejectedTiles.push(tile);
         }
@@ -66,7 +66,7 @@ abstract class IterativeSolverBase extends SolverBase {
         const tilePosition = state.tilePosition;
         if (state.untriedTiles.length > 0) {
             tilePosition.tile = state.untriedTiles.shift()!;
-            displayChange = PuzzleChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments());
+            displayChange = TileChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
         } else {
             // Otherwise if we've tried all the tiles and nothing matches we need to move back a tile position.
             this._emptyTilePositions.unshift(tilePosition);

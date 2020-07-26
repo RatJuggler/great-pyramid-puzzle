@@ -174,13 +174,13 @@ describe("TilePosition behaviour", function () {
 
         context("and the TilePosition is empty", function () {
             const tilePosition = new TilePosition("TP", "1");
-            const expectedSegments = TILE_1.getSegments();
+            const expectedSegments = TILE_1.segments;
             tilePosition.tile = TILE_1;
             it("should place the Tile", function () {
                 expect(tilePosition.tile).to.equal(TILE_1);
             });
             it("and the rotation as 0", function () {
-                expect(tilePosition.tile.getSegments()).to.equal(expectedSegments);
+                expect(tilePosition.tile.segments).to.equal(expectedSegments);
             })
         });
 
@@ -456,7 +456,7 @@ describe("TilePosition behaviour", function () {
             tilePosition4.tile.rotate();
             const result = tilePosition1.segmentsToFind();
             it("should return true", function () {
-                expect(result).to.equal(TILE_2.getSegments());
+                expect(result).to.equal(TILE_2.segments);
             });
         });
 

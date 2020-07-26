@@ -3,7 +3,7 @@ import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
-import { PuzzleChange } from "./puzzle-changes";
+import { PuzzleChange, TileChange, TilePositionChange } from "./puzzle-changes";
 import { getRandomInt } from "./utils";
 
 
@@ -60,14 +60,14 @@ export class NoMatchingSolver extends SolverBase {
     private placeTile(): PuzzleChange {
         this._tilePosition.tile = this.getTileSelection();
         this._rotating = this.tileRotations();
-        return PuzzleChange.place(this._tilePosition.id, this._tilePosition.tile.id, this._tilePosition.tile.getSegments());
+        return TileChange.place(this._tilePosition.id, this._tilePosition.tile.id, this._tilePosition.tile.rotations, this._tilePosition.tile.segments);
     }
 
     private rotateOrNext(): PuzzleChange {
         if (this._rotating > 0) {
             this._rotating--;
             this._tilePosition.tile.rotate();
-            return PuzzleChange.rotate(this._tilePosition.id);
+            return TilePositionChange.rotate(this._tilePosition.id);
         } else {
             if (this._emptyTilePositions.length === 0) {
                 return PuzzleChange.SOLVED;

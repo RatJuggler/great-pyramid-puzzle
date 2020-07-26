@@ -1,6 +1,6 @@
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
-import { PuzzleChange } from "./puzzle-changes";
+import { PuzzleChange, TileChange } from "./puzzle-changes";
 
 
 interface Solver {
@@ -22,7 +22,7 @@ abstract class SolverBase implements Solver {
     finalState(): Array<PuzzleChange> {
         return this._tetrahedron.tilePositions
             .map((tilePosition) =>
-                PuzzleChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.getSegments()));
+                TileChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments));
     }
 
 }
