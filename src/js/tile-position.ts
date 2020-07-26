@@ -1,6 +1,6 @@
-import {Tile} from "./tile";
-import {IntegrityCheckResult} from "./common-data-schema";
-import {Side, SIDES} from "./side";
+import { Tile } from "./tile";
+import { IntegrityCheckResult } from "./common-data-schema";
+import { Side, SIDES } from "./side";
 
 
 type TilePositionJoinProperties = {
@@ -77,9 +77,9 @@ export class TilePosition {
         return tileToRemove;
     }
 
-    matches(): boolean {
+    tilesMatch(): boolean {
         if (this.isEmpty()) {
-            throw new Error("Can't check if a TilePosition matches when there is no Tile to match from!");
+            throw new Error("Can't check if a Tile matches when there is no Tile at the TilePosition to match from!");
         }
         // Check match for each join to another TilePosition.
         for (const join of this._joins.entries()) {
@@ -87,9 +87,9 @@ export class TilePosition {
             const otherTilePosition = join[1].ofTilePosition;
             if (!otherTilePosition.isEmpty()) {
                 // At this TilePosition we need the side of the Tile facing the other TilePosition.
-                const thisSegments = this.tile.getSideSegments(join[0]);
+                const thisSegments = this.tile.getSegmentsForSide(join[0]);
                 // For the other TilePosition we then need the side of the Tile there, facing this TilePosition.
-                const otherSegments = otherTilePosition.tile.getSideSegmentsToMatchWith(join[1].toSide);
+                const otherSegments = otherTilePosition.tile.getSegmentsForSideToMatchWith(join[1].toSide);
                 // Finally we can make the comparison. Any failure means the current Tile doesn't match at this TilePosition.
                 if (thisSegments !== otherSegments) {
                     return false;
@@ -99,16 +99,20 @@ export class TilePosition {
         return true;
     }
 
-    needToMatch(): Array<string> {
-        const needToMatch = new Array<string>();
+    segmentsToFind(): string {
+        if (!this.isEmpty()) {
+            throw new Error("TilePosition to find segments for already contains a Tile!");
+        }
+        let needToMatch: string = "";
         // Check each join to another TilePosition.
         for (const join of this._joins.entries()) {
             const otherTilePosition = join[1].ofTilePosition;
-            if (!otherTilePosition.isEmpty()) {
-                // For the other TilePosition we then need the side of the Tile there, facing this TilePosition.
-                const otherSegment = otherTilePosition.tile.getSideSegmentsToMatchWith(join[1].toSide);
-                // Save to the return list.
-                needToMatch.push(otherSegment);
+            if (otherTilePosition.isEmpty()) {
+                // If no Tile search can be for anything.
+                needToMatch += "....";
+            } else {
+                // If a Tile is present then we need the side of the Tile facing this TilePosition.
+                needToMatch += otherTilePosition.tile.getSegmentsForSideToMatchWith(join[1].toSide);
             }
         }
         return needToMatch;

@@ -1,18 +1,33 @@
-import {TileDefinition} from "./tile-data-schema";
-import {Side} from "./side";
+import { TileDefinition } from "./tile-data-schema";
+import { Side } from "./side";
 
+
+class SideSegments {
+
+    constructor(private readonly _sideA: string, private readonly _sideB: string, private readonly _sideC: string) {}
+
+    get A(): string {
+        return this._sideA;
+    }
+
+    get B(): string {
+        return this._sideB;
+    }
+
+    get C(): string {
+        return this._sideC;
+    }
+
+    toString(): string {
+        return this.A + this.B + this.C;
+    }
+
+}
 
 export class Tile {
 
-    private static readonly ROTATION_MAP = [
-        new Map<Side, Side>([[Side.SideA, Side.SideA], [Side.SideB, Side.SideB], [Side.SideC, Side.SideC]]),
-        new Map<Side, Side>([[Side.SideA, Side.SideC], [Side.SideB, Side.SideA], [Side.SideC, Side.SideB]]),
-        new Map<Side, Side>([[Side.SideA, Side.SideB], [Side.SideB, Side.SideC], [Side.SideC, Side.SideA]])
-    ];
-
     private readonly _id: number;
-    private readonly _sideSegments = new Map<Side, string>();
-    private _sideValues: Array<string>;
+    private readonly _sideSegments = new Array<SideSegments>();
     private _rotation: number = 0;
 
     validateSegments(segments: string): string {
@@ -27,10 +42,13 @@ export class Tile {
 
     constructor(tileDetails: TileDefinition) {
         this._id = tileDetails.tile;
-        this._sideSegments.set(Side.SideA, this.validateSegments(tileDetails.sideA));
-        this._sideSegments.set(Side.SideB, this.validateSegments(tileDetails.sideB));
-        this._sideSegments.set(Side.SideC, this.validateSegments(tileDetails.sideC));
-        this._sideValues = Array.from(this._sideSegments.values());
+        const segments = new SideSegments(
+            this.validateSegments(tileDetails.sideA),
+            this.validateSegments(tileDetails.sideB),
+            this.validateSegments(tileDetails.sideC));
+        this._sideSegments.push(segments);
+        this._sideSegments.push(new SideSegments(segments.C, segments.A, segments.B));
+        this._sideSegments.push(new SideSegments(segments.B, segments.C, segments.A));
     }
 
     get id(): number {
@@ -43,33 +61,30 @@ export class Tile {
     }
 
     rotate(): boolean {
-        this._rotation = ++this._rotation % this._sideSegments.size;
+        this._rotation = ++this._rotation % 3;
         return this._rotation !== 0;
     }
 
-    private mapRotationToTile(mapFrom: Side): Side {
-        return Tile.ROTATION_MAP[this._rotation].get(mapFrom)!;
+    private getRotatedSegments(): SideSegments {
+        return this._sideSegments[this._rotation];
     }
 
-    getSideSegments(side: Side): string {
-        const sideRotated = this.mapRotationToTile(side);
-        return this._sideSegments.get(sideRotated)!;
+    getSegmentsForSide(side: Side): string {
+        return this.getRotatedSegments()[side];
     }
 
     getSegments(): string {
-        return this.getSideSegments(Side.SideA) +
-            this.getSideSegments(Side.SideB) +
-            this.getSideSegments(Side.SideC);
+        return this.getRotatedSegments().toString();
     }
 
-    getSideSegmentsToMatchWith(side: Side): string {
-        const sideSegments = this.getSideSegments(side);
+    getSegmentsForSideToMatchWith(side: Side): string {
+        const sideSegments = this.getSegmentsForSide(side);
         return sideSegments[3] + sideSegments[2] + sideSegments[1] + sideSegments[0];
     }
 
-    hasSideSegments(findSideSegments: Array<string>): boolean {
-        for (const findSegments of findSideSegments as Array<string>) {
-            if (this._sideValues.includes(findSegments)) {
+    hasSideSegments(findSideSegments: string): boolean {
+        for (const segments of this._sideSegments) {
+            if (!!segments.toString().match(findSideSegments)) {
                 return true;
             }
         }
@@ -78,9 +93,9 @@ export class Tile {
 
     toString(): string {
         return `Id: ${this._id}, Rotation: ${this._rotation}, ` +
-            `Side-A: ${this.getSideSegments(Side.SideA)}, ` +
-            `Side-B: ${this.getSideSegments(Side.SideB)}, ` +
-            `Side-C: ${this.getSideSegments(Side.SideC)}`;
+            `Side-A: ${this.getSegmentsForSide(Side.SideA)}, ` +
+            `Side-B: ${this.getSegmentsForSide(Side.SideB)}, ` +
+            `Side-C: ${this.getSegmentsForSide(Side.SideC)}`;
     }
 
 }

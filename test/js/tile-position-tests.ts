@@ -2,7 +2,8 @@ import valid_layout_config1 from "../valid-test-layout-data1.json";
 import { Tetrahedron } from "../../src/js/tetrahedron";
 import { TilePosition } from '../../src/js/tile-position';
 import { Tile } from "../../src/js/tile";
-import { assert, expect } from 'chai';
+import { Side } from "../../src/js/side";
+import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
 import { TILE_1, TILE_1_DATA, TILE_2, TILE_3, TILE_4, TILE_4_DATA } from "./common-test-data";
@@ -223,118 +224,118 @@ describe("TilePosition behaviour", function () {
 
     });
 
-    describe("if #matches() is called to check if the Tile at a TilePosition matches with an adjoining TilePosition", function () {
-
-        const tilePosition1 = new TilePosition("TP1", "1");
-        const tilePosition2 = new TilePosition("TP2", "2");
-        tilePosition1.join("C", "B", tilePosition2);
+    describe("if #tilesMatch() is called to check if the Tile at a TilePosition matches with a single adjoining TilePosition", function () {
 
         context("and the TilePosition being checked is empty", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            tilePosition1.join("C", "B", tilePosition2);
             it("should throw an error", function () {
                 expect(function () {
-                    tilePosition1.matches();
-                }).to.throw(Error, "Can't check if a TilePosition matches when there is no Tile to match from!");
+                    tilePosition1.tilesMatch();
+                }).to.throw(Error, "Can't check if a Tile matches when there is no Tile at the TilePosition to match from!");
             });
         });
 
         context("and the TilePosition being checked has a Tile in it but the adjoining TilePosition doesn't", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            tilePosition1.join("C", "B", tilePosition2);
             tilePosition1.tile = TILE_1;
-            const result = tilePosition1.matches();
+            const result = tilePosition1.tilesMatch();
             it("should return true for the first TilePosition", function () {
                 expect(result).to.be.true;
             });
-            assert.strictEqual(tilePosition1.removeTile(), TILE_1);
         });
 
         context("and the two adjoining TilePositions each have a Tile, but the sides don't match", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            tilePosition1.join("C", "B", tilePosition2);
             tilePosition1.tile = TILE_1;
             tilePosition2.tile = TILE_3;
-            const result = tilePosition1.matches();
+            const result = tilePosition1.tilesMatch();
             it("should return false", function () {
                 expect(result).to.be.false;
             });
-            assert.strictEqual(tilePosition1.removeTile(), TILE_1);
-            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
         });
 
         context("and the two adjoining TilePositions each have a Tile, and the sides match", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            tilePosition1.join("C", "B", tilePosition2);
             tilePosition1.tile = TILE_1;
             tilePosition2.tile = TILE_2;
-            const result = tilePosition1.matches();
+            const result = tilePosition1.tilesMatch();
             it("should return true", function () {
                 expect(result).to.be.true;
             });
-            assert.strictEqual(tilePosition1.removeTile(), TILE_1);
-            assert.strictEqual(tilePosition2.removeTile(), TILE_2);
         });
 
     });
 
-    describe("if #matches() is called to check a Tile and there are three adjoining TilePositions", function () {
-
-        const tilePosition1 = new TilePosition("TP1", "1");
-        const tilePosition2 = new TilePosition("TP2", "2");
-        const tilePosition3 = new TilePosition("TP3", "3");
-        const tilePosition4 = new TilePosition("TP4", "4");
-        tilePosition1.join("C", "B", tilePosition2);
-        tilePosition1.join("A", "B", tilePosition3);
-        tilePosition1.join("B", "B", tilePosition4);
+    describe("if #tilesMatch() is called to check a Tile and there are three adjoining TilePositions", function () {
 
         context("and the three adjoining TilePositions each have a Tile, but not all the sides match", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            const tilePosition3 = new TilePosition("TP3", "3");
+            const tilePosition4 = new TilePosition("TP4", "4");
+            tilePosition1.join("A", "B", tilePosition3);
+            tilePosition1.join("B", "B", tilePosition4);
+            tilePosition1.join("C", "B", tilePosition2);
             tilePosition1.tile = TILE_2;
             tilePosition2.tile = TILE_3;
             tilePosition3.tile = TILE_1;
             tilePosition4.tile = TILE_4;
-            const result = tilePosition1.matches();
+            const result = tilePosition1.tilesMatch();
             it("should return false", function () {
                 expect(result).to.be.false;
             });
-            assert.strictEqual(tilePosition1.removeTile(), TILE_2);
-            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
-            assert.strictEqual(tilePosition3.removeTile(), TILE_1);
-            assert.strictEqual(tilePosition4.removeTile(), TILE_4);
         });
 
         context("and the three adjoining TilePositions each have a Tile, and all the sides match", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            const tilePosition3 = new TilePosition("TP3", "3");
+            const tilePosition4 = new TilePosition("TP4", "4");
+            tilePosition1.join("A", "B", tilePosition3);
+            tilePosition1.join("B", "B", tilePosition4);
+            tilePosition1.join("C", "B", tilePosition2);
             tilePosition1.tile = TILE_2;
             tilePosition2.tile = TILE_3;
-            tilePosition3.tile = TILE_1;
+            tilePosition3.tile = new Tile(TILE_1_DATA);
             tilePosition3.tile.rotate();
             tilePosition3.tile.rotate();
-            tilePosition4.tile = TILE_4;
+            tilePosition4.tile = new Tile(TILE_4_DATA);
             tilePosition4.tile.rotate();
-            const result = tilePosition1.matches();
+            const result = tilePosition1.tilesMatch();
             it("should return true", function () {
                 expect(result).to.be.true;
             });
-            assert.strictEqual(tilePosition1.removeTile(), TILE_2);
-            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
-            assert.strictEqual(tilePosition3.removeTile(), TILE_1);
-            assert.strictEqual(tilePosition4.removeTile(), TILE_4);
         });
 
     });
 
-    describe("if #matches() is called on all the TilePositions of a Test puzzle", function () {
-
-        const validLayoutData = valid_layout_config1.testLayoutData;
-        const tetrahedron =
-            new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
-        const tilePositions = tetrahedron.tilePositions;
-        const tilePosition1 = tilePositions[0];
-        const tilePosition2 = tilePositions[1];
-        const tilePosition3 = tilePositions[2];
-        const tilePosition4 = tilePositions[3];
+    describe("if #tilesMatch() is called on all the TilePositions of a Test puzzle", function () {
 
         context("and the three adjoining TilePositions each with a Tile, but not all the sides match", function () {
+            const validLayoutData = valid_layout_config1.testLayoutData;
+            const tetrahedron =
+                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
+            const tilePositions = tetrahedron.tilePositions;
+            const tilePosition1 = tilePositions[0];
+            const tilePosition2 = tilePositions[1];
+            const tilePosition3 = tilePositions[2];
+            const tilePosition4 = tilePositions[3];
             tilePosition1.tile = TILE_2;
             tilePosition2.tile = TILE_3;
             tilePosition3.tile = TILE_1;
             tilePosition4.tile = TILE_4;
-            const result1 = tilePosition1.matches();
-            const result2 = tilePosition2.matches();
-            const result3 = tilePosition3.matches();
-            const result4 = tilePosition4.matches();
+            const result1 = tilePosition1.tilesMatch();
+            const result2 = tilePosition2.tilesMatch();
+            const result3 = tilePosition3.tilesMatch();
+            const result4 = tilePosition4.tilesMatch();
             it("should return false for the first TilePosition", function () {
                 expect(result1).to.be.false;
             });
@@ -347,26 +348,28 @@ describe("TilePosition behaviour", function () {
             it("should return false for the fourth TilePosition", function () {
                 expect(result4).to.be.false;
             });
-            assert.strictEqual(tilePosition1.removeTile(), TILE_2);
-            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
-            assert.strictEqual(tilePosition3.removeTile(), TILE_1);
-            assert.strictEqual(tilePosition4.removeTile(), TILE_4);
         });
 
         context("and the three adjoining TilePositions each with a Tile, and all the sides match", function () {
+            const validLayoutData = valid_layout_config1.testLayoutData;
+            const tetrahedron =
+                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
+            const tilePositions = tetrahedron.tilePositions;
+            const tilePosition1 = tilePositions[0];
+            const tilePosition2 = tilePositions[1];
+            const tilePosition3 = tilePositions[2];
+            const tilePosition4 = tilePositions[3];
             tilePosition1.tile = TILE_2;
             tilePosition2.tile = TILE_3;
-            const tile1 = new Tile(TILE_1_DATA);
-            tilePosition3.tile = tile1;
+            tilePosition3.tile = new Tile(TILE_1_DATA);
             tilePosition3.tile.rotate();
             tilePosition3.tile.rotate();
-            const tile4 = new Tile(TILE_4_DATA);
-            tilePosition4.tile = tile4;
+            tilePosition4.tile = new Tile(TILE_4_DATA);
             tilePosition4.tile.rotate();
-            const result1 = tilePosition1.matches();
-            const result2 = tilePosition2.matches();
-            const result3 = tilePosition3.matches();
-            const result4 = tilePosition4.matches();
+            const result1 = tilePosition1.tilesMatch();
+            const result2 = tilePosition2.tilesMatch();
+            const result3 = tilePosition3.tilesMatch();
+            const result4 = tilePosition4.tilesMatch();
             it("should return true for the first TilePosition", function () {
                 expect(result1).to.be.true;
             });
@@ -379,10 +382,82 @@ describe("TilePosition behaviour", function () {
             it("should return true for the fourth TilePosition", function () {
                 expect(result4).to.be.true;
             });
-            assert.strictEqual(tilePosition1.removeTile(), TILE_2);
-            assert.strictEqual(tilePosition2.removeTile(), TILE_3);
-            assert.strictEqual(tilePosition3.removeTile(), tile1);
-            assert.strictEqual(tilePosition4.removeTile(), tile4);
+        });
+
+    });
+
+    describe("if #segmentsToFind() is called to determine the segments for a Tile to fit a TilePosition with a single adjoining TilePosition",
+        function () {
+
+        context("and the TilePosition being checked already has a Tile in it", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            tilePosition1.join("C", "B", tilePosition2);
+            tilePosition1.tile = TILE_1;
+            it("should throw an error", function () {
+                expect(function () {
+                    tilePosition1.segmentsToFind();
+                }).to.throw(Error, "TilePosition to find segments for already contains a Tile!");
+            });
+        });
+
+        context("and the adjoining TilePosition doesn't have a Tile in it", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            tilePosition1.join("C", "B", tilePosition2);
+            const result = tilePosition1.segmentsToFind();
+            it("should return the 'any' segment search", function () {
+                expect(result).to.equal("....");
+            });
+        });
+
+        context("and the adjoining TilePosition has a Tile in it", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            tilePosition1.join("C", "B", tilePosition2);
+            tilePosition2.tile = TILE_3;
+            const result = tilePosition1.segmentsToFind();
+            it("should return the segments side B reversed", function () {
+                expect(result).to.equal(TILE_3.getSegmentsForSideToMatchWith(Side.SideB));
+            });
+        });
+
+    });
+
+    describe("if #segmentsToFind() is called to determine the segments for a Tile to fit a TilePosition with three adjoining TilePositions", function () {
+
+        context("and none of the three adjoining TilePositions have a Tile", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            const tilePosition3 = new TilePosition("TP3", "3");
+            const tilePosition4 = new TilePosition("TP4", "4");
+            tilePosition1.join("A", "B", tilePosition3);
+            tilePosition1.join("B", "B", tilePosition4);
+            tilePosition1.join("C", "B", tilePosition2);
+            const result = tilePosition1.segmentsToFind();
+            it("should return the 'any' segment search for all sides", function () {
+                expect(result).to.equal("............")
+            });
+        });
+
+        context("and the three adjoining TilePositions each have a Tile", function () {
+            const tilePosition1 = new TilePosition("TP1", "1");
+            const tilePosition2 = new TilePosition("TP2", "2");
+            const tilePosition3 = new TilePosition("TP3", "3");
+            const tilePosition4 = new TilePosition("TP4", "4");
+            tilePosition1.join("A", "B", tilePosition3);
+            tilePosition1.join("B", "B", tilePosition4);
+            tilePosition1.join("C", "B", tilePosition2);
+            tilePosition2.tile = TILE_3;
+            tilePosition3.tile = new Tile(TILE_1_DATA);
+            tilePosition3.tile.rotate();
+            tilePosition3.tile.rotate();
+            tilePosition4.tile = new Tile(TILE_4_DATA);
+            tilePosition4.tile.rotate();
+            const result = tilePosition1.segmentsToFind();
+            it("should return true", function () {
+                expect(result).to.equal(TILE_2.getSegments());
+            });
         });
 
     });

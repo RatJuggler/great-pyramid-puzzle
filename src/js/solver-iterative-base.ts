@@ -46,7 +46,7 @@ abstract class IterativeSolverBase extends SolverBase {
 
     protected abstract createNewState(state: SolverState, tilePosition: TilePosition): SolverState;
 
-    private tryNextState(state: SolverState): PuzzleChange {
+    private tryNextTilePosition(state: SolverState): PuzzleChange {
         let displayChange;
         // If there aren't any more tile positions a solution has been reached!
         if (this._emptyTilePositions.length === 0) {
@@ -91,8 +91,8 @@ abstract class IterativeSolverBase extends SolverBase {
             displayChange = this.tryNextTile(this._currentState);
         } else {
             // If everything matches then move on to the next tile position.
-            if (tilePosition.matches()) {
-                displayChange = this.tryNextState(this._currentState);
+            if (tilePosition.tilesMatch()) {
+                displayChange = this.tryNextTilePosition(this._currentState);
             } else {
                 // Cycle through the rotations or remove the tile if nothing matches.
                 displayChange = IterativeSolverBase.rotateOrRemove(this._currentState);

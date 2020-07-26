@@ -13,21 +13,16 @@ export class OnlyValidSolver extends IterativeSolverBase {
 
     protected createNewState(state: SolverState, newTilePosition: TilePosition): SolverState {
         // Find existing sides to match.
-        const segmentsToFind = newTilePosition.needToMatch();
+        const segmentsToFind = newTilePosition.segmentsToFind();
         // Filter the unused tiles so we only try those that are relevant.
-        let newUntriedTiles;
+        const newUntriedTiles = new Array<Tile>();
         const newRejectedTiles = new Array<Tile>();
         const untriedTiles = state.untriedTiles.concat(state.rejectedTiles);
-        if (segmentsToFind.length === 0) {
-            newUntriedTiles = untriedTiles;
-        } else {
-            newUntriedTiles = new Array<Tile>();
-            for (const untriedTile of untriedTiles) {
-                if (untriedTile.hasSideSegments(segmentsToFind)) {
-                    newUntriedTiles.push(untriedTile);
-                } else {
-                    newRejectedTiles.push(untriedTile);
-                }
+        for (const untriedTile of untriedTiles) {
+            if (untriedTile.hasSideSegments(segmentsToFind)) {
+                newUntriedTiles.push(untriedTile);
+            } else {
+                newRejectedTiles.push(untriedTile);
             }
         }
         return {

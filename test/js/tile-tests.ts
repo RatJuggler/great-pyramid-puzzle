@@ -110,26 +110,26 @@ describe("Tile behaviour", function () {
 
     });
 
-    describe("if #getSideSegments() is called to get the segments for a side", function () {
+    describe("if #getSegmentsForSide() is called to get the segments for a side", function () {
 
         context("with argument SideA and the Tile hasn't been rotated", function () {
             const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideA", function () {
-                expect(tile.getSideSegments(Side.SideA)).to.equal(TILE_3_DATA.sideA);
+                expect(tile.getSegmentsForSide(Side.SideA)).to.equal(TILE_3_DATA.sideA);
             });
         });
 
         context("with argument SideB and the Tile hasn't been rotated", function () {
             const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideB", function () {
-                expect(tile.getSideSegments(Side.SideB)).to.equal(TILE_3_DATA.sideB);
+                expect(tile.getSegmentsForSide(Side.SideB)).to.equal(TILE_3_DATA.sideB);
             });
         });
 
         context("with argument SideC and the Tile hasn't been rotated", function () {
             const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideC", function () {
-                expect(tile.getSideSegments(Side.SideC)).to.equal(TILE_3_DATA.sideC);
+                expect(tile.getSegmentsForSide(Side.SideC)).to.equal(TILE_3_DATA.sideC);
             });
         });
 
@@ -158,14 +158,14 @@ describe("Tile behaviour", function () {
 
     });
 
-    describe("if #getSideSegmentsToMatchWith() is called to get a matching side segments", function () {
+    describe("if #getSegmentsForSideToMatchWith() is called to get a matching side segments", function () {
 
         context("with a newly placed Tile", function () {
             const tile = new Tile(TILE_1_DATA);
             tile.placed();
             const expectedSegments = TILE_1_DATA.sideA.split("").reverse().join("");
             it("should return the segments for the side reversed", function () {
-                expect(tile.getSideSegmentsToMatchWith(Side.SideA)).to.equal(expectedSegments);
+                expect(tile.getSegmentsForSideToMatchWith(Side.SideA)).to.equal(expectedSegments);
             });
         });
 
@@ -175,7 +175,7 @@ describe("Tile behaviour", function () {
             tile.rotate();
             const expectedSegments = TILE_4_DATA.sideC.split("").reverse().join("");
             it("should return the segments for the side reversed", function () {
-                expect(tile.getSideSegmentsToMatchWith(Side.SideA)).to.equal(expectedSegments);
+                expect(tile.getSegmentsForSideToMatchWith(Side.SideA)).to.equal(expectedSegments);
             });
         });
 
@@ -188,7 +188,7 @@ describe("Tile behaviour", function () {
             tile3.placed();
             const tile4 = new Tile(TILE_4_DATA);
             tile4.placed();
-            const findSegments = [tile4.getSideSegmentsToMatchWith(Side.SideA)];
+            const findSegments = tile4.getSegmentsForSideToMatchWith(Side.SideA) + "...." + "....";
             it("should return false", function () {
                 expect(tile3.hasSideSegments(findSegments)).to.be.false;
             });
@@ -199,7 +199,7 @@ describe("Tile behaviour", function () {
             tile3.placed();
             const tile4 = new Tile(TILE_4_DATA);
             tile4.placed();
-            const findSegments = [tile4.getSideSegmentsToMatchWith(Side.SideC)];
+            const findSegments = "...." + "...." + tile4.getSegmentsForSideToMatchWith(Side.SideC);
             it("should return true", function () {
                 expect(tile3.hasSideSegments(findSegments)).to.be.true;
             });
