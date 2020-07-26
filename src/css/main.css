@@ -130,20 +130,20 @@ header {
   background-color: #675F6B;
 }
 
-/* The event list area. */
+/* The status display list area. */
 
-#events {
+#status-display {
   width: 180px;
   margin-top: 3em;
 }
-#events ul {
+#status-list {
   border: none;
   padding-left: .5em;
   list-style-type: none;
   background: transparent;
   border-right: 1px solid #ddd;
 }
-#events li {
+#status-list li {
   border-bottom: 1px solid #ddd;
 }
 

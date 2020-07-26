@@ -1,4 +1,4 @@
-import {EventList} from "./event-list-manager";
+import { StatusList } from "./status-list-manager";
 
 
 export class Timer {
@@ -6,21 +6,21 @@ export class Timer {
     private _startTime: number = 0;
     private _finishTime: number = 0;
 
-    constructor(private readonly _eventList: EventList) {}
+    constructor(private readonly _statusList: StatusList) {}
 
     start(): void {
-        this._eventList.clearEvents();
+        this._statusList.clearStatus();
         const now = new Date();
         this._startTime = now.getTime();
         this._finishTime = 0;
-        this._eventList.addEvent("Started: " + Timer.formatTime(now));
+        this._statusList.addStatus("Started: " + Timer.formatTime(now));
     }
 
     stop(): void {
         const now = new Date();
         this._finishTime = now.getTime();
-        this._eventList.addEvent("Finished: " + Timer.formatTime(now));
-        this._eventList.addEvent("Elapsed: " + this.elapsed());
+        this._statusList.addStatus("Finished: " + Timer.formatTime(now));
+        this._statusList.addStatus("Elapsed: " + this.elapsed());
     }
 
     private elapsed(): string {

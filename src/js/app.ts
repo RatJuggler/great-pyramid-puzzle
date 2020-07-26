@@ -1,10 +1,10 @@
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
-import { PuzzleChange } from "./puzzle-changes";
+import { PuzzleChange, TilePositionChange } from "./puzzle-changes";
 import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
 import { Timer } from "./timer";
-import {EventListManager} from "./event-list-manager";
+import { StatusListManager } from "./status-list-manager";
 
 
 // Track animated solver timer.
@@ -12,7 +12,7 @@ let solverTimeoutId: number;
 // Track solver worker.
 let solverWorker: Worker;
 // Track how long solvers run for.
-const solverTimer = new Timer(new EventListManager("event-list"));
+const solverTimer = new Timer(new StatusListManager("status-list"));
 
 
 function getSelector(name: string): string {
@@ -31,7 +31,7 @@ function attachRotateEvents(displayManager: DisplayManager): void {
             const tpId = svgGroup.id.match(/^[1-4]-[1-9]$/);
             if (tpId) {
                 svgGroup.addEventListener("click", () =>
-                    displayManager.display(PuzzleChange.rotate(tpId[0]))
+                    displayManager.display(TilePositionChange.rotate(tpId[0]))
                 );
             }
         });
