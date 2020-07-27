@@ -8,7 +8,7 @@ export class Display {
     private static readonly LINE_COLOUR = '#000000';
     private static readonly FACE_COLOUR = '#808080';
     private static readonly TILE_POSITION_COLOUR = '#C0C0C0';
-    private static readonly START_POSITION_COLOUR = '#DCDCDC';
+    // private static readonly START_POSITION_COLOUR = '#DCDCDC';
     private static readonly TILE_COLOUR = '#FFFFFF';
     private static readonly SEGMENT_COLOUR = '#FF0000';
     private static readonly PEG_COLOUR = '#BEBEBE';
@@ -77,26 +77,31 @@ export class Display {
         );
     }
 
-    drawEmptyTilePosition(tpGroup: G, tpCenter: CenterPointData, tilePositionId: string, scaleTile: number): void {
+    drawEmptyTilePosition(tpGroup: G, tpCenter: CenterPointData, positionText: string, scaleTile: number): void {
         // Clear any existing tile position drawing.
         tpGroup.clear();
         // Set the tile description.
-        const desc = "Position: " + tilePositionId + ", Tile: Empty";
+        const desc = "Position: " + positionText + ", Tile: Empty";
         tpGroup.element('title').words(desc);
         // Draw the empty tile position.
         this.drawTriangle(tpGroup, tpCenter, scaleTile, Display.TILE_POSITION_COLOUR);
     }
 
-    findTile(tileId: number): G {
-        const element = this._draw.findOne("[id='tile" + tileId + "']");
-        return SVG(element) as G;
-    }
-
-    getTilePosition(tilePositionId: string): { group: G; center: CenterPointData; } {
-        const element = this._draw.findOne("[id='" + tilePositionId + "']");
+    getTilePosition(id: string): { group: G; center: CenterPointData; } {
+        const element = this._draw.findOne("[id='" + id + "']");
         const group = SVG(element) as G;
         const center = group.dom.center;
         return {group, center};
+    }
+
+    private createTileStartPosition(tspData: TileStartDisplayData, scaleTileStart: number): void {
+        // Scale the tile start center point.
+        const tspCenter = {
+            x: tspData.center.x * scaleTileStart,
+            y: tspData.center.y * scaleTileStart,
+            r: tspData.center.r
+        }
+        this._draw.group().id("start" + tspData.id).setData({center: tspCenter});
     }
 
     private createTilePositions(fData: FaceDisplayData, fCenter: CenterPointData, fGroup: G, scaleFace: number): void {
@@ -137,18 +142,6 @@ export class Display {
             .stroke('none')
             .element('title')
             .words("Center of Face " + fData.name);
-    }
-
-    private createTileStartPosition(tspData: TileStartDisplayData, scaleTileStart: number): void {
-        // Scale the tile start center point.
-        const tspCenter = {
-            x: tspData.center.x * scaleTileStart,
-            y: tspData.center.y * scaleTileStart,
-            r: tspData.center.r
-        }
-        const startGroup = this._draw.group().id(tspData.id).setData({center: tspCenter});
-        startGroup.element('title').words(`Tile: ${tspData.id}`);
-        this.drawTriangle(startGroup, tspCenter, scaleTileStart, Display.START_POSITION_COLOUR);
     }
 
     createInitialDisplay(scaleFace: number, scaleTileStart: number): Svg {

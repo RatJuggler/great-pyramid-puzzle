@@ -133,10 +133,10 @@ describe("Puzzle display functionality", function () {
             const tpChange = TileChange.remove("1-1", 1, 0, "000100100100");
             displayManager.display(tpChange);
             it("should have 4 faces, 4 tile position, 4 tiles and 4 tile start positions", function () {
-                expect(document.getElementsByTagName("g")).to.have.length(15);
+                expect(document.getElementsByTagName("g")).to.have.length(16);
             });
             it("should have 4 face center and 4 tile center points", function () {
-                expect(document.getElementsByTagName("circle")).to.have.length(7);
+                expect(document.getElementsByTagName("circle")).to.have.length(8);
             });
         });
 

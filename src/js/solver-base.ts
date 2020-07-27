@@ -22,7 +22,7 @@ abstract class SolverBase implements Solver {
         return this._tetrahedron.tilePositions
             .map((tilePosition) => TilePositionChange.empty(tilePosition.id))
             .concat(this._tilePool.tiles
-                .map((tile) => TileChange.start("0", tile.id, tile.rotations, tile.segments)));
+                .map((tile) => TileChange.start("start" + tile.id, tile.id, tile.rotations, tile.segments)));
     }
 
     abstract nextState(): PuzzleChange;
