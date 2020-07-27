@@ -59,23 +59,23 @@
             ]
         }
     ],
-    "tileStartScale": 20,
+    "tileStartScale": 0.55,
     "tileStartPositions": [
         {
             "id": "1",
-            "center": {"x": -6, "y": -3, "r": 0}
+            "center": {"x": -5.25, "y": -2.75, "r": 0}
         },
         {
             "id": "2",
-            "center": {"x": -4, "y": -3, "r": 0}
+            "center": {"x": -3.25, "y": -2.75, "r": 0}
         },
         {
             "id": "3",
-            "center": {"x": -6, "y": -1, "r": 0}
+            "center": {"x": -5.25, "y": -1, "r": 0}
         },
         {
             "id": "4",
-            "center": {"x": -4, "y": -1, "r": 0}
+            "center": {"x": -3.25, "y": -1, "r": 0}
         }
     ]
 }

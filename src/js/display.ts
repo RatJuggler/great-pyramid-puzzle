@@ -16,7 +16,7 @@ export class Display {
     private readonly _draw: Svg;
     private readonly _scaleFace = this._displayData.faceScale;
     private readonly _scaleTile = this._displayData.tileScale * this._displayData.faceScale;
-    private readonly _scaleTileStart = this._displayData.tileStartScale;
+    private readonly _scaleTileStart = this._displayData.tileStartScale * this._displayData.faceScale;
 
     constructor(rootElement: string | HTMLElement, private readonly _displayData: DisplayData) {
         // Should be using an existing SVG root element.
