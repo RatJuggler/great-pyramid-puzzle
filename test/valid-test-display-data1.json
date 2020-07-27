@@ -60,6 +60,25 @@
                     }
                 ]
             }
+        ],
+        "tileStartScale": 10,
+        "tileStartPositions": [
+            {
+                "id": "1",
+                "center": {"x": -2, "y": -2, "r": 0}
+            },
+            {
+                "id": "2",
+                "center": {"x": -1, "y": -2, "r": 0}
+            },
+            {
+                "id": "3",
+                "center": {"x": -2, "y": -1, "r": 0}
+            },
+            {
+                "id": "4",
+                "center": {"x": -1, "y": -1, "r": 0}
+            }
         ]
     }
 }

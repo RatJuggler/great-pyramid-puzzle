@@ -45,8 +45,8 @@ describe("Puzzle display functionality", function () {
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay();
-            it("should have 4 faces, 4 empty tile positions and 1 new tile position", function () {
-                expect(document.getElementsByTagName("g")).to.have.length(9);
+            it("should have 4 faces, 4 empty tile positions and 4 tile start positions", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(12);
             });
             it("should have 4 face center points", function () {
                 expect(document.getElementsByTagName("circle")).to.have.length(4);
@@ -71,8 +71,8 @@ describe("Puzzle display functionality", function () {
                 }
                 displayManager.display(tpChange);
             });
-            it("should have 4 faces, 2 empty tile positions, 2 tile positions with tiles and 1 new tile position", function () {
-                expect(document.getElementsByTagName("g")).to.have.length(11);
+            it("should have 4 faces, 2 empty tile positions, 2 tile positions with 2 tiles, and 4 tile start positions", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(14);
             });
             it("should have 4 face center points and 2 tile center points", function () {
                 expect(document.getElementsByTagName("circle")).to.have.length(6);
@@ -84,8 +84,8 @@ describe("Puzzle display functionality", function () {
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.initialDisplay();
             puzzleWithAllTiles(puzzleTypeData, displayManager);
-            it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
-                expect(document.getElementsByTagName("g")).to.have.length(13);
+            it("should have 4 faces, 4 tile position, 4 tiles and 4 tile start positions", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(16);
             });
             it("should have 4 face center and 4 tile center points", function () {
                 expect(document.getElementsByTagName("circle")).to.have.length(8);
@@ -102,8 +102,8 @@ describe("Puzzle display functionality", function () {
             displayManager.initialDisplay();
             const tpChange = TileChange.place("1-1", 1, 0, "000100100100");
             displayManager.display(tpChange);
-            it("should have 4 faces, 3 empty tile position, 1 tile and 1 new tile position", function () {
-                expect(document.getElementsByTagName("g")).to.have.length(10);
+            it("should have 4 faces, 3 empty tile position, 1 tile position with 1 tile and 4 tile start positions", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(13);
             });
             it("should have 4 face center and 1 tile center points", function () {
                 expect(document.getElementsByTagName("circle")).to.have.length(5);
@@ -117,8 +117,8 @@ describe("Puzzle display functionality", function () {
             puzzleWithAllTiles(puzzleTypeData, displayManager);
             const tpChange = TileChange.rotate("1-1", 1, 0, "000100100100");
             displayManager.display(tpChange);
-            it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
-                expect(document.getElementsByTagName("g")).to.have.length(13);
+            it("should have 4 faces, 4 tile position, 4 tiles and 4 tile start positions", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(16);
             });
             it("should have 4 face center and 4 tile center points", function () {
                 expect(document.getElementsByTagName("circle")).to.have.length(8);
@@ -132,8 +132,8 @@ describe("Puzzle display functionality", function () {
             puzzleWithAllTiles(puzzleTypeData, displayManager);
             const tpChange = TileChange.remove("1-1", 1, 0, "000100100100");
             displayManager.display(tpChange);
-            it("should have 4 faces, 4 tile position, 4 tiles and 1 new tile position", function () {
-                expect(document.getElementsByTagName("g")).to.have.length(12);
+            it("should have 4 faces, 4 tile position, 4 tiles and 4 tile start positions", function () {
+                expect(document.getElementsByTagName("g")).to.have.length(15);
             });
             it("should have 4 face center and 4 tile center points", function () {
                 expect(document.getElementsByTagName("circle")).to.have.length(7);
