@@ -6,8 +6,9 @@ import { Side, SIDES } from "./side";
 
 
 type FaceJoinProperties = {
-    readonly toSide: Side;
-    readonly ofFace: Face;
+    readonly fromSide: Side,
+    readonly toSide: Side,
+    readonly ofFace: Face
 }
 
 
@@ -16,7 +17,7 @@ export class Face {
     private static readonly FACE_NAMES = ["1", "2", "3", "4"];
     private static readonly VALID_TILE_COUNTS = [1, 4, 9];
 
-    private readonly _joins = new Map<Side, FaceJoinProperties>();
+    private readonly _joins = new Array<FaceJoinProperties>();
     private readonly _tilePositions = new Map<string, TilePosition>();
 
     constructor(private _name: string, numberOfTiles: number, tilePositions: TilePositionData[]) {
@@ -38,7 +39,7 @@ export class Face {
 
     integrityCheck(): IntegrityCheckResult {
         // Each face must join to 3 other faces and must have a valid number of tile positions.
-        if (this._joins.size !== SIDES.numberOfSides) {
+        if (this._joins.length !== SIDES.numberOfSides) {
             return [false, `Face joins not complete: ${this.toString()}`];
         }
         if (!Face.VALID_TILE_COUNTS.includes(this._tilePositions.size)) {
@@ -84,8 +85,8 @@ export class Face {
         return this.getTilePosition(position).tile;
     }
 
-    join(fromSide: string, toSide: string, ofFace: Face) : void {
-        if (this._joins.size === SIDES.numberOfSides) {
+    join(joinFrom: string, joinTo: string, ofFace: Face) : void {
+        if (this._joins.length === SIDES.numberOfSides) {
             throw new Error("Faces can only join to three other faces!");
         }
         if (this === ofFace) {
@@ -94,13 +95,16 @@ export class Face {
         if (this.tilePositionCount !== ofFace.tilePositionCount) {
             throw new Error("Cannot join Faces which have differing numbers of Tile Positions!");
         }
-        const nFromSide = SIDES.validateSide(fromSide, "to join from");
-        const nToSide = SIDES.validateSide(toSide, "to join to");
-        if (this._joins.get(nFromSide)) {
-            throw new Error(`Existing join already present for side ${fromSide}!`);
+        const fromSide = SIDES.validateSide(joinFrom, "to join from");
+        const toSide = SIDES.validateSide(joinTo, "to join to");
+        for (const face of this._joins) {
+            if (face.fromSide === joinFrom) {
+                throw new Error(`Existing join already present for side ${joinFrom}!`);
+            }
         }
-        this._joins.set(nFromSide, {
-            toSide: nToSide,
+        this._joins.push({
+            fromSide: fromSide,
+            toSide: toSide,
             ofFace: ofFace
         });
     }
@@ -115,8 +119,8 @@ export class Face {
 
     toString(): string {
         let faceString = `Face: ${this._name}, Tile Positions: ${this.tilePositionCount}, Joins: `;
-        this._joins.forEach((join, side) =>
-            faceString += `(${this._name}-${side}->${join.ofFace.name}-${join.toSide})`);
+        this._joins.forEach((join) =>
+            faceString += `(${this._name}-${join.fromSide}->${join.ofFace.name}-${join.toSide})`);
         faceString += '\n';
         this._tilePositions.forEach(tilePosition => faceString += tilePosition.toString() + '\n');
         return faceString;
