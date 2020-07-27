@@ -1,6 +1,6 @@
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
-import { PuzzleChange, TilePositionChange } from "./puzzle-changes";
+import { PuzzleChange, TileChange } from "./puzzle-changes";
 import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
 import { Timer } from "./timer";
@@ -33,7 +33,7 @@ function attachRotateEvents(displayManager: DisplayManager): void {
             const tpId = svgGroup.id.match(/^[1-4]-[1-9]$/);
             if (tpId) {
                 svgGroup.addEventListener("click", () =>
-                    displayManager.display(TilePositionChange.rotate(tpId[0]))
+                    displayManager.display(TileChange.rotate(tpId[0], 0, 1, ""))
                 );
             }
         });
@@ -126,7 +126,7 @@ function solvePuzzle(): void {
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Build a display manager.
     const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, animationDuration);
-    // Show the initial puzzle state.
+    // Show the initial puzzle outline.
     displayManager.initialDisplay();
     // Clear the status list.
     statusList.clearList();
