@@ -84,6 +84,8 @@ function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, anima
 function startAnimatedSolver(solverOptions: SolverOptions, displayManager: DisplayManager, animationDuration: number): void {
     // Build the solver to use.
     const solver = buildSolver(solverOptions);
+    // Show the initial tile positions.
+    solver.initialState().forEach((tpChange) => displayManager.display(tpChange));
     // Create a change count status card.
     const changeCounter = "change-counter";
     statusList.addStatus(changeCounter, "Display Changes", "0")
