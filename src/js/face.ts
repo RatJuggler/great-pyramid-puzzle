@@ -74,6 +74,14 @@ export class Face {
         return Array.from(this._tilePositions.values());
     }
 
+    get emptyTilePositions(): TilePosition[] {
+        return Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.isEmpty()).reverse();
+    }
+
+    hasEmptyTilePositions(): boolean {
+        return this.emptyTilePositions.length > 0;
+    }
+
     getTilePosition(position: string): TilePosition {
         if (this._tilePositions.has(position)) {
             return this._tilePositions.get(position)!;
@@ -107,14 +115,6 @@ export class Face {
             toSide: toSide,
             ofFace: ofFace
         });
-    }
-
-    get emptyTilePositions(): TilePosition[] {
-        return Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.isEmpty());
-    }
-
-    hasEmptyTilePositions(): boolean {
-        return this.emptyTilePositions.length > 0;
     }
 
     toString(): string {
