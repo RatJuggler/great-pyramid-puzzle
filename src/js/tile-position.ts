@@ -5,8 +5,8 @@ import { Side, SIDES } from "./side";
 
 type TilePositionJoinProperties = {
     readonly fromSide: Side,
-    readonly toSide: Side;
-    readonly ofTilePosition: TilePosition;
+    readonly toSide: Side,
+    readonly ofTilePosition: TilePosition
 }
 
 
@@ -47,23 +47,23 @@ export class TilePosition {
         this._tile = tile.placed();
     }
 
-    join(fromSide: string, toSide: string, ofTilePosition: TilePosition) : void {
+    join(joinFrom: string, joinTo: string, ofTilePosition: TilePosition) : void {
         if (this._joins.length === SIDES.numberOfSides) {
             throw new Error("TilePositions can only join to three other TilePositions!");
         }
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
         }
-        const nFromSide = SIDES.validateSide(fromSide, "to join from");
-        const nToSide = SIDES.validateSide(toSide, "to join to");
+        const fromSide = SIDES.validateSide(joinFrom, "to join from");
+        const toSide = SIDES.validateSide(joinTo, "to join to");
         for (const join of this._joins) {
-            if (join.fromSide === fromSide) {
-                throw new Error(`Existing join already present for side ${fromSide}!`);
+            if (join.fromSide === joinFrom) {
+                throw new Error(`Existing join already present for side ${joinFrom}!`);
             }
         }
         this._joins.push({
-            fromSide: nFromSide,
-            toSide: nToSide,
+            fromSide: fromSide,
+            toSide: toSide,
             ofTilePosition: ofTilePosition
         });
     }
