@@ -79,7 +79,7 @@ class PlaceTilePosition extends DisplayChange {
 class RotateTilePosition extends DisplayChange {
 
     constructor(display: Display,
-                private readonly _tpChange: TilePositionChange,
+                private readonly _tpChange: TileChange,
                 private readonly _animationDuration: number) {
         super(display);
     }
@@ -92,7 +92,7 @@ class RotateTilePosition extends DisplayChange {
         // Rotate the tile.
         tile.animate({duration: this._animationDuration, ease: "<>"})
             // @ts-ignore
-            .rotate(120, tpDisplay.center.x, tpDisplay.center.y);
+            .rotate(this._tpChange.rotations * 120, tpDisplay.center.x, tpDisplay.center.y);
     }
 
 }
@@ -158,7 +158,7 @@ export class DisplayManager {
                 action = new PlaceTilePosition(this._display, tpChange as TileChange, this._animationDuration);
                 break;
             case PuzzleChangeType.Rotate:
-                action = new RotateTilePosition(this._display, tpChange as TilePositionChange, this._animationDuration);
+                action = new RotateTilePosition(this._display, tpChange as TileChange, this._animationDuration);
                 break;
             case PuzzleChangeType.Remove:
                 action = new RemoveTilePosition(this._display, tpChange as TileChange, this._animationDuration);

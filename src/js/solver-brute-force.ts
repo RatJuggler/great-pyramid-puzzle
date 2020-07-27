@@ -1,8 +1,7 @@
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
-import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
-import { SolverState, IterativeSolverBase } from "./solver-iterative-base";
+import { TileState, SolverState, IterativeSolverBase } from "./solver-iterative-base";
 
 
 export class BruteForceSolver extends IterativeSolverBase {
@@ -12,10 +11,22 @@ export class BruteForceSolver extends IterativeSolverBase {
     }
 
     protected createNewState(state: SolverState, newTilePosition: TilePosition): SolverState {
+        // Trying every possible tile and rotation combination.
+        const newUntriedTiles = new Array<TileState>();
+        const newRejectedTiles = new Array<TileState>();
+        const untriedTiles = state.untriedTiles.concat(state.rejectedTiles);
+        for (const untriedTile of untriedTiles) {
+            const newTileState = {
+                tile: untriedTile.tile,
+                rotations: [0, 1, 2]
+            }
+            newUntriedTiles.push(newTileState);
+        }
         return {
             tilePosition: newTilePosition,
-            untriedTiles: state.untriedTiles.concat(state.rejectedTiles),
-            rejectedTiles: new Array<Tile>()
+            tileState: null,
+            untriedTiles: newUntriedTiles,
+            rejectedTiles: newRejectedTiles
         }
     }
 

@@ -3,13 +3,18 @@ import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
-import { PuzzleChange, TileChange, TilePositionChange } from "./puzzle-changes";
+import { PuzzleChange, TileChange } from "./puzzle-changes";
 
 
+type TileState = {
+    tile: Tile,
+    rotations: Array<number>
+}
 type SolverState = {
     tilePosition: TilePosition,
-    untriedTiles: Array<Tile>,
-    rejectedTiles: Array<Tile>
+    tileState: TileState | null,
+    untriedTiles: Array<TileState>,
+    rejectedTiles: Array<TileState>
 }
 
 
@@ -22,24 +27,44 @@ abstract class IterativeSolverBase extends SolverBase {
     protected constructor(tetrahedron: Tetrahedron, tilePool: TilePool) {
         super(tetrahedron, tilePool);
         this._emptyTilePositions = this._tetrahedron.emptyTilePositions;
+        if (this._emptyTilePositions.length === 0) {
+            throw new Error("Solver expects puzzle to have empty TilePositions at the start!")
+        }
+        // We expect to try every rotation of the set of Tiles for the initial state.
+        const untriedTiles = new Array<TileState>();
+        for (const tile of tilePool.tiles) {
+            untriedTiles.push({
+                tile: tile,
+                rotations: [0, 1, 2]
+            })
+        }
         this._currentState = {
             tilePosition: this._emptyTilePositions.shift()!,
-            untriedTiles: tilePool.tiles,
-            rejectedTiles: new Array<Tile>()
+            tileState: null,
+            untriedTiles: untriedTiles,
+            rejectedTiles: new Array<TileState>()
         }
     }
 
     private static rotateOrRemove(state: SolverState): PuzzleChange {
         let displayChange;
-        // Try rotating the current tile.
+        // Try the next rotation position for the current tile.
         const tilePosition = state.tilePosition;
-        if (tilePosition.tile.rotate()) {
-            displayChange = TilePositionChange.rotate(tilePosition.id);
+        const tileState = state.tileState;
+        if (!tileState) {
+            throw new Error("TileState should not be null!");
+        }
+        if (tileState.rotations.length > 0) {
+            const newRotations = tileState.rotations.shift()!;
+            // How many rotations are moving round from the current one.
+            const rotate = newRotations - tilePosition.tile.rotations;
+            tilePosition.tile.rotations = newRotations;
+            displayChange = TileChange.rotate(tilePosition.id, tilePosition.tile.id, rotate, tilePosition.tile.segments);
         } else {
             // If we've tried all the rotations and none match then reject this tile.
             displayChange = TileChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
-            const tile = tilePosition.removeTile();
-            state.rejectedTiles.push(tile);
+            tilePosition.removeTile();
+            state.rejectedTiles.push(tileState);
         }
         return displayChange;
     }
@@ -65,7 +90,12 @@ abstract class IterativeSolverBase extends SolverBase {
         // If we have any untried tiles then try the next one.
         const tilePosition = state.tilePosition;
         if (state.untriedTiles.length > 0) {
-            tilePosition.tile = state.untriedTiles.shift()!;
+            state.tileState = state.untriedTiles.shift()!;
+            tilePosition.tile = state.tileState.tile;
+            if (state.tileState.rotations.length === 0) {
+                throw new Error("There should be at least one rotation for an untried Tile!");
+            }
+            tilePosition.tile.rotations = state.tileState.rotations.shift()!;
             displayChange = TileChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
         } else {
             // Otherwise if we've tried all the tiles and nothing matches we need to move back a tile position.
@@ -103,4 +133,4 @@ abstract class IterativeSolverBase extends SolverBase {
 
 }
 
-export { SolverState, IterativeSolverBase }
+export { TileState, SolverState, IterativeSolverBase }
