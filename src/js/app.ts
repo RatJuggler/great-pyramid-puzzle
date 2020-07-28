@@ -1,10 +1,11 @@
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
-import { PuzzleChange, TileChange } from "./puzzle-changes";
+import { TileChange } from "./puzzle-changes";
 import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
 import { Timer } from "./timer";
 import { StatusListManager } from "./status-list-manager";
+import { WorkerResult } from "./common-data-schema";
 
 
 // Track animated solver timer.
@@ -48,14 +49,17 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
         // Stop the timer and log the result.
         solverTimer.stop();
         // Show the final puzzle state.
-        const finalState = <Array<PuzzleChange>> e.data;
-        finalState.forEach((tpChange) => displayManager.display(tpChange));
+        const result = <WorkerResult> e.data;
+        // Create a change count status card.
+        statusList.addStatus("change-counter", "Puzzle Changes", result.changeCounter.toString());
+        result.finalState.forEach((tpChange) => displayManager.display(tpChange));
         attachRotateEvents(displayManager);
         removeActive("overlay");
     }
     // Attach a cancel trigger to the overlay.
     document.getElementById("overlay")!.addEventListener("click", () => {
         solverWorker.terminate();
+        solverTimer.cancel();
         removeActive("overlay");
     });
     // Kick off the worker solver.

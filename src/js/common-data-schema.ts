@@ -2,6 +2,7 @@ import { LayoutData } from "./layout-data-schema";
 import { TileData } from "./tile-data-schema";
 import { TilePool } from "./tile-pool";
 import { Tetrahedron } from "./tetrahedron";
+import { PuzzleChange } from "./puzzle-changes";
 
 // Types used across the application.
 
@@ -17,4 +18,9 @@ type PuzzleComponents = {
 
 type IntegrityCheckResult = [boolean, string];
 
-export { PuzzleDataElements, PuzzleComponents, IntegrityCheckResult }
+type WorkerResult = {
+    changeCounter: number,
+    finalState: Array<PuzzleChange>
+}
+
+export { PuzzleDataElements, PuzzleComponents, IntegrityCheckResult, WorkerResult }

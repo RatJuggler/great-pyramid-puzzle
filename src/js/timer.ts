@@ -38,6 +38,11 @@ export class Timer {
         this._statusList.replaceStatus(Timer.STATUS_ID, update);
     }
 
+    cancel(): void {
+        clearInterval(this._elapsedIntervalId);
+        this._statusList.addToStatus(Timer.STATUS_ID, "\nCancelled!");
+    }
+
     private elapsed(since: Date): string {
         if (!this._startTime) {
             throw new Error("Timer not initialised properly!")
