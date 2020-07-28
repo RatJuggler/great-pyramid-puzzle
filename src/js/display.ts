@@ -169,7 +169,7 @@ export class Display {
         // Add a group for each tile position on the face.
         this.createTilePositions(fData, fDisplay, scaleFace);
         // Outline the face.
-        this.drawTriangle(fDisplay, scaleFace, 'none', 0.02);
+        this.drawTriangle(fDisplay, scaleFace, 'none', 0.01);
         // Draw a point to show the center of the face last so it always shows up.
         this._draw.circle(1)
             .id("center" + fData.name)
