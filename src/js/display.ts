@@ -1,4 +1,4 @@
-import { TileChange } from "./puzzle-changes";
+import {TileChange, TilePositionChange} from "./puzzle-changes";
 import { DisplayData, FaceDisplayData, TileStartDisplayData, CenterPointData, PolygonDisplayData } from "./display-data-schema";
 import { SVG, Svg, G } from "@svgdotjs/svg.js";
 
@@ -13,7 +13,7 @@ export class Display {
     private static readonly LINE_COLOUR = '#000000';
     private static readonly FACE_COLOUR = '#808080';
     private static readonly TILE_POSITION_COLOUR = '#C0C0C0';
-    // private static readonly START_POSITION_COLOUR = '#DCDCDC';
+    private static readonly START_POSITION_COLOUR = '#DCDCDC';
     private static readonly TILE_COLOUR = '#FFFFFF';
     private static readonly SEGMENT_COLOUR = '#FF0000';
     private static readonly PEG_COLOUR = '#BEBEBE';
@@ -70,26 +70,48 @@ export class Display {
         return tDisplay.group;
     }
 
-    drawTilePosition(tpDisplay: PositionData, tChange: TileChange, scaleTile: number): void {
+    private drawTileAtPosition(tpDisplay: PositionData, positionText: string, tChange: TileChange, scaleTile: number): void {
         // Clear any existing tile position drawing.
         tpDisplay.group.clear();
-        // Set the tile description.
-        const desc = "Position: " + tChange.tilePositionId + ", Tile: " + tChange.tileId;
-        tpDisplay.group.element('title').words(desc);
+        // Set the tile position description.
+        tpDisplay.group.element('title').words(positionText);
         // Draw the tile.
         tpDisplay.group.add(
             this.drawTile(tpDisplay.center, tChange, scaleTile)
         );
     }
 
-    drawEmptyTilePosition(tpDisplay: PositionData, positionText: string, scaleTile: number): void {
+    private drawEmptyTileAtPosition(tpDisplay: PositionData, scaleTile: number, positionText: string, colour: string): void {
         // Clear any existing tile position drawing.
         tpDisplay.group.clear();
-        // Set the tile description.
-        const desc = "Position: " + positionText + ", Tile: Empty";
-        tpDisplay.group.element('title').words(desc);
+        // Set the position description.
+        tpDisplay.group.element('title').words(positionText);
         // Draw the empty tile position.
-        this.drawTriangle(tpDisplay, scaleTile, Display.TILE_POSITION_COLOUR);
+        this.drawTriangle(tpDisplay, scaleTile, colour);
+    }
+
+    drawTilePosition(tpDisplay: PositionData, tChange: TileChange, scaleTile: number): void {
+        this.drawTileAtPosition(tpDisplay,
+            "Position: " + tChange.tilePositionId + ", Tile: " + tChange.tileId, tChange, scaleTile);
+    }
+
+    drawStartPosition(tspDisplay: PositionData, tChange: TileChange, scaleTileStart: number): void {
+        this.drawTileAtPosition(tspDisplay,
+            "Start Position for Tile: " + tChange.tileId + " - Unused", tChange, scaleTileStart);
+    }
+
+    drawEmptyTilePosition(tpDisplay: PositionData, tpChange: TilePositionChange, scaleTile: number): void {
+        this.drawEmptyTileAtPosition(tpDisplay, scaleTile,
+            "Position: " + tpChange.tilePositionId + ", Tile: Empty",
+            Display.TILE_POSITION_COLOUR);
+
+    }
+
+    drawEmptyStartPosition(tpDisplay: PositionData, tpChange: TileChange, scaleTile: number): void {
+        this.drawEmptyTileAtPosition(tpDisplay, scaleTile,
+            "Start Position for Tile: " + tpChange.tileId + " - At: " + tpChange.tilePositionId,
+            Display.START_POSITION_COLOUR);
+
     }
 
     getTilePosition(id: string): PositionData {
