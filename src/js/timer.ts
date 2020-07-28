@@ -34,7 +34,7 @@ export class Timer {
         this._finishTime = new Date();
         const update = "Started: " + Timer.formatTime(this._startTime) +
             "\nFinished: " + Timer.formatTime(this._finishTime) +
-            "\nElapsed: " + this.elapsed(new Date());
+            "\nElapsed: " + this.elapsed(this._finishTime);
         this._statusList.replaceStatus(Timer.STATUS_ID, update);
     }
 
@@ -52,9 +52,10 @@ export class Timer {
     }
 
     private static formatElapse(elapsed: number): string {
-        const seconds = Math.floor((elapsed / 1000) % 60);
-        const minutes = Math.floor((elapsed / 1000 / 60) % 60);
-        const hours = Math.floor(elapsed / (1000 * 60 * 60));
+        const totalSeconds = elapsed / 1000;
+        const seconds = Math.round(totalSeconds % 60);
+        const minutes = Math.floor((totalSeconds / 60) % 60);
+        const hours = Math.floor(totalSeconds / (60 * 60));
         return Timer.format(hours, minutes, seconds);
     }
 
