@@ -45,7 +45,7 @@ export class Display {
             scale, Display.SEGMENT_COLOUR, 'none', rotations);
     }
 
-    drawTile(tpCenter: CenterPointData, tChange: TileChange, scaleTile: number): G {
+    drawTile(tpCenter: CenterPointData, tChange: TileChange, scaleTile: number, rotations: number): G {
         // Create the display position for a tile, including the draw group and center point.
         const tDisplay = {
             group: this._draw.group().id("tile" + tChange.tileId),
@@ -56,7 +56,7 @@ export class Display {
         // Draw the red segments.
         for (let segN = 0; segN < tChange.segments.length; segN++) {
             if (tChange.segments.charAt(segN) === '1') {
-                this.drawSegment(tDisplay, segN, tChange.rotations, scaleTile);
+                this.drawSegment(tDisplay, segN, rotations, scaleTile);
             }
         }
         // Outline the tile.
@@ -77,7 +77,7 @@ export class Display {
         tpDisplay.group.element('title').words(positionText);
         // Draw the tile.
         tpDisplay.group.add(
-            this.drawTile(tpDisplay.center, tChange, scaleTile)
+            this.drawTile(tpDisplay.center, tChange, scaleTile, tChange.rotations)
         );
     }
 
