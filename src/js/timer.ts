@@ -5,30 +5,44 @@ export class Timer {
 
     private static readonly STATUS_ID = "time-taken";
 
-    private _startTime: number = 0;
-    private _finishTime: number = 0;
+    private _startTime: Date | null = null;
+    private _finishTime: Date | null = null;
+    private _elapsedIntervalId: number = 0;
 
     constructor(private readonly _statusList: StatusList) {}
 
+    private updateDisplay() {
+        const update = "Started: " + Timer.formatTime(this._startTime) + "\nElapsed: " + this.elapsed(new Date());
+        this._statusList.replaceStatus(Timer.STATUS_ID, update);
+    }
+
     start(): void {
-        const now = new Date();
-        this._startTime = now.getTime();
-        this._finishTime = 0;
-        this._statusList.addStatus(Timer.STATUS_ID, "Timer", "Started: " + Timer.formatTime(now));
+        // Clear any previous timers.
+        if (this._elapsedIntervalId > 0) {
+            clearInterval(this._elapsedIntervalId);
+        }
+        this._startTime = new Date();
+        this._finishTime = null;
+        this._elapsedIntervalId = setInterval(() => {
+            this.updateDisplay();
+        }, 1000);
+        this._statusList.addStatus(Timer.STATUS_ID, "Timer", "Starting...");
     }
 
     stop(): void {
-        const now = new Date();
-        this._finishTime = now.getTime();
-        this._statusList.addToStatus(Timer.STATUS_ID, "\nFinished: " + Timer.formatTime(now));
-        this._statusList.addToStatus(Timer.STATUS_ID, "\nElapsed: " + this.elapsed());
+        clearInterval(this._elapsedIntervalId);
+        this._finishTime = new Date();
+        const update = "Started: " + Timer.formatTime(this._startTime) +
+            "\nFinished: " + Timer.formatTime(this._finishTime) +
+            "\nElapsed: " + this.elapsed(new Date());
+        this._statusList.replaceStatus(Timer.STATUS_ID, update);
     }
 
-    private elapsed(): string {
-        if (this._startTime && this._finishTime) {
-            return Timer.formatElapse(this._finishTime - this._startTime);
+    private elapsed(since: Date): string {
+        if (!this._startTime) {
+            throw new Error("Timer not initialised properly!")
         }
-        throw new Error("Timer not initialised properly!");
+        return Timer.formatElapse(since.getTime() - this._startTime.getTime());
     }
 
     private static format(hours: number, minutes: number, seconds: number) {
@@ -44,7 +58,10 @@ export class Timer {
         return Timer.format(hours, minutes, seconds);
     }
 
-    private static formatTime(time: Date): string {
+    private static formatTime(time: Date | null): string {
+        if (!time) {
+            throw new Error("Timer not initialised properly!")
+        }
         const seconds = time.getSeconds();
         const minutes = time.getMinutes();
         const hours = time.getHours();

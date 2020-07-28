@@ -88,7 +88,7 @@ function startAnimatedSolver(solverOptions: SolverOptions, displayManager: Displ
     solver.initialState().forEach((tpChange) => displayManager.display(tpChange));
     // Create a change count status card.
     const changeCounter = "change-counter";
-    statusList.addStatus(changeCounter, "Display Changes", "0")
+    statusList.addStatus(changeCounter, "Puzzle Changes", "0")
     // Kick off the animated solver.
     solverTimer.start();
     runAnimatedSolver(solver, displayManager, animationDuration, changeCounter, 0);
