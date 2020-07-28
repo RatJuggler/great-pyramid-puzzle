@@ -3,6 +3,11 @@ import { DisplayData, FaceDisplayData, TileStartDisplayData, CenterPointData, Po
 import { SVG, Svg, G } from "@svgdotjs/svg.js";
 
 
+type PositionData = {
+    group: G,
+    center: CenterPointData
+}
+
 export class Display {
 
     private static readonly LINE_COLOUR = '#000000';
@@ -20,71 +25,74 @@ export class Display {
         this._draw = SVG(rootElement) as Svg;
     }
 
-    private static drawPolygon(draw: G, polygon: PolygonDisplayData, center: CenterPointData,
+    private static drawPolygon(position: PositionData, polygon: PolygonDisplayData,
                         scale: number, fill: string, stroke: any, rotations: number = 0): void {
-        draw.polygon(polygon)
-            .dmove(center.x, center.y)
-            .rotate(center.r  + (rotations * 120), center.x, center.y)
+        position.group.polygon(polygon)
+            .dmove(position.center.x, position.center.y)
+            .rotate(position.center.r  + (rotations * 120), position.center.x, position.center.y)
             .fill(fill)
             .stroke(stroke)
-            .scale(scale, scale, center.x, center.y);
+            .scale(scale, scale, position.center.x, position.center.y);
     }
 
-    private drawTriangle(draw: G, tpCenter: CenterPointData, scale: number, fill: string, outline: number = 0.01): void {
-        Display.drawPolygon(draw, this._displayData.triangle,
-            tpCenter, scale, fill, { width: outline, color: Display.LINE_COLOUR})
+    private drawTriangle(tpDisplay: PositionData, scale: number, fill: string, outline: number = 0.01): void {
+        Display.drawPolygon(tpDisplay, this._displayData.triangle,
+            scale, fill, { width: outline, color: Display.LINE_COLOUR})
     }
 
-    private drawSegment(draw: G, segN: number, tpCenter: CenterPointData, rotations: number, scale: number): void {
-        Display.drawPolygon(draw, this._displayData.segments[segN],
-            tpCenter, scale, Display.SEGMENT_COLOUR, 'none', rotations);
+    private drawSegment(tpDisplay: PositionData, segN: number, rotations: number, scale: number): void {
+        Display.drawPolygon(tpDisplay, this._displayData.segments[segN],
+            scale, Display.SEGMENT_COLOUR, 'none', rotations);
     }
 
     drawTile(tpCenter: CenterPointData, tChange: TileChange, scaleTile: number): G {
-        // Group the elements which make up a tile position.
-        const tGroup = this._draw.group().id("tile" + tChange.tileId);
-        // Fill in the tile colour.
-        this.drawTriangle(tGroup, tpCenter, scaleTile, Display.TILE_COLOUR, 0);
+        // Create the display position for a tile, including the draw group and center point.
+        const tDisplay = {
+            group: this._draw.group().id("tile" + tChange.tileId),
+            center: tpCenter
+        }
+        // Draw a triangle in the base tile colour.
+        this.drawTriangle(tDisplay, scaleTile, Display.TILE_COLOUR, 0);
         // Draw the red segments.
         for (let segN = 0; segN < tChange.segments.length; segN++) {
             if (tChange.segments.charAt(segN) === '1') {
-                this.drawSegment(tGroup, segN, tpCenter, tChange.rotations, scaleTile);
+                this.drawSegment(tDisplay, segN, tChange.rotations, scaleTile);
             }
         }
         // Outline the tile.
-        this.drawTriangle(tGroup, tpCenter, scaleTile, 'none');
+        this.drawTriangle(tDisplay, scaleTile, 'none');
         // Draw the peg in the middle.
-        tGroup.circle(this._displayData.pegScale)
+        tDisplay.group.circle(this._displayData.pegScale)
             .center(tpCenter.x, tpCenter.y)
             .fill(Display.PEG_COLOUR)
             .stroke('none')
             .scale(scaleTile, scaleTile, tpCenter.x, tpCenter.y);
-        return tGroup;
+        return tDisplay.group;
     }
 
-    drawTilePosition(tpGroup: G, tpCenter: CenterPointData, tChange: TileChange, scaleTile: number): void {
+    drawTilePosition(tpDisplay: PositionData, tChange: TileChange, scaleTile: number): void {
         // Clear any existing tile position drawing.
-        tpGroup.clear();
+        tpDisplay.group.clear();
         // Set the tile description.
         const desc = "Position: " + tChange.tilePositionId + ", Tile: " + tChange.tileId;
-        tpGroup.element('title').words(desc);
+        tpDisplay.group.element('title').words(desc);
         // Draw the tile.
-        tpGroup.add(
-            this.drawTile(tpCenter, tChange, scaleTile)
+        tpDisplay.group.add(
+            this.drawTile(tpDisplay.center, tChange, scaleTile)
         );
     }
 
-    drawEmptyTilePosition(tpGroup: G, tpCenter: CenterPointData, positionText: string, scaleTile: number): void {
+    drawEmptyTilePosition(tpDisplay: PositionData, positionText: string, scaleTile: number): void {
         // Clear any existing tile position drawing.
-        tpGroup.clear();
+        tpDisplay.group.clear();
         // Set the tile description.
         const desc = "Position: " + positionText + ", Tile: Empty";
-        tpGroup.element('title').words(desc);
+        tpDisplay.group.element('title').words(desc);
         // Draw the empty tile position.
-        this.drawTriangle(tpGroup, tpCenter, scaleTile, Display.TILE_POSITION_COLOUR);
+        this.drawTriangle(tpDisplay, scaleTile, Display.TILE_POSITION_COLOUR);
     }
 
-    getTilePosition(id: string): { group: G; center: CenterPointData; } {
+    getTilePosition(id: string): PositionData {
         const element = this._draw.findOne("[id='" + id + "']");
         const group = SVG(element) as G;
         const center = group.dom.center;
@@ -101,40 +109,41 @@ export class Display {
         this._draw.group().id("start" + tspData.id).setData({center: tspCenter});
     }
 
-    private createTilePositions(fData: FaceDisplayData, fCenter: CenterPointData, fGroup: G, scaleFace: number): void {
+    private createTilePositions(fData: FaceDisplayData, fDisplay: PositionData, scaleFace: number): void {
         fData.tilePositions.forEach((tpData) => {
             // Scale the tile position center point.
             const tpCenter = {
-                x: fCenter.x + (tpData.center.x * scaleFace),
-                y: fCenter.y + (tpData.center.y * scaleFace),
-                r: fCenter.r + tpData.center.r
+                x: fDisplay.center.x + (tpData.center.x * scaleFace),
+                y: fDisplay.center.y + (tpData.center.y * scaleFace),
+                r: fDisplay.center.r + tpData.center.r
             };
-            fGroup.add(
+            fDisplay.group.add(
                 this._draw.group().id(fData.name + '-' + tpData.id).setData({center: tpCenter})
             );
         });
     }
 
     private createFace(fData: FaceDisplayData, scaleFace: number): void {
-        // Scale the face center point.
-        const fCenter = {
-            x: fData.center.x * scaleFace,
-            y: fData.center.y * scaleFace,
-            r: fData.center.r
+        // Create the display position for a face, including the draw group and center point.
+        const fDisplay = {
+            group: this._draw.group().id("face" + fData.name),
+            center: {
+                x: fData.center.x * scaleFace,
+                y: fData.center.y * scaleFace,
+                r: fData.center.r
+            }
         }
-        // Create a group for the elements on a face.
-        const fGroup = this._draw.group().id("face" + fData.name);
-        fGroup.element('title').words("Face " + fData.name);
+        fDisplay.group.element('title').words("Face " + fData.name);
         // Fill in the face colour.
-        this.drawTriangle(fGroup, fCenter, scaleFace, Display.FACE_COLOUR, 0);
+        this.drawTriangle(fDisplay, scaleFace, Display.FACE_COLOUR, 0);
         // Add a group for each tile position on the face.
-        this.createTilePositions(fData, fCenter, fGroup, scaleFace);
+        this.createTilePositions(fData, fDisplay, scaleFace);
         // Outline the face.
-        this.drawTriangle(fGroup, fCenter, scaleFace, 'none', 0.02);
+        this.drawTriangle(fDisplay, scaleFace, 'none', 0.02);
         // Draw a point to show the center of the face last so it always shows up.
         this._draw.circle(1)
             .id("center" + fData.name)
-            .center(fCenter.x, fCenter.y)
+            .center(fDisplay.center.x, fDisplay.center.y)
             .fill(Display.LINE_COLOUR)
             .stroke('none')
             .element('title')
@@ -147,7 +156,8 @@ export class Display {
         // Display each face of the puzzle.
         this._displayData.faces.forEach((fData) => this.createFace(fData, scaleFace));
         // Start area group must be created last.
-        this._displayData.tileStartPositions.forEach((tspData) => this.createTileStartPosition(tspData, scaleTileStart));
+        this._displayData.tileStartPositions.forEach((tspData) =>
+            this.createTileStartPosition(tspData, scaleTileStart));
         // Return the main element.
         return this._draw;
     }
