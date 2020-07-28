@@ -1,5 +1,5 @@
 import { TileChange } from "./puzzle-changes";
-import { DisplayData, FaceDisplayData, TileStartDisplayData, CenterPointData } from "./display-data-schema";
+import { DisplayData, FaceDisplayData, TileStartDisplayData, CenterPointData, PolygonDisplayData } from "./display-data-schema";
 import { SVG, Svg, G } from "@svgdotjs/svg.js";
 
 
@@ -20,29 +20,35 @@ export class Display {
         this._draw = SVG(rootElement) as Svg;
     }
 
-    private drawTriangle(draw: G, tpCenter: CenterPointData, scale: number, fill: string, outline: number = 0.01): void {
-        draw.polygon(this._displayData.triangle)
-            .dmove(tpCenter.x, tpCenter.y)
-            .rotate(tpCenter.r, tpCenter.x, tpCenter.y)
+    private static drawPolygon(draw: G, polygon: PolygonDisplayData, center: CenterPointData,
+                        scale: number, fill: string, stroke: any, rotations: number = 0): void {
+        draw.polygon(polygon)
+            .dmove(center.x, center.y)
+            .rotate(center.r  + (rotations * 120), center.x, center.y)
             .fill(fill)
-            .stroke({ width: outline, color: Display.LINE_COLOUR})
-            .scale(scale, scale, tpCenter.x, tpCenter.y);
+            .stroke(stroke)
+            .scale(scale, scale, center.x, center.y);
     }
 
-    drawTile(tpCenter: CenterPointData, scaleTile: number, tileId: number, rotations: number, segments: string): G {
+    private drawTriangle(draw: G, tpCenter: CenterPointData, scale: number, fill: string, outline: number = 0.01): void {
+        Display.drawPolygon(draw, this._displayData.triangle,
+            tpCenter, scale, fill, { width: outline, color: Display.LINE_COLOUR})
+    }
+
+    private drawSegment(draw: G, segN: number, tpCenter: CenterPointData, rotations: number, scale: number): void {
+        Display.drawPolygon(draw, this._displayData.segments[segN],
+            tpCenter, scale, Display.SEGMENT_COLOUR, 'none', rotations);
+    }
+
+    drawTile(tpCenter: CenterPointData, tChange: TileChange, scaleTile: number): G {
         // Group the elements which make up a tile position.
-        const tGroup = this._draw.group().id("tile" + tileId);
+        const tGroup = this._draw.group().id("tile" + tChange.tileId);
         // Fill in the tile colour.
         this.drawTriangle(tGroup, tpCenter, scaleTile, Display.TILE_COLOUR, 0);
         // Draw the red segments.
-        for (let segN = 0; segN < segments.length; segN++) {
-            if (segments.charAt(segN) === '1') {
-                tGroup.polygon(this._displayData.segments[segN])
-                    .dmove(tpCenter.x, tpCenter.y)
-                    .rotate(tpCenter.r + (rotations * 120), tpCenter.x, tpCenter.y)
-                    .fill(Display.SEGMENT_COLOUR)
-                    .stroke('none')
-                    .scale(scaleTile, scaleTile, tpCenter.x, tpCenter.y);
+        for (let segN = 0; segN < tChange.segments.length; segN++) {
+            if (tChange.segments.charAt(segN) === '1') {
+                this.drawSegment(tGroup, segN, tpCenter, tChange.rotations, scaleTile);
             }
         }
         // Outline the tile.
@@ -64,7 +70,7 @@ export class Display {
         tpGroup.element('title').words(desc);
         // Draw the tile.
         tpGroup.add(
-            this.drawTile(tpCenter, scaleTile, tChange.tileId, tChange.rotations, tChange.segments)
+            this.drawTile(tpCenter, tChange, scaleTile)
         );
     }
 
