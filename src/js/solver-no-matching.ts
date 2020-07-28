@@ -60,14 +60,14 @@ export class NoMatchingSolver extends SolverBase {
     private placeTile(): PuzzleChange {
         this._tilePosition.tile = this.getTileSelection();
         this._rotating = this.tileRotations();
-        return TileChange.place(this._tilePosition.id, this._tilePosition.tile.id, this._tilePosition.tile.rotations, this._tilePosition.tile.segments);
+        return TileChange.place(this._tilePosition.id, this._tilePosition.tile.id, 0, this._tilePosition.tile.segments);
     }
 
     private rotateOrNext(): PuzzleChange {
         if (this._rotating > 0) {
             this._rotating--;
             this._tilePosition.tile.rotate();
-            return TileChange.rotate(this._tilePosition.id, this._tilePosition.tile.id, this._tilePosition.tile.rotations, this._tilePosition.tile.segments);
+            return TileChange.rotate(this._tilePosition.id, this._tilePosition.tile.id, 1, this._tilePosition.tile.segments);
         } else {
             if (this._emptyTilePositions.length === 0) {
                 return PuzzleChange.SOLVED;
