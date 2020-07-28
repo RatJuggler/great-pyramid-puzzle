@@ -34,11 +34,14 @@
     "triangle": {
       "description": "A point path defining a base unit triangle.",
       "type": "array",
-      "minItems": 6,
-      "maxItems": 6,
-      "uniqueItems": false,
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true,
       "items": {
-        "type": "number"
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "uniqueItems": false
       }
     },
     "segments": {

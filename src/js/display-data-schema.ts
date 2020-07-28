@@ -23,7 +23,7 @@ type TileStartDisplayData = {
 }
 
 type DisplayData = {
-    readonly triangle: number[],
+    readonly triangle: [number, number][],
     readonly segments: [number, number][][],
     readonly faceScale: number,
     readonly tileScale: number,
