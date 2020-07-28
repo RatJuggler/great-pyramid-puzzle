@@ -20,25 +20,13 @@ export class Display {
         this._draw = SVG(rootElement) as Svg;
     }
 
-    private scaleSegment(segN: number, tpCenter: CenterPointData, scale: number): [number, number][] {
-        const scaledSegment: [number, number][] = [];
-        this._displayData.segments[segN].forEach(value =>
-            scaledSegment.push([tpCenter.x + (scale * value[0]), tpCenter.y + (scale * value[1])]));
-        return scaledSegment;
-    }
-
-    private scaleTriangle(scale: number): number[] {
-        const scaledTriangle: number[] = [];
-        this._displayData.triangle.forEach(value => scaledTriangle.push(scale * value));
-        return scaledTriangle;
-    }
-
-    private drawTriangle(draw: G, tpCenter: CenterPointData, scale: number, fill: string, outline: number = 0.2): void {
-        draw.polygon(this.scaleTriangle(scale))
+    private drawTriangle(draw: G, tpCenter: CenterPointData, scale: number, fill: string, outline: number = 0.01): void {
+        draw.polygon(this._displayData.triangle)
             .dmove(tpCenter.x, tpCenter.y)
             .rotate(tpCenter.r, tpCenter.x, tpCenter.y)
             .fill(fill)
-            .stroke({ width: outline, color: Display.LINE_COLOUR});
+            .stroke({ width: outline, color: Display.LINE_COLOUR})
+            .scale(scale, scale, tpCenter.x, tpCenter.y);
     }
 
     drawTile(tpCenter: CenterPointData, scaleTile: number, tileId: number, rotations: number, segments: string): G {
@@ -49,10 +37,12 @@ export class Display {
         // Draw the red segments.
         for (let segN = 0; segN < segments.length; segN++) {
             if (segments.charAt(segN) === '1') {
-                tGroup.polygon(this.scaleSegment(segN, tpCenter, scaleTile))
+                tGroup.polygon(this._displayData.segments[segN])
+                    .dmove(tpCenter.x, tpCenter.y)
                     .rotate(tpCenter.r + (rotations * 120), tpCenter.x, tpCenter.y)
                     .fill(Display.SEGMENT_COLOUR)
-                    .stroke('none');
+                    .stroke('none')
+                    .scale(scaleTile, scaleTile, tpCenter.x, tpCenter.y);
             }
         }
         // Outline the tile.
@@ -133,7 +123,7 @@ export class Display {
         // Add a group for each tile position on the face.
         this.createTilePositions(fData, fCenter, fGroup, scaleFace);
         // Outline the face.
-        this.drawTriangle(fGroup, fCenter, scaleFace, 'none', 0.4);
+        this.drawTriangle(fGroup, fCenter, scaleFace, 'none', 0.02);
         // Draw a point to show the center of the face last so it always shows up.
         this._draw.circle(1)
             .id("center" + fData.name)
