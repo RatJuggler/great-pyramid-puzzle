@@ -86,9 +86,11 @@ class PlaceTilePosition extends DisplayChange {
         this.display.drawEmptyTilePosition(tspDisplay.group, tspDisplay.center, "Start for Tile " + this._tChange.tileId, this._scaleTileStart);
         const placeTile = this.display.drawTile(tspDisplay.center, this._scaleTileStart, this._tChange.tileId, this._tChange.rotations, this._tChange.segments);
         // Animate the tile moving from the start position to the destination position.
+        const scaleChange = this._scaleTile / this._scaleTileStart;
         const matrix = new Matrix()
             .translate(tpDisplay.center.x - tspDisplay.center.x, tpDisplay.center.y - tspDisplay.center.y)
-            .rotate(tpDisplay.center.r + (this._tChange.rotations * 120), tpDisplay.center.x, tpDisplay.center.y);
+            .rotate(tpDisplay.center.r + (this._tChange.rotations * 120), tpDisplay.center.x, tpDisplay.center.y)
+            .scale(scaleChange, scaleChange, tpDisplay.center.x, tpDisplay.center.y);
         // @ts-ignore
         placeTile.animate({duration: this._animationDuration}).transform(matrix)
             .after(() => {
@@ -142,9 +144,11 @@ class RemoveTilePosition extends DisplayChange {
         this.display.drawEmptyTilePosition(tpDisplay.group, tpDisplay.center, this._tChange.tilePositionId, this._scaleTile);
         const removeTile = this.display.drawTile(tpDisplay.center, this._scaleTile, this._tChange.tileId, this._tChange.rotations, this._tChange.segments);
         // Animate the tile moving from it's old position back to the start.
+        const scaleChange = this._scaleTileStart / this._scaleTile;
         const matrix = new Matrix()
             .translate(- (tpDisplay.center.x - tspDisplay.center.x), - (tpDisplay.center.y - tspDisplay.center.y))
-            .rotate(-tpDisplay.center.r, tspDisplay.center.x, tspDisplay.center.y);
+            .rotate(-tpDisplay.center.r, tspDisplay.center.x, tspDisplay.center.y)
+            .scale(scaleChange, scaleChange, tspDisplay.center.x, tspDisplay.center.y);
         // @ts-ignore
         removeTile.animate({duration: this._animationDuration}).transform(matrix)
             .after(() => {
