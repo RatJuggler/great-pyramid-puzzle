@@ -23,7 +23,7 @@ class EmptyTilePosition extends DisplayChange {
 
     show(): void {
         // Find the tile position to be displayed empty.
-        const tpDisplay = this.display.getTilePosition(this._tpChange.tilePositionId);
+        const tpDisplay = this.display.getTilePosition(this._tpChange);
         // Redraw the empty tile position.
         this.display.drawEmptyTilePosition(tpDisplay, this._tpChange, this._scaleTile);
     }
@@ -41,7 +41,7 @@ class StartTilePosition extends DisplayChange {
 
     show(): void {
         // Find start position of the tile.
-        const spDisplay = this.display.getTilePosition(this._tChange.tilePositionId);
+        const spDisplay = this.display.getStartPosition(this._tChange);
         // Draw the tile at it's start position.
         this.display.drawStartPosition(spDisplay, this._tChange, this._scaleTileStart);
     }
@@ -59,7 +59,7 @@ class FinalTilePosition extends DisplayChange {
 
     show(): void {
         // Find the destination tile position of the new tile.
-        const tpDisplay = this.display.getTilePosition(this._tChange.tilePositionId);
+        const tpDisplay = this.display.getTilePosition(this._tChange);
         // Redraw the tile position with the placed tile.
         this.display.drawTilePosition(tpDisplay, this._tChange, this._scaleTile);
     }
@@ -79,9 +79,9 @@ class PlaceTilePosition extends DisplayChange {
 
     show(): void {
         // Find the start position of the tile to place on the puzzle.
-        const tspDisplay = this.display.getTilePosition("start" + this._tChange.tileId);
+        const tspDisplay = this.display.getStartPosition(this._tChange);
         // Find the destination tile position of the new tile.
-        const tpDisplay = this.display.getTilePosition(this._tChange.tilePositionId);
+        const tpDisplay = this.display.getTilePosition(this._tChange);
         // Redraw the start position with the tile removed then draw the tile at the start position ready to be animated.
         this.display.drawEmptyStartPosition(tspDisplay, this._tChange, this._scaleTileStart);
         const placeTile = this.display.drawTile(tspDisplay.center, this._tChange, this._scaleTileStart);
@@ -113,7 +113,7 @@ class RotateTilePosition extends DisplayChange {
 
     show(): void {
         // Find the tile position of the tile to be rotated.
-        const tpDisplay = this.display.getTilePosition(this._tpChange.tilePositionId);
+        const tpDisplay = this.display.getTilePosition(this._tpChange);
         // Find the child tile.
         const tile = tpDisplay.group.children()[1];
         // Rotate the tile.
@@ -136,10 +136,10 @@ class RemoveTilePosition extends DisplayChange {
     }
 
     show(): void {
-        // Find the start position of the new tile.
-        const tspDisplay = this.display.getTilePosition("start" + this._tChange.tileId);
+        // Find the start position of the tile being removed.
+        const tspDisplay = this.display.getStartPosition(this._tChange);
         // Find the tile position of the tile to be removed.
-        const tpDisplay = this.display.getTilePosition(this._tChange.tilePositionId);
+        const tpDisplay = this.display.getTilePosition(this._tChange);
         // Redraw the tile position with the tile removed then draw the tile at the tile position ready to be animated.
         this.display.drawEmptyTilePosition(tpDisplay, this._tChange, this._scaleTile);
         const removeTile = this.display.drawTile(tpDisplay.center, this._tChange, this._scaleTile);

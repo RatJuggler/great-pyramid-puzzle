@@ -114,11 +114,19 @@ export class Display {
 
     }
 
-    getTilePosition(id: string): PositionData {
+    private getPosition(id: string): PositionData {
         const element = this._draw.findOne("[id='" + id + "']");
         const group = SVG(element) as G;
         const center = group.dom.center;
         return {group, center};
+    }
+
+    getTilePosition(tpChange: TilePositionChange): PositionData {
+        return this.getPosition(tpChange.tilePositionId);
+    }
+
+    getStartPosition(tChange: TileChange): PositionData {
+        return this.getPosition("start" + tChange.tileId);
     }
 
     private createTileStartPosition(tspData: TileStartDisplayData, scaleTileStart: number): void {
