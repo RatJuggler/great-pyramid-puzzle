@@ -51,7 +51,8 @@ export class Display {
         tGroup.circle(this._displayData.pegScale)
             .center(tpCenter.x, tpCenter.y)
             .fill(Display.PEG_COLOUR)
-            .stroke('none');
+            .stroke('none')
+            .scale(scaleTile, scaleTile, tpCenter.x, tpCenter.y);
         return tGroup;
     }
 
