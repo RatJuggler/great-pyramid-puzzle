@@ -121,6 +121,12 @@ export class Display {
         return {group, center};
     }
 
+    findTilePositions(): G[] {
+        return this._draw.find("g")
+            .filter((group) => !!group.id().match(/^[1-4]-[1-9]$/))
+            .map((element) => SVG(element) as G);
+    }
+
     getTilePosition(tpChange: TilePositionChange): PositionData {
         return this.getPosition(tpChange.tilePositionId);
     }

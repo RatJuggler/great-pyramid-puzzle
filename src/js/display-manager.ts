@@ -28,6 +28,27 @@ class InitialDisplay extends DisplayChange {
 }
 
 
+class SolvedDisplay extends DisplayChange {
+
+    constructor(display: Display,
+                private readonly _animationDuration: number) {
+        super(display);
+    }
+
+    show(): void {
+        // Give the completed puzzle some interactivity.
+        this.display.findTilePositions().forEach((tpGroup) => {
+            tpGroup.click(() => {
+                const tpChange = TileChange.rotate(tpGroup.id(), 0, 1, "");
+                const action = new RotateTilePosition(this.display, tpChange as TileChange, this._animationDuration);
+                action.show();
+            })
+        });
+    }
+
+}
+
+
 class EmptyTilePosition extends DisplayChange {
 
     constructor(display: Display,
@@ -201,6 +222,9 @@ export class DisplayManager {
         switch (pChange.type) {
             case PuzzleChangeType.Initial:
                 action = new InitialDisplay(this._display, this._scaleFace, this._scaleTileStart);
+                break;
+            case PuzzleChangeType.Solved:
+                action = new SolvedDisplay(this._display, this._animationDuration);
                 break;
             case PuzzleChangeType.Empty:
                 action = new EmptyTilePosition(this._display, pChange as TilePositionChange, this._scaleTile);

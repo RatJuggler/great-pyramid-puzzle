@@ -1,6 +1,6 @@
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
-import { PuzzleChange, TileChange } from "./puzzle-changes";
+import { PuzzleChange } from "./puzzle-changes";
 import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
 import { SolverStepCounter } from "./solver-step-counter";
@@ -31,19 +31,6 @@ function getSelector(name: string): string {
     throw new Error("Expected radio option to be selected!");
 }
 
-function attachRotateEvents(displayManager: DisplayManager): void {
-    // Give the completed puzzle some interactivity.
-    document.querySelectorAll("g")
-        .forEach(function (svgGroup) {
-            const tpId = svgGroup.id.match(/^[1-4]-[1-9]$/);
-            if (tpId) {
-                svgGroup.addEventListener("click", () =>
-                    displayManager.display(TileChange.rotate(tpId[0], 0, 1, ""))
-                );
-            }
-        });
-}
-
 function startWorkerSolver(solverOptions: SolverOptions, displayManager: DisplayManager): void {
     // Set the overlay to prevent further UI interaction.
     addActive("overlay");
@@ -55,7 +42,6 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
         const result = <WorkerResult> e.data;
         stepCounter.counter = result.changeCounter;
         result.finalState.forEach((tpChange) => displayManager.display(tpChange));
-        attachRotateEvents(displayManager);
         removeActive("overlay");
     }
     // Attach a cancel trigger to the overlay.
@@ -73,10 +59,10 @@ function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, anima
     solverTimeoutId = setTimeout( () => {
         const puzzleChange = solver.nextState();
         if (puzzleChange.isSolved()) {
+            // Stop the timer and show the final result.
             clearInterval(solverTimeoutId)
-            // Stop the timer and log the result.
             solverTimer.stop();
-            attachRotateEvents(displayManager);
+            displayManager.display(puzzleChange);
         } else {
             displayManager.display(puzzleChange);
             stepCounter.increase();

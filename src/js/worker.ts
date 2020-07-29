@@ -14,10 +14,12 @@ onmessage = function (e) {
         puzzleChange = solver.nextState();
         stepCounter++;
     }
-    // Return the result for display.
+    // Return the result for display, including the final change.
+    const finalState = solver.finalState();
+    finalState.push(puzzleChange)
     const result = {
         changeCounter: stepCounter,
-        finalState: solver.finalState()
+        finalState: finalState
     }
     // @ts-ignore
     postMessage(result);
