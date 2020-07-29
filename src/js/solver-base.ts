@@ -1,6 +1,8 @@
 import { Tetrahedron } from "./tetrahedron";
 import { TilePool } from "./tile-pool";
-import {PuzzleChange, TileChange, TilePositionChange} from "./puzzle-changes";
+import { PuzzleChange, TileChange, TilePositionChange } from "./puzzle-changes";
+import { Tile } from "./tile";
+import { TilePosition } from "./tile-position";
 
 
 interface Solver {
@@ -20,17 +22,38 @@ abstract class SolverBase implements Solver {
 
     initialState(): Array<PuzzleChange> {
         return this._tetrahedron.tilePositions
-            .map((tilePosition) => TilePositionChange.empty(tilePosition.id))
-            .concat(this._tilePool.tiles
-                .map((tile) => TileChange.start("start" + tile.id, tile.id, tile.rotations, tile.segments)));
+            .map((tilePosition) => SolverBase.empty(tilePosition))
+            .concat(this._tilePool.tiles.map((tile) => SolverBase.start(tile)));
     }
 
     abstract nextState(): PuzzleChange;
 
     finalState(): Array<PuzzleChange> {
-        return this._tetrahedron.tilePositions
-            .map((tilePosition) =>
-                TileChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments));
+        return this._tetrahedron.tilePositions.map((tilePosition) => SolverBase.final(tilePosition));
+    }
+
+    protected static start(tile: Tile): PuzzleChange {
+        return TileChange.start("start" + tile.id, tile.id, tile.rotations, tile.segments)
+    }
+
+    protected static empty(tilePosition: TilePosition): PuzzleChange {
+        return TilePositionChange.empty(tilePosition.id);
+    }
+
+    protected static final(tilePosition: TilePosition): PuzzleChange {
+        return TileChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments)
+    }
+
+    protected static place(tilePosition: TilePosition): PuzzleChange {
+        return TileChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
+    }
+
+    protected static rotate(tilePosition: TilePosition, rotate: number): PuzzleChange {
+        return TileChange.rotate(tilePosition.id, tilePosition.tile.id, rotate, tilePosition.tile.segments);
+    }
+
+    protected static remove(tilePosition: TilePosition): PuzzleChange {
+        return TileChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
     }
 
 }
