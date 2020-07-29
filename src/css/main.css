@@ -144,7 +144,7 @@ header {
   background: transparent;
 }
 #status-list li {
-  padding: 6px;
+  padding: 6px 10px;
   background: #fff;
   max-width: 360px;
   border-radius: 20px;
@@ -156,6 +156,7 @@ header {
 }
 #status-list p {
   margin: .5em auto;
+  line-height: 1.5em;
 }
 
 /* The main content area. */
