@@ -18,7 +18,7 @@ function getDisplayData(puzzleType: string): DisplayData {
     }
 }
 
-function getDisplayManager(displayElement: string | HTMLElement,
+function getDisplayManager(displayElement: HTMLElement,
                            displayData: DisplayData | string,
                            animationDuration: number = 250) {
     if (typeof(displayData) === "string") {
