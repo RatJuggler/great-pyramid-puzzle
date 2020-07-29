@@ -1,5 +1,5 @@
 import { PuzzleChange, PuzzleChangeType, TileChange, TilePositionChange } from "./puzzle-changes";
-import { Matrix, Svg } from "@svgdotjs/svg.js";
+import { Matrix } from "@svgdotjs/svg.js";
 import { DisplayData } from "./display-data-schema";
 import { Display } from "./display";
 
@@ -9,6 +9,21 @@ abstract class DisplayChange {
     protected constructor(protected readonly display: Display) {}
 
     abstract show(): void;
+
+}
+
+
+class InitialDisplay extends DisplayChange {
+
+    constructor(display: Display,
+                private readonly _scaleFace: number,
+                private readonly _scaleTileStart: number) {
+        super(display);
+    }
+
+    show(): void {
+        this.display.createInitialDisplay(this._scaleFace, this._scaleTileStart);
+    }
 
 }
 
@@ -181,33 +196,32 @@ export class DisplayManager {
         this._animationDuration = duration;
     }
 
-    initialDisplay(): Svg {
-        return this._display.createInitialDisplay(this._scaleFace, this._scaleTileStart);
-    }
-
-    display(tpChange: PuzzleChange) {
+    display(pChange: PuzzleChange) {
         let action;
-        switch (tpChange.type) {
+        switch (pChange.type) {
+            case PuzzleChangeType.Initial:
+                action = new InitialDisplay(this._display, this._scaleFace, this._scaleTileStart);
+                break;
             case PuzzleChangeType.Empty:
-                action = new EmptyTilePosition(this._display, tpChange as TilePositionChange, this._scaleTile);
+                action = new EmptyTilePosition(this._display, pChange as TilePositionChange, this._scaleTile);
                 break;
             case PuzzleChangeType.Start:
-                action = new StartTilePosition(this._display, tpChange as TileChange, this._scaleTileStart);
+                action = new StartTilePosition(this._display, pChange as TileChange, this._scaleTileStart);
                 break;
             case PuzzleChangeType.Final:
-                action = new FinalTilePosition(this._display, tpChange as TileChange, this._scaleTile);
+                action = new FinalTilePosition(this._display, pChange as TileChange, this._scaleTile);
                 break;
             case PuzzleChangeType.Place:
-                action = new PlaceTilePosition(this._display, tpChange as TileChange,  this._scaleTileStart, this._scaleTile, this._animationDuration);
+                action = new PlaceTilePosition(this._display, pChange as TileChange,  this._scaleTileStart, this._scaleTile, this._animationDuration);
                 break;
             case PuzzleChangeType.Rotate:
-                action = new RotateTilePosition(this._display, tpChange as TileChange, this._animationDuration);
+                action = new RotateTilePosition(this._display, pChange as TileChange, this._animationDuration);
                 break;
             case PuzzleChangeType.Remove:
-                action = new RemoveTilePosition(this._display, tpChange as TileChange, this._scaleTileStart, this._scaleTile, this._animationDuration);
+                action = new RemoveTilePosition(this._display, pChange as TileChange, this._scaleTileStart, this._scaleTile, this._animationDuration);
                 break;
             default:
-                throw new Error("Unknown tile position change!");
+                throw new Error("Unknown puzzle display change!");
         }
         action.show();
     }

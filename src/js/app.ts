@@ -1,6 +1,6 @@
 import { getDisplayManager } from "./display-loader";
 import { DisplayManager } from "./display-manager";
-import { TileChange } from "./puzzle-changes";
+import { PuzzleChange, TileChange } from "./puzzle-changes";
 import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
 import { SolverStepCounter } from "./solver-step-counter";
@@ -9,7 +9,7 @@ import { StatusListManager } from "./status-list-manager";
 import { WorkerResult } from "./common-data-schema";
 
 
-// Track animated solver timer.
+// Track solver timer.
 let solverTimeoutId: number;
 // Track solver worker.
 let solverWorker: Worker;
@@ -32,6 +32,7 @@ function getSelector(name: string): string {
 }
 
 function attachRotateEvents(displayManager: DisplayManager): void {
+    // Give the completed puzzle some interactivity.
     document.querySelectorAll("g")
         .forEach(function (svgGroup) {
             const tpId = svgGroup.id.match(/^[1-4]-[1-9]$/);
@@ -127,7 +128,7 @@ function solvePuzzle(): void {
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Initialise the display and start the trackers.
     const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, animationDuration);
-    displayManager.initialDisplay();
+    displayManager.display(PuzzleChange.INITIAL);
     statusList.clear();
     solverTimer.start();
     stepCounter.start();

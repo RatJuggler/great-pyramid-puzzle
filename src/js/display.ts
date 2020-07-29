@@ -180,7 +180,7 @@ export class Display {
             .words("Center of Face " + fData.name);
     }
 
-    createInitialDisplay(scaleFace: number, scaleTileStart: number): Svg {
+    createInitialDisplay(scaleFace: number, scaleTileStart: number): void {
         // Clear any existing display.
         this._draw.clear();
         // Display each face of the puzzle.
@@ -188,8 +188,6 @@ export class Display {
         // Start area group must be created last.
         this._displayData.tileStartPositions.forEach((tspData) =>
             this.createTileStartPosition(tspData, scaleTileStart));
-        // Return the main element.
-        return this._draw;
     }
 
 }
