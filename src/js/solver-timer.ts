@@ -3,7 +3,7 @@ import { StatusList } from "./status-list-manager";
 
 export class SolverTimer {
 
-    private static readonly STATUS_ID = "time-taken";
+    private static readonly STATUS_ID = "solver-timer";
 
     private _startTime: Date | null = null;
     private _finishTime: Date | null = null;
@@ -13,7 +13,7 @@ export class SolverTimer {
 
     private updateDisplay() {
         const update = "Started: " + SolverTimer.formatTime(this._startTime) + "\nElapsed: " + this.elapsed(new Date());
-        this._statusList.replaceStatus(SolverTimer.STATUS_ID, update);
+        this._statusList.replace(SolverTimer.STATUS_ID, update);
     }
 
     start(): void {
@@ -26,7 +26,7 @@ export class SolverTimer {
         this._elapsedIntervalId = setInterval(() => {
             this.updateDisplay();
         }, 1000);
-        this._statusList.addStatus(SolverTimer.STATUS_ID, "Timer", "Starting...");
+        this._statusList.add(SolverTimer.STATUS_ID, "Timer", "Starting...");
     }
 
     stop(): void {
@@ -35,12 +35,12 @@ export class SolverTimer {
         const update = "Started: " + SolverTimer.formatTime(this._startTime) +
             "\nFinished: " + SolverTimer.formatTime(this._finishTime) +
             "\nElapsed: " + this.elapsed(this._finishTime);
-        this._statusList.replaceStatus(SolverTimer.STATUS_ID, update);
+        this._statusList.replace(SolverTimer.STATUS_ID, update);
     }
 
     cancel(): void {
         clearInterval(this._elapsedIntervalId);
-        this._statusList.addToStatus(SolverTimer.STATUS_ID, "\nCancelled!");
+        this._statusList.addTo(SolverTimer.STATUS_ID, "\nCancelled!");
     }
 
     private elapsed(since: Date): string {

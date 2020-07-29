@@ -3,7 +3,7 @@ import {StatusList} from "./status-list-manager";
 
 export class SolverStepCounter {
 
-    private static readonly STATUS_ID = "steps-counter";
+    private static readonly STATUS_ID = "solver-step-counter";
 
     private _counter: number = 0;
 
@@ -14,12 +14,12 @@ export class SolverStepCounter {
     }
 
     private updateDisplay(): void {
-        this._statusList.replaceStatus(SolverStepCounter.STATUS_ID, SolverStepCounter.format(this._counter));
+        this._statusList.replace(SolverStepCounter.STATUS_ID, SolverStepCounter.format(this._counter));
     }
 
     start(): void {
         this._counter = 0;
-        this._statusList.addStatus(SolverStepCounter.STATUS_ID, "Step Counter", "0");
+        this._statusList.add(SolverStepCounter.STATUS_ID, "Step Counter", "0");
     }
 
     set counter(counter: number) {

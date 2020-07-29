@@ -3,10 +3,10 @@ import { DisplayManager } from "./display-manager";
 import { TileChange } from "./puzzle-changes";
 import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
+import { SolverStepCounter } from "./solver-step-counter";
 import { SolverTimer } from "./solver-timer";
 import { StatusListManager } from "./status-list-manager";
 import { WorkerResult } from "./common-data-schema";
-import {SolverStepCounter} from "./solver-step-counter";
 
 
 // Track animated solver timer.
@@ -49,11 +49,9 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
     // Create a new work and an event to deal with the result.
     solverWorker = new Worker("worker.ts");
     solverWorker.onmessage = (e) => {
-        // Stop the timer and log the result.
+        // Stop the timer and show the returned result.
         solverTimer.stop();
-        // Show the final puzzle state.
         const result = <WorkerResult> e.data;
-        // Create a change count status card.
         stepCounter.counter = result.changeCounter;
         result.finalState.forEach((tpChange) => displayManager.display(tpChange));
         attachRotateEvents(displayManager);
@@ -66,8 +64,6 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
         removeActive("overlay");
     });
     // Kick off the worker solver.
-    solverTimer.start();
-    stepCounter.start();
     solverWorker.postMessage(solverOptions);
 }
 
@@ -94,8 +90,6 @@ function startAnimatedSolver(solverOptions: SolverOptions, displayManager: Displ
     // Show the initial tile positions.
     solver.initialState().forEach((tpChange) => displayManager.display(tpChange));
     // Kick off the animated solver.
-    solverTimer.start();
-    stepCounter.start();
     runAnimatedSolver(solver, displayManager, animationDuration);
 }
 
@@ -131,12 +125,12 @@ function solvePuzzle(): void {
     const animationDuration = getSpeed();
     // Find where we want the puzzle displayed.
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
-    // Build a display manager.
+    // Initialise the display and start the trackers.
     const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, animationDuration);
-    // Show the initial puzzle outline.
     displayManager.initialDisplay();
-    // Clear the status list.
-    statusList.clearList();
+    statusList.clear();
+    solverTimer.start();
+    stepCounter.start();
     // Start the solving process.
     if (animationDuration === 0) {
         startWorkerSolver(solverOptions, displayManager);

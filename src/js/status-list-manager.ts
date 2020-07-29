@@ -1,8 +1,8 @@
 interface StatusList {
-    addStatus: (id: string, title: string, status: string) => void;
-    addToStatus: (id: string, status: string) => void;
-    replaceStatus: (id: string, status: string) => void;
-    clearList: () => void;
+    add: (id: string, title: string, status: string) => void;
+    addTo: (id: string, status: string) => void;
+    replace: (id: string, status: string) => void;
+    clear: () => void;
 }
 
 
@@ -14,7 +14,7 @@ class StatusListManager implements StatusList {
         this._statusList = document.getElementById(eventListId)!;
     }
 
-    addStatus(id: string, title: string, status: string): void {
+    add(id: string, title: string, status: string): void {
         const newLi = document.createElement("li");
         newLi.id = id;
         const newH2 = document.createElement("h4");
@@ -38,15 +38,15 @@ class StatusListManager implements StatusList {
         return liChildren.item(0)!;
     }
 
-    addToStatus(id: string, status: string): void {
+    addTo(id: string, status: string): void {
         StatusListManager.findStatusP(id).innerText += status;
     }
 
-    replaceStatus(id: string, status: string): void {
+    replace(id: string, status: string): void {
         StatusListManager.findStatusP(id).innerText = status;
     }
 
-    clearList(): void {
+    clear(): void {
         this._statusList.innerHTML = "";
     }
 
