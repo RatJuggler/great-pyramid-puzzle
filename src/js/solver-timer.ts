@@ -1,7 +1,7 @@
 import { StatusList } from "./status-list-manager";
 
 
-export class Timer {
+export class SolverTimer {
 
     private static readonly STATUS_ID = "time-taken";
 
@@ -12,8 +12,8 @@ export class Timer {
     constructor(private readonly _statusList: StatusList) {}
 
     private updateDisplay() {
-        const update = "Started: " + Timer.formatTime(this._startTime) + "\nElapsed: " + this.elapsed(new Date());
-        this._statusList.replaceStatus(Timer.STATUS_ID, update);
+        const update = "Started: " + SolverTimer.formatTime(this._startTime) + "\nElapsed: " + this.elapsed(new Date());
+        this._statusList.replaceStatus(SolverTimer.STATUS_ID, update);
     }
 
     start(): void {
@@ -26,28 +26,28 @@ export class Timer {
         this._elapsedIntervalId = setInterval(() => {
             this.updateDisplay();
         }, 1000);
-        this._statusList.addStatus(Timer.STATUS_ID, "Timer", "Starting...");
+        this._statusList.addStatus(SolverTimer.STATUS_ID, "Timer", "Starting...");
     }
 
     stop(): void {
         clearInterval(this._elapsedIntervalId);
         this._finishTime = new Date();
-        const update = "Started: " + Timer.formatTime(this._startTime) +
-            "\nFinished: " + Timer.formatTime(this._finishTime) +
+        const update = "Started: " + SolverTimer.formatTime(this._startTime) +
+            "\nFinished: " + SolverTimer.formatTime(this._finishTime) +
             "\nElapsed: " + this.elapsed(this._finishTime);
-        this._statusList.replaceStatus(Timer.STATUS_ID, update);
+        this._statusList.replaceStatus(SolverTimer.STATUS_ID, update);
     }
 
     cancel(): void {
         clearInterval(this._elapsedIntervalId);
-        this._statusList.addToStatus(Timer.STATUS_ID, "\nCancelled!");
+        this._statusList.addToStatus(SolverTimer.STATUS_ID, "\nCancelled!");
     }
 
     private elapsed(since: Date): string {
         if (!this._startTime) {
-            throw new Error("Timer not initialised properly!")
+            throw new Error("SolverTimer not initialised properly!")
         }
-        return Timer.formatElapse(since.getTime() - this._startTime.getTime());
+        return SolverTimer.formatElapse(since.getTime() - this._startTime.getTime());
     }
 
     private static format(hours: number, minutes: number, seconds: number) {
@@ -61,17 +61,17 @@ export class Timer {
         const seconds = Math.round(totalSeconds % 60);
         const minutes = Math.floor((totalSeconds / 60) % 60);
         const hours = Math.floor(totalSeconds / (60 * 60));
-        return Timer.format(hours, minutes, seconds);
+        return SolverTimer.format(hours, minutes, seconds);
     }
 
     private static formatTime(time: Date | null): string {
         if (!time) {
-            throw new Error("Timer not initialised properly!")
+            throw new Error("SolverTimer not initialised properly!")
         }
         const seconds = time.getSeconds();
         const minutes = time.getMinutes();
         const hours = time.getHours();
-        return Timer.format(hours, minutes, seconds);
+        return SolverTimer.format(hours, minutes, seconds);
     }
 
 }

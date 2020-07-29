@@ -1,7 +1,7 @@
 import {StatusList} from "./status-list-manager";
 
 
-export class PuzzleStepsCounter {
+export class SolverStepCounter {
 
     private static readonly STATUS_ID = "steps-counter";
 
@@ -14,12 +14,12 @@ export class PuzzleStepsCounter {
     }
 
     private updateDisplay(): void {
-        this._statusList.replaceStatus(PuzzleStepsCounter.STATUS_ID, PuzzleStepsCounter.format(this._counter));
+        this._statusList.replaceStatus(SolverStepCounter.STATUS_ID, SolverStepCounter.format(this._counter));
     }
 
     start(): void {
         this._counter = 0;
-        this._statusList.addStatus(PuzzleStepsCounter.STATUS_ID, "Step Counter", "0");
+        this._statusList.addStatus(SolverStepCounter.STATUS_ID, "Step Counter", "0");
     }
 
     set counter(counter: number) {

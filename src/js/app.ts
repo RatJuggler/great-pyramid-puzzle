@@ -3,10 +3,10 @@ import { DisplayManager } from "./display-manager";
 import { TileChange } from "./puzzle-changes";
 import { Solver } from "./solver-base";
 import { SolverOptions, buildSolver } from "./solver-factory";
-import { Timer } from "./timer";
+import { SolverTimer } from "./solver-timer";
 import { StatusListManager } from "./status-list-manager";
 import { WorkerResult } from "./common-data-schema";
-import {PuzzleStepsCounter} from "./puzzle-steps-counter";
+import {SolverStepCounter} from "./solver-step-counter";
 
 
 // Track animated solver timer.
@@ -16,9 +16,9 @@ let solverWorker: Worker;
 // Status list manager.
 const statusList = new StatusListManager("status-list");
 // Track how long solvers run for.
-const solverTimer = new Timer(statusList);
+const solverTimer = new SolverTimer(statusList);
 // Track how many steps they take.
-const stepCounter = new PuzzleStepsCounter(statusList);
+const stepCounter = new SolverStepCounter(statusList);
 
 
 function getSelector(name: string): string {
