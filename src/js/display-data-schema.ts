@@ -22,7 +22,7 @@ type TileStartDisplayData = {
     readonly center: CenterPointData
 }
 
-type PolygonDisplayData = [number, number][];
+type PolygonDisplayData = number[];
 
 type DisplayData = {
     readonly triangle: PolygonDisplayData,
