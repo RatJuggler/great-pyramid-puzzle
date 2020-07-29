@@ -5,7 +5,7 @@ import { PuzzleComponents, PuzzleDataElements } from "../../src/js/common-data-s
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { getDisplayManager } from "../../src/js/display-loader";
 import { DisplayManager } from "../../src/js/display-manager";
-import { TileChange, TilePositionChange } from "../../src/js/puzzle-changes";
+import { PuzzleChange, TileChange, TilePositionChange } from "../../src/js/puzzle-changes";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -44,7 +44,7 @@ describe("Puzzle display functionality", function () {
         context("without any tiles on it", function () {
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
-            displayManager.initialDisplay();
+            displayManager.display(PuzzleChange.INITIAL);
             it("should have 4 faces, 4 empty tile positions and 4 tile start positions", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(12);
             });
@@ -61,7 +61,7 @@ describe("Puzzle display functionality", function () {
             tilePosition2.tile = puzzle.tilePool.randomTile;
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
-            displayManager.initialDisplay()
+            displayManager.display(PuzzleChange.INITIAL);
             puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
                 let tpChange;
                 if (tilePosition.isEmpty()) {
@@ -82,7 +82,7 @@ describe("Puzzle display functionality", function () {
         context("with all the tiles on it", function () {
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
-            displayManager.initialDisplay();
+            displayManager.display(PuzzleChange.INITIAL);
             puzzleWithAllTiles(puzzleTypeData, displayManager);
             it("should have 4 faces, 4 tile position, 4 tiles and 4 tile start positions", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(16);
@@ -99,7 +99,7 @@ describe("Puzzle display functionality", function () {
         context("using the Place change type on a puzzle with no tiles", function () {
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
-            displayManager.initialDisplay();
+            displayManager.display(PuzzleChange.INITIAL);
             const tpChange = TileChange.place("1-1", 1, 0, "000100100100");
             displayManager.display(tpChange);
             it("should have 4 faces, 3 empty tile position, 1 tile position with 1 tile and 4 tile start positions", function () {
@@ -113,7 +113,7 @@ describe("Puzzle display functionality", function () {
         context("using the Rotate change type on the test puzzle with all tiles", function () {
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
-            displayManager.initialDisplay();
+            displayManager.display(PuzzleChange.INITIAL);
             puzzleWithAllTiles(puzzleTypeData, displayManager);
             const tpChange = TileChange.rotate("1-1", 1, 0, "000100100100");
             displayManager.display(tpChange);
@@ -128,7 +128,7 @@ describe("Puzzle display functionality", function () {
         context("using the Remove change type on the test puzzle with all tiles", function () {
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
-            displayManager.initialDisplay();
+            displayManager.display(PuzzleChange.INITIAL);
             puzzleWithAllTiles(puzzleTypeData, displayManager);
             const tpChange = TileChange.remove("1-1", 1, 0, "000100100100");
             displayManager.display(tpChange);
