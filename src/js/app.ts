@@ -6,6 +6,7 @@ import { SolverOptions, buildSolver } from "./solver-factory";
 import { Timer } from "./timer";
 import { StatusListManager } from "./status-list-manager";
 import { WorkerResult } from "./common-data-schema";
+import {PuzzleStepsCounter} from "./puzzle-steps-counter";
 
 
 // Track animated solver timer.
@@ -16,6 +17,8 @@ let solverWorker: Worker;
 const statusList = new StatusListManager("status-list");
 // Track how long solvers run for.
 const solverTimer = new Timer(statusList);
+// Track how many steps they take.
+const stepCounter = new PuzzleStepsCounter(statusList);
 
 
 function getSelector(name: string): string {
@@ -51,7 +54,7 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
         // Show the final puzzle state.
         const result = <WorkerResult> e.data;
         // Create a change count status card.
-        statusList.addStatus("change-counter", "Puzzle Changes", result.changeCounter.toString());
+        stepCounter.counter = result.changeCounter;
         result.finalState.forEach((tpChange) => displayManager.display(tpChange));
         attachRotateEvents(displayManager);
         removeActive("overlay");
@@ -64,10 +67,11 @@ function startWorkerSolver(solverOptions: SolverOptions, displayManager: Display
     });
     // Kick off the worker solver.
     solverTimer.start();
+    stepCounter.start();
     solverWorker.postMessage(solverOptions);
 }
 
-function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number, changeCounter: string, changeCount: number): void {
+function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
     // Schedule a series of events to animate placing tiles on the puzzle.
     solverTimeoutId = setTimeout( () => {
         const puzzleChange = solver.nextState();
@@ -78,9 +82,8 @@ function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, anima
             attachRotateEvents(displayManager);
         } else {
             displayManager.display(puzzleChange);
-            changeCount++;
-            statusList.replaceStatus(changeCounter, changeCount.toString());
-            runAnimatedSolver(solver, displayManager, animateDuration, changeCounter, changeCount);
+            stepCounter.increase();
+            runAnimatedSolver(solver, displayManager, animateDuration);
         }
     }, animateDuration + 20);
 }
@@ -90,12 +93,10 @@ function startAnimatedSolver(solverOptions: SolverOptions, displayManager: Displ
     const solver = buildSolver(solverOptions);
     // Show the initial tile positions.
     solver.initialState().forEach((tpChange) => displayManager.display(tpChange));
-    // Create a change count status card.
-    const changeCounter = "change-counter";
-    statusList.addStatus(changeCounter, "Puzzle Changes", "0")
     // Kick off the animated solver.
     solverTimer.start();
-    runAnimatedSolver(solver, displayManager, animationDuration, changeCounter, 0);
+    stepCounter.start();
+    runAnimatedSolver(solver, displayManager, animationDuration);
 }
 
 function getSpeed(): number {
