@@ -18,7 +18,7 @@ export class SolverTimer {
 
     start(): void {
         // Clear any previous timers.
-        if (this._elapsedIntervalId > 0) {
+        if (this._elapsedIntervalId) {
             clearInterval(this._elapsedIntervalId);
         }
         this._startTime = new Date();
