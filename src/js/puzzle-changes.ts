@@ -32,6 +32,18 @@ class PuzzleChange {
 
     constructor(readonly type: PuzzleChangeType) {}
 
+    static fromString(type: string): PuzzleChange {
+        let puzzleChange: PuzzleChange;
+        if (type === "Solved") {
+            puzzleChange = PuzzleChange.SOLVED;
+        } else if (type === "Completed") {
+            puzzleChange = PuzzleChange.COMPLETED;
+        } else {
+            throw new Error("Expected Solved or Completed change from Worker!");
+        }
+        return puzzleChange;
+    }
+
     isSolved(): boolean {
         return this === PuzzleChange.SOLVED;
     }

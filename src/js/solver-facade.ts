@@ -70,7 +70,7 @@ abstract class SolverFacade {
             continueEvent = new Event("disable");
         } else {
             this.addStatus("solved", "Solution Found",
-                `After ${this._stepCounter.counter} steps, but others may exist!`);
+                `After ${this._stepCounter.counter} steps, others may exist!`);
             continueEvent = new Event("enable");
         }
         this._continueElement.dispatchEvent(continueEvent);
@@ -167,16 +167,9 @@ class WorkerFacade extends SolverFacade {
     }
 
     private processResult(workerResult: WorkerResult): void {
-        let puzzleChange: PuzzleChange;
-        if (workerResult.solvedOrCompleted === "Solved") {
-            puzzleChange = PuzzleChange.SOLVED;
-        } else if (workerResult.solvedOrCompleted === "Completed") {
-            puzzleChange = PuzzleChange.COMPLETED;
-        } else {
-            throw new Error("Expected Solved or Completed change from Worker!");
-        }
-        this.solutionFound(puzzleChange);
+        const puzzleChange = PuzzleChange.fromString(workerResult.solvedOrCompleted);
         this.overrideCounter(workerResult.changeCounter);
+        this.solutionFound(puzzleChange);
         workerResult.finalState.forEach((tpChange) => this._displayManager.display(tpChange));
         this.disableOverlay();
     }
