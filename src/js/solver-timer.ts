@@ -12,7 +12,8 @@ export class SolverTimer {
     constructor(private readonly _statusList: StatusList) {}
 
     private updateDisplay() {
-        const update = "Started: " + SolverTimer.formatTime(this._startTime) + "\nElapsed: " + this.elapsed(new Date());
+        const update = "Started: " + SolverTimer.formatTime(this._startTime) +
+            "\nElapsed: " + this.elapsed(new Date());
         this._statusList.replace(SolverTimer.STATUS_ID, update);
     }
 
