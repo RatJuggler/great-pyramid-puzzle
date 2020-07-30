@@ -80,7 +80,7 @@ class AnimatedFacade extends SolverFacade {
         // Schedule a series of events to animate placing tiles on the puzzle.
         this.animationTimeoutId = setTimeout( () => {
             const puzzleChange = this.solver.nextState();
-            if (puzzleChange.isSolved() || puzzleChange.isComplete()) {
+            if (puzzleChange.isSolved() || puzzleChange.isCompleted()) {
                 // Stop the timer and show the final result.
                 this.clear();
                 this.stop();

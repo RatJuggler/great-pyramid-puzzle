@@ -49,6 +49,19 @@ class SolvedDisplay extends DisplayChange {
 }
 
 
+class CompletedDisplay extends DisplayChange {
+
+    constructor(display: Display) {
+        super(display);
+    }
+
+    show(): void {
+        // TODO: Implement some sort of celebratory display for getting this far!
+    }
+
+}
+
+
 class EmptyTilePosition extends DisplayChange {
 
     constructor(display: Display,
@@ -225,6 +238,9 @@ export class DisplayManager {
                 break;
             case PuzzleChangeType.Solved:
                 action = new SolvedDisplay(this._display, this._animationDuration);
+                break;
+            case PuzzleChangeType.Completed:
+                action = new CompletedDisplay(this._display);
                 break;
             case PuzzleChangeType.Empty:
                 action = new EmptyTilePosition(this._display, pChange as TilePositionChange, this._scaleTile);

@@ -36,7 +36,7 @@ class PuzzleChange {
         return this === PuzzleChange.SOLVED;
     }
 
-    isComplete(): boolean {
+    isCompleted(): boolean {
         return this === PuzzleChange.COMPLETED;
     }
 

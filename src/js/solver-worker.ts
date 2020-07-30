@@ -19,7 +19,7 @@ onmessage = function (e) {
     do {
         puzzleChange = solver.nextState();
         stepCounter++;
-    } while (!puzzleChange.isSolved() && !puzzleChange.isComplete());
+    } while (!puzzleChange.isSolved() && !puzzleChange.isCompleted());
     // Return the result for display, including the final change.
     const finalState = solver.finalState();
     finalState.push(puzzleChange)
