@@ -85,4 +85,9 @@ export class NoMatchingSolver extends SolverBase {
         return this.rotateOrNext();
     }
 
+    forceNextState(): PuzzleChange {
+        // TODO: Reset the puzzle or make random changes?
+        return PuzzleChange.COMPLETED;
+    }
+
 }

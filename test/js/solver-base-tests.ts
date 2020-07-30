@@ -17,6 +17,10 @@ class MockSolver extends SolverBase {
         return PuzzleChange.INITIAL;
     }
 
+    forceNextState(): PuzzleChange {
+        return PuzzleChange.COMPLETED;
+    }
+
 }
 
 
