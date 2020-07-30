@@ -4,7 +4,7 @@ import { SolverOptions } from "./solver-factory";
 import { DisplayManager } from "./display-manager";
 
 
-let solverContext: SolverFacade;
+let solverFacade: SolverFacade;
 
 
 function getSelector(name: string): string {
@@ -48,14 +48,18 @@ function solvePuzzle(): void {
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Build the display manager.
     const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, getAnimationSpeed());
-    // Build the solver.
-    solverContext = getSolverFacade(solverOptions, displayManager);
+    // Build the solver facade.
+    solverFacade = getSolverFacade(solverOptions, displayManager);
     // Start the solving process.
-    solverContext.start();
+    solverFacade.start();
 }
 
 function cancelPuzzle(): void {
-    solverContext.cancel();
+    solverFacade.cancel();
+}
+
+function continuePuzzle(): void {
+    solverFacade.continue();
 }
 
 function toggleActive(...ids: Array<string>): void {
@@ -129,6 +133,7 @@ document.getElementById("go")!.addEventListener("click", () => {
     solvePuzzle();
     disableButton("go");
     enableButton("cancel");
+    disableButton("continue");
     document.getElementById('selection-options')!.classList.add("pure-button-disabled");
 });
 
@@ -137,4 +142,12 @@ document.getElementById("cancel")!.addEventListener("click", () => {
     enableButton("go");
     disableButton("cancel");
     document.getElementById('selection-options')!.classList.remove("pure-button-disabled");
+});
+
+document.getElementById("continue")!.addEventListener("click", () => {
+    continuePuzzle();
+    disableButton("go");
+    enableButton("cancel");
+    disableButton("continue");
+    document.getElementById('selection-options')!.classList.add("pure-button-disabled");
 });

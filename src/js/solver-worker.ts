@@ -1,23 +1,29 @@
-import { buildSolver, SolverOptions } from "./solver-factory";
+import { buildSolver } from "./solver-factory";
+import { Solver } from "./solver-base";
+import { WorkerParameters, WorkerResult } from "./common-data-schema";
 
+
+let solver: Solver;
+let stepCounter = 0;
 
 onmessage = function (e) {
-    // Extract the options from the message.
-    const solverOptions = <SolverOptions> e.data;
-    // Build the solver to use.
-    const solver = buildSolver(solverOptions);
-    // Count how many steps it goes through..
-    let stepCounter = 1;
+    // Extract the parameters from the message.
+    const parameters = <WorkerParameters> e.data;
+    // Build the solver if required.
+    if (parameters.newSolver) {
+        solver = buildSolver(parameters.solverOptions);
+        stepCounter = 0;
+    }
     // Run the solver until a solution is found.
-    let puzzleChange = solver.nextState();
-    while (!puzzleChange.isSolved()) {
+    let puzzleChange;
+    do {
         puzzleChange = solver.nextState();
         stepCounter++;
-    }
+    } while (!puzzleChange.isSolved() && !puzzleChange.isComplete());
     // Return the result for display, including the final change.
     const finalState = solver.finalState();
     finalState.push(puzzleChange)
-    const result = {
+    const result: WorkerResult = {
         changeCounter: stepCounter,
         finalState: finalState
     }

@@ -3,6 +3,7 @@ import { TileData } from "./tile-data-schema";
 import { TilePool } from "./tile-pool";
 import { Tetrahedron } from "./tetrahedron";
 import { PuzzleChange } from "./puzzle-changes";
+import { SolverOptions } from "./solver-factory";
 
 // Types used across the application.
 
@@ -18,9 +19,14 @@ type PuzzleComponents = {
 
 type IntegrityCheckResult = [boolean, string];
 
+type WorkerParameters = {
+    newSolver: boolean,
+    solverOptions: SolverOptions
+}
+
 type WorkerResult = {
     changeCounter: number,
     finalState: Array<PuzzleChange>
 }
 
-export { PuzzleDataElements, PuzzleComponents, IntegrityCheckResult, WorkerResult }
+export { PuzzleDataElements, PuzzleComponents, IntegrityCheckResult, WorkerParameters, WorkerResult }

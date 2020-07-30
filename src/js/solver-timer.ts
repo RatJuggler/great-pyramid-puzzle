@@ -11,27 +11,29 @@ export class SolverTimer {
 
     constructor(private readonly _statusList: StatusList) {}
 
-    private updateDisplay() {
+    private updateDisplay(): void {
         const update = "Started: " + SolverTimer.formatTime(this._startTime) +
             "\nElapsed: " + this.elapsed(new Date());
         this._statusList.replace(SolverTimer.STATUS_ID, update);
     }
 
+    private clearInterval(): void {
+        clearInterval(this._elapsedIntervalId);
+        this._elapsedIntervalId = 0;
+    }
+
     start(): void {
-        // Clear any previous timers.
-        if (this._elapsedIntervalId) {
-            clearInterval(this._elapsedIntervalId);
-        }
+        this.clearInterval();
         this._startTime = new Date();
-        this._finishTime = null;
-        this._elapsedIntervalId = setInterval(() => {
-            this.updateDisplay();
-        }, 1000);
+        this.continue();
         this._statusList.add(SolverTimer.STATUS_ID, "Timer", "Starting...");
     }
 
     stop(): void {
-        clearInterval(this._elapsedIntervalId);
+        if (!this._elapsedIntervalId) {
+            throw new Error("Timer already stopped!");
+        }
+        this.clearInterval();
         this._finishTime = new Date();
         const update = "Started: " + SolverTimer.formatTime(this._startTime) +
             "\nFinished: " + SolverTimer.formatTime(this._finishTime) +
@@ -39,8 +41,18 @@ export class SolverTimer {
         this._statusList.replace(SolverTimer.STATUS_ID, update);
     }
 
+    continue(): void {
+        this._finishTime = null;
+        this._elapsedIntervalId = setInterval(() => {
+            this.updateDisplay();
+        }, 1000);
+    }
+
     cancel(): void {
-        clearInterval(this._elapsedIntervalId);
+        if (!this._elapsedIntervalId) {
+            throw new Error("Timer already cancelled!");
+        }
+        this.clearInterval();
         this._statusList.addTo(SolverTimer.STATUS_ID, "\nCancelled!");
     }
 
