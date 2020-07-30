@@ -20,7 +20,7 @@ abstract class SolverFacade {
     protected constructor(protected readonly solverOptions: SolverOptions,
                           protected readonly displayManager: DisplayManager) {}
 
-    abstract clear(): void;
+    protected abstract clear(): void;
 
     protected abstract startSolver(): void;
 
@@ -32,19 +32,20 @@ abstract class SolverFacade {
         this.startSolver();
     }
 
-    stop() {
-        this.solverTimer.stop();
-    }
-
     cancel() {
+        this.clear();
         this.solverTimer.cancel();
     }
 
-    stepCount() {
+    protected stop() {
+        this.solverTimer.stop();
+    }
+
+    protected stepCount() {
         this.stepCounter.increase();
     }
 
-    overrideCounter(newCount: number) {
+    protected overrideCounter(newCount: number) {
         this.stepCounter.counter = newCount;
     }
 
@@ -102,7 +103,6 @@ class WorkerFacade extends SolverFacade {
         super(solverOptions, displayManager);
         // Attach a cancel trigger to the overlay.
         this._overlay.addEventListener("click", () => {
-            this.clear();
             this.cancel();
             this.disableOverlay();
         });

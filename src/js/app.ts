@@ -36,10 +36,6 @@ function getSolverFacade(solverOptions: SolverOptions, displayManager: DisplayMa
 }
 
 function solvePuzzle(): void {
-    // Clear any previous solver.
-    if (solverContext) {
-        solverContext.clear();
-    }
     // Determine the solver options.
     const solverOptions: SolverOptions = {
         puzzleType: getSelector("puzzle-type"),
@@ -55,7 +51,11 @@ function solvePuzzle(): void {
     // Build the solver.
     solverContext = getSolverFacade(solverOptions, displayManager);
     // Start the solving process.
-    solverContext.start()
+    solverContext.start();
+}
+
+function cancelPuzzle(): void {
+    solverContext.cancel();
 }
 
 function toggleActive(...ids: Array<string>): void {
@@ -94,15 +94,14 @@ function updateMenuHelp(innerText: string) {
 }
 
 function addMenuHelpEvent(id: string, statusInfo: string) {
-    const element = document.getElementById(id);
-    if (element) {
-        element.addEventListener("mouseenter", () => {
-            updateMenuHelp(statusInfo);
-        });
-    }
+    document.getElementById(id)!.addEventListener("mouseenter", () => {
+        updateMenuHelp(statusInfo);
+    });
 }
 
 addMenuHelpEvent("go", "Proceed with the selected options.");
+addMenuHelpEvent("cancel", "Cancel the solution in progress.");
+addMenuHelpEvent("continue", "Continue to find another solution.");
 addMenuHelpEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
 addMenuHelpEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
 addMenuHelpEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
@@ -115,4 +114,27 @@ document.getElementById("menu")!.addEventListener("mouseleave", () => {
     updateMenuHelp("");
 });
 
-document.getElementById("go")!.addEventListener("click", solvePuzzle);
+function enableButton(id: string): void {
+    const button = document.getElementById(id)!;
+    button.classList.remove("pure-button-disabled");
+    button.classList.add("pure-button-active");
+}
+function disableButton(id: string): void {
+    const button = document.getElementById(id)!;
+    button.classList.remove("pure-button-active");
+    button.classList.add("pure-button-disabled");
+}
+
+document.getElementById("go")!.addEventListener("click", () => {
+    solvePuzzle();
+    disableButton("go");
+    enableButton("cancel");
+    document.getElementById('selection-options')!.classList.add("pure-button-disabled");
+});
+
+document.getElementById("cancel")!.addEventListener("click", () => {
+    cancelPuzzle();
+    enableButton("go");
+    disableButton("cancel");
+    document.getElementById('selection-options')!.classList.remove("pure-button-disabled");
+});

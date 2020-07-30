@@ -33,86 +33,90 @@
 
   <div id="menu" class="pure-u-1-8">
     <div class="pure-menu">
-      <button id="go" class="pure-button">Go!</button>
-      <ul id="puzzle-selection" class="pure-menu-list">
-        <li id="puzzle-type" class="pure-menu-item">
-          <p>Puzzle type:</p>
-          <div class="selector">
-            <input type="radio" id="puzzle-simple" name="puzzle-type" value="Simple" checked>
-            <label for="puzzle-simple">Simple</label>
-            <input type="radio" id="puzzle-pocket" name="puzzle-type" value="Pocket">
-            <label for="puzzle-pocket">Pocket</label>
-            <input type="radio" id="puzzle-great" name="puzzle-type" value="Great">
-            <label for="puzzle-great">Great</label>
-          </div>
-        </li>
-        <li id="solve-algorithm" class="pure-menu-item">
-          <p>Algorithm:</p>
-          <div class="selector">
-            <input type="radio" id="algorithm-brute" name="solve-algorithm" value="Brute" checked>
-            <label for="algorithm-brute">Brute Force</label>
-            <input type="radio" id="algorithm-only-valid" name="solve-algorithm" value="OnlyValid">
-            <label for="algorithm-only-valid">Only Valid Tiles</label>
-            <input type="radio" id="algorithm-no-matching" name="solve-algorithm" value="NoMatching">
-            <label for="algorithm-no-matching">No Matching</label>
-          </div>
-        </li>
-      </ul>
-      <ul id="no-matching-options" class="pure-menu-list">
-        <li id="tile-selection" class="pure-menu-item">
-          <p>Tile selection:</p>
-          <div class="selector">
-            <input type="radio" id="selection-random" name="tile-selection" value="Random" checked>
-            <label for="selection-random">Random</label>
-            <input type="radio" id="selection-sequential" name="tile-selection" value="Sequential">
-            <label for="selection-sequential">Sequential</label>
-            <input type="radio" id="selection-display-test" name="tile-selection" value="DisplayTest">
-            <label for="selection-display-test">Display Test</label>
-          </div>
-        </li>
-        <li id="tile-placement" class="pure-menu-item">
-          <p>Tile placement:</p>
-          <div class="selector">
-            <input type="radio" id="placement-random" name="tile-placement" value="Random" checked>
-            <label for="placement-random">Random</label>
-            <input type="radio" id="placement-sequential" name="tile-placement" value="Sequential">
-            <label for="placement-sequential">Sequential</label>
-          </div>
-        </li>
-        <li id="tile-rotation" class="pure-menu-item">
-          <p>Tile rotation:</p>
-          <div class="selector">
-            <input type="radio" id="rotation-random" name="tile-rotation" value="Random" checked>
-            <label for="rotation-random">Random</label>
-            <input type="radio" id="rotation-none" name="tile-rotation" value="None">
-            <label for="rotation-none">None</label>
-          </div>
-        </li>
-      </ul>
-      <ul id="puzzle-display" class="pure-menu-list active">
-        <li id="display-option" class="pure-menu-item">
-          <p>Display:</p>
-          <div class="selector">
-            <input type="radio" id="display-animated" name="display-option" value="Animated" checked>
-            <label for="display-animated">Animated</label>
-            <input type="radio" id="display-completed" name="display-option" value="Completed">
-            <label for="display-completed">Completed</label>
-          </div>
-        </li>
-      </ul>
-      <ul id="animation-options" class="pure-menu-list active">
-        <li id="animation-speed" class="pure-menu-item">
-          <p>Animation speed:</p>
-          <div class="selector">
-            <input type="radio" id="animation-slow" name="animation-speed" value="500" checked>
-            <label for="animation-slow">Slow</label>
-            <input type="radio" id="animation-fast" name="animation-speed" value="250">
-            <label for="animation-fast">Fast</label>
-            <input type="radio" id="animation-ludicrous" name="animation-speed" value="100">
-            <label for="animation-ludicrous">Ludicrous</label>
-          </div>
-        </li>
-      </ul>
+      <button id="go" class="pure-button pure-button-active">Go!</button>
+      <button id="cancel" class="pure-button pure-button-disabled">Cancel</button>
+      <button id="continue" class="pure-button pure-button-disabled">Continue</button>
+      <div id="selection-options">
+        <ul id="puzzle-selection" class="pure-menu-list">
+          <li id="puzzle-type" class="pure-menu-item">
+            <p>Puzzle type:</p>
+            <div class="selector">
+              <input type="radio" id="puzzle-simple" name="puzzle-type" value="Simple" checked>
+              <label for="puzzle-simple">Simple</label>
+              <input type="radio" id="puzzle-pocket" name="puzzle-type" value="Pocket">
+              <label for="puzzle-pocket">Pocket</label>
+              <input type="radio" id="puzzle-great" name="puzzle-type" value="Great">
+              <label for="puzzle-great">Great</label>
+            </div>
+          </li>
+          <li id="solve-algorithm" class="pure-menu-item">
+            <p>Algorithm:</p>
+            <div class="selector">
+              <input type="radio" id="algorithm-brute" name="solve-algorithm" value="Brute" checked>
+              <label for="algorithm-brute">Brute Force</label>
+              <input type="radio" id="algorithm-only-valid" name="solve-algorithm" value="OnlyValid">
+              <label for="algorithm-only-valid">Only Valid Tiles</label>
+              <input type="radio" id="algorithm-no-matching" name="solve-algorithm" value="NoMatching">
+              <label for="algorithm-no-matching">No Matching</label>
+            </div>
+          </li>
+        </ul>
+        <ul id="no-matching-options" class="pure-menu-list">
+          <li id="tile-selection" class="pure-menu-item">
+            <p>Tile selection:</p>
+            <div class="selector">
+              <input type="radio" id="selection-random" name="tile-selection" value="Random" checked>
+              <label for="selection-random">Random</label>
+              <input type="radio" id="selection-sequential" name="tile-selection" value="Sequential">
+              <label for="selection-sequential">Sequential</label>
+              <input type="radio" id="selection-display-test" name="tile-selection" value="DisplayTest">
+              <label for="selection-display-test">Display Test</label>
+            </div>
+          </li>
+          <li id="tile-placement" class="pure-menu-item">
+            <p>Tile placement:</p>
+            <div class="selector">
+              <input type="radio" id="placement-random" name="tile-placement" value="Random" checked>
+              <label for="placement-random">Random</label>
+              <input type="radio" id="placement-sequential" name="tile-placement" value="Sequential">
+              <label for="placement-sequential">Sequential</label>
+            </div>
+          </li>
+          <li id="tile-rotation" class="pure-menu-item">
+            <p>Tile rotation:</p>
+            <div class="selector">
+              <input type="radio" id="rotation-random" name="tile-rotation" value="Random" checked>
+              <label for="rotation-random">Random</label>
+              <input type="radio" id="rotation-none" name="tile-rotation" value="None">
+              <label for="rotation-none">None</label>
+            </div>
+          </li>
+        </ul>
+        <ul id="puzzle-display" class="pure-menu-list active">
+          <li id="display-option" class="pure-menu-item">
+            <p>Display:</p>
+            <div class="selector">
+              <input type="radio" id="display-animated" name="display-option" value="Animated" checked>
+              <label for="display-animated">Animated</label>
+              <input type="radio" id="display-completed" name="display-option" value="Completed">
+              <label for="display-completed">Completed</label>
+            </div>
+          </li>
+        </ul>
+        <ul id="animation-options" class="pure-menu-list active">
+          <li id="animation-speed" class="pure-menu-item">
+            <p>Animation speed:</p>
+            <div class="selector">
+              <input type="radio" id="animation-slow" name="animation-speed" value="500" checked>
+              <label for="animation-slow">Slow</label>
+              <input type="radio" id="animation-fast" name="animation-speed" value="250">
+              <label for="animation-fast">Fast</label>
+              <input type="radio" id="animation-ludicrous" name="animation-speed" value="100">
+              <label for="animation-ludicrous">Ludicrous</label>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
