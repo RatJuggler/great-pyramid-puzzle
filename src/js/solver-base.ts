@@ -6,8 +6,9 @@ import { TilePosition } from "./tile-position";
 
 
 interface Solver {
-    nextState: () => PuzzleChange;
     initialState: () => Array<PuzzleChange>;
+    nextState: () => PuzzleChange;
+    forceNextState: () => PuzzleChange;
     finalState: () => Array<PuzzleChange>;
 }
 
@@ -27,6 +28,8 @@ abstract class SolverBase implements Solver {
     }
 
     abstract nextState(): PuzzleChange;
+
+    abstract forceNextState(): PuzzleChange;
 
     finalState(): Array<PuzzleChange> {
         return this._tetrahedron.tilePositions.map((tilePosition) => SolverBase.final(tilePosition));

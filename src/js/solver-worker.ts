@@ -10,22 +10,25 @@ onmessage = function (e) {
     // Extract the parameters from the message.
     const parameters = <WorkerParameters> e.data;
     // Build the solver if required.
-    if (parameters.newSolver) {
+    let puzzleChange;
+    if (parameters.continue) {
+        puzzleChange = solver.forceNextState();
+        stepCounter++;
+    } else {
         solver = buildSolver(parameters.solverOptions);
-        stepCounter = 0;
+        puzzleChange = solver.nextState();
+        stepCounter = 1;
     }
     // Run the solver until a solution is found.
-    let puzzleChange;
-    do {
+    while (!puzzleChange.isSolved() && !puzzleChange.isCompleted()) {
         puzzleChange = solver.nextState();
         stepCounter++;
-    } while (!puzzleChange.isSolved() && !puzzleChange.isCompleted());
+    }
     // Return the result for display, including the final change.
-    const finalState = solver.finalState();
-    finalState.push(puzzleChange)
     const result: WorkerResult = {
         changeCounter: stepCounter,
-        finalState: finalState
+        finalState: solver.finalState(),
+        solvedOrCompleted: puzzleChange
     }
     // @ts-ignore
     postMessage(result);

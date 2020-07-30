@@ -20,13 +20,14 @@ type PuzzleComponents = {
 type IntegrityCheckResult = [boolean, string];
 
 type WorkerParameters = {
-    newSolver: boolean,
+    continue: boolean,
     solverOptions: SolverOptions
 }
 
 type WorkerResult = {
     changeCounter: number,
-    finalState: Array<PuzzleChange>
+    finalState: Array<PuzzleChange>,
+    solvedOrCompleted: PuzzleChange
 }
 
 export { PuzzleDataElements, PuzzleComponents, IntegrityCheckResult, WorkerParameters, WorkerResult }

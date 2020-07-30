@@ -26,10 +26,14 @@ function getSolverFacade(solverOptions: SolverOptions, displayManager: DisplayMa
     switch (displayOption) {
         case "Completed":
             // Worker solver needs to know where the overlay element is.
-            return new WorkerFacade(solverOptions, displayManager, document.getElementById("overlay")!);
+            return new WorkerFacade(solverOptions, displayManager,
+                document.getElementById("continue")!,
+                document.getElementById("overlay")!);
         case "Animated":
             // Animated solver needs to know the animation speed.
-            return new AnimatedFacade(solverOptions, displayManager, document.getElementById("continue")!, getAnimationSpeed());
+            return new AnimatedFacade(solverOptions, displayManager,
+                document.getElementById("continue")!,
+                getAnimationSpeed());
         default:
             throw new Error("Invalid solve display option!");
     }

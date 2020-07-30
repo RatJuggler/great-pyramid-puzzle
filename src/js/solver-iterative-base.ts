@@ -131,6 +131,10 @@ abstract class IterativeSolverBase extends SolverBase {
         return displayChange;
     }
 
+    forceNextState(): PuzzleChange {
+        return IterativeSolverBase.rotateOrRemove(this._currentState);
+    }
+
 }
 
 export { TileState, SolverState, IterativeSolverBase }
