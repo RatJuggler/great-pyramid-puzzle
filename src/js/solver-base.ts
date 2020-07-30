@@ -32,7 +32,13 @@ abstract class SolverBase implements Solver {
     abstract forceNextState(): PuzzleChange;
 
     finalState(): Array<PuzzleChange> {
-        return this._tetrahedron.tilePositions.map((tilePosition) => SolverBase.final(tilePosition));
+        return this._tetrahedron.tilePositions.map((tilePosition) => {
+            if (tilePosition.isEmpty()) {
+                return SolverBase.empty(tilePosition);
+            } else {
+                return SolverBase.final(tilePosition);
+            }
+        });
     }
 
     protected static start(tile: Tile): PuzzleChange {
