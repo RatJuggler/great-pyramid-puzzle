@@ -29,7 +29,7 @@ function getSolverFacade(solverOptions: SolverOptions, displayManager: DisplayMa
             return new WorkerFacade(solverOptions, displayManager, document.getElementById("overlay")!);
         case "Animated":
             // Animated solver needs to know the animation speed.
-            return new AnimatedFacade(solverOptions, displayManager, getAnimationSpeed());
+            return new AnimatedFacade(solverOptions, displayManager, document.getElementById("continue")!, getAnimationSpeed());
         default:
             throw new Error("Invalid solve display option!");
     }
@@ -62,6 +62,11 @@ function continuePuzzle(): void {
     solverFacade.continue();
 }
 
+
+function addClickEventListener(id: string, callback: (this:HTMLElement, ev: MouseEvent) => any): void {
+    document.getElementById(id)!.addEventListener("click", callback);
+}
+
 function toggleActive(...ids: Array<string>): void {
     ids.forEach((id) => document.getElementById(id)!.classList.toggle("active"));
 }
@@ -72,26 +77,14 @@ function removeActive(id: string): void {
     document.getElementById(id)!.classList.remove("active");
 }
 
-document.getElementById("algorithm-no-matching")!.addEventListener("click", () => {
-    addActive("no-matching-options");
-});
-document.getElementById("algorithm-brute")!.addEventListener("click", () => {
-    removeActive("no-matching-options");
-});
-document.getElementById("algorithm-only-valid")!.addEventListener("click", () => {
-    removeActive("no-matching-options");
-});
+addClickEventListener("algorithm-no-matching", () => { addActive("no-matching-options"); });
+addClickEventListener("algorithm-brute", () => { removeActive("no-matching-options"); });
+addClickEventListener("algorithm-only-valid", () => { removeActive("no-matching-options"); });
 
-document.getElementById("display-animated")!.addEventListener("click", () => {
-    addActive("animation-options");
-});
-document.getElementById("display-completed")!.addEventListener("click", () => {
-    removeActive("animation-options");
-});
+addClickEventListener("display-animated", () => { addActive("animation-options"); });
+addClickEventListener("display-completed", () => { removeActive("animation-options"); });
 
-document.getElementById("menu-toggle")!.addEventListener('click', () => {
-    toggleActive("layout", "menu", "menu-toggle")
-});
+addClickEventListener("menu-toggle", () => { toggleActive("layout", "menu", "menu-toggle") });
 
 function updateMenuHelp(innerText: string) {
     document.getElementById("menu-help")!.innerText = innerText;
@@ -129,25 +122,41 @@ function disableButton(id: string): void {
     button.classList.add("pure-button-disabled");
 }
 
-document.getElementById("go")!.addEventListener("click", () => {
-    solvePuzzle();
-    disableButton("go");
-    enableButton("cancel");
-    disableButton("continue");
-    document.getElementById('selection-options')!.classList.add("pure-button-disabled");
-});
+function enableMenu(): void {
+    const menu = document.getElementById('selection-options')!;
+    menu.classList.remove("pure-button-disabled");
+}
+function disableMenu(): void {
+    const menu = document.getElementById('selection-options')!;
+    menu.classList.add("pure-button-disabled");
+}
 
-document.getElementById("cancel")!.addEventListener("click", () => {
-    cancelPuzzle();
+function enableGo(): void {
     enableButton("go");
     disableButton("cancel");
-    document.getElementById('selection-options')!.classList.remove("pure-button-disabled");
-});
-
-document.getElementById("continue")!.addEventListener("click", () => {
-    continuePuzzle();
+    disableButton("continue");
+    enableMenu();
+}
+function enableCancel(): void {
     disableButton("go");
     enableButton("cancel");
     disableButton("continue");
-    document.getElementById('selection-options')!.classList.add("pure-button-disabled");
+    disableMenu();
+}
+function enableContinue(): void {
+    enableButton("go");
+    disableButton("cancel");
+    enableButton("continue");
+    enableMenu();
+}
+
+addClickEventListener("go", () => { solvePuzzle(); enableCancel(); });
+addClickEventListener("cancel", () => { cancelPuzzle(); enableGo(); });
+addClickEventListener("continue", () => { continuePuzzle(); enableCancel(); });
+
+document.getElementById("continue")!.addEventListener("enable", () => {
+    enableContinue();
+});
+document.getElementById("continue")!.addEventListener("disable", () => {
+    enableGo();
 });
