@@ -7,13 +7,17 @@ export class SolverTimer {
 
     private _startTime: Date | null = null;
     private _finishTime: Date | null = null;
+    private _totalElapsed: number = 0;
     private _elapsedIntervalId: number = 0;
 
     constructor(private readonly _statusList: StatusList) {}
 
     private updateDisplay(): void {
-        const update = "Started: " + SolverTimer.formatTime(this._startTime) +
-            "\nElapsed: " + this.elapsed(new Date());
+        const elapsed = this.elapsed(new Date());
+        const update =
+              "Started: " + SolverTimer.formatTime(this._startTime) +
+            "\nElapsed: " + SolverTimer.formatElapsed(elapsed) +
+            "\nTotal  : " + SolverTimer.formatElapsed(this._totalElapsed + elapsed);
         this._statusList.replace(SolverTimer.STATUS_ID, update);
     }
 
@@ -24,7 +28,6 @@ export class SolverTimer {
 
     start(): void {
         this.clearInterval();
-        this._startTime = new Date();
         this.continue();
         this._statusList.add(SolverTimer.STATUS_ID, "Timer", "Starting...");
     }
@@ -35,13 +38,18 @@ export class SolverTimer {
         }
         this.clearInterval();
         this._finishTime = new Date();
-        const update = "Started: " + SolverTimer.formatTime(this._startTime) +
+        const elapsed = this.elapsed(this._finishTime);
+        this._totalElapsed += elapsed;
+        const update =
+              "Started : " + SolverTimer.formatTime(this._startTime) +
             "\nFinished: " + SolverTimer.formatTime(this._finishTime) +
-            "\nElapsed: " + this.elapsed(this._finishTime);
+            "\nElapsed : " + SolverTimer.formatElapsed(elapsed) +
+            "\nTotal   : " + SolverTimer.formatElapsed(this._totalElapsed);
         this._statusList.replace(SolverTimer.STATUS_ID, update);
     }
 
     continue(): void {
+        this._startTime = new Date();
         this._finishTime = null;
         this._elapsedIntervalId = setInterval(() => {
             this.updateDisplay();
@@ -56,11 +64,11 @@ export class SolverTimer {
         this._statusList.addTo(SolverTimer.STATUS_ID, "\nCancelled!");
     }
 
-    private elapsed(since: Date): string {
+    private elapsed(since: Date): number {
         if (!this._startTime) {
             throw new Error("SolverTimer not initialised properly!")
         }
-        return SolverTimer.formatElapse(since.getTime() - this._startTime.getTime());
+        return since.getTime() - this._startTime.getTime();
     }
 
     private static format(hours: number, minutes: number, seconds: number) {
@@ -69,7 +77,7 @@ export class SolverTimer {
             + ":" + (seconds < 10 ? "0" + seconds : seconds);
     }
 
-    private static formatElapse(elapsed: number): string {
+    private static formatElapsed(elapsed: number): string {
         const totalSeconds = elapsed / 1000;
         const seconds = Math.round(totalSeconds % 60);
         const minutes = Math.floor((totalSeconds / 60) % 60);
