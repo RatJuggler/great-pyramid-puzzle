@@ -1,24 +1,10 @@
 import { getDisplayManager } from "./display-loader";
+import { SolverFacade, AnimatedFacade, WorkerFacade } from "./solver-facade";
+import { SolverOptions } from "./solver-factory";
 import { DisplayManager } from "./display-manager";
-import { PuzzleChange } from "./puzzle-changes";
-import { Solver } from "./solver-base";
-import { SolverOptions, buildSolver } from "./solver-factory";
-import { SolverStepCounter } from "./solver-step-counter";
-import { SolverTimer } from "./solver-timer";
-import { StatusListManager } from "./status-list-manager";
-import { WorkerResult } from "./common-data-schema";
 
 
-// Track solver timer.
-let solverTimeoutId: number;
-// Track solver worker.
-let solverWorker: Worker;
-// Status list manager.
-const statusList = new StatusListManager("status-list");
-// Track how long solvers run for.
-const solverTimer = new SolverTimer(statusList);
-// Track how many steps they take.
-const stepCounter = new SolverStepCounter(statusList);
+let solverContext: SolverFacade;
 
 
 function getSelector(name: string): string {
@@ -31,99 +17,45 @@ function getSelector(name: string): string {
     throw new Error("Expected radio option to be selected!");
 }
 
-function startWorkerSolver(solverOptions: SolverOptions, displayManager: DisplayManager): void {
-    // Set the overlay to prevent further UI interaction.
-    addActive("overlay");
-    // Create a new work and an event to deal with the result.
-    solverWorker = new Worker("worker.ts");
-    solverWorker.onmessage = (e) => {
-        // Stop the timer and show the returned result.
-        solverTimer.stop();
-        const result = <WorkerResult> e.data;
-        stepCounter.counter = result.changeCounter;
-        result.finalState.forEach((tpChange) => displayManager.display(tpChange));
-        removeActive("overlay");
-    }
-    // Attach a cancel trigger to the overlay.
-    document.getElementById("overlay")!.addEventListener("click", () => {
-        solverWorker.terminate();
-        solverTimer.cancel();
-        removeActive("overlay");
-    });
-    // Kick off the worker solver.
-    solverWorker.postMessage(solverOptions);
+function getAnimationSpeed(): number {
+    return parseInt(getSelector("animation-speed"));
 }
 
-function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number): void {
-    // Schedule a series of events to animate placing tiles on the puzzle.
-    solverTimeoutId = setTimeout( () => {
-        const puzzleChange = solver.nextState();
-        if (puzzleChange.isSolved()) {
-            // Stop the timer and show the final result.
-            clearInterval(solverTimeoutId)
-            solverTimer.stop();
-            displayManager.display(puzzleChange);
-        } else {
-            displayManager.display(puzzleChange);
-            stepCounter.increase();
-            runAnimatedSolver(solver, displayManager, animateDuration);
-        }
-    }, animateDuration + 20);
-}
-
-function startAnimatedSolver(solverOptions: SolverOptions, displayManager: DisplayManager, animationDuration: number): void {
-    // Build the solver to use.
-    const solver = buildSolver(solverOptions);
-    // Show the initial tile positions.
-    solver.initialState().forEach((tpChange) => displayManager.display(tpChange));
-    // Kick off the animated solver.
-    runAnimatedSolver(solver, displayManager, animationDuration);
-}
-
-function getSpeed(): number {
-    const display = getSelector("display-option");
-    switch (display) {
+function getSolverFacade(solverOptions: SolverOptions, displayManager: DisplayManager): SolverFacade {
+    const displayOption = getSelector("display-option");
+    switch (displayOption) {
         case "Completed":
-            return 0;
+            // Worker solver needs to know where the overlay element is.
+            return new WorkerFacade(solverOptions, displayManager, document.getElementById("overlay")!);
         case "Animated":
-            return parseInt(getSelector("animation-speed"));
+            // Animated solver needs to know the animation speed.
+            return new AnimatedFacade(solverOptions, displayManager, getAnimationSpeed());
         default:
             throw new Error("Invalid solve display option!");
     }
 }
 
 function solvePuzzle(): void {
-    // Clear any previous solvers.
-    if (solverTimeoutId) {
-        clearInterval(solverTimeoutId);
+    // Clear any previous solver.
+    if (solverContext) {
+        solverContext.clear();
     }
-    if (solverWorker) {
-        solverWorker.terminate();
-    }
-    // Determine the puzzle solver options.
-    const solverOptions = {
+    // Determine the solver options.
+    const solverOptions: SolverOptions = {
         puzzleType: getSelector("puzzle-type"),
         solveAlgorithm: getSelector("solve-algorithm"),
         tileSelection: getSelector("tile-selection"),
         tilePlacement: getSelector("tile-placement"),
-        tileRotation: getSelector("tile-rotation")
+        tileRotation: getSelector("tile-rotation"),
     };
-    // Decide on the animation speed.
-    const animationDuration = getSpeed();
     // Find where we want the puzzle displayed.
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
-    // Initialise the display and start the trackers.
-    const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, animationDuration);
-    displayManager.display(PuzzleChange.INITIAL);
-    statusList.clear();
-    solverTimer.start();
-    stepCounter.start();
+    // Build the display manager.
+    const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, getAnimationSpeed());
+    // Build the solver.
+    solverContext = getSolverFacade(solverOptions, displayManager);
     // Start the solving process.
-    if (animationDuration === 0) {
-        startWorkerSolver(solverOptions, displayManager);
-    } else {
-        startAnimatedSolver(solverOptions, displayManager, animationDuration);
-    }
+    solverContext.start()
 }
 
 function toggleActive(...ids: Array<string>): void {
