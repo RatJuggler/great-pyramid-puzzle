@@ -21,7 +21,7 @@ abstract class SolverFacade {
                           protected readonly _displayManager: DisplayManager,
                           protected readonly _continueElement: HTMLElement) {}
 
-    protected abstract clear(): void;
+    protected abstract solverCancel(): void;
 
     protected abstract startSolver(): void;
 
@@ -36,7 +36,7 @@ abstract class SolverFacade {
     }
 
     cancel(): void {
-        this.clear();
+        this.solverCancel();
         this._solverTimer.cancel();
     }
 
@@ -63,7 +63,6 @@ abstract class SolverFacade {
 
     protected solutionFound(puzzleChange: PuzzleChange): void {
         // Stop the timer and show the current result.
-        this.clear();
         this.stop();
         let continueEvent;
         if (puzzleChange.isCompleted()) {
@@ -93,7 +92,7 @@ class AnimatedFacade extends SolverFacade {
         super(solverOptions, displayManager, continueElement);
     }
 
-    protected clear(): void {
+    protected solverCancel(): void {
         if (this._animationTimeoutId) {
             clearInterval(this._animationTimeoutId);
             this._animationTimeoutId = 0;
@@ -102,6 +101,7 @@ class AnimatedFacade extends SolverFacade {
 
     private processResult(puzzleChange: PuzzleChange): void {
         if (puzzleChange.isSolved() || puzzleChange.isCompleted()) {
+            this.solverCancel();
             this.solutionFound(puzzleChange);
         } else {
             this._displayManager.display(puzzleChange);
@@ -151,7 +151,7 @@ class WorkerFacade extends SolverFacade {
         }
     }
 
-    protected clear(): void {
+    protected solverCancel(): void {
         if (this._solverWorker) {
             this._solverWorker.terminate();
         }
@@ -166,8 +166,12 @@ class WorkerFacade extends SolverFacade {
     }
 
     private processResult(workerResult: WorkerResult): void {
-        const puzzleChange = workerResult.solvedOrCompleted;
-        if (!puzzleChange.isSolved() && !puzzleChange.isCompleted()) {
+        let puzzleChange: PuzzleChange;
+        if (workerResult.solvedOrCompleted === "Solved") {
+            puzzleChange = PuzzleChange.SOLVED;
+        } else if (workerResult.solvedOrCompleted === "Completed") {
+            puzzleChange = PuzzleChange.COMPLETED;
+        } else {
             throw new Error("Expected Solved or Completed change from Worker!");
         }
         this.solutionFound(puzzleChange);

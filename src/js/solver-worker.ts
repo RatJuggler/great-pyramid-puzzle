@@ -26,9 +26,9 @@ onmessage = function (e) {
     }
     // Return the result for display, including the final change.
     const result: WorkerResult = {
+        solvedOrCompleted: puzzleChange.type,
         changeCounter: stepCounter,
-        finalState: solver.finalState(),
-        solvedOrCompleted: puzzleChange
+        finalState: solver.finalState()
     }
     // @ts-ignore
     postMessage(result);
