@@ -17,12 +17,24 @@ class InitialDisplay extends DisplayChange {
 
     constructor(display: Display,
                 private readonly _scaleFace: number,
-                private readonly _scaleTileStart: number) {
+                private readonly _scaleTileStart: number,
+                private readonly _animationDuration: number) {
         super(display);
     }
 
     show(): void {
         this.display.createInitialDisplay(this._scaleFace, this._scaleTileStart);
+        // Give the puzzle some interactivity.
+        this.display.findTilePositions().forEach((tpGroup) => {
+            tpGroup.click(() => {
+                const id = tpGroup.children()[1].id();
+                if (id.startsWith("tile")) {
+                    const tpChange = TilePositionChange.rotate(tpGroup.id(), 1);
+                    const action = new RotateTilePosition(this.display, tpChange as TilePositionChange, this._animationDuration);
+                    action.show();
+                }
+            })
+        });
     }
 
 }
@@ -30,20 +42,12 @@ class InitialDisplay extends DisplayChange {
 
 class SolvedDisplay extends DisplayChange {
 
-    constructor(display: Display,
-                private readonly _animationDuration: number) {
+    constructor(display: Display) {
         super(display);
     }
 
     show(): void {
-        // Give the completed puzzle some interactivity.
-        this.display.findTilePositions().forEach((tpGroup) => {
-            tpGroup.click(() => {
-                const tpChange = TilePositionChange.rotate(tpGroup.id(), 1);
-                const action = new RotateTilePosition(this.display, tpChange as TilePositionChange, this._animationDuration);
-                action.show();
-            })
-        });
+        // TODO: Implement some sort of celebratory display for getting this far!
     }
 
 }
@@ -234,10 +238,10 @@ export class DisplayManager {
         let action;
         switch (pChange.type) {
             case PuzzleChangeType.Initial:
-                action = new InitialDisplay(this._display, this._scaleFace, this._scaleTileStart);
+                action = new InitialDisplay(this._display, this._scaleFace, this._scaleTileStart, this._animationDuration);
                 break;
             case PuzzleChangeType.Solved:
-                action = new SolvedDisplay(this._display, this._animationDuration);
+                action = new SolvedDisplay(this._display);
                 break;
             case PuzzleChangeType.Completed:
                 action = new CompletedDisplay(this._display);
