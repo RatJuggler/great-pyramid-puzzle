@@ -11,14 +11,14 @@ import { WorkerParameters, WorkerResult } from "./common-data-schema";
 abstract class SolverFacade {
 
     // Status list manager.
-    private readonly statusList: StatusList = new StatusListManager("status-list");
+    private readonly _statusList: StatusList = new StatusListManager("status-list");
     // Track how long solvers run for.
-    private readonly solverTimer: SolverTimer = new SolverTimer(this.statusList);
+    private readonly _solverTimer: SolverTimer = new SolverTimer(this._statusList);
     // Track how many steps they take.
-    private readonly stepCounter: SolverStepCounter = new SolverStepCounter(this.statusList);
+    private readonly _stepCounter: SolverStepCounter = new SolverStepCounter(this._statusList);
 
-    protected constructor(protected readonly solverOptions: SolverOptions,
-                          protected readonly displayManager: DisplayManager) {}
+    protected constructor(protected readonly _solverOptions: SolverOptions,
+                          protected readonly _displayManager: DisplayManager) {}
 
     protected abstract clear(): void;
 
@@ -27,33 +27,37 @@ abstract class SolverFacade {
     protected abstract continueSolver(): void;
 
     start(): void {
-        this.displayManager.display(PuzzleChange.INITIAL);
-        this.statusList.clear();
-        this.solverTimer.start();
-        this.stepCounter.start();
+        this._displayManager.display(PuzzleChange.INITIAL);
+        this._statusList.clear();
+        this._solverTimer.start();
+        this._stepCounter.start();
         this.startSolver();
     }
 
     cancel(): void {
         this.clear();
-        this.solverTimer.cancel();
+        this._solverTimer.cancel();
     }
 
     continue(): void {
-        this.solverTimer.continue();
+        this._solverTimer.continue();
         this.continueSolver();
     }
 
     protected stop(): void {
-        this.solverTimer.stop();
+        this._solverTimer.stop();
+    }
+
+    protected addStatus(id: string, title: string, status: string): void {
+        this._statusList.add(id, title, status);
     }
 
     protected stepCount(): void {
-        this.stepCounter.increase();
+        this._stepCounter.increase();
     }
 
     protected overrideCounter(newCount: number): void {
-        this.stepCounter.counter = newCount;
+        this._stepCounter.counter = newCount;
     }
 
 }
@@ -61,32 +65,48 @@ abstract class SolverFacade {
 class AnimatedFacade extends SolverFacade {
 
     // Track solver animation timeout.
-    private animationTimeoutId: number = 0;
+    private _animationTimeoutId: number = 0;
     // The solver being used.
-    private solver: Solver = buildSolver(this.solverOptions);
+    private _solver: Solver = buildSolver(this._solverOptions);
 
-    constructor(solverOptions: SolverOptions, displayManager: DisplayManager, private _animationDuration: number = 250) {
+    constructor(solverOptions: SolverOptions,
+                displayManager: DisplayManager,
+                private readonly _continue: HTMLElement,
+                private readonly _animationDuration: number = 250) {
         super(solverOptions, displayManager);
     }
 
     protected clear(): void {
-        if (this.animationTimeoutId) {
-            clearInterval(this.animationTimeoutId);
-            this.animationTimeoutId = 0;
+        if (this._animationTimeoutId) {
+            clearInterval(this._animationTimeoutId);
+            this._animationTimeoutId = 0;
         }
+    }
+
+    private solutionFound(puzzleChange: PuzzleChange): void {
+        // Stop the timer and show the current result.
+        this.clear();
+        this.stop();
+        let continueEvent;
+        if (puzzleChange.isCompleted()) {
+            this.addStatus("completed", "Puzzle Completed", "All solutions found!");
+            continueEvent = new Event("disable");
+        } else {
+            this.addStatus("solved", "Solution Found", "A solution has been found but others may exist!");
+            continueEvent = new Event("enable");
+        }
+        this._continue.dispatchEvent(continueEvent);
+        this._displayManager.display(puzzleChange);
     }
 
     private runAnimatedSolver(): void {
         // Schedule a series of events to animate placing tiles on the puzzle.
-        this.animationTimeoutId = setTimeout( () => {
-            const puzzleChange = this.solver.nextState();
+        this._animationTimeoutId = setTimeout( () => {
+            const puzzleChange = this._solver.nextState();
             if (puzzleChange.isSolved() || puzzleChange.isCompleted()) {
-                // Stop the timer and show the final result.
-                this.clear();
-                this.stop();
-                this.displayManager.display(puzzleChange);
+                this.solutionFound(puzzleChange);
             } else {
-                this.displayManager.display(puzzleChange);
+                this._displayManager.display(puzzleChange);
                 this.stepCount()
                 this.runAnimatedSolver();
             }
@@ -95,7 +115,7 @@ class AnimatedFacade extends SolverFacade {
 
     protected startSolver(): void {
         // Show the initial tile positions.
-        this.solver.initialState().forEach((tpChange) => this.displayManager.display(tpChange));
+        this._solver.initialState().forEach((tpChange) => this._displayManager.display(tpChange));
         // Kick off the animated solver.
         this.runAnimatedSolver();
     }
@@ -109,9 +129,11 @@ class AnimatedFacade extends SolverFacade {
 class WorkerFacade extends SolverFacade {
 
     // Track solver worker.
-    private solverWorker: Worker = new Worker("solver-worker.ts");
+    private readonly _solverWorker: Worker = new Worker("solver-worker.ts");
 
-    constructor(solverOptions: SolverOptions, displayManager: DisplayManager, private _overlay: HTMLElement) {
+    constructor(solverOptions: SolverOptions,
+                displayManager: DisplayManager,
+                private readonly _overlay: HTMLElement) {
         super(solverOptions, displayManager);
         // Attach a cancel trigger to the overlay.
         this._overlay.addEventListener("click", () => {
@@ -119,19 +141,19 @@ class WorkerFacade extends SolverFacade {
             this.disableOverlay();
         });
         // Attach an event to the worker to deal with the result.
-        this.solverWorker.onmessage = (e) => {
+        this._solverWorker.onmessage = (e) => {
             // Once complete, stop, show the returned result and then disable the overlay.
             this.stop();
             const result = <WorkerResult> e.data;
             this.overrideCounter(result.changeCounter);
-            result.finalState.forEach((tpChange) => this.displayManager.display(tpChange));
+            result.finalState.forEach((tpChange) => this._displayManager.display(tpChange));
             this.disableOverlay();
         }
     }
 
     protected clear(): void {
-        if (this.solverWorker) {
-            this.solverWorker.terminate();
+        if (this._solverWorker) {
+            this._solverWorker.terminate();
         }
     }
 
@@ -149,9 +171,9 @@ class WorkerFacade extends SolverFacade {
         // Kick off the worker with a new solver.
         const parameters: WorkerParameters = {
             newSolver: true,
-            solverOptions: this.solverOptions
+            solverOptions: this._solverOptions
         }
-        this.solverWorker.postMessage(parameters);
+        this._solverWorker.postMessage(parameters);
     }
 
     protected continueSolver() {
@@ -160,9 +182,9 @@ class WorkerFacade extends SolverFacade {
         // Kick off the worker with an existing solver.
         const parameters: WorkerParameters = {
             newSolver: false,
-            solverOptions: this.solverOptions
+            solverOptions: this._solverOptions
         }
-        this.solverWorker.postMessage(parameters);
+        this._solverWorker.postMessage(parameters);
     }
 
 }
