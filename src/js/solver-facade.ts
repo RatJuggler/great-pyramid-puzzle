@@ -96,7 +96,7 @@ class AnimatedFacade extends SolverFacade {
 class WorkerFacade extends SolverFacade {
 
     // Track solver worker.
-    private solverWorker: Worker | null = null;
+    private solverWorker: Worker = new Worker("solver-worker.ts");
 
     constructor(solverOptions: SolverOptions, displayManager: DisplayManager, private _overlay: HTMLElement) {
         super(solverOptions, displayManager);
@@ -106,6 +106,15 @@ class WorkerFacade extends SolverFacade {
             this.cancel();
             this.disableOverlay();
         });
+        // Attach an event to the worker to deal with the result.
+        this.solverWorker.onmessage = (e) => {
+            // Once complete, stop, show the returned result and then disable the overlay.
+            this.stop();
+            const result = <WorkerResult> e.data;
+            this.overrideCounter(result.changeCounter);
+            result.finalState.forEach((tpChange) => this.displayManager.display(tpChange));
+            this.disableOverlay();
+        }
     }
 
     clear() {
@@ -125,16 +134,6 @@ class WorkerFacade extends SolverFacade {
     protected startSolver(): void {
         // Set the overlay to prevent further UI interaction.
         this.enableOverlay();
-        // Create a new work and an event to deal with the result.
-        this.solverWorker = new Worker("worker.ts");
-        this.solverWorker.onmessage = (e) => {
-            // Once complete, stop, show the returned result and then disable the overlay.
-            this.stop();
-            const result = <WorkerResult> e.data;
-            this.overrideCounter(result.changeCounter);
-            result.finalState.forEach((tpChange) => this.displayManager.display(tpChange));
-            this.disableOverlay();
-        }
         // Kick off the worker solver.
         this.solverWorker.postMessage(this.solverOptions);
     }
