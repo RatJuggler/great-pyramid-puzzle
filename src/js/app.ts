@@ -89,30 +89,30 @@ document.getElementById("menu-toggle")!.addEventListener('click', () => {
     toggleActive("layout", "menu", "menu-toggle")
 });
 
-function updateStatusInfo(innerText: string) {
-    document.getElementById("show-info")!.innerText = innerText;
+function updateMenuHelp(innerText: string) {
+    document.getElementById("menu-help")!.innerText = innerText;
 }
 
-function addStatusInfoEvent(id: string, statusInfo: string) {
+function addMenuHelpEvent(id: string, statusInfo: string) {
     const element = document.getElementById(id);
     if (element) {
         element.addEventListener("mouseenter", () => {
-            updateStatusInfo(statusInfo);
+            updateMenuHelp(statusInfo);
         });
     }
 }
 
-addStatusInfoEvent("go", "Proceed with the selected options.");
-addStatusInfoEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
-addStatusInfoEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
-addStatusInfoEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
-addStatusInfoEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
-addStatusInfoEvent("tile-rotation", "If tiles are randomly rotated before being placed on the test display.");
-addStatusInfoEvent("puzzle-display", "Show an animation of the puzzle being solved or just display the completed solution.");
-addStatusInfoEvent("animation-speed", "How fast you want the animation to run.");
+addMenuHelpEvent("go", "Proceed with the selected options.");
+addMenuHelpEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
+addMenuHelpEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
+addMenuHelpEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
+addMenuHelpEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
+addMenuHelpEvent("tile-rotation", "If tiles are randomly rotated before being placed on the test display.");
+addMenuHelpEvent("puzzle-display", "Show an animation of the puzzle being solved or just display the completed solution.");
+addMenuHelpEvent("animation-speed", "How fast you want the animation to run.");
 
 document.getElementById("menu")!.addEventListener("mouseleave", () => {
-    updateStatusInfo("");
+    updateMenuHelp("");
 });
 
 document.getElementById("go")!.addEventListener("click", solvePuzzle);
