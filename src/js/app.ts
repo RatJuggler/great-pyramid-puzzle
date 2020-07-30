@@ -100,9 +100,9 @@ function addMenuHelpEvent(id: string, statusInfo: string) {
     });
 }
 
-addMenuHelpEvent("go", "Proceed with the selected options.");
+addMenuHelpEvent("go", "Start a new puzzle solving process with the selected options.");
 addMenuHelpEvent("cancel", "Cancel the solution in progress.");
-addMenuHelpEvent("continue", "Continue to find another solution.");
+addMenuHelpEvent("continue", "Continue with the current options to try to find another solution.");
 addMenuHelpEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
 addMenuHelpEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
 addMenuHelpEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
