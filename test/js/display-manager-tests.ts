@@ -115,7 +115,7 @@ describe("Puzzle display functionality", function () {
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.display(PuzzleChange.INITIAL);
             puzzleWithAllTiles(puzzleTypeData, displayManager);
-            const tpChange = TileChange.rotate("1-1", 1, 0, "000100100100");
+            const tpChange = TilePositionChange.rotate("1-1", 1);
             displayManager.display(tpChange);
             it("should have 4 faces, 4 tile position, 4 tiles and 4 tile start positions", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(16);

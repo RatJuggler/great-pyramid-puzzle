@@ -57,8 +57,8 @@ abstract class SolverBase implements Solver {
         return TileChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
     }
 
-    protected static rotate(tilePosition: TilePosition, rotate: number): PuzzleChange {
-        return TileChange.rotate(tilePosition.id, tilePosition.tile.id, rotate, tilePosition.tile.segments);
+    protected static rotate(tilePosition: TilePosition, rotations: number): PuzzleChange {
+        return TilePositionChange.rotate(tilePosition.id, rotations);
     }
 
     protected static remove(tilePosition: TilePosition): PuzzleChange {

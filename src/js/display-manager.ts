@@ -39,8 +39,8 @@ class SolvedDisplay extends DisplayChange {
         // Give the completed puzzle some interactivity.
         this.display.findTilePositions().forEach((tpGroup) => {
             tpGroup.click(() => {
-                const tpChange = TileChange.rotate(tpGroup.id(), 0, 1, "");
-                const action = new RotateTilePosition(this.display, tpChange as TileChange, this._animationDuration);
+                const tpChange = TilePositionChange.rotate(tpGroup.id(), 1);
+                const action = new RotateTilePosition(this.display, tpChange as TilePositionChange, this._animationDuration);
                 action.show();
             })
         });
@@ -155,7 +155,7 @@ class PlaceTilePosition extends DisplayChange {
 class RotateTilePosition extends DisplayChange {
 
     constructor(display: Display,
-                private readonly _tpChange: TileChange,
+                private readonly _tpChange: TilePositionChange,
                 private readonly _animationDuration: number) {
         super(display);
     }
@@ -255,7 +255,7 @@ export class DisplayManager {
                 action = new PlaceTilePosition(this._display, pChange as TileChange,  this._scaleTileStart, this._scaleTile, this._animationDuration);
                 break;
             case PuzzleChangeType.Rotate:
-                action = new RotateTilePosition(this._display, pChange as TileChange, this._animationDuration);
+                action = new RotateTilePosition(this._display, pChange as TilePositionChange, this._animationDuration);
                 break;
             case PuzzleChangeType.Remove:
                 action = new RemoveTilePosition(this._display, pChange as TileChange, this._scaleTileStart, this._scaleTile, this._animationDuration);

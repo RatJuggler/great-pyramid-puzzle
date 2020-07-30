@@ -45,10 +45,14 @@ class PuzzleChange {
 class TilePositionChange extends PuzzleChange {
 
     static empty(tilePositionId: string): PuzzleChange {
-        return new TilePositionChange(PuzzleChangeType.Empty, tilePositionId);
+        return new TilePositionChange(PuzzleChangeType.Empty, tilePositionId, 0);
     }
 
-    constructor(type: PuzzleChangeType, readonly tilePositionId: string) {
+    static rotate(tilePositionId: string, rotations: number): PuzzleChange {
+        return new TilePositionChange(PuzzleChangeType.Rotate, tilePositionId, rotations);
+    }
+
+    constructor(type: PuzzleChangeType, readonly tilePositionId: string, readonly rotations: number) {
         super(type);
     }
 
@@ -72,12 +76,8 @@ class TileChange extends TilePositionChange {
         return new TileChange(PuzzleChangeType.Remove, tilePositionId, tileId, rotations, segments);
     }
 
-    static rotate(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
-        return new TileChange(PuzzleChangeType.Rotate, tilePositionId, tileId, rotations, segments);
-    }
-
-    constructor(type: PuzzleChangeType, tilePositionId: string, readonly tileId: number, readonly rotations: number, readonly segments: string) {
-        super(type, tilePositionId);
+    constructor(type: PuzzleChangeType, tilePositionId: string, readonly tileId: number, rotations: number, readonly segments: string) {
+        super(type, tilePositionId, rotations);
     }
 
 }
