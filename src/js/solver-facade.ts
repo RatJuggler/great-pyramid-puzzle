@@ -69,7 +69,8 @@ abstract class SolverFacade {
             this.addStatus("completed", "Puzzle Completed", "All solutions found!");
             continueEvent = new Event("disable");
         } else {
-            this.addStatus("solved", "Solution Found", "A solution has been found but others may exist!");
+            this.addStatus("solved", "Solution Found",
+                `After ${this._stepCounter.counter} steps, but others may exist!`);
             continueEvent = new Event("enable");
         }
         this._continueElement.dispatchEvent(continueEvent);

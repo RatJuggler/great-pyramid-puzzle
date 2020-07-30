@@ -22,6 +22,10 @@ export class SolverStepCounter {
         this._statusList.add(SolverStepCounter.STATUS_ID, "Step Counter", "0");
     }
 
+    get counter(): number {
+        return this._counter;
+    }
+
     set counter(counter: number) {
         this._counter = counter;
         this.updateDisplay();
