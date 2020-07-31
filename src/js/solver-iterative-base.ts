@@ -93,7 +93,7 @@ abstract class IterativeSolverBase extends SolverBase {
             state.tileState = state.untriedTiles.shift()!;
             tilePosition.tile = state.tileState.tile;
             if (state.tileState.rotations.length === 0) {
-                throw new Error("There should be at least one rotation for an untried Tile!");
+                throw new Error("There should be at least one rotation position for an untried Tile!");
             }
             tilePosition.tile.rotations = state.tileState.rotations.shift()!;
             displayChange = SolverBase.place(tilePosition);
