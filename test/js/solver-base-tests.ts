@@ -26,7 +26,7 @@ class MockSolver extends SolverBase {
 
 describe("SolverBase behaviour using MockSolver", function () {
 
-    describe("if a new SolverBase is created", function () {
+    describe("if a new MockSolver is created", function () {
 
         context("and there aren't enough Tiles to cover the Tetrahedron", function () {
             const tilePool = new TilePool(invalid_tile_data.testTileData.totalNumberOfTiles, invalid_tile_data.testTileData.tiles);
@@ -41,9 +41,25 @@ describe("SolverBase behaviour using MockSolver", function () {
 
     });
 
-    describe("if the #nextState() mock is called", function () {
+    describe("if #initialState() is called", function () {
 
-        context("on a properly instantiated instance", function () {
+        context("on a MockSolver instantiated with the test puzzle", function () {
+            const components = getPuzzleComponents(VALID_TEST_PUZZLE);
+            const solver = new MockSolver(components.tetrahedron, components.tilePool);
+            const result = solver.initialState();
+            it("should return an array of tile position changes", function () {
+                expect(result).to.be.instanceof(Array);
+            });
+            it("should contain an entry for each tile start position and puzzle position", function () {
+                expect(result.length).to.equal(components.tilePool.tileCount + components.tetrahedron.tilePositionCount);
+            });
+        });
+
+    });
+
+    describe("if #nextState() is called", function () {
+
+        context("on a MockSolver instantiated with the test puzzle", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             const solver = new MockSolver(components.tetrahedron, components.tilePool);
             const result = solver.nextState();
@@ -59,17 +75,17 @@ describe("SolverBase behaviour using MockSolver", function () {
 
     describe("if #finalState() is called", function () {
 
-        context("on a puzzle with all tile positions filled", function () {
+        context("on a MockSolver with all the tile positions filled", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             const solver = new MockSolver(components.tetrahedron, components.tilePool);
             components.tetrahedron.tilePositions.forEach((tilePosition) => {
                 tilePosition.tile = components.tilePool.randomTile;
             })
             const result = solver.finalState();
-            it("should return an array of tile position changes", function () {
+            it("should return an array of puzzle changes", function () {
                 expect(result).to.be.instanceof(Array);
             });
-            it("the array contain an entry for each tile position", function () {
+            it("should contain an entry for each tile position", function () {
                 expect(result.length).to.equal(components.tetrahedron.tilePositionCount);
             });
         });
