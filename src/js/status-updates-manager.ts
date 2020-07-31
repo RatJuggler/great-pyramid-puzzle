@@ -10,8 +10,8 @@ class StatusUpdatesManager implements StatusUpdates {
 
     private _statusUpdatesList: HTMLElement;
 
-    constructor(eventListId: string) {
-        this._statusUpdatesList = document.getElementById(eventListId)!;
+    constructor(statusUpdatesListId: string) {
+        this._statusUpdatesList = document.getElementById(statusUpdatesListId)!;
     }
 
     add(id: string, title: string, status: string): void {
