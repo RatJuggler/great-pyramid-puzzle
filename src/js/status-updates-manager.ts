@@ -1,4 +1,4 @@
-interface StatusList {
+interface StatusUpdates {
     add: (id: string, title: string, status: string) => void;
     addTo: (id: string, status: string) => void;
     replace: (id: string, status: string) => void;
@@ -6,12 +6,12 @@ interface StatusList {
 }
 
 
-class StatusListManager implements StatusList {
+class StatusUpdatesManager implements StatusUpdates {
 
-    private _statusList: HTMLElement;
+    private _statusUpdatesList: HTMLElement;
 
     constructor(eventListId: string) {
-        this._statusList = document.getElementById(eventListId)!;
+        this._statusUpdatesList = document.getElementById(eventListId)!;
     }
 
     add(id: string, title: string, status: string): void {
@@ -23,7 +23,7 @@ class StatusListManager implements StatusList {
         const newP = document.createElement("p");
         newP.innerText = status;
         newLi.appendChild(newP);
-        this._statusList.appendChild(newLi);
+        this._statusUpdatesList.appendChild(newLi);
     }
 
     private static findStatusP(id: string): HTMLParagraphElement {
@@ -39,17 +39,17 @@ class StatusListManager implements StatusList {
     }
 
     addTo(id: string, status: string): void {
-        StatusListManager.findStatusP(id).innerText += status;
+        StatusUpdatesManager.findStatusP(id).innerText += status;
     }
 
     replace(id: string, status: string): void {
-        StatusListManager.findStatusP(id).innerText = status;
+        StatusUpdatesManager.findStatusP(id).innerText = status;
     }
 
     clear(): void {
-        this._statusList.innerHTML = "";
+        this._statusUpdatesList.innerHTML = "";
     }
 
 }
 
-export { StatusList, StatusListManager }
+export { StatusUpdates, StatusUpdatesManager }

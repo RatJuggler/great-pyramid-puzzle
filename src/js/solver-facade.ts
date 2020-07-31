@@ -1,5 +1,5 @@
 import { PuzzleChange} from "./puzzle-changes";
-import { StatusList, StatusListManager } from "./status-list-manager";
+import { StatusUpdates, StatusUpdatesManager } from "./status-updates-manager";
 import { SolverTimer } from "./solver-timer";
 import { SolverStepCounter } from "./solver-step-counter";
 import { buildSolver, SolverOptions } from "./solver-factory";
@@ -11,11 +11,11 @@ import { WorkerParameters, WorkerResult } from "./common-data-schema";
 abstract class SolverFacade {
 
     // Status list manager.
-    private readonly _statusList: StatusList = new StatusListManager("status-list");
+    private readonly _statusUpdates: StatusUpdates = new StatusUpdatesManager("status-updates-list");
     // Track how long solvers run for.
-    private readonly _solverTimer: SolverTimer = new SolverTimer(this._statusList);
+    private readonly _solverTimer: SolverTimer = new SolverTimer(this._statusUpdates);
     // Track how many steps they take.
-    private readonly _stepCounter: SolverStepCounter = new SolverStepCounter(this._statusList);
+    private readonly _stepCounter: SolverStepCounter = new SolverStepCounter(this._statusUpdates);
 
     protected constructor(protected readonly _solverOptions: SolverOptions,
                           protected readonly _displayManager: DisplayManager,
@@ -29,7 +29,7 @@ abstract class SolverFacade {
 
     start(): void {
         this._displayManager.display(PuzzleChange.INITIAL);
-        this._statusList.clear();
+        this._statusUpdates.clear();
         this._solverTimer.start();
         this._stepCounter.start();
         this.startSolver();
@@ -50,7 +50,7 @@ abstract class SolverFacade {
     }
 
     protected addStatus(id: string, title: string, status: string): void {
-        this._statusList.add(id, title, status);
+        this._statusUpdates.add(id, title, status);
     }
 
     protected stepCount(): void {

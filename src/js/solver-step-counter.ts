@@ -1,4 +1,4 @@
-import {StatusList} from "./status-list-manager";
+import {StatusUpdates} from "./status-updates-manager";
 
 
 export class SolverStepCounter {
@@ -7,19 +7,19 @@ export class SolverStepCounter {
 
     private _counter: number = 0;
 
-    constructor(private readonly _statusList: StatusList) {}
+    constructor(private readonly _statusUpdates: StatusUpdates) {}
 
     private static format(number: number) {
         return new Intl.NumberFormat().format(number);
     }
 
     private updateDisplay(): void {
-        this._statusList.replace(SolverStepCounter.STATUS_ID, SolverStepCounter.format(this._counter));
+        this._statusUpdates.replace(SolverStepCounter.STATUS_ID, SolverStepCounter.format(this._counter));
     }
 
     start(): void {
         this._counter = 0;
-        this._statusList.add(SolverStepCounter.STATUS_ID, "Step Counter", "0");
+        this._statusUpdates.add(SolverStepCounter.STATUS_ID, "Step Counter", "0");
     }
 
     get counter(): number {
