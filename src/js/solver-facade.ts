@@ -144,6 +144,8 @@ class WorkerFacade extends SolverFacade {
         // Attach a cancel trigger to the overlay.
         this._overlay.addEventListener("click", () => {
             this.cancel();
+            const continueEvent = new Event("disable");
+            this._continueElement.dispatchEvent(continueEvent);
             this.disableOverlay();
         });
         // Attach an event to the worker to deal with the result.
