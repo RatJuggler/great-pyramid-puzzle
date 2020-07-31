@@ -111,9 +111,13 @@ addMenuHelpEvent("tile-rotation", "If tiles are randomly rotated before being pl
 addMenuHelpEvent("puzzle-display", "Show an animation of the puzzle being solved or just display the completed solution.");
 addMenuHelpEvent("animation-speed", "How fast you want the animation to run.");
 
-document.getElementById("menu")!.addEventListener("mouseleave", () => {
-    updateMenuHelp("");
-});
+function defaultMenuHelp() {
+    updateMenuHelp("The Great Pyramid Puzzle is by Eliot Inventions Ltd from 1981, this is my just my digital version.");
+}
+
+defaultMenuHelp();
+
+document.getElementById("menu")!.addEventListener("mouseleave", defaultMenuHelp);
 
 function enableButton(id: string): void {
     const button = document.getElementById(id)!;
