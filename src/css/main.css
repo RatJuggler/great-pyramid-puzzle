@@ -42,11 +42,14 @@ html, body {
 header {
   position: fixed;
   top: 0;
+  width: 100%;
   z-index: 3;
   display: flex;
   font-size: 2em;
-  margin: .25em 0 .25em 8px;
+  padding: .25em;
   white-space: nowrap;
+  color: #E6E6E6;
+  background-color: #675F6B;
 }
 
 #github {
@@ -55,8 +58,11 @@ header {
   font-size: .75em;
   padding: .25em;
   text-decoration: none;
+  color: #E6E6E6;
+  background-color: #675F6B;
 }
 #github:hover {
+  color: #675F6B;
   background-color: #E6E6E6;
 }
 
@@ -134,8 +140,15 @@ header {
 /* The status display list area. */
 
 #status-display {
-  width: 210px;
-  margin-top: 2em;
+  width: 220px;
+  margin-top: 3.25em;
+  margin-bottom: 2em;
+  position: fixed;
+  top: 0;
+  /*left: 180px;*/
+  bottom: 0;
+  z-index: 3;
+  overflow-y: auto;
 }
 #status-list {
   border: none;
@@ -147,9 +160,9 @@ header {
 #status-list li {
   padding: 6px 10px;
   background: #fff;
-  max-width: 390px;
+  max-width: 400px;
   border-radius: 20px;
-  margin: .5em auto;
+  margin: 0 0 .5em 0;
   box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
 }
 #status-list h4 {
@@ -165,8 +178,9 @@ header {
 /* The main content area. */
 
 #main {
-  margin-top: 3em;
   overflow: hidden;
+  margin-top: 3em;
+  margin-left: 200px;
 }
 
 /* Footer. */
@@ -174,16 +188,20 @@ header {
 footer {
   position: fixed;
   bottom: 0;
+  width: 100%;
   z-index: 3;
   font-size: 1.25em;
-  margin: .25em 0 .25em 8px;
+  padding: 0.25em;
   white-space: nowrap;
+  color: #E6E6E6;
+  background-color: #675F6B;
 }
 
 /* Animate layout changes. */
 
 #layout,
 #menu,
+#status-display,
 .menu-toggle {
   transition: all 0.2s ease-out;
 }
@@ -211,6 +229,10 @@ footer {
     left: 180px;
   }
 
+  #status-display {
+    left: 180px;
+  }
+
 }
 
 @media (max-width: 52em) {
@@ -222,6 +244,10 @@ footer {
 
   header a {
     display: none;
+  }
+
+  #status-display {
+    left: 0;
   }
 
 }
