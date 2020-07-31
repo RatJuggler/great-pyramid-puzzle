@@ -77,6 +77,8 @@ header {
   bottom: 0;
   z-index: 3;
   overflow-y: auto;
+  color: #E6E6E6;
+  background-color: #675F6B;
 }
 #menu .pure-button {
   width: 100%;
@@ -87,7 +89,6 @@ header {
   padding-left: .5em;
   padding-right: .5em;
   list-style-type: none;
-  background: transparent;
 }
 #menu .pure-menu p {
   margin-top: .5em;
