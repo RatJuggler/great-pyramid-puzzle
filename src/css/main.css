@@ -229,10 +229,6 @@ footer {
     left: 180px;
   }
 
-  #status-updates {
-    left: 180px;
-  }
-
 }
 
 @media (max-width: 52em) {
@@ -244,10 +240,6 @@ footer {
 
   header a {
     display: none;
-  }
-
-  #status-updates {
-    left: 0;
   }
 
 }
