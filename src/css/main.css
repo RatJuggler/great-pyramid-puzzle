@@ -242,6 +242,10 @@ footer {
     display: none;
   }
 
+  footer {
+    display: none;
+  }
+
 }
 
 /* The overlay for blocking UI interaction while processing. */
