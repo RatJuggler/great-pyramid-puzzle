@@ -34,12 +34,14 @@ class PuzzleChange {
 
     static fromString(type: string): PuzzleChange {
         let puzzleChange: PuzzleChange;
-        if (type === "Solved") {
+        if (type === "Initial") {
+            puzzleChange = PuzzleChange.INITIAL;
+        } else if (type === "Solved") {
             puzzleChange = PuzzleChange.SOLVED;
         } else if (type === "Completed") {
             puzzleChange = PuzzleChange.COMPLETED;
         } else {
-            throw new Error("Expected Solved or Completed change from Worker!");
+            throw new Error("Base PuzzleChange only for Initial, Solved or Completed changes!");
         }
         return puzzleChange;
     }

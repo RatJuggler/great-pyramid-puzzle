@@ -8,27 +8,29 @@ The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I t
 [ZX80](https://en.wikipedia.org/wiki/ZX80), but didn't make much progress, so nearly 40 years later I'm trying again.
 
 ##### Progress
-- Captured data representing the Pocket and Great version of the puzzle and a simple test version.
+- Captured data representing the Pocket and Great version of the puzzle and a Simple version aimed at testing.
 - Built data structures to hold the puzzle data and state.
 - Built mechanisms to add tiles to the puzzle, randomly or in sequence without matching, as well as matching with adjacent tiles. 
 - Built a display renderer using SVG to show the puzzle in a given state and to animate tiles as they are placed and removed.
-- Built a UI with options to control the display and solving process. 
+- Built a UI with options to control the display and solving process.
 - Brute Force solver working (cycles through every single possible combination of tiles, positions and orientations).
-- Only Valid Tiles solver working (still cycles but only selects tiles to try which match existing tile sides). 
-- Allow solvers to run as dedicated web workers, without animation, for speed. 
+- Only Valid Tiles solver working (still cycles but only selects tiles to try which match existing tile sides).
+- Allow solvers to run as dedicated web workers, without animation, for speed.
+- Option to allow solvers to continue to search for further solutions.
+- Report rough timings and number of steps (tiles added/removed/rotated) taken for each solver run.
 
 You can see the latest release in action [here](https://ratjuggler.github.io/great-pyramid-puzzle/).
 
 Rough timings (time is to first solution):
 
-| Algorithm        | Puzzle   | Time (slow animated) | Time    |
-| ---------------- | -------- | -------------------- | ------- |
-| Brute Force      | Test     | 10 Secs              | Instant |
-|                  | Pocket   |                      | 2 Secs  |
-|                  | Great    |                      | ???     |
-| Only Valid Tiles | Test     | 5 Secs               | Instant |
-|                  | Pocket   |                      | Instant |
-|                  | Great    |                      | ???     |
+| Algorithm        | Puzzle / Tiles | Steps     | Time (slow animated) | Time    |
+| ---------------- | -------------- | --------- | -------------------- | ------- |
+| Brute Force      | Simple / 4     | 19        | 10 secs              | Instant |
+|                  | Pocket / 16    | 1,295,316 | ~190 hrs (est)       | 4 secs  |
+|                  | Great / 36     | ???       | ???                  | ???     |
+| Only Valid Tiles | Simple / 4     | 8         | 4 Secs               | Instant |
+|                  | Pocket / 16    | 86,359    | ~12 hrs (est)        | Instant |
+|                  | Great / 36     | ???       | ???                  | ???     |
 
 ## Puzzle Overview
 There's an excellent overview of the puzzle on [Jaap's Puzzle Page](https://www.jaapsch.net/puzzles/pyramid.htm) but I'll repeat a
