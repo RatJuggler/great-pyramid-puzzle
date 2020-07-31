@@ -63,6 +63,13 @@ export class Tile {
         return this._sideSegments[0].toString();
     }
 
+    set rotations(rotations: number) {
+        if (rotations !== 0 && rotations !== 1 && rotations !== 2) {
+            throw new Error("Tile can only be rotated 0, 1 or 2 times!");
+        }
+        this._rotations = rotations
+    }
+
     placed(): Tile {
         this._rotations = 0;
         return this;
@@ -82,13 +89,14 @@ export class Tile {
         return sideSegments[3] + sideSegments[2] + sideSegments[1] + sideSegments[0];
     }
 
-    hasSideSegments(findSideSegments: string): boolean {
-        for (const segments of this._sideSegments) {
-            if (!!segments.toString().match(findSideSegments)) {
-                return true;
+    hasSideSegments(findSideSegments: string): Array<number> {
+        const onRotations = new Array<number>();
+        for (let rotation = 0; rotation < 3; rotation++) {
+            if (!!this._sideSegments[rotation].toString().match(findSideSegments)) {
+                onRotations.push(rotation);
             }
         }
-        return false;
+        return onRotations;
     }
 
     toString(): string {

@@ -33,9 +33,10 @@ describe("if #getDisplayManager() is called", function () {
     });
 
     context("with invalid puzzle type display data argument", function () {
-            it("should throw an error", function () {
+        const window = createSVGWindow();
+        it("should throw an error", function () {
             expect(function () {
-                getDisplayManager("test", "invalid");
+                getDisplayManager(window, "invalid");
             }).to.throw(Error, "Invalid puzzle type option!");
         });
     });

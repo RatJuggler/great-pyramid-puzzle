@@ -1,20 +1,10 @@
 import { getDisplayManager } from "./display-loader";
+import { SolverFacade, AnimatedFacade, WorkerFacade } from "./solver-facade";
+import { SolverOptions } from "./solver-factory";
 import { DisplayManager } from "./display-manager";
-import { PuzzleChange, TilePositionChange } from "./puzzle-changes";
-import { Solver } from "./solver-base";
-import { SolverOptions, buildSolver } from "./solver-factory";
-import { Timer } from "./timer";
-import { StatusListManager } from "./status-list-manager";
 
 
-// Track animated solver timer.
-let solverTimeoutId: number;
-// Track solver worker.
-let solverWorker: Worker;
-// Status list manager.
-const statusList = new StatusListManager("status-list");
-// Track how long solvers run for.
-const solverTimer = new Timer(statusList);
+let solverFacade: SolverFacade;
 
 
 function getSelector(name: string): string {
@@ -27,115 +17,58 @@ function getSelector(name: string): string {
     throw new Error("Expected radio option to be selected!");
 }
 
-function attachRotateEvents(displayManager: DisplayManager): void {
-    document.querySelectorAll("g")
-        .forEach(function (svgGroup) {
-            const tpId = svgGroup.id.match(/^[1-4]-[1-9]$/);
-            if (tpId) {
-                svgGroup.addEventListener("click", () =>
-                    displayManager.display(TilePositionChange.rotate(tpId[0]))
-                );
-            }
-        });
+function getAnimationSpeed(): number {
+    return parseInt(getSelector("animation-speed"));
 }
 
-function startWorkerSolver(solverOptions: SolverOptions, displayManager: DisplayManager): void {
-    // Set the overlay to prevent further UI interaction.
-    addActive("overlay");
-    // Create a new work and an event to deal with the result.
-    solverWorker = new Worker("worker.ts");
-    solverWorker.onmessage = (e) => {
-        // Stop the timer and log the result.
-        solverTimer.stop();
-        // Show the final puzzle state.
-        const finalState = <Array<PuzzleChange>> e.data;
-        finalState.forEach((tpChange) => displayManager.display(tpChange));
-        attachRotateEvents(displayManager);
-        removeActive("overlay");
-    }
-    // Attach a cancel trigger to the overlay.
-    document.getElementById("overlay")!.addEventListener("click", () => {
-        solverWorker.terminate();
-        removeActive("overlay");
-    });
-    // Kick off the worker solver.
-    solverTimer.start();
-    solverWorker.postMessage(solverOptions);
-}
-
-function runAnimatedSolver(solver: Solver, displayManager: DisplayManager, animateDuration: number, changeCounter: string, changeCount: number): void {
-    // Schedule a series of events to animate placing tiles on the puzzle.
-    solverTimeoutId = setTimeout( () => {
-        const puzzleChange = solver.nextState();
-        if (puzzleChange.isSolved()) {
-            clearInterval(solverTimeoutId)
-            // Stop the timer and log the result.
-            solverTimer.stop();
-            attachRotateEvents(displayManager);
-        } else {
-            displayManager.display(puzzleChange);
-            changeCount++;
-            statusList.replaceStatus(changeCounter, changeCount.toString());
-            runAnimatedSolver(solver, displayManager, animateDuration, changeCounter, changeCount);
-        }
-    }, animateDuration + 20);
-}
-
-function startAnimatedSolver(solverOptions: SolverOptions, displayManager: DisplayManager, animationDuration: number): void {
-    // Build the solver to use.
-    const solver = buildSolver(solverOptions);
-    // Create a change count status card.
-    const changeCounter = "change-counter";
-    statusList.addStatus(changeCounter, "Display Changes", "0")
-    // Kick off the animated solver.
-    solverTimer.start();
-    runAnimatedSolver(solver, displayManager, animationDuration, changeCounter, 0);
-}
-
-function getSpeed(): number {
-    const display = getSelector("display-option");
-    switch (display) {
+function getSolverFacade(solverOptions: SolverOptions, displayManager: DisplayManager): SolverFacade {
+    const displayOption = getSelector("display-option");
+    switch (displayOption) {
         case "Completed":
-            return 0;
+            // Worker solver needs to know where the overlay element is.
+            return new WorkerFacade(solverOptions, displayManager,
+                document.getElementById("continue")!,
+                document.getElementById("overlay")!);
         case "Animated":
-            return parseInt(getSelector("animation-speed"));
+            // Animated solver needs to know the animation speed.
+            return new AnimatedFacade(solverOptions, displayManager,
+                document.getElementById("continue")!,
+                getAnimationSpeed());
         default:
             throw new Error("Invalid solve display option!");
     }
 }
 
 function solvePuzzle(): void {
-    // Clear any previous solvers.
-    if (solverTimeoutId) {
-        clearInterval(solverTimeoutId);
-    }
-    if (solverWorker) {
-        solverWorker.terminate();
-    }
-    // Determine the puzzle solver options.
-    const solverOptions = {
+    // Determine the solver options.
+    const solverOptions: SolverOptions = {
         puzzleType: getSelector("puzzle-type"),
         solveAlgorithm: getSelector("solve-algorithm"),
         tileSelection: getSelector("tile-selection"),
         tilePlacement: getSelector("tile-placement"),
-        tileRotation: getSelector("tile-rotation")
+        tileRotation: getSelector("tile-rotation"),
     };
-    // Decide on the animation speed.
-    const animationDuration = getSpeed();
     // Find where we want the puzzle displayed.
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
-    // Build a display manager.
-    const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, animationDuration);
-    // Show the initial puzzle state.
-    displayManager.initialDisplay();
-    // Clear the status list.
-    statusList.clearList();
+    // Build the display manager.
+    const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, getAnimationSpeed());
+    // Build the solver facade.
+    solverFacade = getSolverFacade(solverOptions, displayManager);
     // Start the solving process.
-    if (animationDuration === 0) {
-        startWorkerSolver(solverOptions, displayManager);
-    } else {
-        startAnimatedSolver(solverOptions, displayManager, animationDuration);
-    }
+    solverFacade.start();
+}
+
+function cancelPuzzle(): void {
+    solverFacade.cancel();
+}
+
+function continuePuzzle(): void {
+    solverFacade.continue();
+}
+
+
+function addClickEventListener(id: string, callback: (this:HTMLElement, ev: MouseEvent) => any): void {
+    document.getElementById(id)!.addEventListener("click", callback);
 }
 
 function toggleActive(...ids: Array<string>): void {
@@ -148,51 +81,90 @@ function removeActive(id: string): void {
     document.getElementById(id)!.classList.remove("active");
 }
 
-document.getElementById("algorithm-no-matching")!.addEventListener("click", () => {
-    addActive("no-matching-options");
-});
-document.getElementById("algorithm-brute")!.addEventListener("click", () => {
-    removeActive("no-matching-options");
-});
-document.getElementById("algorithm-only-valid")!.addEventListener("click", () => {
-    removeActive("no-matching-options");
-});
+addClickEventListener("algorithm-no-matching", () => { addActive("no-matching-options"); });
+addClickEventListener("algorithm-brute", () => { removeActive("no-matching-options"); });
+addClickEventListener("algorithm-only-valid", () => { removeActive("no-matching-options"); });
 
-document.getElementById("display-animated")!.addEventListener("click", () => {
-    addActive("animation-options");
-});
-document.getElementById("display-completed")!.addEventListener("click", () => {
-    removeActive("animation-options");
-});
+addClickEventListener("display-animated", () => { addActive("animation-options"); });
+addClickEventListener("display-completed", () => { removeActive("animation-options"); });
 
-document.getElementById("menu-toggle")!.addEventListener('click', () => {
-    toggleActive("layout", "menu", "menu-toggle")
-});
+addClickEventListener("menu-toggle", () => { toggleActive("layout", "menu", "menu-toggle") });
 
-function updateStatusInfo(innerText: string) {
-    document.getElementById("show-info")!.innerText = innerText;
+function updateMenuHelp(innerText: string) {
+    document.getElementById("menu-help")!.innerText = innerText;
 }
 
-function addStatusInfoEvent(id: string, statusInfo: string) {
-    const element = document.getElementById(id);
-    if (element) {
-        element.addEventListener("mouseenter", () => {
-            updateStatusInfo(statusInfo);
-        });
-    }
+function addMenuHelpEvent(id: string, statusInfo: string) {
+    document.getElementById(id)!.addEventListener("mouseenter", () => {
+        updateMenuHelp(statusInfo);
+    });
 }
 
-addStatusInfoEvent("go", "Proceed with the selected options.");
-addStatusInfoEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
-addStatusInfoEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
-addStatusInfoEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
-addStatusInfoEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
-addStatusInfoEvent("tile-rotation", "If tiles are randomly rotated before being placed on the test display.");
-addStatusInfoEvent("puzzle-display", "Show an animation of the puzzle being solved or just display the completed solution.");
-addStatusInfoEvent("animation-speed", "How fast you want the animation to run.");
+addMenuHelpEvent("go", "Start a new puzzle solving process with the selected options.");
+addMenuHelpEvent("cancel", "Cancel the solution in progress.");
+addMenuHelpEvent("continue", "Continue with the current options to try to find another solution.");
+addMenuHelpEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
+addMenuHelpEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
+addMenuHelpEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
+addMenuHelpEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
+addMenuHelpEvent("tile-rotation", "If tiles are randomly rotated before being placed on the test display.");
+addMenuHelpEvent("puzzle-display", "Show an animation of the puzzle being solved or just display the completed solution.");
+addMenuHelpEvent("animation-speed", "How fast you want the animation to run.");
 
-document.getElementById("menu")!.addEventListener("mouseleave", () => {
-    updateStatusInfo("");
+function defaultMenuHelp() {
+    updateMenuHelp("The Great Pyramid Puzzle is by Eliot Inventions Ltd from 1981, this is my just my digital version.");
+}
+
+defaultMenuHelp();
+
+document.getElementById("menu")!.addEventListener("mouseleave", defaultMenuHelp);
+
+function enableButton(id: string): void {
+    const button = document.getElementById(id)!;
+    button.classList.remove("pure-button-disabled");
+    button.classList.add("pure-button-active");
+}
+function disableButton(id: string): void {
+    const button = document.getElementById(id)!;
+    button.classList.remove("pure-button-active");
+    button.classList.add("pure-button-disabled");
+}
+
+function enableMenu(): void {
+    const menu = document.getElementById('selection-options')!;
+    menu.classList.remove("pure-button-disabled");
+}
+function disableMenu(): void {
+    const menu = document.getElementById('selection-options')!;
+    menu.classList.add("pure-button-disabled");
+}
+
+function enableGo(): void {
+    enableButton("go");
+    disableButton("cancel");
+    disableButton("continue");
+    enableMenu();
+}
+function enableCancel(): void {
+    disableButton("go");
+    enableButton("cancel");
+    disableButton("continue");
+    disableMenu();
+}
+function enableContinue(): void {
+    enableButton("go");
+    disableButton("cancel");
+    enableButton("continue");
+    enableMenu();
+}
+
+addClickEventListener("go", () => { solvePuzzle(); enableCancel(); });
+addClickEventListener("cancel", () => { cancelPuzzle(); enableGo(); });
+addClickEventListener("continue", () => { continuePuzzle(); enableCancel(); });
+
+document.getElementById("continue")!.addEventListener("enable", () => {
+    enableContinue();
 });
-
-document.getElementById("go")!.addEventListener("click", solvePuzzle);
+document.getElementById("continue")!.addEventListener("disable", () => {
+    enableGo();
+});

@@ -1,6 +1,6 @@
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { OnlyValidSolver } from "../../src/js/solver-only-valid";
-import { PuzzleChangeType, TileChange, TilePositionChange } from "../../src/js/puzzle-changes";
+import { PuzzleChangeType, TilePositionChange, TileChange } from "../../src/js/puzzle-changes";
 import { expect } from "chai";
 import 'mocha';
 // @ts-ignore
@@ -28,6 +28,9 @@ describe("OnlyValidSolver behaviour", function () {
             it("should be with tile 1", function () {
                 expect(result.tileId).to.equal(1);
             });
+            it("should be with 0 rotations", function () {
+                expect(result.rotations).to.equal(0);
+            });
         });
         context("for the second time on an instance instantiated for the test puzzle", function () {
             const result = solver.nextState() as TileChange;
@@ -42,6 +45,9 @@ describe("OnlyValidSolver behaviour", function () {
             });
             it("should be with tile 2", function () {
                 expect(result.tileId).to.equal(2);
+            });
+            it("should be with 0 rotations", function () {
+                expect(result.rotations).to.equal(0);
             });
         });
         context("for the third time on an instance instantiated for the test puzzle", function () {
@@ -58,32 +64,11 @@ describe("OnlyValidSolver behaviour", function () {
             it("should be with tile 4", function () {
                 expect(result.tileId).to.equal(4);
             });
+            it("should be with 2 rotations", function () {
+                expect(result.rotations).to.equal(2);
+            });
         });
         context("for the fourth time on an instance instantiated for the test puzzle", function () {
-            const result = solver.nextState() as TilePositionChange;
-            it("should return an instance of TileChange", function () {
-                expect(result).to.be.an.instanceOf(TilePositionChange);
-            });
-            it("should be for type Rotate", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Rotate);
-            });
-            it("should be for position 3-1", function () {
-                expect(result.tilePositionId).to.equal("3-1");
-            });
-        });
-        context("for the fifth time on an instance instantiated for the test puzzle", function () {
-            const result = solver.nextState() as TilePositionChange;
-            it("should return an instance of TileChange", function () {
-                expect(result).to.be.an.instanceOf(TilePositionChange);
-            });
-            it("should be for type Rotate", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Rotate);
-            });
-            it("should be for position 3-1", function () {
-                expect(result.tilePositionId).to.equal("3-1");
-            });
-        });
-        context("for the sixth time on an instance instantiated for the test puzzle", function () {
             const result = solver.nextState() as TileChange;
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
@@ -97,10 +82,13 @@ describe("OnlyValidSolver behaviour", function () {
             it("should be with tile 4", function () {
                 expect(result.tileId).to.equal(4);
             });
+            it("should be with 2 rotations", function () {
+                expect(result.rotations).to.equal(2);
+            });
         });
-        context("for the seventh time on an instance instantiated for the test puzzle", function () {
+        context("for the fifth time on an instance instantiated for the test puzzle", function () {
             const result = solver.nextState() as TilePositionChange;
-            it("should return an instance of TileChange", function () {
+            it("should return an instance of TilePositionChange", function () {
                 expect(result).to.be.an.instanceOf(TilePositionChange);
             });
             it("should be for type Rotate", function () {
@@ -108,6 +96,45 @@ describe("OnlyValidSolver behaviour", function () {
             });
             it("should be for position 3-1", function () {
                 expect(result.tilePositionId).to.equal("2-1");
+            });
+            it("should be with 1 rotation", function () {
+                expect(result.rotations).to.equal(1);
+            });
+        });
+        context("for the sixth time on an instance instantiated for the test puzzle", function () {
+            const result = solver.nextState() as TileChange;
+            it("should return an instance of TileChange", function () {
+                expect(result).to.be.an.instanceOf(TileChange);
+            });
+            it("should be for type Place", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Place);
+            });
+            it("should be for position 3-1", function () {
+                expect(result.tilePositionId).to.equal("3-1");
+            });
+            it("should be with tile 3", function () {
+                expect(result.tileId).to.equal(3);
+            });
+            it("should be with 1 rotation", function () {
+                expect(result.rotations).to.equal(1);
+            });
+        });
+        context("for the seventh time on an instance instantiated for the test puzzle", function () {
+            const result = solver.nextState() as TileChange;
+            it("should return an instance of TileChange", function () {
+                expect(result).to.be.an.instanceOf(TileChange);
+            });
+            it("should be for type Place", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Place);
+            });
+            it("should be for position 4-1", function () {
+                expect(result.tilePositionId).to.equal("4-1");
+            });
+            it("should be with tile 3", function () {
+                expect(result.tileId).to.equal(4);
+            });
+            it("should be with 0 rotations", function () {
+                expect(result.rotations).to.equal(0);
             });
         });
 

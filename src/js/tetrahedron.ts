@@ -8,7 +8,7 @@ export class Tetrahedron {
 
     private static readonly FACES = 4;
 
-    private readonly _faces = new Map<string, Face>();
+    private readonly _faces = new Array<Face>();
 
     constructor(private _name: string, numberOfTilesPerFace: number, faceData: FaceData[]) {
         if (faceData.length !== Tetrahedron.FACES) {
@@ -17,7 +17,7 @@ export class Tetrahedron {
         // We have to create all of the face and tile positions before we can join them together.
         for (const faceDetails of faceData) {
             const newFace = new Face(faceDetails.name, numberOfTilesPerFace, faceDetails.tilePositions);
-            this._faces.set(newFace.name, newFace);
+            this._faces.push(newFace);
         }
         for (const faceDetails of faceData) {
             const fromFace = this.getFace(faceDetails.name);
@@ -38,7 +38,7 @@ export class Tetrahedron {
 
     integrityCheck(): IntegrityCheckResult {
         // There must be 4 faces.
-        if (this._faces.size !== Tetrahedron.FACES) {
+        if (this._faces.length !== Tetrahedron.FACES) {
             return [false, `Tetrahedron not configured with 4 faces: ${this.toString()}`];
         }
         //  Each face must have the same number of tile positions.
@@ -78,8 +78,10 @@ export class Tetrahedron {
     }
 
     getFace(name: string): Face {
-        if (this._faces.has(name)) {
-            return this._faces.get(name)!;
+        for (const face of this._faces) {
+            if (face.name === name) {
+                return face;
+            }
         }
         throw new Error(`Face (${name}) not found on Tetrahedron!`);
     }

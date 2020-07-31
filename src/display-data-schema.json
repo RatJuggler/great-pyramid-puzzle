@@ -49,14 +49,11 @@
       "uniqueItems": true,
       "items": {
         "type": "array",
-        "minItems": 3,
-        "maxItems": 3,
-        "uniqueItems": true,
+        "minItems": 6,
+        "maxItems": 6,
+        "uniqueItems": false,
         "items": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "uniqueItems": false
+          "type": "number"
         }
       }
     },
@@ -110,6 +107,31 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "tileStartScale": {
+      "description": "A scaling factor used when displaying a tile at it's start position.",
+      "type": "number"
+    },
+    "tileStartPositions": {
+      "description": "The tile starting positions.",
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 36,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "center"],
+        "properties": {
+          "id": {
+            "description": "The id of the tile position.",
+            "type": "string"
+          },
+          "center": {
+            "$ref": "#/definitions/center"
           }
         }
       }

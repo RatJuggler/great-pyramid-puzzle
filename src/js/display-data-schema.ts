@@ -17,13 +17,22 @@ type FaceDisplayData = {
     readonly tilePositions: TilePositionDisplayData[]
 }
 
+type TileStartDisplayData = {
+    readonly id: string,
+    readonly center: CenterPointData
+}
+
+type PolygonDisplayData = number[];
+
 type DisplayData = {
-    readonly triangle: number[],
-    readonly segments: number[][][],
+    readonly triangle: PolygonDisplayData,
+    readonly segments: PolygonDisplayData[],
     readonly faceScale: number,
     readonly tileScale: number,
     readonly pegScale: number,
     readonly faces: FaceDisplayData[],
+    readonly tileStartScale: number,
+    readonly tileStartPositions: TileStartDisplayData[]
 }
 
-export { CenterPointData, TilePositionDisplayData, FaceDisplayData, DisplayData }
+export { CenterPointData, TilePositionDisplayData, FaceDisplayData, TileStartDisplayData, PolygonDisplayData, DisplayData }

@@ -55,6 +55,39 @@ describe("Tile behaviour", function () {
 
     });
 
+    describe("if #rotations() is called on a Tile", function () {
+
+        context("with an invalid number of rotations", function () {
+            const tile = new Tile(TILE_1_DATA);
+            tile.placed();
+            it("should throw an error", function () {
+                expect(function () {
+                    tile.rotations = 4;
+                }).to.throw(Error, "Tile can only be rotated 0, 1 or 2 times!");
+            });
+            it("should throw an error", function () {
+                expect(function () {
+                    tile.rotations = -3;
+                }).to.throw(Error, "Tile can only be rotated 0, 1 or 2 times!");
+            });
+            it("should throw an error", function () {
+                expect(function () {
+                    tile.rotations = 1.5;
+                }).to.throw(Error, "Tile can only be rotated 0, 1 or 2 times!");
+            });
+        });
+
+        context("with a valid number of rotations", function () {
+            const tile = new Tile(TILE_1_DATA);
+            tile.placed();
+            tile.rotations = 2;
+            it("should set the rotations", function () {
+                expect(tile.rotations).to.equal(2);
+            });
+        });
+
+    });
+
     describe("if #placed() is called on a Tile", function () {
 
         context("and the Tile has not been rotated", function () {
@@ -255,8 +288,12 @@ describe("Tile behaviour", function () {
             const tile4 = new Tile(TILE_4_DATA);
             tile4.placed();
             const findSegments = tile4.getSegmentsForSideToMatchWith(Side.SideA) + "...." + "....";
-            it("should return false", function () {
-                expect(tile3.hasSideSegments(findSegments)).to.be.false;
+            const result = tile3.hasSideSegments(findSegments);
+            it("should return an array", function () {
+                expect(result).to.be.an.instanceof(Array);
+            });
+            it("should have a length of 0", function () {
+                expect(result.length).to.equal(0);
             });
         });
 
@@ -266,8 +303,12 @@ describe("Tile behaviour", function () {
             const tile4 = new Tile(TILE_4_DATA);
             tile4.placed();
             const findSegments = "...." + "...." + tile4.getSegmentsForSideToMatchWith(Side.SideC);
-            it("should return true", function () {
-                expect(tile3.hasSideSegments(findSegments)).to.be.true;
+            const result = tile3.hasSideSegments(findSegments);
+            it("should return an array", function () {
+                expect(result).to.be.an.instanceof(Array);
+            });
+            it("should have a length of 1", function () {
+                expect(result.length).to.equal(1);
             });
         });
 
