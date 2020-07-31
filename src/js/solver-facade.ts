@@ -70,7 +70,7 @@ abstract class SolverFacade {
             continueEvent = new Event("disable");
         } else {
             this.addStatus("solved", "Solution Found",
-                `After ${this._stepCounter.counter} steps, others may exist!`);
+                `After ${this._stepCounter.counterForDisplay} steps, others may exist!`);
             continueEvent = new Event("enable");
         }
         this._continueElement.dispatchEvent(continueEvent);
