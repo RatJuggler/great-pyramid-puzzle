@@ -15,7 +15,7 @@ function solverWorker(parameters: WorkerParameters): WorkerResult {
     } else {
         solver = buildSolver(parameters.solverOptions);
         puzzleChange = solver.nextState();
-        stepCounter = 1;
+        stepCounter = 0;
     }
     // Run the solver until a solution is found.
     while (!puzzleChange.isSolved() && !puzzleChange.isCompleted()) {

@@ -102,11 +102,11 @@ class AnimatedFacade extends SolverFacade {
     }
 
     private processResult(puzzleChange: PuzzleChange): void {
-        this.stepCount();
         if (puzzleChange.isSolved() || puzzleChange.isCompleted()) {
             this.solverCancel();
             this.solutionFound(puzzleChange);
         } else {
+            this.stepCount();
             this._displayManager.display(puzzleChange);
             this.runAnimatedSolver();
         }
