@@ -1,5 +1,6 @@
 import { DOMUIOptions } from "./ui-options";
 import { getDisplayManager } from "./display-loader";
+import { StatusUpdatesManager } from "./status-updates-manager";
 import { SolverFacade, getSolverFacade} from "./solver-facade";
 
 
@@ -9,12 +10,14 @@ function solvePuzzle(): void {
     // Determine the solver options.
     const domUIOptions = new DOMUIOptions(document);
     const solverOptions = domUIOptions.solverOptions;
-    // Find where we want the puzzle displayed.
-    const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Build the display manager.
+    const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, domUIOptions.animationSpeed);
+    // Build the status list manager.
+    const statusUpdatesList = document.getElementById("status-updates-list")!;
+    const statusUpdates = new StatusUpdatesManager(document, statusUpdatesList);
     // Build the solver facade.
-    solverFacade = getSolverFacade(domUIOptions, displayManager,
+    solverFacade = getSolverFacade(domUIOptions, displayManager, statusUpdates,
         document.getElementById("continue")!,
         document.getElementById("overlay")!);
     // Start the solving process.

@@ -6,13 +6,11 @@ import { SolverStepCounter } from "./solver-step-counter";
 import { WorkerParameters, WorkerResult } from "./common-data-schema";
 import { PuzzleChange} from "./puzzle-changes";
 import { DisplayManager } from "./display-manager";
-import { StatusUpdates, StatusUpdatesManager } from "./status-updates-manager";
+import { StatusUpdates } from "./status-updates-manager";
 
 
 abstract class SolverFacade {
 
-    // Status list manager.
-    private readonly _statusUpdates: StatusUpdates = new StatusUpdatesManager("status-updates-list");
     // Track how long solvers run for.
     private readonly _solverTimer: SolverTimer = new SolverTimer(this._statusUpdates);
     // Track how many steps they take.
@@ -20,6 +18,7 @@ abstract class SolverFacade {
 
     protected constructor(protected readonly _solverOptions: SolverOptions,
                           protected readonly _displayManager: DisplayManager,
+                          protected readonly _statusUpdates: StatusUpdates,
                           protected readonly _continueElement: HTMLElement) {}
 
     protected abstract solverCancel(): void;
@@ -89,9 +88,10 @@ class AnimatedFacade extends SolverFacade {
 
     constructor(solverOptions: SolverOptions,
                 displayManager: DisplayManager,
+                statusUpdates: StatusUpdates,
                 continueElement: HTMLElement,
                 private readonly _animationDuration: number = 250) {
-        super(solverOptions, displayManager, continueElement);
+        super(solverOptions, displayManager, statusUpdates, continueElement);
     }
 
     protected solverCancel(): void {
@@ -139,9 +139,10 @@ class WorkerFacade extends SolverFacade {
 
     constructor(solverOptions: SolverOptions,
                 displayManager: DisplayManager,
+                statusUpdates: StatusUpdates,
                 continueElement: HTMLElement,
                 private readonly _overlay: HTMLElement) {
-        super(solverOptions, displayManager, continueElement);
+        super(solverOptions, displayManager, statusUpdates, continueElement);
         // Attach a cancel trigger to the overlay.
         this._overlay.addEventListener("click", () => {
             this.cancel();
@@ -204,19 +205,20 @@ class WorkerFacade extends SolverFacade {
 
 function getSolverFacade(uiControls: UIOptions,
                          displayManager: DisplayManager,
+                         statusUpdates: StatusUpdates,
                          continueButton: HTMLElement,
                          overlay: HTMLElement): SolverFacade {
     switch (uiControls.displayOption) {
         case "Completed":
             // Worker solver needs to know where the overlay element is.
-            return new WorkerFacade(uiControls.solverOptions, displayManager, continueButton, overlay!);
+            return new WorkerFacade(uiControls.solverOptions, displayManager, statusUpdates, continueButton, overlay!);
         case "Animated":
             // Animated solver needs to know the animation speed.
-            return new AnimatedFacade(uiControls.solverOptions, displayManager, continueButton, uiControls.animationSpeed);
+            return new AnimatedFacade(uiControls.solverOptions, displayManager, statusUpdates, continueButton, uiControls.animationSpeed);
         default:
             throw new Error("Invalid solver display option!");
     }
 }
 
 
-export { SolverFacade, getSolverFacade }
+export { SolverFacade, AnimatedFacade, WorkerFacade, getSolverFacade }
