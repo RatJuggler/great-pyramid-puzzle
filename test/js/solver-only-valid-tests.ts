@@ -1,6 +1,6 @@
 import { getPuzzleComponents } from "../../src/js/puzzle-loader";
 import { OnlyValidSolver } from "../../src/js/solver-only-valid";
-import { PuzzleChangeType, TilePositionChange, TileChange } from "../../src/js/puzzle-changes";
+import { PuzzleChangeType, PuzzleChange, TilePositionChange, TileChange } from "../../src/js/puzzle-changes";
 import { expect } from "chai";
 import 'mocha';
 // @ts-ignore
@@ -135,6 +135,15 @@ describe("OnlyValidSolver behaviour", function () {
             });
             it("should be with 0 rotations", function () {
                 expect(result.rotations).to.equal(0);
+            });
+        });
+        context("for the eighth time on an instance instantiated for the test puzzle", function () {
+            const result = solver.nextState() as PuzzleChange;
+            it("should return an instance of PuzzleChange", function () {
+                expect(result).to.be.an.instanceOf(PuzzleChange);
+            });
+            it("should be for type Solved", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Solved);
             });
         });
 

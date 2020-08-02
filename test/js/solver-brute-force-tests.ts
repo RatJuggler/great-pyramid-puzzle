@@ -134,6 +134,21 @@ describe("BruteForceSolver behaviour", function () {
                 expect(result.rotations).to.equal(0);
             });
         });
+        context("for the eighth time on an instance instantiated for the test puzzle", function () {
+            const result = solver.nextState() as TilePositionChange;
+            it("should return an instance of TilePositionChange", function () {
+                expect(result).to.be.an.instanceOf(TilePositionChange);
+            });
+            it("should be for type Rotate", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Rotate);
+            });
+            it("should be for position 3-1", function () {
+                expect(result.tilePositionId).to.equal("3-1");
+            });
+            it("should be with 1 rotation", function () {
+                expect(result.rotations).to.equal(1);
+            });
+        });
 
     });
 
