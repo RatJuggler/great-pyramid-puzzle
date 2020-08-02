@@ -203,17 +203,16 @@ class WorkerFacade extends SolverFacade {
 
 
 function getSolverFacade(uiControls: UIOptions,
-                         solverOptions: SolverOptions,
                          displayManager: DisplayManager,
                          continueButton: HTMLElement,
                          overlay: HTMLElement): SolverFacade {
     switch (uiControls.displayOption) {
         case "Completed":
             // Worker solver needs to know where the overlay element is.
-            return new WorkerFacade(solverOptions, displayManager, continueButton, overlay!);
+            return new WorkerFacade(uiControls.solverOptions, displayManager, continueButton, overlay!);
         case "Animated":
             // Animated solver needs to know the animation speed.
-            return new AnimatedFacade(solverOptions, displayManager, continueButton, uiControls.animationSpeed);
+            return new AnimatedFacade(uiControls.solverOptions, displayManager, continueButton, uiControls.animationSpeed);
         default:
             throw new Error("Invalid solver display option!");
     }

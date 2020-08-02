@@ -14,7 +14,7 @@ function solvePuzzle(): void {
     // Build the display manager.
     const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, domUIOptions.animationSpeed);
     // Build the solver facade.
-    solverFacade = getSolverFacade(domUIOptions, solverOptions, displayManager,
+    solverFacade = getSolverFacade(domUIOptions, displayManager,
         document.getElementById("continue")!,
         document.getElementById("overlay")!);
     // Start the solving process.
