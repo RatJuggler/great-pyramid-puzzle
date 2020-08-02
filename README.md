@@ -25,11 +25,11 @@ Rough timings (time is to first solution):
 
 | Algorithm        | Puzzle / Tiles | Steps     | Time (slow animated) | Time    |
 | ---------------- | -------------- | --------- | -------------------- | ------- |
-| Brute Force      | Simple / 4     | 19        | 10 secs              | Instant |
-|                  | Pocket / 16    | 1,295,316 | ~190 hrs (est)       | 4 secs  |
+| Brute Force      | Simple / 4     | 18        | 10 secs              | Instant |
+|                  | Pocket / 16    | 1,295,315 | ~200 hrs (est)       | 4 secs  |
 |                  | Great / 36     | ???       | ???                  | ???     |
-| Only Valid Tiles | Simple / 4     | 8         | 4 Secs               | Instant |
-|                  | Pocket / 16    | 86,359    | ~12 hrs (est)        | Instant |
+| Only Valid Tiles | Simple / 4     | 7         | 4 Secs               | Instant |
+|                  | Pocket / 16    | 86,358    | ~14 hrs (est)        | Instant |
 |                  | Great / 36     | ???       | ???                  | ???     |
 
 ## Puzzle Overview
