@@ -135,7 +135,7 @@ class AnimatedFacade extends SolverFacade {
 class WorkerFacade extends SolverFacade {
 
     // Track solver worker.
-    private readonly _solverWorker: Worker = new Worker("solver-worker.ts");
+    private readonly _solverWorker: Worker = new Worker("solver-worker-run.ts");
 
     constructor(solverOptions: SolverOptions,
                 displayManager: DisplayManager,
@@ -209,12 +209,12 @@ function getSolverFacade(uiControls: UIOptions,
                          continueButton: HTMLElement,
                          overlay: HTMLElement): SolverFacade {
     switch (uiControls.displayOption) {
-        case "Completed":
-            // Worker solver needs to know where the overlay element is.
-            return new WorkerFacade(uiControls.solverOptions, displayManager, statusUpdates, continueButton, overlay!);
         case "Animated":
             // Animated solver needs to know the animation speed.
             return new AnimatedFacade(uiControls.solverOptions, displayManager, statusUpdates, continueButton, uiControls.animationSpeed);
+        case "Completed":
+            // Worker solver needs to know where the overlay element is.
+            return new WorkerFacade(uiControls.solverOptions, displayManager, statusUpdates, continueButton, overlay!);
         default:
             throw new Error("Invalid solver display option!");
     }

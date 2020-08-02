@@ -6,9 +6,7 @@ import { WorkerParameters, WorkerResult } from "./common-data-schema";
 let solver: Solver;
 let stepCounter = 0;
 
-onmessage = function (e) {
-    // Extract the parameters from the message.
-    const parameters = <WorkerParameters> e.data;
+function solverWorker(parameters: WorkerParameters): WorkerResult {
     // Build the solver if required.
     let puzzleChange;
     if (parameters.continue) {
@@ -25,11 +23,11 @@ onmessage = function (e) {
         stepCounter++;
     }
     // Return the result for display, including the final change.
-    const result: WorkerResult = {
+    return {
         solvedOrCompleted: puzzleChange.type,
         changeCounter: stepCounter,
         finalState: solver.finalState()
     }
-    // @ts-ignore
-    postMessage(result);
 }
+
+export { solverWorker }
