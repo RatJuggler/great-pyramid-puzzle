@@ -1,11 +1,12 @@
-import { PuzzleChange} from "./puzzle-changes";
-import { StatusUpdates, StatusUpdatesManager } from "./status-updates-manager";
+import { UIOptions} from "./ui-options";
+import { buildSolver, SolverOptions } from "./solver-factory";
+import { Solver } from "./solver-base";
 import { SolverTimer } from "./solver-timer";
 import { SolverStepCounter } from "./solver-step-counter";
-import { buildSolver, SolverOptions } from "./solver-factory";
-import { DisplayManager } from "./display-manager";
-import { Solver } from "./solver-base";
 import { WorkerParameters, WorkerResult } from "./common-data-schema";
+import { PuzzleChange} from "./puzzle-changes";
+import { DisplayManager } from "./display-manager";
+import { StatusUpdates, StatusUpdatesManager } from "./status-updates-manager";
 
 
 abstract class SolverFacade {
@@ -200,4 +201,23 @@ class WorkerFacade extends SolverFacade {
 
 }
 
-export { SolverFacade, AnimatedFacade, WorkerFacade }
+
+function getSolverFacade(uiControls: UIOptions,
+                         solverOptions: SolverOptions,
+                         displayManager: DisplayManager,
+                         continueButton: HTMLElement,
+                         overlay: HTMLElement): SolverFacade {
+    switch (uiControls.displayOption) {
+        case "Completed":
+            // Worker solver needs to know where the overlay element is.
+            return new WorkerFacade(solverOptions, displayManager, continueButton, overlay!);
+        case "Animated":
+            // Animated solver needs to know the animation speed.
+            return new AnimatedFacade(solverOptions, displayManager, continueButton, uiControls.animationSpeed);
+        default:
+            throw new Error("Invalid solver display option!");
+    }
+}
+
+
+export { SolverFacade, getSolverFacade }

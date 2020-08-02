@@ -1,59 +1,22 @@
+import { DOMUIOptions } from "./ui-options";
 import { getDisplayManager } from "./display-loader";
-import { SolverFacade, AnimatedFacade, WorkerFacade } from "./solver-facade";
-import { SolverOptions } from "./solver-factory";
-import { DisplayManager } from "./display-manager";
+import { SolverFacade, getSolverFacade} from "./solver-facade";
 
 
 let solverFacade: SolverFacade;
 
-
-function getSelector(name: string): string {
-    const selection  = document.querySelectorAll(`input[name = "${name}"]`) as NodeListOf<HTMLInputElement>;
-    for (const rb of selection) {
-        if (rb.checked) {
-            return rb.value;
-        }
-    }
-    throw new Error("Expected radio option to be selected!");
-}
-
-function getAnimationSpeed(): number {
-    return parseInt(getSelector("animation-speed"));
-}
-
-function getSolverFacade(solverOptions: SolverOptions, displayManager: DisplayManager): SolverFacade {
-    const displayOption = getSelector("display-option");
-    switch (displayOption) {
-        case "Completed":
-            // Worker solver needs to know where the overlay element is.
-            return new WorkerFacade(solverOptions, displayManager,
-                document.getElementById("continue")!,
-                document.getElementById("overlay")!);
-        case "Animated":
-            // Animated solver needs to know the animation speed.
-            return new AnimatedFacade(solverOptions, displayManager,
-                document.getElementById("continue")!,
-                getAnimationSpeed());
-        default:
-            throw new Error("Invalid solve display option!");
-    }
-}
-
 function solvePuzzle(): void {
     // Determine the solver options.
-    const solverOptions: SolverOptions = {
-        puzzleType: getSelector("puzzle-type"),
-        solveAlgorithm: getSelector("solve-algorithm"),
-        tileSelection: getSelector("tile-selection"),
-        tilePlacement: getSelector("tile-placement"),
-        tileRotation: getSelector("tile-rotation"),
-    };
+    const domUIOptions = new DOMUIOptions(document);
+    const solverOptions = domUIOptions.solverOptions;
     // Find where we want the puzzle displayed.
     const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     // Build the display manager.
-    const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, getAnimationSpeed());
+    const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, domUIOptions.animationSpeed);
     // Build the solver facade.
-    solverFacade = getSolverFacade(solverOptions, displayManager);
+    solverFacade = getSolverFacade(domUIOptions, solverOptions, displayManager,
+        document.getElementById("continue")!,
+        document.getElementById("overlay")!);
     // Start the solving process.
     solverFacade.start();
 }
