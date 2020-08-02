@@ -19,7 +19,7 @@ class MockUIOptions implements UIOptions {
         solveAlgorithm: "NoMatching",
         tileSelection: "Random",
         tilePlacement: "Random",
-        tileRotation: "Random"
+        tileRotation: "None"
     }
     constructor(public readonly displayOption: string) {}
 }
@@ -88,6 +88,32 @@ describe("SolverFacade behaviour", function () {
             //     facadeArgs.continueButton, facadeArgs.overlay);
             // it("should return an instance of WorkerFacade", function () {
             //     expect(result).to.be.an.instanceof(WorkerFacade);
+            // });
+        });
+
+    });
+
+    describe("if #start() is called", function () {
+
+        context("on an instance of the AnimatedFacade", function () {
+            // const facadeArgs = createSolverFacadeArguments("Animated");
+            // const result = getSolverFacade(facadeArgs.mockUIOptions, facadeArgs.displayManager, facadeArgs.statusUpdates,
+            //     facadeArgs.continueButton, facadeArgs.overlay);
+            // it("should produce an animated solution", function () {
+            //     expect(result.start());
+            // });
+        });
+
+    });
+
+    describe("if #start() is called", function () {
+
+        context("on an instance of the WorkerFacade", function () {
+            // const facadeArgs = createSolverFacadeArguments("Completed");
+            // const result = getSolverFacade(facadeArgs.mockUIOptions, facadeArgs.displayManager, facadeArgs.statusUpdates,
+            //     facadeArgs.continueButton, facadeArgs.overlay);
+            // it("should produce a completed solution", function () {
+            //     expect(result.start());
             // });
         });
 
