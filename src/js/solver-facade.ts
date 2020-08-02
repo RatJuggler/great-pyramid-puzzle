@@ -172,7 +172,7 @@ class WorkerFacade extends SolverFacade {
 
     private processResult(workerResult: WorkerResult): void {
         const puzzleChange = PuzzleChange.fromString(workerResult.solvedOrCompleted);
-        this.overrideCounter(workerResult.changeCounter);
+        this.overrideCounter(workerResult.stepCounter);
         this.solutionFound(puzzleChange);
         workerResult.finalState.forEach((tpChange) => this._displayManager.display(tpChange));
         this.disableOverlay();

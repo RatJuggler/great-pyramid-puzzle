@@ -26,7 +26,7 @@ type WorkerParameters = {
 
 type WorkerResult = {
     solvedOrCompleted: string
-    changeCounter: number,
+    stepCounter: number,
     finalState: Array<PuzzleChange>,
 }
 
