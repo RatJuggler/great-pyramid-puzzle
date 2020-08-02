@@ -3,6 +3,7 @@ import { Solver } from "./solver-base";
 import { NoMatchingSolver } from "./solver-no-matching";
 import { BruteForceSolver } from "./solver-brute-force";
 import { OnlyValidSolver } from "./solver-only-valid";
+import { GeneticSolver } from "./solver-genetic";
 
 
 interface SolverOptions {
@@ -26,6 +27,8 @@ function buildSolver(options: SolverOptions): Solver {
             return new BruteForceSolver(puzzle.tetrahedron, puzzle.tilePool);
         case "OnlyValid":
             return new OnlyValidSolver(puzzle.tetrahedron, puzzle.tilePool);
+        case "Genetic":
+            return new GeneticSolver(puzzle.tetrahedron, puzzle.tilePool);
         default:
             throw new Error("Invalid solve algorithm option!");
     }
