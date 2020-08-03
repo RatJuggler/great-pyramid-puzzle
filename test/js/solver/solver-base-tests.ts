@@ -79,7 +79,7 @@ describe("SolverBase behaviour using MockSolver", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             const solver = new MockSolver(components.tetrahedron, components.tilePool);
             components.tetrahedron.tilePositions.forEach((tilePosition) => {
-                tilePosition.tile = components.tilePool.randomTile;
+                tilePosition.state.tile = components.tilePool.randomTile;
             })
             const result = solver.currentState();
             it("should return an array of puzzle changes", function () {

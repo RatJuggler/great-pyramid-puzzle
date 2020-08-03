@@ -18,13 +18,13 @@ describe("Face behavior", function () {
             it("should return the correct toString result", function () {
                 const expectedToString =
                     "Face: 1, Tile Positions: 1, Joins: \n" +
-                    "TilePosition: 1, On Face: 1, Rotations: 0, Contains Tile: [Empty], Joins: \n";
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n";
                 expect(face.toString()).to.equal(expectedToString);
             });
             it("should fail the integrity check", function () {
                 const expectedFailure = [false,
                     "Face joins not complete: Face: 1, Tile Positions: 1, Joins: \n" +
-                    "TilePosition: 1, On Face: 1, Rotations: 0, Contains Tile: [Empty], Joins: \n"];
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n"];
                 expect(face.integrityCheck()).to.eql(expectedFailure)
             });
         });
@@ -64,7 +64,7 @@ describe("Face behavior", function () {
             it("should return the correct toString result", function () {
                 const expectedToString =
                     "Face: 1, Tile Positions: 1, Joins: (1-A->2-B)(1-B->3-C)(1-C->4-A)\n" +
-                    "TilePosition: 1, On Face: 1, Rotations: 0, Contains Tile: [Empty], Joins: \n";
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n";
                 expect(face1WithOneTilePosition.toString()).to.equal(expectedToString);
             });
             it("should pass the integrity check", function () {
@@ -98,7 +98,7 @@ describe("Face behavior", function () {
 
         context("with the id of an existing TilePosition which has a Tile in it", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isNotNull(faceWithOneTilePosition.emptyTilePositions[0].tile = TILE_1);
+            assert.isNotNull(faceWithOneTilePosition.emptyTilePositions[0].state.tile = TILE_1);
             it("should return the Tile", function () {
                 expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
             });
@@ -109,7 +109,7 @@ describe("Face behavior", function () {
             it("should return throw an error", function () {
                 expect(function () {
                     faceWithOneTilePosition.getTileAtPosition("1");
-                }).to.throw(Error, "Can't fetch a Tile when there isn't one!");
+                }).to.throw(Error, "Can't fetch a Tile from a TilePositionState when there isn't one set!");
             });
         });
 
@@ -133,13 +133,13 @@ describe("Face behavior", function () {
             it("should join the Faces in the direction given", function () {
                 const face1ExpectedToString =
                     "Face: 1, Tile Positions: 1, Joins: (1-A->2-B)\n" +
-                    "TilePosition: 1, On Face: 1, Rotations: 0, Contains Tile: [Empty], Joins: \n";
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n";
                 expect(face1WithOneTilePosition.toString()).to.equal(face1ExpectedToString);
             });
             it("should not join the Faces in the opposite direction", function () {
                 const face2ExpectedToString =
                     "Face: 2, Tile Positions: 1, Joins: \n" +
-                    "TilePosition: 1, On Face: 2, Rotations: 0, Contains Tile: [Empty], Joins: \n";
+                    "TilePosition: 1, On Face: 2, Contains Tile: [Empty], Joins: \n";
                 expect(face2WithOneTilePosition.toString()).to.equal(face2ExpectedToString);
             });
         });
@@ -225,7 +225,7 @@ describe("Face behavior", function () {
 
         context("and there aren't any empty Tile Positions", function () {
             const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isNotNull(faceWithOneTilePosition.emptyTilePositions[0].tile = TILE_1);
+            assert.isNotNull(faceWithOneTilePosition.emptyTilePositions[0].state.tile = TILE_1);
             it("should return False", function () {
                 expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.false;
             });

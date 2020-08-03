@@ -33,7 +33,7 @@ abstract class SolverBase implements Solver {
 
     currentState(): Array<PuzzleChange> {
         return this._tetrahedron.tilePositions.map((tilePosition) => {
-            if (tilePosition.isEmpty()) {
+            if (tilePosition.state.isEmpty()) {
                 return SolverBase.empty(tilePosition);
             } else {
                 return SolverBase.current(tilePosition);
@@ -50,11 +50,11 @@ abstract class SolverBase implements Solver {
     }
 
     protected static current(tilePosition: TilePosition): PuzzleChange {
-        return TileChange.current(tilePosition.id, tilePosition.tile.id, tilePosition.rotations, tilePosition.tile.segments)
+        return TileChange.current(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments)
     }
 
     protected static place(tilePosition: TilePosition): PuzzleChange {
-        return TileChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.rotations, tilePosition.tile.segments);
+        return TileChange.place(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments);
     }
 
     protected static rotate(tilePosition: TilePosition, rotations: number): PuzzleChange {
@@ -62,7 +62,7 @@ abstract class SolverBase implements Solver {
     }
 
     protected static remove(tilePosition: TilePosition): PuzzleChange {
-        return TileChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.rotations, tilePosition.tile.segments);
+        return TileChange.remove(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments);
     }
 
 }

@@ -24,10 +24,10 @@ function createDocument(): Document {
 function puzzleWithAllTiles(puzzleTypeData: PuzzleDataElements, displayManager: DisplayManager): PuzzleComponents {
     const puzzle = getPuzzleComponents(puzzleTypeData);
     puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
-        tilePosition.tile = puzzle.tilePool.randomTile;
+        tilePosition.state.tile = puzzle.tilePool.randomTile;
     })
     puzzle.tetrahedron.tilePositions
-        .map((tilePosition) => TileChange.current(tilePosition.id, tilePosition.tile.id, tilePosition.rotations, tilePosition.tile.segments))
+        .map((tilePosition) => TileChange.current(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments))
         .forEach((displayChange) => displayManager.display(displayChange));
     return puzzle;
 }
@@ -56,18 +56,18 @@ describe("Puzzle display functionality", function () {
         context("with some tiles on it", function () {
             const puzzle = getPuzzleComponents(puzzleTypeData);
             const tilePosition1 = puzzle.tetrahedron.tilePositions[0];
-            tilePosition1.tile = puzzle.tilePool.randomTile;
+            tilePosition1.state.tile = puzzle.tilePool.randomTile;
             const tilePosition2 = puzzle.tetrahedron.tilePositions[1];
-            tilePosition2.tile = puzzle.tilePool.randomTile;
+            tilePosition2.state.tile = puzzle.tilePool.randomTile;
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.display(PuzzleChange.INITIAL);
             puzzle.tetrahedron.tilePositions.forEach((tilePosition) => {
                 let tpChange;
-                if (tilePosition.isEmpty()) {
+                if (tilePosition.state.isEmpty()) {
                     tpChange = TilePositionChange.empty(tilePosition.id);
                 } else {
-                    tpChange = TileChange.current(tilePosition.id, tilePosition.tile.id, tilePosition.rotations, tilePosition.tile.segments);
+                    tpChange = TileChange.current(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments);
                 }
                 displayManager.display(tpChange);
             });

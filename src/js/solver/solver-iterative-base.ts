@@ -57,13 +57,13 @@ abstract class IterativeSolverBase extends SolverBase {
         if (tileState.rotations.length > 0) {
             const newRotations = tileState.rotations.shift()!;
             // How many rotations are moving round from the current one.
-            const rotate = newRotations - tilePosition.rotations;
-            tilePosition.rotations = newRotations;
+            const rotate = newRotations - tilePosition.state.rotations;
+            tilePosition.state.rotations = newRotations;
             displayChange = SolverBase.rotate(tilePosition, rotate);
         } else {
             // If we've tried all the rotations and none match then reject this tile.
             displayChange = SolverBase.remove(tilePosition);
-            tilePosition.removeTile();
+            tilePosition.state.removeTile();
             state.rejectedTiles.push(tileState);
         }
         return displayChange;
@@ -91,11 +91,11 @@ abstract class IterativeSolverBase extends SolverBase {
         const tilePosition = state.tilePosition;
         if (state.untriedTiles.length > 0) {
             state.tileState = state.untriedTiles.shift()!;
-            tilePosition.tile = state.tileState.tile;
+            tilePosition.state.tile = state.tileState.tile;
             if (state.tileState.rotations.length === 0) {
                 throw new Error("There should be at least one rotation position for an untried Tile!");
             }
-            tilePosition.rotations = state.tileState.rotations.shift()!;
+            tilePosition.state.rotations = state.tileState.rotations.shift()!;
             displayChange = SolverBase.place(tilePosition);
         } else {
             // Otherwise if we've tried all the tiles and nothing matches we need to move back a tile position.
@@ -116,7 +116,7 @@ abstract class IterativeSolverBase extends SolverBase {
         let displayChange;
         // If we don't have a tile at the current tile position.
         const tilePosition = this._currentState.tilePosition;
-        if (tilePosition.isEmpty()) {
+        if (tilePosition.state.isEmpty()) {
             // Try the next tile.
             displayChange = this.tryNextTile(this._currentState);
         } else {

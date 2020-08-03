@@ -75,7 +75,7 @@ export class Face {
     }
 
     get emptyTilePositions(): TilePosition[] {
-        return Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.isEmpty()).reverse();
+        return Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.state.isEmpty()).reverse();
     }
 
     hasEmptyTilePositions(): boolean {
@@ -90,7 +90,7 @@ export class Face {
     }
 
     getTileAtPosition(position: string): Tile | null {
-        return this.getTilePosition(position).tile;
+        return this.getTilePosition(position).state.tile;
     }
 
     join(joinFrom: string, joinTo: string, ofFace: Face) : void {

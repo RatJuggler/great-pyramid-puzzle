@@ -17,16 +17,13 @@ describe("TilePosition behaviour", function () {
             it("should return a correctly initialised instance", function () {
                 expect(tilePosition).to.be.an.instanceOf(TilePosition);
             });
-            it("should not be holding a Tile", function () {
-                expect(tilePosition.isEmpty());
-            });
             it("should return the correct toString result", function () {
-                const expectedToString = "TilePosition: XYZ, On Face: 1, Rotations: 0, Contains Tile: [Empty], Joins: ";
+                const expectedToString = "TilePosition: XYZ, On Face: 1, Contains Tile: [Empty], Joins: ";
                 expect(tilePosition.toString()).to.equal(expectedToString);
             });
             it("should fail the integrity check", function () {
                 const expectedFailure =
-                    [false, "Tile position joins not complete: TilePosition: XYZ, On Face: 1, Rotations: 0, Contains Tile: [Empty], Joins: "];
+                    [false, "Tile position joins not complete: TilePosition: XYZ, On Face: 1, Contains Tile: [Empty], Joins: "];
                 expect(tilePosition.integrityCheck()).to.eql(expectedFailure)
             });
         });
@@ -39,37 +36,13 @@ describe("TilePosition behaviour", function () {
             tilePosition.join("A", "B", tilePosition1);
             tilePosition.join("B", "C", tilePosition2);
             tilePosition.join("C", "A", tilePosition3);
-            it("should not be holding a Tile", function () {
-                expect(tilePosition.isEmpty());
-            });
             it("should return the correct toString result", function () {
                 const expectedToString =
-                    "TilePosition: XYZ, On Face: 1, Rotations: 0, Contains Tile: [Empty], Joins: (XYZ-A->1-TP1-B)(XYZ-B->1-TP2-C)(XYZ-C->1-TP3-A)";
+                    "TilePosition: XYZ, On Face: 1, Contains Tile: [Empty], Joins: (XYZ-A->1-TP1-B)(XYZ-B->1-TP2-C)(XYZ-C->1-TP3-A)";
                 expect(tilePosition.toString()).to.equal(expectedToString);
             });
             it("should pass the integrity check", function () {
                 expect(tilePosition.integrityCheck()).to.eql([true, "Passed"]);
-            });
-        });
-
-    });
-
-    describe("if #getTile() is called to get the details of a Tile", function () {
-
-        context("on a TilePosition which has a Tile in it", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            tilePosition.tile = TILE_1;
-            it("should return the Tile", function () {
-                expect(tilePosition.tile).to.equal(TILE_1);
-            });
-        });
-
-        context("on a TilePosition which doesn't have a Tile in it", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            it("should return throw an error", function () {
-                expect(function () {
-                    tilePosition.tile;
-                }).to.throw(Error, "Can't fetch a Tile when there isn't one!");
             });
         });
 
@@ -82,11 +55,11 @@ describe("TilePosition behaviour", function () {
             const tilePosition2 = new TilePosition("TP2", "1");
             tilePosition1.join("A", "B", tilePosition2);
             it("should join the TilePositions in the direction given", function () {
-                const tile1ExpectedToString = "TilePosition: TP1, On Face: 1, Rotations: 0, Contains Tile: [Empty], Joins: (TP1-A->1-TP2-B)";
+                const tile1ExpectedToString = "TilePosition: TP1, On Face: 1, Contains Tile: [Empty], Joins: (TP1-A->1-TP2-B)";
                 expect(tilePosition1.toString()).to.equal(tile1ExpectedToString);
             });
             it("should not join the TilePositions in the opposite direction", function () {
-                const tile2ExpectedToString = "TilePosition: TP2, On Face: 1, Rotations: 0, Contains Tile: [Empty], Joins: ";
+                const tile2ExpectedToString = "TilePosition: TP2, On Face: 1, Contains Tile: [Empty], Joins: ";
                 expect(tilePosition2.toString()).to.equal(tile2ExpectedToString);
             });
         });
@@ -150,141 +123,6 @@ describe("TilePosition behaviour", function () {
 
     });
 
-    describe("if #isEmpty() is called to test if there is already a Tile at this TilePosition", function () {
-
-        context("and the TilePosition is empty", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            it("should return True", function () {
-                expect(tilePosition.isEmpty()).to.be.true;
-            });
-        });
-
-        context("and the TilePosition is already occupied by a Tile", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            tilePosition.tile = TILE_1;
-            it("should return False", function () {
-                expect(tilePosition.isEmpty()).to.be.false;
-            });
-        });
-
-    });
-
-    describe("if #setTile() is called to place a Tile (without using matching)", function () {
-
-        context("and the TilePosition is empty", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            tilePosition.tile = TILE_1;
-            it("should place the Tile", function () {
-                expect(tilePosition.tile).to.equal(TILE_1);
-            });
-            it("and the rotation as 0", function () {
-                expect(tilePosition.rotations).to.equal(0);
-            })
-        });
-
-        context("and the TilePosition is already occupied by a Tile", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            tilePosition.tile = TILE_1;
-            it("should throw an error", function () {
-                expect(function () {
-                    tilePosition.tile = TILE_2;
-                }).to.throw(Error, "Can't place a Tile when the TilePosition is already filled!");
-            });
-            it("should not be placed", function () {
-                expect(tilePosition.tile).to.equal(TILE_1);
-            });
-        });
-
-    });
-
-    describe("if #rotations() is called on a TilePosition", function () {
-
-        context("with an invalid number of rotations", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            tilePosition.tile = TILE_1;
-            it("should throw an error", function () {
-                expect(function () {
-                    tilePosition.rotations = 4;
-                }).to.throw(Error, "Tile can only be rotated 0, 1 or 2 times!");
-            });
-            it("should throw an error", function () {
-                expect(function () {
-                    tilePosition.rotations = -3;
-                }).to.throw(Error, "Tile can only be rotated 0, 1 or 2 times!");
-            });
-            it("should throw an error", function () {
-                expect(function () {
-                    tilePosition.rotations = 1.5;
-                }).to.throw(Error, "Tile can only be rotated 0, 1 or 2 times!");
-            });
-        });
-
-        context("with a valid number of rotations", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            tilePosition.tile = TILE_1;
-            tilePosition.rotations = 2;
-            it("should set the rotations", function () {
-                expect(tilePosition.rotations).to.equal(2);
-            });
-        });
-
-    });
-
-    describe("if #rotate() is called on a TilePosition", function () {
-
-        context("with a newly placed Tile", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            tilePosition.tile = TILE_1;
-            const result = tilePosition.rotate();
-            it("should return true", function () {
-                expect(result).to.be.true;
-            });
-            it("should track the Tile as being rotated once", function () {
-                expect(tilePosition.rotations).to.equal(1);
-            });
-        });
-
-        context("and the Tile has already been rotated twice", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            tilePosition.tile = TILE_1;
-            tilePosition.rotate();
-            tilePosition.rotate();
-            const result = tilePosition.rotate();
-            it("should return false", function () {
-                expect(result).to.be.false;
-            });
-            it("should reset the rotation back to 0", function () {
-                expect(tilePosition.rotations).to.equal(0);
-            });
-        });
-
-    });
-
-    describe("if #removeTile() is called to remove a Tile", function () {
-
-        context("and the TilePosition is empty", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            it("should throw an error", function () {
-                expect(function () {
-                    tilePosition.removeTile();
-                }).to.throw(Error, "No Tile to remove!");
-            });
-        });
-
-        context("and the TilePosition has a Tile in it", function () {
-            const tilePosition = new TilePosition("TP", "1");
-            tilePosition.tile = TILE_1;
-            const result = tilePosition.removeTile();
-            it("should remove the Tile", function () {
-                expect(tilePosition.isEmpty()).to.be.true;
-            });
-            it("should return Tile", function () {
-                expect(result).to.eql(TILE_1);
-            });
-        });
-
-    });
-
     describe("if #tilesMatch() is called to check if the Tile at a TilePosition matches with a single adjoining TilePosition", function () {
 
         context("and the TilePosition being checked is empty", function () {
@@ -302,7 +140,7 @@ describe("TilePosition behaviour", function () {
             const tilePosition1 = new TilePosition("TP1", "1");
             const tilePosition2 = new TilePosition("TP2", "2");
             tilePosition1.join("C", "B", tilePosition2);
-            tilePosition1.tile = TILE_1;
+            tilePosition1.state.tile = TILE_1;
             const result = tilePosition1.tilesMatch();
             it("should return true for the first TilePosition", function () {
                 expect(result).to.be.true;
@@ -313,8 +151,8 @@ describe("TilePosition behaviour", function () {
             const tilePosition1 = new TilePosition("TP1", "1");
             const tilePosition2 = new TilePosition("TP2", "2");
             tilePosition1.join("C", "B", tilePosition2);
-            tilePosition1.tile = TILE_1;
-            tilePosition2.tile = TILE_3;
+            tilePosition1.state.tile = TILE_1;
+            tilePosition2.state.tile = TILE_3;
             const result = tilePosition1.tilesMatch();
             it("should return false", function () {
                 expect(result).to.be.false;
@@ -325,8 +163,8 @@ describe("TilePosition behaviour", function () {
             const tilePosition1 = new TilePosition("TP1", "1");
             const tilePosition2 = new TilePosition("TP2", "2");
             tilePosition1.join("C", "B", tilePosition2);
-            tilePosition1.tile = TILE_1;
-            tilePosition2.tile = TILE_2;
+            tilePosition1.state.tile = TILE_1;
+            tilePosition2.state.tile = TILE_2;
             const result = tilePosition1.tilesMatch();
             it("should return true", function () {
                 expect(result).to.be.true;
@@ -345,10 +183,10 @@ describe("TilePosition behaviour", function () {
             tilePosition1.join("A", "B", tilePosition3);
             tilePosition1.join("B", "B", tilePosition4);
             tilePosition1.join("C", "B", tilePosition2);
-            tilePosition1.tile = TILE_2;
-            tilePosition2.tile = TILE_3;
-            tilePosition3.tile = TILE_1;
-            tilePosition4.tile = TILE_4;
+            tilePosition1.state.tile = TILE_2;
+            tilePosition2.state.tile = TILE_3;
+            tilePosition3.state.tile = TILE_1;
+            tilePosition4.state.tile = TILE_4;
             const result = tilePosition1.tilesMatch();
             it("should return false", function () {
                 expect(result).to.be.false;
@@ -363,13 +201,13 @@ describe("TilePosition behaviour", function () {
             tilePosition1.join("A", "B", tilePosition3);
             tilePosition1.join("B", "B", tilePosition4);
             tilePosition1.join("C", "B", tilePosition2);
-            tilePosition1.tile = TILE_2;
-            tilePosition2.tile = TILE_3;
-            tilePosition3.tile = TILE_1;
-            tilePosition3.rotate();
-            tilePosition3.rotate();
-            tilePosition4.tile = TILE_4;
-            tilePosition4.rotate();
+            tilePosition1.state.tile = TILE_2;
+            tilePosition2.state.tile = TILE_3;
+            tilePosition3.state.tile = TILE_1;
+            tilePosition3.state.rotate();
+            tilePosition3.state.rotate();
+            tilePosition4.state.tile = TILE_4;
+            tilePosition4.state.rotate();
             const result = tilePosition1.tilesMatch();
             it("should return true", function () {
                 expect(result).to.be.true;
@@ -389,10 +227,10 @@ describe("TilePosition behaviour", function () {
             const tilePosition2 = tilePositions[1];
             const tilePosition3 = tilePositions[2];
             const tilePosition4 = tilePositions[3];
-            tilePosition1.tile = TILE_2;
-            tilePosition2.tile = TILE_3;
-            tilePosition3.tile = TILE_1;
-            tilePosition4.tile = TILE_4;
+            tilePosition1.state.tile = TILE_2;
+            tilePosition2.state.tile = TILE_3;
+            tilePosition3.state.tile = TILE_1;
+            tilePosition4.state.tile = TILE_4;
             const result1 = tilePosition1.tilesMatch();
             const result2 = tilePosition2.tilesMatch();
             const result3 = tilePosition3.tilesMatch();
@@ -420,13 +258,13 @@ describe("TilePosition behaviour", function () {
             const tilePosition2 = tilePositions[1];
             const tilePosition3 = tilePositions[2];
             const tilePosition4 = tilePositions[3];
-            tilePosition1.tile = TILE_2;
-            tilePosition2.tile = TILE_3;
-            tilePosition3.tile = TILE_1;
-            tilePosition3.rotate();
-            tilePosition3.rotate();
-            tilePosition4.tile = TILE_4;
-            tilePosition4.rotate();
+            tilePosition1.state.tile = TILE_2;
+            tilePosition2.state.tile = TILE_3;
+            tilePosition3.state.tile = TILE_1;
+            tilePosition3.state.rotate();
+            tilePosition3.state.rotate();
+            tilePosition4.state.tile = TILE_4;
+            tilePosition4.state.rotate();
             const result1 = tilePosition1.tilesMatch();
             const result2 = tilePosition2.tilesMatch();
             const result3 = tilePosition3.tilesMatch();
@@ -454,7 +292,7 @@ describe("TilePosition behaviour", function () {
             const tilePosition1 = new TilePosition("TP1", "1");
             const tilePosition2 = new TilePosition("TP2", "2");
             tilePosition1.join("C", "B", tilePosition2);
-            tilePosition1.tile = TILE_1;
+            tilePosition1.state.tile = TILE_1;
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.segmentsToFind();
@@ -476,7 +314,7 @@ describe("TilePosition behaviour", function () {
             const tilePosition1 = new TilePosition("TP1", "1");
             const tilePosition2 = new TilePosition("TP2", "2");
             tilePosition1.join("C", "B", tilePosition2);
-            tilePosition2.tile = TILE_3;
+            tilePosition2.state.tile = TILE_3;
             const result = tilePosition1.segmentsToFind();
             it("should return the segments side B reversed", function () {
                 expect(result).to.equal(TILE_3.getSegmentsForSideToMatchWith(0, Side.SideB));
@@ -509,12 +347,12 @@ describe("TilePosition behaviour", function () {
             tilePosition1.join("A", "B", tilePosition3);
             tilePosition1.join("B", "B", tilePosition4);
             tilePosition1.join("C", "B", tilePosition2);
-            tilePosition2.tile = TILE_3;
-            tilePosition3.tile = TILE_1;
-            tilePosition3.rotate();
-            tilePosition3.rotate();
-            tilePosition4.tile = TILE_4;
-            tilePosition4.rotate();
+            tilePosition2.state.tile = TILE_3;
+            tilePosition3.state.tile = TILE_1;
+            tilePosition3.state.rotate();
+            tilePosition3.state.rotate();
+            tilePosition4.state.tile = TILE_4;
+            tilePosition4.state.rotate();
             const result = tilePosition1.segmentsToFind();
             it("should return true", function () {
                 expect(result).to.equal(TILE_2.segments);

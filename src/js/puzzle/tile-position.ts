@@ -1,4 +1,4 @@
-import { Tile } from "./tile";
+import { TilePositionState } from "./tile-position-state";
 import { IntegrityCheckResult } from "../common-data-schema";
 import { Side, SIDES } from "./side";
 
@@ -13,8 +13,7 @@ type TilePositionJoinProperties = {
 export class TilePosition {
 
     private _joins = new Array<TilePositionJoinProperties>();
-    private _tile: Tile | null = null;
-    private _rotations: number = 0;
+    private _state: TilePositionState = new TilePositionState();
 
     constructor(private _name: string, private _onFace: string) {}
 
@@ -34,30 +33,8 @@ export class TilePosition {
         return this._name;
     }
 
-    get tile(): Tile {
-        if (this._tile === null) {
-            throw new Error("Can't fetch a Tile when there isn't one!");
-        }
-        return this._tile;
-    }
-
-    set tile(tile: Tile) {
-        if (!this.isEmpty()) {
-            throw new Error("Can't place a Tile when the TilePosition is already filled!");
-        }
-        this._rotations = 0;
-        this._tile = tile;
-    }
-
-    get rotations(): number {
-        return this._rotations;
-    }
-
-    set rotations(rotations: number) {
-        if (rotations !== 0 && rotations !== 1 && rotations !== 2) {
-            throw new Error("Tile can only be rotated 0, 1 or 2 times!");
-        }
-        this._rotations = rotations
+    get state(): TilePositionState {
+        return this._state;
     }
 
     join(joinFrom: string, joinTo: string, ofTilePosition: TilePosition) : void {
@@ -81,37 +58,19 @@ export class TilePosition {
         });
     }
 
-    isEmpty(): boolean {
-        return !this._tile;
-    }
-
-    removeTile(): Tile {
-        if (this.isEmpty()) {
-            throw new Error("No Tile to remove!");
-        }
-        let tileToRemove = this._tile!;
-        this._tile = null;
-        return tileToRemove;
-    }
-
-    rotate(): boolean {
-        this._rotations = ++this._rotations % 3;
-        return this._rotations !== 0;
-    }
-
     tilesMatch(): boolean {
-        if (this.isEmpty()) {
+        if (this.state.isEmpty()) {
             throw new Error("Can't check if a Tile matches when there is no Tile at the TilePosition to match from!");
         }
         // Check match for each join to another TilePosition.
         for (const join of this._joins) {
             // If the other TilePosition is empty then that will count as a match.
             const otherTilePosition = join.ofTilePosition;
-            if (!otherTilePosition.isEmpty()) {
+            if (!otherTilePosition.state.isEmpty()) {
                 // At this TilePosition we need the side of the Tile facing the other TilePosition.
-                const thisSegments = this.tile.getSegmentsForSide(this.rotations, join.fromSide);
+                const thisSegments = this.state.tile.getSegmentsForSide(this.state.rotations, join.fromSide);
                 // For the other TilePosition we then need the side of the Tile there, facing this TilePosition.
-                const otherSegments = otherTilePosition.tile.getSegmentsForSideToMatchWith(otherTilePosition.rotations, join.toSide);
+                const otherSegments = otherTilePosition.state.tile.getSegmentsForSideToMatchWith(otherTilePosition.state.rotations, join.toSide);
                 // Finally we can make the comparison. Any failure means the current Tile doesn't match at this TilePosition.
                 if (thisSegments !== otherSegments) {
                     return false;
@@ -122,27 +81,26 @@ export class TilePosition {
     }
 
     segmentsToFind(): string {
-        if (!this.isEmpty()) {
+        if (!this.state.isEmpty()) {
             throw new Error("TilePosition to find segments for already contains a Tile!");
         }
         let needToMatch: string = "";
         // Check each join to another TilePosition.
         for (const join of this._joins) {
             const otherTilePosition = join.ofTilePosition;
-            if (otherTilePosition.isEmpty()) {
+            if (otherTilePosition.state.isEmpty()) {
                 // If no Tile search can be for anything.
                 needToMatch += "....";
             } else {
                 // If a Tile is present then we need the side of the Tile facing this TilePosition.
-                needToMatch += otherTilePosition.tile.getSegmentsForSideToMatchWith(otherTilePosition.rotations, join.toSide);
+                needToMatch += otherTilePosition.state.tile.getSegmentsForSideToMatchWith(otherTilePosition.state.rotations, join.toSide);
             }
         }
         return needToMatch;
     }
 
     toString(): string {
-        const tileString = this._tile ? this._tile.toString() : "Empty"
-        let tilePositionString = `TilePosition: ${this._name}, On Face: ${this._onFace}, Rotations: ${this.rotations}, Contains Tile: [${tileString}], Joins: `;
+        let tilePositionString = `TilePosition: ${this._name}, On Face: ${this._onFace}, Contains Tile: ${this.state.toString()}, Joins: `;
         this._joins.forEach((join) =>
             tilePositionString += `(${this._name}-${join.fromSide}->${join.ofTilePosition._onFace}-${join.ofTilePosition.name}-${join.toSide})`);
         return tilePositionString;
