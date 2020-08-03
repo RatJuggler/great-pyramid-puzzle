@@ -1,7 +1,7 @@
 import { Tetrahedron } from "../puzzle/tetrahedron";
 import { TilePool } from "../puzzle/tile-pool";
 import { TilePosition } from "../puzzle/tile-position";
-import { TileState, SolverState, IterativeSolverBase } from "./solver-iterative-base";
+import { SolverTileState, SolverState, IterativeSolverBase } from "./solver-iterative-base";
 
 
 export class OnlyValidSolver extends IterativeSolverBase {
@@ -14,8 +14,8 @@ export class OnlyValidSolver extends IterativeSolverBase {
         // Find existing sides to match.
         const segmentsToFind = newTilePosition.segmentsToFind();
         // Filter the unused tiles so we only try those that are relevant.
-        const newUntriedTiles = new Array<TileState>();
-        const newRejectedTiles = new Array<TileState>();
+        const newUntriedTiles = new Array<SolverTileState>();
+        const newRejectedTiles = new Array<SolverTileState>();
         const untriedTiles = state.untriedTiles.concat(state.rejectedTiles);
         for (const untriedTile of untriedTiles) {
             const newTileState = {

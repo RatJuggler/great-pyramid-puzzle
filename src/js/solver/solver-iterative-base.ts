@@ -6,15 +6,15 @@ import { TilePosition } from "../puzzle/tile-position";
 import { PuzzleChange } from "../puzzle-changes";
 
 
-type TileState = {
+type SolverTileState = {
     tile: Tile,
     rotations: Array<number>
 }
 type SolverState = {
     tilePosition: TilePosition,
-    tileState: TileState | null,
-    untriedTiles: Array<TileState>,
-    rejectedTiles: Array<TileState>
+    tileState: SolverTileState | null,
+    untriedTiles: Array<SolverTileState>,
+    rejectedTiles: Array<SolverTileState>
 }
 
 
@@ -31,7 +31,7 @@ abstract class IterativeSolverBase extends SolverBase {
             throw new Error("Solver expects puzzle to have empty TilePositions at the start!")
         }
         // We expect to try every rotation of the set of Tiles for the initial state.
-        const untriedTiles = new Array<TileState>();
+        const untriedTiles = new Array<SolverTileState>();
         for (const tile of tilePool.tiles) {
             untriedTiles.push({
                 tile: tile,
@@ -42,7 +42,7 @@ abstract class IterativeSolverBase extends SolverBase {
             tilePosition: this._emptyTilePositions.shift()!,
             tileState: null,
             untriedTiles: untriedTiles,
-            rejectedTiles: new Array<TileState>()
+            rejectedTiles: new Array<SolverTileState>()
         }
     }
 
@@ -137,4 +137,4 @@ abstract class IterativeSolverBase extends SolverBase {
 
 }
 
-export { TileState, SolverState, IterativeSolverBase }
+export { SolverTileState, SolverState, IterativeSolverBase }
