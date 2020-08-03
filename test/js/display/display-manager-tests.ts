@@ -27,7 +27,7 @@ function puzzleWithAllTiles(puzzleTypeData: PuzzleDataElements, displayManager: 
         tilePosition.tile = puzzle.tilePool.randomTile;
     })
     puzzle.tetrahedron.tilePositions
-        .map((tilePosition) => TileChange.current(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments))
+        .map((tilePosition) => TileChange.current(tilePosition.id, tilePosition.tile.id, tilePosition.rotations, tilePosition.tile.segments))
         .forEach((displayChange) => displayManager.display(displayChange));
     return puzzle;
 }
@@ -67,7 +67,7 @@ describe("Puzzle display functionality", function () {
                 if (tilePosition.isEmpty()) {
                     tpChange = TilePositionChange.empty(tilePosition.id);
                 } else {
-                    tpChange = TileChange.current(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
+                    tpChange = TileChange.current(tilePosition.id, tilePosition.tile.id, tilePosition.rotations, tilePosition.tile.segments);
                 }
                 displayManager.display(tpChange);
             });

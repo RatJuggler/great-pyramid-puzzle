@@ -28,7 +28,6 @@ export class Tile {
 
     private readonly _id: number;
     private readonly _sideSegments = new Array<SideSegments>();
-    private _rotations: number = 0;
 
     validateSegments(segments: string): string {
         if (segments.length !== 4) {
@@ -55,37 +54,16 @@ export class Tile {
         return this._id;
     }
 
-    get rotations(): number {
-        return this._rotations;
-    }
-
     get segments(): string {
         return this._sideSegments[0].toString();
     }
 
-    set rotations(rotations: number) {
-        if (rotations !== 0 && rotations !== 1 && rotations !== 2) {
-            throw new Error("Tile can only be rotated 0, 1 or 2 times!");
-        }
-        this._rotations = rotations
+    getSegmentsForSide(rotations: number, side: Side): string {
+        return this._sideSegments[rotations][side];
     }
 
-    placed(): Tile {
-        this._rotations = 0;
-        return this;
-    }
-
-    rotate(): boolean {
-        this._rotations = ++this._rotations % 3;
-        return this._rotations !== 0;
-    }
-
-    getSegmentsForSide(side: Side): string {
-        return this._sideSegments[this._rotations][side];
-    }
-
-    getSegmentsForSideToMatchWith(side: Side): string {
-        const sideSegments = this.getSegmentsForSide(side);
+    getSegmentsForSideToMatchWith(rotations: number, side: Side): string {
+        const sideSegments = this.getSegmentsForSide(rotations, side);
         return sideSegments[3] + sideSegments[2] + sideSegments[1] + sideSegments[0];
     }
 
@@ -100,10 +78,10 @@ export class Tile {
     }
 
     toString(): string {
-        return `Id: ${this._id}, Rotation: ${this._rotations}, ` +
-            `Side-A: ${this.getSegmentsForSide(Side.SideA)}, ` +
-            `Side-B: ${this.getSegmentsForSide(Side.SideB)}, ` +
-            `Side-C: ${this.getSegmentsForSide(Side.SideC)}`;
+        return `Id: ${this._id}, ` +
+            `Side-A: ${this.getSegmentsForSide(0, Side.SideA)}, ` +
+            `Side-B: ${this.getSegmentsForSide(0, Side.SideB)}, ` +
+            `Side-C: ${this.getSegmentsForSide(0, Side.SideC)}`;
     }
 
 }

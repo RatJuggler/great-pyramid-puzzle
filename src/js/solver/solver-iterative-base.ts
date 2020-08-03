@@ -57,8 +57,8 @@ abstract class IterativeSolverBase extends SolverBase {
         if (tileState.rotations.length > 0) {
             const newRotations = tileState.rotations.shift()!;
             // How many rotations are moving round from the current one.
-            const rotate = newRotations - tilePosition.tile.rotations;
-            tilePosition.tile.rotations = newRotations;
+            const rotate = newRotations - tilePosition.rotations;
+            tilePosition.rotations = newRotations;
             displayChange = SolverBase.rotate(tilePosition, rotate);
         } else {
             // If we've tried all the rotations and none match then reject this tile.
@@ -95,7 +95,7 @@ abstract class IterativeSolverBase extends SolverBase {
             if (state.tileState.rotations.length === 0) {
                 throw new Error("There should be at least one rotation position for an untried Tile!");
             }
-            tilePosition.tile.rotations = state.tileState.rotations.shift()!;
+            tilePosition.rotations = state.tileState.rotations.shift()!;
             displayChange = SolverBase.place(tilePosition);
         } else {
             // Otherwise if we've tried all the tiles and nothing matches we need to move back a tile position.

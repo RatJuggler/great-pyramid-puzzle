@@ -42,7 +42,7 @@ abstract class SolverBase implements Solver {
     }
 
     protected static start(tile: Tile): PuzzleChange {
-        return TileChange.start("start" + tile.id, tile.id, tile.rotations, tile.segments)
+        return TileChange.start("start" + tile.id, tile.id, 0, tile.segments)
     }
 
     protected static empty(tilePosition: TilePosition): PuzzleChange {
@@ -50,11 +50,11 @@ abstract class SolverBase implements Solver {
     }
 
     protected static current(tilePosition: TilePosition): PuzzleChange {
-        return TileChange.current(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments)
+        return TileChange.current(tilePosition.id, tilePosition.tile.id, tilePosition.rotations, tilePosition.tile.segments)
     }
 
     protected static place(tilePosition: TilePosition): PuzzleChange {
-        return TileChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
+        return TileChange.place(tilePosition.id, tilePosition.tile.id, tilePosition.rotations, tilePosition.tile.segments);
     }
 
     protected static rotate(tilePosition: TilePosition, rotations: number): PuzzleChange {
@@ -62,7 +62,7 @@ abstract class SolverBase implements Solver {
     }
 
     protected static remove(tilePosition: TilePosition): PuzzleChange {
-        return TileChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments);
+        return TileChange.remove(tilePosition.id, tilePosition.tile.id, tilePosition.rotations, tilePosition.tile.segments);
     }
 
 }

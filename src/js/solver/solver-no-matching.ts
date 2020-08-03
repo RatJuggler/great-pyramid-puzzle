@@ -66,7 +66,7 @@ export class NoMatchingSolver extends SolverBase {
     private rotateOrNext(): PuzzleChange {
         if (this._rotating > 0) {
             this._rotating--;
-            this._tilePosition.tile.rotate();
+            this._tilePosition.rotate();
             return TilePositionChange.rotate(this._tilePosition.id, 1);
         } else {
             if (this._emptyTilePositions.length === 0) {
