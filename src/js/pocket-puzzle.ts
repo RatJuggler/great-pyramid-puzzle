@@ -1,5 +1,5 @@
-import layout_data from "../pocket-layout-data.json";
-import tile_data from "../pocket-tile-data.json";
+import layout_data from "../data/pocket-layout-data.json";
+import tile_data from "../data/pocket-tile-data.json";
 import { PuzzleDataElements } from "./common-data-schema";
 
 

@@ -1,4 +1,4 @@
-import valid_display1 from "../../valid-test-display-data1.json";
+import valid_display1 from "../data/valid-test-display-data1.json";
 import { UIOptions } from "../../../src/js/ui-options";
 import { getDisplayManager } from "../../../src/js/display/display-loader";
 import { DisplayManager } from "../../../src/js/display/display-manager";

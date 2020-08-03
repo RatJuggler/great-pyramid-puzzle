@@ -1,4 +1,4 @@
-import valid_layout_config1 from "../valid-test-layout-data1.json";
+import valid_layout_config1 from "./data/valid-test-layout-data1.json";
 import { Tetrahedron } from "../../src/js/tetrahedron";
 import { TilePosition } from '../../src/js/tile-position';
 import { Tile } from "../../src/js/tile";

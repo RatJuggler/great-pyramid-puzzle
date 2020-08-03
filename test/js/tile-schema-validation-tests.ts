@@ -1,8 +1,8 @@
 import tile_schema from "../../src/tile-data-schema.json";
-import test_tiles from "../../src/simple-tile-data.json";
-import pocket_tiles from "../../src/pocket-tile-data.json";
-import great_tiles from "../../src/great-tile-data.json";
-import valid_test_tiles from "../valid-test-tile-data1.json";
+import test_tiles from "../../src/data/simple-tile-data.json";
+import pocket_tiles from "../../src/data/pocket-tile-data.json";
+import great_tiles from "../../src/data/great-tile-data.json";
+import valid_test_tiles from "./data/valid-test-tile-data1.json";
 import Ajv from 'ajv';
 import { expect } from 'chai';
 import 'mocha';

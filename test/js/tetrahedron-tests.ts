@@ -1,6 +1,6 @@
-import valid_layout_config1 from "../valid-test-layout-data1.json";
-import invalid_layout_config1 from "../invalid-layout-data1.json";
-import invalid_layout_config2 from "../invalid-layout-data2.json";
+import valid_layout_config1 from "./data/valid-test-layout-data1.json";
+import invalid_layout_config1 from "./data/invalid-layout-data1.json";
+import invalid_layout_config2 from "./data/invalid-layout-data2.json";
 import { Face } from "../../src/js/face";
 import { Tetrahedron } from '../../src/js/tetrahedron';
 import { expect } from 'chai';

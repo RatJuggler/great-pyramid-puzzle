@@ -1,6 +1,6 @@
-import valid_layout_data1 from "../../valid-test-layout-data1.json";
-import valid_tile_data1 from "../../valid-test-tile-data1.json";
-import valid_display1 from "../../valid-test-display-data1.json";
+import valid_layout_data1 from "../data/valid-test-layout-data1.json";
+import valid_tile_data1 from "../data/valid-test-tile-data1.json";
+import valid_display1 from "../data/valid-test-display-data1.json";
 import { PuzzleComponents, PuzzleDataElements } from "../../../src/js/common-data-schema";
 import { getPuzzleComponents } from "../../../src/js/puzzle-loader";
 import { getDisplayManager } from "../../../src/js/display/display-loader";

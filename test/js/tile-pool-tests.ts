@@ -1,6 +1,6 @@
-import valid_tile_config1 from "../valid-test-tile-data1.json";
-import invalid_tile_config1 from "../invalid-tile-data1.json";
-import invalid_tiles_config2 from "../invalid-tile-data2.json";
+import valid_tile_config1 from "./data/valid-test-tile-data1.json";
+import invalid_tile_config1 from "./data/invalid-tile-data1.json";
+import invalid_tiles_config2 from "./data/invalid-tile-data2.json";
 import { Tile } from "../../src/js/tile";
 import { TilePool } from '../../src/js/tile-pool';
 import { assert, expect } from 'chai';

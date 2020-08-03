@@ -1,5 +1,5 @@
-import layout_data from "../great-layout-data.json";
-import tile_data from "../great-tile-data.json";
+import layout_data from "../data/great-layout-data.json";
+import tile_data from "../data/great-tile-data.json";
 import { PuzzleDataElements } from "./common-data-schema";
 
 

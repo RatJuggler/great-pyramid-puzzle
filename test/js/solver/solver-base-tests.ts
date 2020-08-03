@@ -1,5 +1,5 @@
-import valid_layout_data from "../../valid-test-layout-data1.json";
-import invalid_tile_data from "../../invalid-tile-data3.json";
+import valid_layout_data from "../data/valid-test-layout-data1.json";
+import invalid_tile_data from "../data/invalid-tile-data3.json";
 import { getPuzzleComponents } from "../../../src/js/puzzle-loader";
 import { SolverBase } from "../../../src/js/solver/solver-base";
 import { Tetrahedron } from "../../../src/js/tetrahedron";

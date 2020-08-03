@@ -1,6 +1,6 @@
-import simple_data from "../../simple-display-data.json";
-import pocket_data from "../../pocket-display-data.json";
-import great_data from "../../great-display-data.json";
+import simple_data from "../../data/simple-display-data.json";
+import pocket_data from "../../data/pocket-display-data.json";
+import great_data from "../../data/great-display-data.json";
 import { DisplayData } from "./display-data-schema";
 import { DisplayManager } from "./display-manager";
 

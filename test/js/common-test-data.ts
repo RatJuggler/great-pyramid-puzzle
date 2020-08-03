@@ -1,6 +1,6 @@
-import layout_data from "../valid-test-layout-data1.json";
-import tile_data from "../valid-test-tile-data1.json";
-import invalid_tile_data from "../invalid-tile-data3.json";
+import layout_data from "./data/valid-test-layout-data1.json";
+import tile_data from "./data/valid-test-tile-data1.json";
+import invalid_tile_data from "./data/invalid-tile-data3.json";
 import { TileDefinition } from "../../src/js/tile-data-schema";
 import { TilePositionData } from "../../src/js/layout-data-schema";
 import { Tile } from "../../src/js/tile";
