@@ -102,7 +102,7 @@ class StartTilePosition extends DisplayChange {
 }
 
 
-class FinalTilePosition extends DisplayChange {
+class CurrentTilePosition extends DisplayChange {
 
     constructor(display: Display,
                 private readonly _tChange: TileChange,
@@ -111,9 +111,9 @@ class FinalTilePosition extends DisplayChange {
     }
 
     show(): void {
-        // Find the destination tile position of the new tile.
+        // Find the tile position for the tile.
         const tpDisplay = this.display.getTilePosition(this._tChange);
-        // Redraw the tile position with the placed tile.
+        // Redraw the tile position with the tile.
         this.display.drawTilePosition(tpDisplay, this._tChange, this._scaleTile);
     }
 
@@ -253,7 +253,7 @@ export class DisplayManager {
                 action = new StartTilePosition(this._display, pChange as TileChange, this._scaleTileStart);
                 break;
             case PuzzleChangeType.Current:
-                action = new FinalTilePosition(this._display, pChange as TileChange, this._scaleTile);
+                action = new CurrentTilePosition(this._display, pChange as TileChange, this._scaleTile);
                 break;
             case PuzzleChangeType.Place:
                 action = new PlaceTilePosition(this._display, pChange as TileChange,  this._scaleTileStart, this._scaleTile, this._animationDuration);
