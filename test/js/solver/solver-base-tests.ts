@@ -81,7 +81,7 @@ describe("SolverBase behaviour using MockSolver", function () {
             components.tetrahedron.tilePositions.forEach((tilePosition) => {
                 tilePosition.tile = components.tilePool.randomTile;
             })
-            const result = solver.finalState();
+            const result = solver.currentState();
             it("should return an array of puzzle changes", function () {
                 expect(result).to.be.instanceof(Array);
             });

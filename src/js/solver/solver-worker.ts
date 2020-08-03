@@ -26,7 +26,7 @@ function solverWorker(parameters: WorkerParameters): WorkerResult {
     return {
         solvedOrCompleted: puzzleChange.type,
         stepCounter: stepCounter,
-        finalState: solver.finalState()
+        finalState: solver.currentState()
     }
 }
 

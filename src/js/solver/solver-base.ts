@@ -9,7 +9,7 @@ interface Solver {
     initialState: () => Array<PuzzleChange>;
     nextState: () => PuzzleChange;
     forceNextState: () => PuzzleChange;
-    finalState: () => Array<PuzzleChange>;
+    currentState: () => Array<PuzzleChange>;
 }
 
 
@@ -31,7 +31,7 @@ abstract class SolverBase implements Solver {
 
     abstract forceNextState(): PuzzleChange;
 
-    finalState(): Array<PuzzleChange> {
+    currentState(): Array<PuzzleChange> {
         return this._tetrahedron.tilePositions.map((tilePosition) => {
             if (tilePosition.isEmpty()) {
                 return SolverBase.empty(tilePosition);
