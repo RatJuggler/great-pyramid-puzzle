@@ -1,5 +1,5 @@
-import { LayoutData } from "./layout-data-schema";
-import { TileData } from "./tile-data-schema";
+import { LayoutData } from "./puzzle/layout-data-schema";
+import { TileData } from "./puzzle/tile-data-schema";
 import { TilePool } from "./puzzle/tile-pool";
 import { Tetrahedron } from "./puzzle/tetrahedron";
 import { PuzzleChange } from "./puzzle-changes";

@@ -1,8 +1,8 @@
-import layout_schema from "../../src/layout-data-schema.json";
-import test_layout from "../../src/data/simple-layout-data.json";
-import pocket_layout from "../../src/data/pocket-layout-data.json";
-import great_layout from "../../src/data/great-layout-data.json";
-import valid_test_layout from "./data/valid-test-layout-data1.json";
+import layout_schema from "../../../src/layout-data-schema.json";
+import test_layout from "../../../src/data/simple-layout-data.json";
+import pocket_layout from "../../../src/data/pocket-layout-data.json";
+import great_layout from "../../../src/data/great-layout-data.json";
+import valid_test_layout from "../data/valid-test-layout-data1.json";
 import Ajv from 'ajv';
 import { expect } from 'chai';
 import 'mocha';

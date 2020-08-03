@@ -1,4 +1,4 @@
-import { TileDefinition } from "../tile-data-schema";
+import { TileDefinition } from "./tile-data-schema";
 import { Side } from "./side";
 
 

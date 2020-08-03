@@ -1,8 +1,8 @@
 import layout_data from "./data/valid-test-layout-data1.json";
 import tile_data from "./data/valid-test-tile-data1.json";
 import invalid_tile_data from "./data/invalid-tile-data3.json";
-import { TileDefinition } from "../../src/js/tile-data-schema";
-import { TilePositionData } from "../../src/js/layout-data-schema";
+import { TileDefinition } from "../../src/js/puzzle/tile-data-schema";
+import { TilePositionData } from "../../src/js/puzzle/layout-data-schema";
 import { Tile } from "../../src/js/puzzle/tile";
 import { PuzzleDataElements } from "../../src/js/common-data-schema";
 

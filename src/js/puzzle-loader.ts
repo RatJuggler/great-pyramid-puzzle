@@ -1,8 +1,8 @@
 import { simplePuzzle } from "./simple-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
-import { LayoutData } from "./layout-data-schema";
-import { TileData } from "./tile-data-schema";
+import { LayoutData } from "./puzzle/layout-data-schema";
+import { TileData } from "./puzzle/tile-data-schema";
 import { Tetrahedron } from "./puzzle/tetrahedron";
 import { TilePool } from "./puzzle/tile-pool";
 import { PuzzleDataElements, PuzzleComponents } from "./common-data-schema";

@@ -1,5 +1,5 @@
 import { Tile } from "./tile";
-import { TileDefinition } from "../tile-data-schema";
+import { TileDefinition } from "./tile-data-schema";
 import { getRandomInt } from "../utils";
 
 

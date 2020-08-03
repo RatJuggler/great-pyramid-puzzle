@@ -1,5 +1,5 @@
 import { Tile } from '../../../src/js/puzzle/tile';
-import { TileDefinition } from "../../../src/js/tile-data-schema";
+import { TileDefinition } from "../../../src/js/puzzle/tile-data-schema";
 import { Side } from "../../../src/js/puzzle/side";
 import { expect } from 'chai';
 import 'mocha';
