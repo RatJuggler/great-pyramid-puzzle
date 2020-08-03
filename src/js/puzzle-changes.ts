@@ -3,7 +3,7 @@
 // Initial - Draw an empty puzzle
 // Start - Draw a Tile at it's starting position.
 // Empty - Draw an empty tile position
-// Final - Draw a tile at it's final tile position (no animation)
+// Current - Draw a tile at it's current tile position (no animation)
 // Place - Animate a tile moving from it's start position to a tile position
 // Rotate - Animate rotating a tile at a tile position
 // Remove - Animate a tile moving from a tile position back to it's start position
@@ -15,7 +15,7 @@ enum PuzzleChangeType {
     Initial = "Initial",
     Start = "Start",
     Empty = "Empty",
-    Final = "Final",
+    Current = "Current",
     Place = "Place",
     Rotate = "Rotate",
     Remove = "Remove",
@@ -78,8 +78,8 @@ class TileChange extends TilePositionChange {
         return new TileChange(PuzzleChangeType.Start, tilePositionId, tileId, rotations, segments);
     }
 
-    static final(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
-        return new TileChange(PuzzleChangeType.Final, tilePositionId, tileId, rotations, segments);
+    static current(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.Current, tilePositionId, tileId, rotations, segments);
     }
 
     static place(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {

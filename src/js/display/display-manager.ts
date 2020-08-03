@@ -252,7 +252,7 @@ export class DisplayManager {
             case PuzzleChangeType.Start:
                 action = new StartTilePosition(this._display, pChange as TileChange, this._scaleTileStart);
                 break;
-            case PuzzleChangeType.Final:
+            case PuzzleChangeType.Current:
                 action = new FinalTilePosition(this._display, pChange as TileChange, this._scaleTile);
                 break;
             case PuzzleChangeType.Place:

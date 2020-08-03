@@ -36,7 +36,7 @@ abstract class SolverBase implements Solver {
             if (tilePosition.isEmpty()) {
                 return SolverBase.empty(tilePosition);
             } else {
-                return SolverBase.final(tilePosition);
+                return SolverBase.current(tilePosition);
             }
         });
     }
@@ -49,8 +49,8 @@ abstract class SolverBase implements Solver {
         return TilePositionChange.empty(tilePosition.id);
     }
 
-    protected static final(tilePosition: TilePosition): PuzzleChange {
-        return TileChange.final(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments)
+    protected static current(tilePosition: TilePosition): PuzzleChange {
+        return TileChange.current(tilePosition.id, tilePosition.tile.id, tilePosition.tile.rotations, tilePosition.tile.segments)
     }
 
     protected static place(tilePosition: TilePosition): PuzzleChange {
