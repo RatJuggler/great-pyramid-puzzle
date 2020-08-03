@@ -1,9 +1,9 @@
-import { Face } from '../../src/js/face';
-import { TilePosition } from "../../src/js/tile-position";
+import { Face } from '../../../src/js/puzzle/face';
+import { TilePosition } from "../../../src/js/puzzle/tile-position";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA } from "./common-test-data";
+import { TILE_1, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA } from "../common-test-data";
 
 
 describe("Face behavior", function () {

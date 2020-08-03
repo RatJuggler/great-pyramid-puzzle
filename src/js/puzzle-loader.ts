@@ -3,8 +3,8 @@ import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
 import { LayoutData } from "./layout-data-schema";
 import { TileData } from "./tile-data-schema";
-import { Tetrahedron } from "./tetrahedron";
-import { TilePool } from "./tile-pool";
+import { Tetrahedron } from "./puzzle/tetrahedron";
+import { TilePool } from "./puzzle/tile-pool";
 import { PuzzleDataElements, PuzzleComponents } from "./common-data-schema";
 
 

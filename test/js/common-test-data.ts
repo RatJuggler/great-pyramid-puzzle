@@ -3,7 +3,7 @@ import tile_data from "./data/valid-test-tile-data1.json";
 import invalid_tile_data from "./data/invalid-tile-data3.json";
 import { TileDefinition } from "../../src/js/tile-data-schema";
 import { TilePositionData } from "../../src/js/layout-data-schema";
-import { Tile } from "../../src/js/tile";
+import { Tile } from "../../src/js/puzzle/tile";
 import { PuzzleDataElements } from "../../src/js/common-data-schema";
 
 // See the test puzzle layout diagram for how the tiles fit together.

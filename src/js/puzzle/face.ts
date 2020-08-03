@@ -1,7 +1,7 @@
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
-import { TilePositionData} from "./layout-data-schema";
-import { IntegrityCheckResult } from "./common-data-schema";
+import { TilePositionData} from "../layout-data-schema";
+import { IntegrityCheckResult } from "../common-data-schema";
 import { Side, SIDES } from "./side";
 
 

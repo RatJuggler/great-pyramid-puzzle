@@ -1,12 +1,12 @@
-import valid_layout_config1 from "./data/valid-test-layout-data1.json";
-import { Tetrahedron } from "../../src/js/tetrahedron";
-import { TilePosition } from '../../src/js/tile-position';
-import { Tile } from "../../src/js/tile";
-import { Side } from "../../src/js/side";
+import valid_layout_config1 from "../data/valid-test-layout-data1.json";
+import { Tetrahedron } from "../../../src/js/puzzle/tetrahedron";
+import { TilePosition } from '../../../src/js/puzzle/tile-position';
+import { Tile } from "../../../src/js/puzzle/tile";
+import { Side } from "../../../src/js/puzzle/side";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1, TILE_1_DATA, TILE_2, TILE_3, TILE_4, TILE_4_DATA } from "./common-test-data";
+import { TILE_1, TILE_1_DATA, TILE_2, TILE_3, TILE_4, TILE_4_DATA } from "../common-test-data";
 
 
 describe("TilePosition behaviour", function () {

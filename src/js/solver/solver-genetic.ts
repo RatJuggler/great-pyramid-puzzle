@@ -1,8 +1,12 @@
 import { SolverBase } from "./solver-base";
 import { PuzzleChange } from "../puzzle-changes";
-import { Tetrahedron } from "../tetrahedron";
-import { TilePool } from "../tile-pool";
+import { Tetrahedron } from "../puzzle/tetrahedron";
+import { TilePool } from "../puzzle/tile-pool";
 
+
+// DNA of Tile Position state:
+// Empty or Tile
+// Rotations
 
 class Population {
 

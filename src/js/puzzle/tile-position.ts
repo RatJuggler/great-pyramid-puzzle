@@ -1,5 +1,5 @@
 import { Tile } from "./tile";
-import { IntegrityCheckResult } from "./common-data-schema";
+import { IntegrityCheckResult } from "../common-data-schema";
 import { Side, SIDES } from "./side";
 
 

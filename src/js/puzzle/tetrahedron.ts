@@ -1,7 +1,7 @@
 import { Face } from "./face";
-import { FaceData } from "./layout-data-schema";
+import { FaceData } from "../layout-data-schema";
 import { TilePosition } from "./tile-position";
-import { IntegrityCheckResult } from "./common-data-schema";
+import { IntegrityCheckResult } from "../common-data-schema";
 
 
 export class Tetrahedron {

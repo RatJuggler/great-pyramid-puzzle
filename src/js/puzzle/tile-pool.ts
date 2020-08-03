@@ -1,6 +1,6 @@
 import { Tile } from "./tile";
-import { TileDefinition } from "./tile-data-schema";
-import { getRandomInt } from "./utils";
+import { TileDefinition } from "../tile-data-schema";
+import { getRandomInt } from "../utils";
 
 
 export class TilePool {

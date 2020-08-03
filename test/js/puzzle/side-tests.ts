@@ -1,4 +1,4 @@
-import { SIDES, Side } from "../../src/js/side";
+import { SIDES, Side } from "../../../src/js/puzzle/side";
 import { expect } from 'chai';
 import 'mocha';
 

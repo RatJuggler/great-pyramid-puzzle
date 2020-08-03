@@ -1,6 +1,6 @@
-import { Tetrahedron } from "../tetrahedron";
-import { TilePool } from "../tile-pool";
-import { TilePosition } from "../tile-position";
+import { Tetrahedron } from "../puzzle/tetrahedron";
+import { TilePool } from "../puzzle/tile-pool";
+import { TilePosition } from "../puzzle/tile-position";
 import { TileState, SolverState, IterativeSolverBase } from "./solver-iterative-base";
 
 

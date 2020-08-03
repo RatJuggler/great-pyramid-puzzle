@@ -1,12 +1,12 @@
-import valid_tile_config1 from "./data/valid-test-tile-data1.json";
-import invalid_tile_config1 from "./data/invalid-tile-data1.json";
-import invalid_tiles_config2 from "./data/invalid-tile-data2.json";
-import { Tile } from "../../src/js/tile";
-import { TilePool } from '../../src/js/tile-pool';
+import valid_tile_config1 from "../data/valid-test-tile-data1.json";
+import invalid_tile_config1 from "../data/invalid-tile-data1.json";
+import invalid_tiles_config2 from "../data/invalid-tile-data2.json";
+import { Tile } from "../../../src/js/puzzle/tile";
+import { TilePool } from '../../../src/js/puzzle/tile-pool';
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore\
-import { TILE_1, TILE_1_DATA } from "./common-test-data";
+import { TILE_1, TILE_1_DATA } from "../common-test-data";
 
 
 describe("TilePool behavior", function () {

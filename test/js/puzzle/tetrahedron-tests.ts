@@ -1,8 +1,8 @@
-import valid_layout_config1 from "./data/valid-test-layout-data1.json";
-import invalid_layout_config1 from "./data/invalid-layout-data1.json";
-import invalid_layout_config2 from "./data/invalid-layout-data2.json";
-import { Face } from "../../src/js/face";
-import { Tetrahedron } from '../../src/js/tetrahedron';
+import valid_layout_config1 from "../data/valid-test-layout-data1.json";
+import invalid_layout_config1 from "../data/invalid-layout-data1.json";
+import invalid_layout_config2 from "../data/invalid-layout-data2.json";
+import { Face } from "../../../src/js/puzzle/face";
+import { Tetrahedron } from '../../../src/js/puzzle/tetrahedron';
 import { expect } from 'chai';
 import 'mocha';
 

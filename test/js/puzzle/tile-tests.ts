@@ -1,10 +1,10 @@
-import { Tile } from '../../src/js/tile';
-import { TileDefinition } from "../../src/js/tile-data-schema";
-import { Side } from "../../src/js/side";
+import { Tile } from '../../../src/js/puzzle/tile';
+import { TileDefinition } from "../../../src/js/tile-data-schema";
+import { Side } from "../../../src/js/puzzle/side";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1_DATA, TILE_2_DATA, TILE_3_DATA, TILE_4_DATA } from "./common-test-data";
+import { TILE_1_DATA, TILE_2_DATA, TILE_3_DATA, TILE_4_DATA } from "../common-test-data";
 
 
 describe("Tile behaviour", function () {

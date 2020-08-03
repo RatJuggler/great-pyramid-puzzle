@@ -1,8 +1,8 @@
 import { SolverBase } from "./solver-base";
-import { Tetrahedron } from "../tetrahedron";
-import { TilePool } from "../tile-pool";
-import { Tile } from "../tile";
-import { TilePosition } from "../tile-position";
+import { Tetrahedron } from "../puzzle/tetrahedron";
+import { TilePool } from "../puzzle/tile-pool";
+import { Tile } from "../puzzle/tile";
+import { TilePosition } from "../puzzle/tile-position";
 import { PuzzleChange } from "../puzzle-changes";
 
 

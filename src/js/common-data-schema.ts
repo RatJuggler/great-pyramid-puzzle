@@ -1,7 +1,7 @@
 import { LayoutData } from "./layout-data-schema";
 import { TileData } from "./tile-data-schema";
-import { TilePool } from "./tile-pool";
-import { Tetrahedron } from "./tetrahedron";
+import { TilePool } from "./puzzle/tile-pool";
+import { Tetrahedron } from "./puzzle/tetrahedron";
 import { PuzzleChange } from "./puzzle-changes";
 import { SolverOptions } from "./solver/solver-factory";
 
