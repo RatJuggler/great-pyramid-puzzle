@@ -1,4 +1,4 @@
-import { PuzzleChange, PuzzleChangeType, TileChange, TilePositionChange } from "./puzzle-changes";
+import { PuzzleChange, PuzzleChangeType, TileChange, TilePositionChange } from "../puzzle-changes";
 import { Matrix } from "@svgdotjs/svg.js";
 import { DisplayData } from "./display-data-schema";
 import { Display } from "./display";

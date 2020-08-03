@@ -1,8 +1,8 @@
-import display_schema from "../../src/display-data-schema.json";
-import test_display from "../../src/simple-display-data.json";
-import pocket_display from "../../src/pocket-display-data.json";
-import great_display from "../../src/great-display-data.json";
-import valid_test_display from "../valid-test-display-data1.json";
+import display_schema from "../../../src/display-data-schema.json";
+import test_display from "../../../src/simple-display-data.json";
+import pocket_display from "../../../src/pocket-display-data.json";
+import great_display from "../../../src/great-display-data.json";
+import valid_test_display from "../../valid-test-display-data1.json";
 import Ajv from 'ajv';
 import { expect } from 'chai';
 import 'mocha';

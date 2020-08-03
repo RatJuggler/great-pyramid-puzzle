@@ -1,4 +1,4 @@
-import {TileChange, TilePositionChange} from "./puzzle-changes";
+import {TileChange, TilePositionChange} from "../puzzle-changes";
 import { DisplayData, FaceDisplayData, TileStartDisplayData, CenterPointData, PolygonDisplayData } from "./display-data-schema";
 import { SVG, Svg, G } from "@svgdotjs/svg.js";
 

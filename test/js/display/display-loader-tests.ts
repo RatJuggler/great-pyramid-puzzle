@@ -1,5 +1,5 @@
-import { getDisplayManager } from "../../src/js/display-loader";
-import { DisplayManager } from "../../src/js/display-manager";
+import { getDisplayManager } from "../../../src/js/display/display-loader";
+import { DisplayManager } from "../../../src/js/display/display-manager";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore

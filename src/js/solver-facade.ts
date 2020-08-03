@@ -5,7 +5,7 @@ import { SolverTimer } from "./solver-timer";
 import { SolverStepCounter } from "./solver-step-counter";
 import { WorkerParameters, WorkerResult } from "./common-data-schema";
 import { PuzzleChange} from "./puzzle-changes";
-import { DisplayManager } from "./display-manager";
+import { DisplayManager } from "./display/display-manager";
 import { StatusUpdates } from "./status-updates-manager";
 
 
