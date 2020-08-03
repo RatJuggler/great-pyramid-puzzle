@@ -1,9 +1,9 @@
 import { SolverBase } from "./solver-base";
-import { Tetrahedron } from "./tetrahedron";
-import { TilePool } from "./tile-pool";
-import { Tile } from "./tile";
-import { TilePosition } from "./tile-position";
-import { PuzzleChange } from "./puzzle-changes";
+import { Tetrahedron } from "../tetrahedron";
+import { TilePool } from "../tile-pool";
+import { Tile } from "../tile";
+import { TilePosition } from "../tile-position";
+import { PuzzleChange } from "../puzzle-changes";
 
 
 type TileState = {

@@ -1,5 +1,5 @@
-import { solverWorker } from "../../src/js/solver-worker";
-import { WorkerParameters } from "../../src/js/common-data-schema";
+import { solverWorker } from "../../../src/js/solver/solver-worker";
+import { WorkerParameters } from "../../../src/js/common-data-schema";
 import { expect } from "chai";
 import 'mocha';
 

@@ -3,7 +3,7 @@ import { TileData } from "./tile-data-schema";
 import { TilePool } from "./tile-pool";
 import { Tetrahedron } from "./tetrahedron";
 import { PuzzleChange } from "./puzzle-changes";
-import { SolverOptions } from "./solver-factory";
+import { SolverOptions } from "./solver/solver-factory";
 
 // Types used across the application.
 

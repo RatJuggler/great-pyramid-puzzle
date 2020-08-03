@@ -1,7 +1,7 @@
 import { DOMUIOptions } from "./ui-options";
 import { getDisplayManager } from "./display/display-loader";
 import { StatusUpdatesManager } from "./status-updates-manager";
-import { SolverFacade, getSolverFacade} from "./solver-facade";
+import { SolverFacade, getSolverFacade} from "./solver/solver-facade";
 
 
 let solverFacade: SolverFacade;

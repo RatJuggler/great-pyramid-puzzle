@@ -1,7 +1,7 @@
 import { SolverBase } from "./solver-base";
-import { PuzzleChange } from "./puzzle-changes";
-import { Tetrahedron } from "./tetrahedron";
-import { TilePool } from "./tile-pool";
+import { PuzzleChange } from "../puzzle-changes";
+import { Tetrahedron } from "../tetrahedron";
+import { TilePool } from "../tile-pool";
 
 
 export class GeneticSolver extends SolverBase {

@@ -1,6 +1,6 @@
 import { buildSolver } from "./solver-factory";
 import { Solver } from "./solver-base";
-import { WorkerParameters, WorkerResult } from "./common-data-schema";
+import { WorkerParameters, WorkerResult } from "../common-data-schema";
 
 
 let solver: Solver;

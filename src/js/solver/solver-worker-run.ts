@@ -1,4 +1,4 @@
-import { WorkerParameters, WorkerResult } from "./common-data-schema";
+import { WorkerParameters, WorkerResult } from "../common-data-schema";
 import { solverWorker } from "./solver-worker";
 
 

@@ -1,5 +1,5 @@
-import { SolverStepCounter } from "../../src/js/solver-step-counter";
-import { StatusUpdates } from "../../src/js/status-updates-manager";
+import { SolverStepCounter } from "../../../src/js/solver/solver-step-counter";
+import { StatusUpdates } from "../../../src/js/status-updates-manager";
 import { expect } from 'chai';
 import 'mocha';
 

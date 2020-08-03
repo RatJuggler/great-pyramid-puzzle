@@ -1,14 +1,14 @@
-import valid_layout_data from "../valid-test-layout-data1.json";
-import invalid_tile_data from "../invalid-tile-data3.json";
-import { getPuzzleComponents } from "../../src/js/puzzle-loader";
-import { SolverBase } from "../../src/js/solver-base";
-import { Tetrahedron } from "../../src/js/tetrahedron";
-import { TilePool } from "../../src/js/tile-pool";
-import { PuzzleChange } from "../../src/js/puzzle-changes";
+import valid_layout_data from "../../valid-test-layout-data1.json";
+import invalid_tile_data from "../../invalid-tile-data3.json";
+import { getPuzzleComponents } from "../../../src/js/puzzle-loader";
+import { SolverBase } from "../../../src/js/solver/solver-base";
+import { Tetrahedron } from "../../../src/js/tetrahedron";
+import { TilePool } from "../../../src/js/tile-pool";
+import { PuzzleChange } from "../../../src/js/puzzle-changes";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { VALID_TEST_PUZZLE } from "./common-test-data";
+import { VALID_TEST_PUZZLE } from "../common-test-data";
 
 
 class MockSolver extends SolverBase {

@@ -1,4 +1,4 @@
-import {StatusUpdates} from "./status-updates-manager";
+import {StatusUpdates} from "../status-updates-manager";
 
 
 export class SolverStepCounter {

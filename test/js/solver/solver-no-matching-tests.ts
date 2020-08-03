@@ -1,10 +1,10 @@
-import { getPuzzleComponents } from "../../src/js/puzzle-loader";
-import { NoMatchingSolver } from "../../src/js/solver-no-matching";
-import { PuzzleChange, PuzzleChangeType, TileChange } from "../../src/js/puzzle-changes";
+import { getPuzzleComponents } from "../../../src/js/puzzle-loader";
+import { NoMatchingSolver } from "../../../src/js/solver/solver-no-matching";
+import { PuzzleChange, PuzzleChangeType, TileChange } from "../../../src/js/puzzle-changes";
 import { expect } from "chai";
 import 'mocha';
 // @ts-ignore
-import {VALID_TEST_PUZZLE} from "./common-test-data";
+import {VALID_TEST_PUZZLE} from "../common-test-data";
 
 
 describe("NoMatchingSolver behaviour", function () {

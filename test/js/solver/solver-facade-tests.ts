@@ -1,9 +1,9 @@
-import valid_display1 from "../valid-test-display-data1.json";
-import { UIOptions } from "../../src/js/ui-options";
-import { getDisplayManager } from "../../src/js/display/display-loader";
-import { DisplayManager } from "../../src/js/display/display-manager";
-import { StatusUpdatesManager } from "../../src/js/status-updates-manager";
-import { getSolverFacade, AnimatedFacade } from "../../src/js/solver-facade";
+import valid_display1 from "../../valid-test-display-data1.json";
+import { UIOptions } from "../../../src/js/ui-options";
+import { getDisplayManager } from "../../../src/js/display/display-loader";
+import { DisplayManager } from "../../../src/js/display/display-manager";
+import { StatusUpdatesManager } from "../../../src/js/status-updates-manager";
+import { getSolverFacade, AnimatedFacade } from "../../../src/js/solver/solver-facade";
 import { expect } from "chai";
 import 'mocha';
 // @ts-ignore

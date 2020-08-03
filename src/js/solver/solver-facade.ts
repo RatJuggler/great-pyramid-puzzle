@@ -1,12 +1,12 @@
-import { UIOptions} from "./ui-options";
+import { UIOptions} from "../ui-options";
 import { buildSolver, SolverOptions } from "./solver-factory";
 import { Solver } from "./solver-base";
 import { SolverTimer } from "./solver-timer";
 import { SolverStepCounter } from "./solver-step-counter";
-import { WorkerParameters, WorkerResult } from "./common-data-schema";
-import { PuzzleChange} from "./puzzle-changes";
-import { DisplayManager } from "./display/display-manager";
-import { StatusUpdates } from "./status-updates-manager";
+import { WorkerParameters, WorkerResult } from "../common-data-schema";
+import { PuzzleChange} from "../puzzle-changes";
+import { DisplayManager } from "../display/display-manager";
+import { StatusUpdates } from "../status-updates-manager";
 
 
 abstract class SolverFacade {

@@ -1,10 +1,10 @@
 import { SolverBase } from "./solver-base";
-import { Tetrahedron } from "./tetrahedron";
-import { TilePool } from "./tile-pool";
-import { Tile } from "./tile";
-import { TilePosition } from "./tile-position";
-import { PuzzleChange, TileChange, TilePositionChange } from "./puzzle-changes";
-import { getRandomInt } from "./utils";
+import { Tetrahedron } from "../tetrahedron";
+import { TilePool } from "../tile-pool";
+import { Tile } from "../tile";
+import { TilePosition } from "../tile-position";
+import { PuzzleChange, TileChange, TilePositionChange } from "../puzzle-changes";
+import { getRandomInt } from "../utils";
 
 
 export class NoMatchingSolver extends SolverBase {

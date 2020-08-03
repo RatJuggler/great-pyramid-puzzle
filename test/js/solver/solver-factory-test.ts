@@ -1,8 +1,8 @@
-import { buildSolver } from "../../src/js/solver-factory";
-import { NoMatchingSolver } from "../../src/js/solver-no-matching";
-import { BruteForceSolver } from "../../src/js/solver-brute-force";
-import { OnlyValidSolver } from "../../src/js/solver-only-valid";
-import { GeneticSolver } from "../../src/js/solver-genetic";
+import { buildSolver } from "../../../src/js/solver/solver-factory";
+import { NoMatchingSolver } from "../../../src/js/solver/solver-no-matching";
+import { BruteForceSolver } from "../../../src/js/solver/solver-brute-force";
+import { OnlyValidSolver } from "../../../src/js/solver/solver-only-valid";
+import { GeneticSolver } from "../../../src/js/solver/solver-genetic";
 import { expect } from 'chai';
 import 'mocha';
 

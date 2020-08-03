@@ -1,4 +1,4 @@
-import { SolverOptions } from "./solver-factory";
+import { SolverOptions } from "./solver/solver-factory";
 
 
 interface UIOptions {

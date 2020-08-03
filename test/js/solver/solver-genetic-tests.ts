@@ -1,10 +1,10 @@
-import { getPuzzleComponents } from "../../src/js/puzzle-loader";
-import { PuzzleChange, PuzzleChangeType} from "../../src/js/puzzle-changes";
-import { GeneticSolver } from "../../src/js/solver-genetic";
+import { getPuzzleComponents } from "../../../src/js/puzzle-loader";
+import { PuzzleChange, PuzzleChangeType} from "../../../src/js/puzzle-changes";
+import { GeneticSolver } from "../../../src/js/solver/solver-genetic";
 import { expect } from "chai";
 import 'mocha';
 // @ts-ignore
-import { VALID_TEST_PUZZLE } from "./common-test-data";
+import { VALID_TEST_PUZZLE } from "../common-test-data";
 
 
 describe("GeneticSolver behaviour", function () {
