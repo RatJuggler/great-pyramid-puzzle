@@ -1,4 +1,4 @@
-import display_schema from "../../../src/display-data-schema.json";
+import display_schema from "../../../src/data/display-data-schema.json";
 import test_display from "../../../src/data/simple-display-data.json";
 import pocket_display from "../../../src/data/pocket-display-data.json";
 import great_display from "../../../src/data/great-display-data.json";

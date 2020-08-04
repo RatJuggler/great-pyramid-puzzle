@@ -1,4 +1,4 @@
-import tile_schema from "../../../src/tile-data-schema.json";
+import tile_schema from "../../../src/data/tile-data-schema.json";
 import test_tiles from "../../../src/data/simple-tile-data.json";
 import pocket_tiles from "../../../src/data/pocket-tile-data.json";
 import great_tiles from "../../../src/data/great-tile-data.json";

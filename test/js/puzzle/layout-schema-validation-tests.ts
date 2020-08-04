@@ -1,4 +1,4 @@
-import layout_schema from "../../../src/layout-data-schema.json";
+import layout_schema from "../../../src/data/layout-data-schema.json";
 import test_layout from "../../../src/data/simple-layout-data.json";
 import pocket_layout from "../../../src/data/pocket-layout-data.json";
 import great_layout from "../../../src/data/great-layout-data.json";
