@@ -1,7 +1,7 @@
+import { IntegrityCheck, IntegrityCheckResult } from "./integrity";
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
 import { TilePositionData} from "./layout-data-schema";
-import { IntegrityCheckResult } from "../common-data-schema";
 import { Side, SIDES } from "./side";
 
 
@@ -12,7 +12,7 @@ type FaceJoinProperties = {
 }
 
 
-export class Face {
+export class Face implements IntegrityCheck {
 
     private static readonly FACE_NAMES = ["1", "2", "3", "4"];
     private static readonly VALID_TILE_COUNTS = [1, 4, 9];

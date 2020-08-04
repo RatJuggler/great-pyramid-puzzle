@@ -17,8 +17,6 @@ type PuzzleComponents = {
     readonly tetrahedron: Tetrahedron
 }
 
-type IntegrityCheckResult = [boolean, string];
-
 type WorkerParameters = {
     continue: boolean,
     solverOptions: SolverOptions
@@ -30,4 +28,4 @@ type WorkerResult = {
     finalState: Array<PuzzleChange>,
 }
 
-export { PuzzleDataElements, PuzzleComponents, IntegrityCheckResult, WorkerParameters, WorkerResult }
+export { PuzzleDataElements, PuzzleComponents, WorkerParameters, WorkerResult }

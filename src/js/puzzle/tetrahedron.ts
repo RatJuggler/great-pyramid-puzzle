@@ -1,10 +1,10 @@
+import { IntegrityCheck, IntegrityCheckResult } from "./integrity";
 import { Face } from "./face";
 import { FaceData } from "./layout-data-schema";
 import { TilePosition } from "./tile-position";
-import { IntegrityCheckResult } from "../common-data-schema";
 
 
-export class Tetrahedron {
+export class Tetrahedron implements IntegrityCheck {
 
     private static readonly FACES = 4;
 

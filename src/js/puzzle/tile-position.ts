@@ -1,5 +1,5 @@
+import { IntegrityCheck, IntegrityCheckResult } from "./integrity";
 import { TilePositionState } from "./tile-position-state";
-import { IntegrityCheckResult } from "../common-data-schema";
 import { Side, SIDES } from "./side";
 
 
@@ -10,7 +10,7 @@ type TilePositionJoinProperties = {
 }
 
 
-export class TilePosition {
+export class TilePosition implements IntegrityCheck {
 
     private _joins = new Array<TilePositionJoinProperties>();
     private _state: TilePositionState = new TilePositionState();
