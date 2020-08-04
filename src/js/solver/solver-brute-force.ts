@@ -18,7 +18,7 @@ export class BruteForceSolver extends IterativeSolverBase {
                 tile: untriedTile.tile,
                 rotations: [0, 1, 2]
             }
-        })
+        });
         return {
             tilePosition: newTilePosition,
             tileState: null,

@@ -31,13 +31,12 @@ abstract class IterativeSolverBase extends SolverBase {
             throw new Error("Solver expects puzzle to have empty TilePositions at the start!")
         }
         // We expect to try every rotation of the set of Tiles for the initial state.
-        const untriedTiles = new Array<SolverTileState>();
-        for (const tile of tilePool.tiles) {
-            untriedTiles.push({
+        const untriedTiles = tilePool.tiles.map((tile) => {
+            return  {
                 tile: tile,
                 rotations: [0, 1, 2]
-            })
-        }
+            }
+        });
         this._currentState = {
             tilePosition: this._emptyTilePositions.shift()!,
             tileState: null,

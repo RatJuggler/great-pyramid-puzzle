@@ -31,10 +31,9 @@ export class Face {
             throw new Error(`Number of Tile Positions provided (${tilePositions.length}) does not match number expected (${numberOfTiles})!`);
         }
         // We can't join the tile positions until they've been created for every face.
-        for (const tilePositionData of tilePositions) {
-            const newTilePosition = new TilePosition(tilePositionData.position, this._name);
-            this._tilePositions.set(newTilePosition.name, newTilePosition);
-        }
+        tilePositions
+            .map((tilePositionData) => new TilePosition(tilePositionData.position, this._name))
+            .forEach((newTilePosition) => this._tilePositions.set(newTilePosition.name, newTilePosition));
     }
 
     integrityCheck(): IntegrityCheckResult {
@@ -105,10 +104,8 @@ export class Face {
         }
         const fromSide = SIDES.validateSide(joinFrom, "to join from");
         const toSide = SIDES.validateSide(joinTo, "to join to");
-        for (const face of this._joins) {
-            if (face.fromSide === joinFrom) {
-                throw new Error(`Existing join already present for side ${joinFrom}!`);
-            }
+        if (this._joins.some((face) => face.fromSide === joinFrom)) {
+            throw new Error(`Existing join already present for side ${joinFrom}!`);
         }
         this._joins.push({
             fromSide: fromSide,
