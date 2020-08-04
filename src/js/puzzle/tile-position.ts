@@ -58,26 +58,44 @@ export class TilePosition {
         });
     }
 
+    private sideMatches(join: TilePositionJoinProperties): boolean {
+        // If the other TilePosition is empty then that will count as a match.
+        const otherState = join.ofTilePosition.state;
+        if (!otherState.isEmpty()) {
+            // At this TilePosition we need the side of the Tile facing the other TilePosition.
+            const thisSegments = this.state.tile.getSegmentsForSide(this.state.rotations, join.fromSide);
+            // For the other TilePosition we then need the side of the Tile there, facing this TilePosition.
+            const otherSegments = otherState.tile.getSegmentsForSideToMatchWith(otherState.rotations, join.toSide);
+            // Finally we can make the comparison. Any failure means the current Tile doesn't match at this TilePosition.
+            if (thisSegments !== otherSegments) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     tilesMatch(): boolean {
         if (this.state.isEmpty()) {
             throw new Error("Can't check if a Tile matches when there is no Tile at the TilePosition to match from!");
         }
         // Check match for each join to another TilePosition.
         for (const join of this._joins) {
-            // If the other TilePosition is empty then that will count as a match.
-            const otherTilePosition = join.ofTilePosition;
-            if (!otherTilePosition.state.isEmpty()) {
-                // At this TilePosition we need the side of the Tile facing the other TilePosition.
-                const thisSegments = this.state.tile.getSegmentsForSide(this.state.rotations, join.fromSide);
-                // For the other TilePosition we then need the side of the Tile there, facing this TilePosition.
-                const otherSegments = otherTilePosition.state.tile.getSegmentsForSideToMatchWith(otherTilePosition.state.rotations, join.toSide);
-                // Finally we can make the comparison. Any failure means the current Tile doesn't match at this TilePosition.
-                if (thisSegments !== otherSegments) {
-                    return false;
-                }
+            if (!this.sideMatches(join)) {
+                return false;
             }
         }
         return true;
+    }
+
+    private static sideSegments(join: TilePositionJoinProperties): string {
+        const otherState = join.ofTilePosition.state;
+        if (otherState.isEmpty()) {
+            // If no Tile search can be for anything.
+            return "....";
+        } else {
+            // If a Tile is present then we need the side of the Tile facing this TilePosition.
+            return otherState.tile.getSegmentsForSideToMatchWith(otherState.rotations, join.toSide);
+        }
     }
 
     segmentsToFind(): string {
@@ -87,14 +105,7 @@ export class TilePosition {
         let needToMatch: string = "";
         // Check each join to another TilePosition.
         for (const join of this._joins) {
-            const otherTilePosition = join.ofTilePosition;
-            if (otherTilePosition.state.isEmpty()) {
-                // If no Tile search can be for anything.
-                needToMatch += "....";
-            } else {
-                // If a Tile is present then we need the side of the Tile facing this TilePosition.
-                needToMatch += otherTilePosition.state.tile.getSegmentsForSideToMatchWith(otherTilePosition.state.rotations, join.toSide);
-            }
+            needToMatch += TilePosition.sideSegments(join);
         }
         return needToMatch;
     }
