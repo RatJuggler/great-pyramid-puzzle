@@ -12,8 +12,12 @@ function getTilePool(tileData: TileData): TilePool {
     return new TilePool(tileData.totalNumberOfTiles, tileData.tiles);
 }
 
+function buildTetrahedron(layoutData: LayoutData): Tetrahedron {
+    return new Tetrahedron(layoutData.puzzle, layoutData.numberOfTilesPerFace, layoutData.faces);
+}
+
 function getTetrahedron(layoutData: LayoutData): Tetrahedron {
-    const tetrahedron = new Tetrahedron(layoutData.puzzle, layoutData.numberOfTilesPerFace, layoutData.faces);
+    const tetrahedron = buildTetrahedron(layoutData);
     const integrityCheck = tetrahedron.integrityCheck();
     if (!integrityCheck[0]) {
         throw new Error(integrityCheck[1]);
