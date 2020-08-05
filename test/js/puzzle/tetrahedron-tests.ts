@@ -1,5 +1,3 @@
-import valid_layout_config1 from "../data/valid-test-layout-data1.json";
-import { buildTetrahedron } from "../../../src/js/puzzle-loader";
 import { Face } from "../../../src/js/puzzle/face";
 import { Tetrahedron } from '../../../src/js/puzzle/tetrahedron';
 import { expect } from 'chai';
@@ -10,34 +8,40 @@ import { ONE_TILE_POSITION_DATA } from "../common-test-data";
 
 describe("Tetrahedron behaviour", function () {
 
-    const validLayoutData = valid_layout_config1.testLayoutData;
-
     describe("if a new Tetrahedron is created", function () {
 
         context("with valid layout configuration file 1", function () {
-            const tetrahedron = buildTetrahedron(validLayoutData);
+            const faces: Array<Face> = [
+                new Face("1", 1, ONE_TILE_POSITION_DATA),
+                new Face("2", 1, ONE_TILE_POSITION_DATA),
+                new Face("3", 1, ONE_TILE_POSITION_DATA),
+                new Face("4", 1, ONE_TILE_POSITION_DATA)
+            ];
+            const tetrahedron = new Tetrahedron("test", faces);
             it("should return a correctly initialised instance", function () {
                 expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
             });
             it("should have set the puzzle instance name", function () {
-                expect(tetrahedron.name).to.equal("test-valid");
+                expect(tetrahedron.name).to.equal("test");
             });
             it("should have the correct number of Tile Positions on it", function () {
-                expect(tetrahedron.tilePositionCount).to.equal(validLayoutData.numberOfTilesPerFace * 4);
+                expect(tetrahedron.tilePositionCount).to.equal(4);
             });
-            it("should pass the integrity check", function () {
-                expect(tetrahedron.integrityCheck()).to.eql([true, "Passed"]);
+            it("should fail the integrity check", function () {
+                const expectedResult =
+                    [false, "Face joins not complete: Face: 1, Tile Positions: 1, Joins: \nTilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n"];
+                expect(tetrahedron.integrityCheck()).to.eql(expectedResult);
             });
             it("should return the correct toString result", function () {
-                const expectedToString = "Puzzle Type: test-valid\n" +
-                    "Face: 1, Tile Positions: 1, Joins: (1-A->3-B)(1-B->4-B)(1-C->2-B)\n" +
-                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: (1-A->3-1-B)(1-B->4-1-B)(1-C->2-1-B)\n" +
-                    "Face: 2, Tile Positions: 1, Joins: (2-A->3-C)(2-B->1-C)(2-C->4-A)\n" +
-                    "TilePosition: 1, On Face: 2, Contains Tile: [Empty], Joins: (1-A->3-1-C)(1-B->1-1-C)(1-C->4-1-A)\n" +
-                    "Face: 3, Tile Positions: 1, Joins: (3-A->4-C)(3-B->1-A)(3-C->2-A)\n" +
-                    "TilePosition: 1, On Face: 3, Contains Tile: [Empty], Joins: (1-A->4-1-C)(1-B->1-1-A)(1-C->2-1-A)\n" +
-                    "Face: 4, Tile Positions: 1, Joins: (4-A->2-C)(4-B->1-B)(4-C->3-A)\n" +
-                    "TilePosition: 1, On Face: 4, Contains Tile: [Empty], Joins: (1-A->2-1-C)(1-B->1-1-B)(1-C->3-1-A)\n";
+                const expectedToString = "Puzzle Type: test\n" +
+                    "Face: 1, Tile Positions: 1, Joins: \n" +
+                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n" +
+                    "Face: 2, Tile Positions: 1, Joins: \n" +
+                    "TilePosition: 1, On Face: 2, Contains Tile: [Empty], Joins: \n" +
+                    "Face: 3, Tile Positions: 1, Joins: \n" +
+                    "TilePosition: 1, On Face: 3, Contains Tile: [Empty], Joins: \n" +
+                    "Face: 4, Tile Positions: 1, Joins: \n" +
+                    "TilePosition: 1, On Face: 4, Contains Tile: [Empty], Joins: \n";
                 expect(tetrahedron.toString()).to.equal(expectedToString);
             });
         });
@@ -46,7 +50,7 @@ describe("Tetrahedron behaviour", function () {
             it("should throw an error", function () {
                 const faces: Array<Face> = [new Face("1", 1, ONE_TILE_POSITION_DATA)];
                 expect(function () {
-                    new Tetrahedron("test", faces);
+                    new Tetrahedron("invalid", faces);
                 }).to.throw(Error, "Tetrahedron must always be configured with 4 Faces!");
             });
         });
