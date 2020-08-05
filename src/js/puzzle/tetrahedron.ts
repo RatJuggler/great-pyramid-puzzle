@@ -5,11 +5,11 @@ import { TilePosition } from "./tile-position";
 
 export class Tetrahedron implements IntegrityCheck {
 
-    private static readonly FACES = 4;
+    static readonly FACES = 4;
 
     constructor(private _name: string, private readonly _faces: Array<Face>) {
         if (this._faces.length !== Tetrahedron.FACES) {
-            throw new Error(`Tetrahedron must always have configuration data for ${Tetrahedron.FACES} Faces!`)
+            throw new Error(`Tetrahedron must always be configured with ${Tetrahedron.FACES} Faces!`)
         }
     }
 

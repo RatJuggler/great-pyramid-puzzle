@@ -14,6 +14,9 @@ function getTilePool(tileData: TileData): TilePool {
 }
 
 function buildTetrahedron(layoutData: LayoutData): Tetrahedron {
+    if (layoutData.faces.length !== Tetrahedron.FACES) {
+        throw new Error(`Tetrahedron must always have configuration data for ${Tetrahedron.FACES} Faces!`)
+    }
     // We have to create all of the face and tile positions before we can join them together.
     const faces = new Map<string, Face>();
     for (const faceDetails of layoutData.faces) {

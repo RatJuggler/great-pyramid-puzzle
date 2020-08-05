@@ -1,11 +1,12 @@
 import valid_layout_config1 from "../data/valid-test-layout-data1.json";
-import invalid_layout_config1 from "../data/invalid-layout-data1.json";
 import invalid_layout_config2 from "../data/invalid-layout-data2.json";
 import { buildTetrahedron } from "../../../src/js/puzzle-loader";
 import { Face } from "../../../src/js/puzzle/face";
 import { Tetrahedron } from '../../../src/js/puzzle/tetrahedron';
 import { expect } from 'chai';
 import 'mocha';
+// @ts-ignore
+import { ONE_TILE_POSITION_DATA } from "../common-test-data";
 
 
 describe("Tetrahedron behaviour", function () {
@@ -44,10 +45,12 @@ describe("Tetrahedron behaviour", function () {
 
         context("with invalid layout configuration file 1", function () {
             it("should throw an error", function () {
-                const puzzleData = invalid_layout_config1.testLayoutData;
+                const face = new Face("1", 1, ONE_TILE_POSITION_DATA);
+                const faces = new Array<Face>();
+                faces.push(face);
                 expect(function () {
-                    buildTetrahedron(puzzleData);
-                }).to.throw(Error, "Tetrahedron must always have configuration data for 4 Faces!");
+                    new Tetrahedron("test", faces);
+                }).to.throw(Error, "Tetrahedron must always be configured with 4 Faces!");
             });
         });
 

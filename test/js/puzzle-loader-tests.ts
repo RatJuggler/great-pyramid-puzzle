@@ -1,8 +1,8 @@
-import { getPuzzleComponents } from "../../src/js/puzzle-loader";
+import { getPuzzleComponents} from "../../src/js/puzzle-loader";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { VALID_TEST_PUZZLE, INVALID_TEST_PUZZLE } from "./common-test-data";
+import { VALID_TEST_PUZZLE, INVALID_TEST_PUZZLE_1, INVALID_TEST_PUZZLE_2 } from "./common-test-data";
 
 
 describe("if #getPuzzleComponents() is called", function () {
@@ -15,10 +15,18 @@ describe("if #getPuzzleComponents() is called", function () {
         });
     });
 
+    context("with invalid layout data file 1", function () {
+        it("should throw an error", function () {
+            expect(function () {
+                getPuzzleComponents(INVALID_TEST_PUZZLE_1);
+            }).to.throw(Error, "Tetrahedron must always have configuration data for 4 Faces!");
+        });
+    });
+
     context("with invalid set of data elements", function () {
         it("should throw an error", function () {
             expect(function () {
-                getPuzzleComponents(INVALID_TEST_PUZZLE);
+                getPuzzleComponents(INVALID_TEST_PUZZLE_2);
             }).to.throw(Error, "There must be enough Tiles to cover the Tetrahedron!");
         });
     });
