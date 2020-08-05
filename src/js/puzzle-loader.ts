@@ -6,6 +6,7 @@ import { TileData } from "./puzzle/tile-data-schema";
 import { Tetrahedron } from "./puzzle/tetrahedron";
 import { TilePool } from "./puzzle/tile-pool";
 import { PuzzleDataElements, PuzzleComponents } from "./common-data-schema";
+import {Face} from "./puzzle/face";
 
 
 function getTilePool(tileData: TileData): TilePool {
@@ -13,7 +14,28 @@ function getTilePool(tileData: TileData): TilePool {
 }
 
 function buildTetrahedron(layoutData: LayoutData): Tetrahedron {
-    return new Tetrahedron(layoutData.puzzle, layoutData.numberOfTilesPerFace, layoutData.faces);
+    // We have to create all of the face and tile positions before we can join them together.
+    const faces = new Map<string, Face>();
+    for (const faceDetails of layoutData.faces) {
+        const newFace = new Face(faceDetails.name, layoutData.numberOfTilesPerFace, faceDetails.tilePositions);
+        faces.set(newFace.name, newFace);
+    }
+    for (const faceDetails of layoutData.faces) {
+        const fromFace = faces.get(faceDetails.name)!;
+        // Join the faces...
+        for (const joinData of faceDetails.joins) {
+            fromFace.join(joinData.fromSide, joinData.toSide, faces.get(joinData.ofFace)!);
+        }
+        // Join all the tile positions...
+        for (const tilePositionDetails of faceDetails.tilePositions) {
+            const fromTilePosition = faces.get(faceDetails.name)!.getTilePosition(tilePositionDetails.position);
+            for (const joinData of tilePositionDetails.joins) {
+                const toTilePosition = faces.get(joinData.onFace)!.getTilePosition(joinData.ofTilePosition);
+                fromTilePosition.join(joinData.fromSide, joinData.toSide, toTilePosition);
+            }
+        }
+    }
+    return new Tetrahedron(layoutData.puzzle, Array.from(faces.values()));
 }
 
 function getTetrahedron(layoutData: LayoutData): Tetrahedron {
@@ -56,4 +78,4 @@ function getPuzzleComponents(puzzleType: string | PuzzleDataElements): PuzzleCom
     }
 }
 
-export { getPuzzleComponents }
+export { getPuzzleComponents, buildTetrahedron }

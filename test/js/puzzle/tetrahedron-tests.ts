@@ -1,6 +1,7 @@
 import valid_layout_config1 from "../data/valid-test-layout-data1.json";
 import invalid_layout_config1 from "../data/invalid-layout-data1.json";
 import invalid_layout_config2 from "../data/invalid-layout-data2.json";
+import { buildTetrahedron } from "../../../src/js/puzzle-loader";
 import { Face } from "../../../src/js/puzzle/face";
 import { Tetrahedron } from '../../../src/js/puzzle/tetrahedron';
 import { expect } from 'chai';
@@ -14,8 +15,7 @@ describe("Tetrahedron behaviour", function () {
     describe("if a new Tetrahedron is created", function () {
 
         context("with valid layout configuration file 1", function () {
-            const tetrahedron =
-                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
+            const tetrahedron = buildTetrahedron(validLayoutData);
             it("should return a correctly initialised instance", function () {
                 expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
             });
@@ -46,14 +46,14 @@ describe("Tetrahedron behaviour", function () {
             it("should throw an error", function () {
                 const puzzleData = invalid_layout_config1.testLayoutData;
                 expect(function () {
-                    new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
+                    buildTetrahedron(puzzleData);
                 }).to.throw(Error, "Tetrahedron must always have configuration data for 4 Faces!");
             });
         });
 
         context("with invalid layout configuration file 2", function () {
             const puzzleData = invalid_layout_config2.testLayoutData;
-            const tetrahedron = new Tetrahedron(puzzleData.puzzle, puzzleData.numberOfTilesPerFace, puzzleData.faces);
+            const tetrahedron = buildTetrahedron(puzzleData);
             it("should fail the integrity check", function () {
                 const expectedFailure = [false,
                     "Face joins not complete: Face: 1, Tile Positions: 1, Joins: \n" +
@@ -68,8 +68,7 @@ describe("Tetrahedron behaviour", function () {
 
         context("when there is a Face with the given name already on the Tetrahedron", function () {
             it("should return the Face details", function () {
-                const tetrahedron =
-                    new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
+                const tetrahedron = buildTetrahedron(validLayoutData);
                 const face = tetrahedron.getFace("3");
                 expect(face).to.be.an.instanceOf(Face);
                 const expectedToString =
@@ -81,8 +80,7 @@ describe("Tetrahedron behaviour", function () {
 
         context("when there isn't a Face with the given name on the Tetrahedron", function () {
             it("should throw an error", function () {
-                const tetrahedron =
-                    new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
+                const tetrahedron = buildTetrahedron(validLayoutData);
                 expect(function () {
                     tetrahedron.getFace("A");
                 }).to.throw(Error, "Face (A) not found on Tetrahedron!");

@@ -1,8 +1,7 @@
 import valid_layout_data from "../data/valid-test-layout-data1.json";
 import invalid_tile_data from "../data/invalid-tile-data3.json";
-import { getPuzzleComponents } from "../../../src/js/puzzle-loader";
+import { getPuzzleComponents, buildTetrahedron } from "../../../src/js/puzzle-loader";
 import { SolverBase } from "../../../src/js/solver/solver-base";
-import { Tetrahedron } from "../../../src/js/puzzle/tetrahedron";
 import { TilePool } from "../../../src/js/puzzle/tile-pool";
 import { PuzzleChange } from "../../../src/js/puzzle-changes";
 import { expect } from 'chai';
@@ -30,8 +29,7 @@ describe("SolverBase behaviour using MockSolver", function () {
 
         context("and there aren't enough Tiles to cover the Tetrahedron", function () {
             const tilePool = new TilePool(invalid_tile_data.testTileData.totalNumberOfTiles, invalid_tile_data.testTileData.tiles);
-            const tetrahedron = new Tetrahedron(valid_layout_data.testLayoutData.puzzle,
-                valid_layout_data.testLayoutData.numberOfTilesPerFace, valid_layout_data.testLayoutData.faces);
+            const tetrahedron = buildTetrahedron(valid_layout_data.testLayoutData);
             it("should throw an error", function () {
                 expect(function () {
                     new MockSolver(tetrahedron, tilePool);

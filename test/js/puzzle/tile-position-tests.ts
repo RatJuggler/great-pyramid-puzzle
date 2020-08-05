@@ -1,5 +1,5 @@
 import valid_layout_config1 from "../data/valid-test-layout-data1.json";
-import { Tetrahedron } from "../../../src/js/puzzle/tetrahedron";
+import { buildTetrahedron } from "../../../src/js/puzzle-loader";
 import { TilePosition } from '../../../src/js/puzzle/tile-position';
 import { Side } from "../../../src/js/puzzle/side";
 import { expect } from 'chai';
@@ -220,8 +220,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the three adjoining TilePositions each with a Tile, but not all the sides match", function () {
             const validLayoutData = valid_layout_config1.testLayoutData;
-            const tetrahedron =
-                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
+            const tetrahedron = buildTetrahedron(validLayoutData);
             const tilePositions = tetrahedron.tilePositions;
             const tilePosition1 = tilePositions[0];
             const tilePosition2 = tilePositions[1];
@@ -251,8 +250,7 @@ describe("TilePosition behaviour", function () {
 
         context("and the three adjoining TilePositions each with a Tile, and all the sides match", function () {
             const validLayoutData = valid_layout_config1.testLayoutData;
-            const tetrahedron =
-                new Tetrahedron(validLayoutData.puzzle, validLayoutData.numberOfTilesPerFace, validLayoutData.faces);
+            const tetrahedron = buildTetrahedron(validLayoutData);
             const tilePositions = tetrahedron.tilePositions;
             const tilePosition1 = tilePositions[0];
             const tilePosition2 = tilePositions[1];

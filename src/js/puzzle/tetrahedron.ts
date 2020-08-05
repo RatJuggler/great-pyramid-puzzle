@@ -1,6 +1,5 @@
 import { IntegrityCheck, IntegrityCheckResult } from "./integrity";
 import { Face } from "./face";
-import { FaceData } from "./layout-data-schema";
 import { TilePosition } from "./tile-position";
 
 
@@ -8,31 +7,9 @@ export class Tetrahedron implements IntegrityCheck {
 
     private static readonly FACES = 4;
 
-    private readonly _faces = new Array<Face>();
-
-    constructor(private _name: string, numberOfTilesPerFace: number, faceData: FaceData[]) {
-        if (faceData.length !== Tetrahedron.FACES) {
+    constructor(private _name: string, private readonly _faces: Array<Face>) {
+        if (this._faces.length !== Tetrahedron.FACES) {
             throw new Error(`Tetrahedron must always have configuration data for ${Tetrahedron.FACES} Faces!`)
-        }
-        // We have to create all of the face and tile positions before we can join them together.
-        for (const faceDetails of faceData) {
-            const newFace = new Face(faceDetails.name, numberOfTilesPerFace, faceDetails.tilePositions);
-            this._faces.push(newFace);
-        }
-        for (const faceDetails of faceData) {
-            const fromFace = this.getFace(faceDetails.name);
-            // Join the faces...
-            for (const joinData of faceDetails.joins) {
-                fromFace.join(joinData.fromSide, joinData.toSide, this.getFace(joinData.ofFace));
-            }
-            // Join all the tile positions...
-            for (const tilePositionDetails of faceDetails.tilePositions) {
-                const fromTilePosition = this.getFace(faceDetails.name).getTilePosition(tilePositionDetails.position);
-                for (const joinData of tilePositionDetails.joins) {
-                    const toTilePosition = this.getFace(joinData.onFace).getTilePosition(joinData.ofTilePosition);
-                    fromTilePosition.join(joinData.fromSide, joinData.toSide, toTilePosition);
-                }
-            }
         }
     }
 
