@@ -1,7 +1,7 @@
 import { simplePuzzle } from "./simple-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
-import { LayoutData } from "./puzzle/layout-data-schema";
+import { LayoutData, FaceData } from "./puzzle/layout-data-schema";
 import { TileData } from "./puzzle/tile-data-schema";
 import { Tetrahedron } from "./puzzle/tetrahedron";
 import { TilePool } from "./puzzle/tile-pool";
@@ -13,6 +13,10 @@ function getTilePool(tileData: TileData): TilePool {
     return new TilePool(tileData.totalNumberOfTiles, tileData.tiles);
 }
 
+function buildFace(numberOfTiles: number, faceDetails: FaceData): Face {
+    return new Face(faceDetails.name, numberOfTiles, faceDetails.tilePositions);
+}
+
 function buildTetrahedron(layoutData: LayoutData): Tetrahedron {
     if (layoutData.faces.length !== Tetrahedron.FACES) {
         throw new Error(`Tetrahedron must always have configuration data for ${Tetrahedron.FACES} Faces!`)
@@ -20,7 +24,7 @@ function buildTetrahedron(layoutData: LayoutData): Tetrahedron {
     // We have to create all of the face and tile positions before we can join them together.
     const faces = new Map<string, Face>();
     for (const faceDetails of layoutData.faces) {
-        const newFace = new Face(faceDetails.name, layoutData.numberOfTilesPerFace, faceDetails.tilePositions);
+        const newFace = buildFace(layoutData.numberOfTilesPerFace, faceDetails);
         faces.set(newFace.name, newFace);
     }
     for (const faceDetails of layoutData.faces) {
