@@ -1,5 +1,6 @@
 import { Face } from "../../../src/js/puzzle/face";
 import { Tetrahedron } from '../../../src/js/puzzle/tetrahedron';
+import { buildFace } from "../../../src/js/puzzle-loader";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -12,10 +13,10 @@ describe("Tetrahedron behaviour", function () {
 
     beforeEach(function () {
         const faces: Array<Face> = [
-            new Face("1", 1, ONE_TILE_POSITION_DATA),
-            new Face("2", 1, ONE_TILE_POSITION_DATA),
-            new Face("3", 1, ONE_TILE_POSITION_DATA),
-            new Face("4", 1, ONE_TILE_POSITION_DATA)
+            buildFace("1", 1, ONE_TILE_POSITION_DATA),
+            buildFace("2", 1, ONE_TILE_POSITION_DATA),
+            buildFace("3", 1, ONE_TILE_POSITION_DATA),
+            buildFace("4", 1, ONE_TILE_POSITION_DATA)
         ];
         tetrahedron = new Tetrahedron("test", faces);
     });
@@ -53,7 +54,7 @@ describe("Tetrahedron behaviour", function () {
 
         context("with an invalid number of faces", function () {
             it("should throw an error", function () {
-                const faces: Array<Face> = [new Face("1", 1, ONE_TILE_POSITION_DATA)];
+                const faces: Array<Face> = [buildFace("1", 1, ONE_TILE_POSITION_DATA)];
                 expect(function () {
                     new Tetrahedron("invalid", faces);
                 }).to.throw(Error, "Tetrahedron must always be configured with 4 Faces!");

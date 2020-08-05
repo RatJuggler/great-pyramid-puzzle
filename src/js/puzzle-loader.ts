@@ -1,20 +1,35 @@
 import { simplePuzzle } from "./simple-puzzle";
 import { pocketPuzzle } from "./pocket-puzzle";
 import { greatPuzzle } from "./great-puzzle";
-import { LayoutData, FaceData } from "./puzzle/layout-data-schema";
+import { LayoutData, TilePositionData} from "./puzzle/layout-data-schema";
 import { TileData } from "./puzzle/tile-data-schema";
 import { Tetrahedron } from "./puzzle/tetrahedron";
 import { TilePool } from "./puzzle/tile-pool";
 import { PuzzleDataElements, PuzzleComponents } from "./common-data-schema";
 import {Face} from "./puzzle/face";
+import {TilePosition} from "./puzzle/tile-position";
 
 
 function getTilePool(tileData: TileData): TilePool {
     return new TilePool(tileData.totalNumberOfTiles, tileData.tiles);
 }
 
-function buildFace(numberOfTiles: number, faceDetails: FaceData): Face {
-    return new Face(faceDetails.name, numberOfTiles, faceDetails.tilePositions);
+function buildFace(name: string, numberOfTiles: number, tilePositionDetails: TilePositionData[]): Face {
+    if (!(Face.FACE_NAMES.includes(name))) {
+        throw new Error(`Face name must be one of ${Face.FACE_NAMES}!`);
+    }
+    if (!(Face.VALID_TILE_COUNTS.includes(numberOfTiles))) {
+        throw new Error(`Number of Tile Positions on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
+    }
+    if (numberOfTiles !== tilePositionDetails.length) {
+        throw new Error(`Number of Tile Positions provided (${tilePositionDetails.length}) does not match number expected (${numberOfTiles})!`);
+    }
+    // We can't join the tile positions until they've been created for every face.
+    const tilePositions = new Map<string, TilePosition>();
+    tilePositionDetails
+        .map((tilePositionData) => new TilePosition(tilePositionData.position, name))
+        .forEach((newTilePosition) => tilePositions.set(newTilePosition.name, newTilePosition));
+    return new Face(name, tilePositions);
 }
 
 function buildTetrahedron(layoutData: LayoutData): Tetrahedron {
@@ -24,7 +39,7 @@ function buildTetrahedron(layoutData: LayoutData): Tetrahedron {
     // We have to create all of the face and tile positions before we can join them together.
     const faces = new Map<string, Face>();
     for (const faceDetails of layoutData.faces) {
-        const newFace = buildFace(layoutData.numberOfTilesPerFace, faceDetails);
+        const newFace = buildFace(faceDetails.name, layoutData.numberOfTilesPerFace, faceDetails.tilePositions);
         faces.set(newFace.name, newFace);
     }
     for (const faceDetails of layoutData.faces) {
@@ -85,4 +100,4 @@ function getPuzzleComponents(puzzleType: string | PuzzleDataElements): PuzzleCom
     }
 }
 
-export { getPuzzleComponents, buildTetrahedron }
+export { getPuzzleComponents, buildTetrahedron, buildFace }

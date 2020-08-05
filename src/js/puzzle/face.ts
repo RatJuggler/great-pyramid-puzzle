@@ -1,7 +1,6 @@
 import { IntegrityCheck, IntegrityCheckResult } from "./integrity";
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
-import { TilePositionData} from "./layout-data-schema";
 import { Side, SIDES } from "./side";
 
 
@@ -14,26 +13,18 @@ type FaceJoinProperties = {
 
 export class Face implements IntegrityCheck {
 
-    private static readonly FACE_NAMES = ["1", "2", "3", "4"];
-    private static readonly VALID_TILE_COUNTS = [1, 4, 9];
+    static readonly FACE_NAMES = ["1", "2", "3", "4"];
+    static readonly VALID_TILE_COUNTS = [1, 4, 9];
 
     private readonly _joins = new Array<FaceJoinProperties>();
-    private readonly _tilePositions = new Map<string, TilePosition>();
 
-    constructor(private _name: string, numberOfTiles: number, tilePositions: TilePositionData[]) {
+    constructor(private readonly _name: string, private readonly _tilePositions: Map<string, TilePosition>) {
         if (!(Face.FACE_NAMES.includes(_name))) {
             throw new Error(`Face name must be one of ${Face.FACE_NAMES}!`);
         }
-        if (!(Face.VALID_TILE_COUNTS.includes(numberOfTiles))) {
+        if (!(Face.VALID_TILE_COUNTS.includes(this._tilePositions.size))) {
             throw new Error(`Number of Tile Positions on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
         }
-        if (numberOfTiles !== tilePositions.length) {
-            throw new Error(`Number of Tile Positions provided (${tilePositions.length}) does not match number expected (${numberOfTiles})!`);
-        }
-        // We can't join the tile positions until they've been created for every face.
-        tilePositions
-            .map((tilePositionData) => new TilePosition(tilePositionData.position, this._name))
-            .forEach((newTilePosition) => this._tilePositions.set(newTilePosition.name, newTilePosition));
     }
 
     integrityCheck(): IntegrityCheckResult {

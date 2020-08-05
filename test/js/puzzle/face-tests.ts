@@ -1,3 +1,4 @@
+import { buildFace } from "../../../src/js/puzzle-loader";
 import { Face } from '../../../src/js/puzzle/face';
 import { TilePosition } from "../../../src/js/puzzle/tile-position";
 import { assert, expect } from 'chai';
@@ -11,7 +12,7 @@ describe("Face behavior", function () {
     describe("if a new Face is created", function () {
 
         context("with a valid Face name and Tile Position details but not joined to any other faces", function () {
-            const face = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            const face = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             it("should return a correctly initialised instance", function () {
                 expect(face).to.be.an.instanceOf(Face);
             });
@@ -32,7 +33,7 @@ describe("Face behavior", function () {
         context("with an invalid Face name", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    new Face("Z", 1, ONE_TILE_POSITION_DATA);
+                    buildFace("Z", 1, ONE_TILE_POSITION_DATA);
                 }).to.throw(Error, "Face name must be one of 1,2,3,4!");
             });
         });
@@ -40,7 +41,7 @@ describe("Face behavior", function () {
         context("with an invalid number of Tiles Positions", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    new Face("1", 25, ONE_TILE_POSITION_DATA);
+                    buildFace("1", 25, ONE_TILE_POSITION_DATA);
                 }).to.throw(Error, "Number of Tile Positions on a Face must be one of 1,4,9!");
             });
         });
@@ -48,16 +49,16 @@ describe("Face behavior", function () {
         context("where the number of Tile Positions provided does not match the number indicated", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    new Face("1", 4, ONE_TILE_POSITION_DATA);
+                    buildFace("1", 4, ONE_TILE_POSITION_DATA);
                 }).to.throw(Error, "Number of Tile Positions provided (1) does not match number expected (4)!");
             });
         });
 
         context("and then joined to three other Faces", function () {
-            const face1WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = new Face("2", 1, ONE_TILE_POSITION_DATA);
-            const face3WithOneTilePosition = new Face("3", 1, ONE_TILE_POSITION_DATA);
-            const face4WithOneTilePosition = new Face("4", 1, ONE_TILE_POSITION_DATA);
+            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
+            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
+            const face3WithOneTilePosition = buildFace("3", 1, ONE_TILE_POSITION_DATA);
+            const face4WithOneTilePosition = buildFace("4", 1, ONE_TILE_POSITION_DATA);
             face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
             face1WithOneTilePosition.join("B", "C", face3WithOneTilePosition);
             face1WithOneTilePosition.join("C", "A", face4WithOneTilePosition);
@@ -76,7 +77,7 @@ describe("Face behavior", function () {
 
     describe("if #getTilePosition is called to get the details of a TilePosition", function () {
 
-        const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+        const faceWithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
 
         context("with the id of an existing TilePosition", function () {
             it("should return the TilePosition", function () {
@@ -97,7 +98,7 @@ describe("Face behavior", function () {
     describe("if #getTileAtPosition is called to get the Tile at a given Position", function () {
 
         context("with the id of an existing TilePosition which has a Tile in it", function () {
-            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            const faceWithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             assert.isNotNull(faceWithOneTilePosition.emptyTilePositions[0].state.tile = TILE_1);
             it("should return the Tile", function () {
                 expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
@@ -105,7 +106,7 @@ describe("Face behavior", function () {
         });
 
         context("with the id of an existing TilePosition which doesn't have a Tile in it", function () {
-            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            const faceWithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             it("should return throw an error", function () {
                 expect(function () {
                     faceWithOneTilePosition.getTileAtPosition("1");
@@ -114,7 +115,7 @@ describe("Face behavior", function () {
         });
 
         context("with the id of a nonexistent TilePosition", function () {
-            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            const faceWithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             it("should throw an error", function () {
                 expect(function () {
                     faceWithOneTilePosition.getTilePosition("1-1");
@@ -127,8 +128,8 @@ describe("Face behavior", function () {
     describe("if #join() is called to join one Face to another", function () {
 
         context("with valid side names and Tile Positions for the two different Faces to be joined", function () {
-            const face1WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = new Face("2", 1, ONE_TILE_POSITION_DATA);
+            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
+            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
             face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
             it("should join the Faces in the direction given", function () {
                 const face1ExpectedToString =
@@ -145,7 +146,7 @@ describe("Face behavior", function () {
         });
 
         context("where the Face to join to is the same as the Face you are joining from", function () {
-            const face1WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             it("should throw an error", function () {
                 expect(function () {
                     face1WithOneTilePosition.join("A", "B", face1WithOneTilePosition);
@@ -154,8 +155,8 @@ describe("Face behavior", function () {
         });
 
         context("where the two Faces to be joined have differing numbers of Tile Positions", function () {
-            const face1WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithFourTilePositions = new Face("2", 4, FOUR_TILE_POSITION_DATA);
+            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
+            const face2WithFourTilePositions = buildFace("2", 4, FOUR_TILE_POSITION_DATA);
             it("should throw an error", function () {
                 expect(function () {
                     face1WithOneTilePosition.join("A", "B", face2WithFourTilePositions);
@@ -164,8 +165,8 @@ describe("Face behavior", function () {
         });
 
         context("where the side name to join from is invalid", function () {
-            const face1WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = new Face("2", 1, ONE_TILE_POSITION_DATA);
+            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
+            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
             it("should throw an error", function () {
                 expect(function () {
                     face1WithOneTilePosition.join("7", "A", face2WithOneTilePosition);
@@ -174,8 +175,8 @@ describe("Face behavior", function () {
         });
 
         context("where the side name to join to is invalid", function () {
-            const face1WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = new Face("2", 1, ONE_TILE_POSITION_DATA);
+            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
+            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
             it("should throw an error", function () {
                 expect(function () {
                     face1WithOneTilePosition.join("A", "Z", face2WithOneTilePosition);
@@ -184,9 +185,9 @@ describe("Face behavior", function () {
         });
 
         context("where there is already a join for the side given", function () {
-            const face1WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = new Face("2", 1, ONE_TILE_POSITION_DATA);
-            const face3WithOneTilePosition = new Face("3", 1, ONE_TILE_POSITION_DATA);
+            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
+            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
+            const face3WithOneTilePosition = buildFace("3", 1, ONE_TILE_POSITION_DATA);
             face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
             it("should throw an error", function () {
                 expect(function () {
@@ -196,11 +197,11 @@ describe("Face behavior", function () {
         });
 
         context("where the Face is already joined to three others", function () {
-            const face1WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = new Face("2", 1, ONE_TILE_POSITION_DATA);
-            const face3WithOneTilePosition = new Face("3", 1, ONE_TILE_POSITION_DATA);
-            const face4WithOneTilePosition = new Face("4", 1, ONE_TILE_POSITION_DATA);
-            const face5WithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
+            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
+            const face3WithOneTilePosition = buildFace("3", 1, ONE_TILE_POSITION_DATA);
+            const face4WithOneTilePosition = buildFace("4", 1, ONE_TILE_POSITION_DATA);
+            const face5WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
             face1WithOneTilePosition.join("B", "C", face3WithOneTilePosition);
             face1WithOneTilePosition.join("C", "A", face4WithOneTilePosition);
@@ -217,14 +218,14 @@ describe("Face behavior", function () {
     describe("if #hasEmptyTilePositions() is called to test if there are any empty Tile Positions on this Face", function () {
 
         context("and there are empty Tile Positions", function () {
-            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            const faceWithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             it("should return True", function () {
                 expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.true;
             });
         });
 
         context("and there aren't any empty Tile Positions", function () {
-            const faceWithOneTilePosition = new Face("1", 1, ONE_TILE_POSITION_DATA);
+            const faceWithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             assert.isNotNull(faceWithOneTilePosition.emptyTilePositions[0].state.tile = TILE_1);
             it("should return False", function () {
                 expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.false;
