@@ -44,9 +44,7 @@ describe("Tetrahedron behaviour", function () {
 
         context("with an invalid number of faces", function () {
             it("should throw an error", function () {
-                const face = new Face("1", 1, ONE_TILE_POSITION_DATA);
-                const faces = new Array<Face>();
-                faces.push(face);
+                const faces: Array<Face> = [new Face("1", 1, ONE_TILE_POSITION_DATA)];
                 expect(function () {
                     new Tetrahedron("test", faces);
                 }).to.throw(Error, "Tetrahedron must always be configured with 4 Faces!");
@@ -57,21 +55,31 @@ describe("Tetrahedron behaviour", function () {
 
     describe("if #getFace() is called with the name of a Face on the Tetrahedron", function () {
 
+        let tetrahedron: Tetrahedron;
+
+        beforeEach(function () {
+            const faces: Array<Face> = [
+                new Face("1", 1, ONE_TILE_POSITION_DATA),
+                new Face("2", 1, ONE_TILE_POSITION_DATA),
+                new Face("3", 1, ONE_TILE_POSITION_DATA),
+                new Face("4", 1, ONE_TILE_POSITION_DATA)
+            ];
+            tetrahedron = new Tetrahedron("test", faces);
+        });
+
         context("when there is a Face with the given name already on the Tetrahedron", function () {
             it("should return the Face details", function () {
-                const tetrahedron = buildTetrahedron(validLayoutData);
                 const face = tetrahedron.getFace("3");
                 expect(face).to.be.an.instanceOf(Face);
                 const expectedToString =
-                    "Face: 3, Tile Positions: 1, Joins: (3-A->4-C)(3-B->1-A)(3-C->2-A)\n" +
-                    "TilePosition: 1, On Face: 3, Contains Tile: [Empty], Joins: (1-A->4-1-C)(1-B->1-1-A)(1-C->2-1-A)\n";
+                    "Face: 3, Tile Positions: 1, Joins: \n" +
+                    "TilePosition: 1, On Face: 3, Contains Tile: [Empty], Joins: \n";
                 expect(face.toString()).to.equal(expectedToString);
             });
         });
 
         context("when there isn't a Face with the given name on the Tetrahedron", function () {
             it("should throw an error", function () {
-                const tetrahedron = buildTetrahedron(validLayoutData);
                 expect(function () {
                     tetrahedron.getFace("A");
                 }).to.throw(Error, "Face (A) not found on Tetrahedron!");
