@@ -3,21 +3,26 @@ import { Tetrahedron } from '../../../src/js/puzzle/tetrahedron';
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { ONE_TILE_POSITION_DATA } from "../common-test-data";
+import { ONE_TILE_POSITION_DATA, TILE_1, TILE_2 } from "../common-test-data";
 
 
 describe("Tetrahedron behaviour", function () {
 
+    let tetrahedron: Tetrahedron;
+
+    beforeEach(function () {
+        const faces: Array<Face> = [
+            new Face("1", 1, ONE_TILE_POSITION_DATA),
+            new Face("2", 1, ONE_TILE_POSITION_DATA),
+            new Face("3", 1, ONE_TILE_POSITION_DATA),
+            new Face("4", 1, ONE_TILE_POSITION_DATA)
+        ];
+        tetrahedron = new Tetrahedron("test", faces);
+    });
+
     describe("if a new Tetrahedron is created", function () {
 
         context("with valid layout configuration file 1", function () {
-            const faces: Array<Face> = [
-                new Face("1", 1, ONE_TILE_POSITION_DATA),
-                new Face("2", 1, ONE_TILE_POSITION_DATA),
-                new Face("3", 1, ONE_TILE_POSITION_DATA),
-                new Face("4", 1, ONE_TILE_POSITION_DATA)
-            ];
-            const tetrahedron = new Tetrahedron("test", faces);
             it("should return a correctly initialised instance", function () {
                 expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
             });
@@ -57,19 +62,47 @@ describe("Tetrahedron behaviour", function () {
 
     });
 
-    describe("if #getFace() is called with the name of a Face on the Tetrahedron", function () {
+    describe("if #getTilePositions() is called on an instance of the Tetrahedron", function () {
 
-        let tetrahedron: Tetrahedron;
-
-        beforeEach(function () {
-            const faces: Array<Face> = [
-                new Face("1", 1, ONE_TILE_POSITION_DATA),
-                new Face("2", 1, ONE_TILE_POSITION_DATA),
-                new Face("3", 1, ONE_TILE_POSITION_DATA),
-                new Face("4", 1, ONE_TILE_POSITION_DATA)
-            ];
-            tetrahedron = new Tetrahedron("test", faces);
+        context("when all of the TilePositions are empty", function () {
+            it("should return a list of all the TilePositions", function () {
+                const result = tetrahedron.tilePositions;
+                expect(result.length).to.equal(4);
+            });
         });
+
+        context("when only some of the TilePositions are empty", function () {
+            it("should return a list of all the TilePositions", function () {
+                tetrahedron.getFace("1").getTilePosition("1").state.tile = TILE_1;
+                tetrahedron.getFace("3").getTilePosition("1").state.tile = TILE_2;
+                const result = tetrahedron.tilePositions;
+                expect(result.length).to.equal(4);
+            });
+        });
+
+    });
+
+    describe("if #getEmptyTilePositions() is called on an instance of the Tetrahedron", function () {
+
+        context("when all of the TilePositions are empty", function () {
+            it("should return a list of all the TilePositions", function () {
+                const result = tetrahedron.emptyTilePositions;
+                expect(result.length).to.equal(4);
+            });
+        });
+
+        context("when only some of the TilePositions are empty", function () {
+            it("should return a list of only the empty TilePositions", function () {
+                tetrahedron.getFace("1").getTilePosition("1").state.tile = TILE_1;
+                tetrahedron.getFace("3").getTilePosition("1").state.tile = TILE_2;
+                const result = tetrahedron.emptyTilePositions;
+                expect(result.length).to.equal(2);
+            });
+        });
+
+    });
+
+    describe("if #getFace() is called with the name of a Face on an instance of the Tetrahedron", function () {
 
         context("when there is a Face with the given name already on the Tetrahedron", function () {
             it("should return the Face details", function () {
