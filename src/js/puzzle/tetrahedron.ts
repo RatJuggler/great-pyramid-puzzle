@@ -7,7 +7,7 @@ export class Tetrahedron implements IntegrityCheck {
 
     static readonly FACES = 4;
 
-    constructor(private _name: string, private readonly _faces: Array<Face>) {
+    constructor(private readonly _name: string, private readonly _faces: Array<Face>) {
         if (this._faces.length !== Tetrahedron.FACES) {
             throw new Error(`Tetrahedron must always be configured with ${Tetrahedron.FACES} Faces!`)
         }
