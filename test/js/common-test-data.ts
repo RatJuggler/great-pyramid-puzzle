@@ -1,6 +1,7 @@
 import valid_layout_data from "./data/valid-test-layout-data1.json";
 import valid_tile_data from "./data/valid-test-tile-data1.json";
-import invalid_layout_data from "./data/invalid-layout-data1.json";
+import invalid_layout_data1 from "./data/invalid-layout-data1.json";
+import invalid_layout_data2 from "./data/invalid-layout-data2.json";
 import invalid_tile_data from "./data/invalid-tile-data3.json";
 import { TileDefinition } from "../../src/js/puzzle/tile-data-schema";
 import { TilePositionData } from "../../src/js/puzzle/layout-data-schema";
@@ -58,15 +59,20 @@ const VALID_TEST_PUZZLE: PuzzleDataElements = {
 }
 
 const INVALID_TEST_PUZZLE_1: PuzzleDataElements = {
-    layoutData: invalid_layout_data.testLayoutData,
+    layoutData: invalid_layout_data1.testLayoutData,
     tileData: valid_tile_data.testTileData
 }
 
 const INVALID_TEST_PUZZLE_2: PuzzleDataElements = {
+    layoutData: invalid_layout_data2.testLayoutData,
+    tileData: valid_tile_data.testTileData
+}
+
+const INVALID_TEST_PUZZLE_3: PuzzleDataElements = {
     layoutData: valid_layout_data.testLayoutData,
     tileData: invalid_tile_data.testTileData
 }
 
 export { TILE_1, TILE_1_DATA, TILE_2, TILE_2_DATA, TILE_3, TILE_3_DATA, TILE_4, TILE_4_DATA,
     ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA,
-    VALID_TEST_PUZZLE, INVALID_TEST_PUZZLE_1, INVALID_TEST_PUZZLE_2 }
+    VALID_TEST_PUZZLE, INVALID_TEST_PUZZLE_1, INVALID_TEST_PUZZLE_2, INVALID_TEST_PUZZLE_3 }

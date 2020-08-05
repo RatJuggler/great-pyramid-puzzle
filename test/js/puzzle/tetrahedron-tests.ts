@@ -1,5 +1,4 @@
 import valid_layout_config1 from "../data/valid-test-layout-data1.json";
-import invalid_layout_config2 from "../data/invalid-layout-data2.json";
 import { buildTetrahedron } from "../../../src/js/puzzle-loader";
 import { Face } from "../../../src/js/puzzle/face";
 import { Tetrahedron } from '../../../src/js/puzzle/tetrahedron';
@@ -43,7 +42,7 @@ describe("Tetrahedron behaviour", function () {
             });
         });
 
-        context("with invalid layout configuration file 1", function () {
+        context("with an invalid number of faces", function () {
             it("should throw an error", function () {
                 const face = new Face("1", 1, ONE_TILE_POSITION_DATA);
                 const faces = new Array<Face>();
@@ -51,17 +50,6 @@ describe("Tetrahedron behaviour", function () {
                 expect(function () {
                     new Tetrahedron("test", faces);
                 }).to.throw(Error, "Tetrahedron must always be configured with 4 Faces!");
-            });
-        });
-
-        context("with invalid layout configuration file 2", function () {
-            const puzzleData = invalid_layout_config2.testLayoutData;
-            const tetrahedron = buildTetrahedron(puzzleData);
-            it("should fail the integrity check", function () {
-                const expectedFailure = [false,
-                    "Face joins not complete: Face: 1, Tile Positions: 1, Joins: \n" +
-                    "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n"];
-                expect(tetrahedron.integrityCheck()).to.eql(expectedFailure)
             });
         });
 
