@@ -14,50 +14,50 @@ function getTilePool(tileData: TileData): TilePool {
     return new TilePool(tileData.totalNumberOfTiles, tileData.tiles);
 }
 
-function buildFace(name: string, numberOfTiles: number, tilePositionDetails: TilePositionData[]): Face {
-    if (!(Face.FACE_NAMES.includes(name))) {
+function buildFace(faceName: string, numberOfTiles: number, tilePositionData: TilePositionData[]): Face {
+    if (!(Face.FACE_NAMES.includes(faceName))) {
         throw new Error(`Face name must be one of ${Face.FACE_NAMES}!`);
     }
     if (!(Face.VALID_TILE_COUNTS.includes(numberOfTiles))) {
         throw new Error(`Number of Tile Positions on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
     }
-    if (numberOfTiles !== tilePositionDetails.length) {
-        throw new Error(`Number of Tile Positions provided (${tilePositionDetails.length}) does not match number expected (${numberOfTiles})!`);
+    if (numberOfTiles !== tilePositionData.length) {
+        throw new Error(`Number of Tile Positions provided (${tilePositionData.length}) does not match number expected (${numberOfTiles})!`);
     }
     // We can't join the tile positions until they've been created for every face.
-    const tilePositions = new Map<string, TilePosition>();
-    tilePositionDetails
-        .map((tilePositionData) => new TilePosition(tilePositionData.position, name))
-        .forEach((newTilePosition) => tilePositions.set(newTilePosition.name, newTilePosition));
-    return new Face(name, tilePositions);
+    const tilePositions = tilePositionData
+        .map((tilePositionDetails) => new TilePosition(tilePositionDetails.position, faceName))
+        .reduce((map, newTilePosition) => {
+                map.set(newTilePosition.name, newTilePosition);
+                return map;
+            }, new Map<string, TilePosition>());
+    return new Face(faceName, tilePositions);
 }
 
 function buildTetrahedron(layoutData: LayoutData): Tetrahedron {
     if (layoutData.faces.length !== Tetrahedron.FACES) {
         throw new Error(`Tetrahedron must always have configuration data for ${Tetrahedron.FACES} Faces!`)
     }
-    // We have to create all of the face and tile positions before we can join them together.
-    const faces = new Map<string, Face>();
+    // We have to create all of the face and tile positions before we can create the tetrahedron and join them together.
+    const faces = layoutData.faces
+        .map((faceDetails) => buildFace(faceDetails.name, layoutData.numberOfTilesPerFace, faceDetails.tilePositions));
+    const tetrahedron = new Tetrahedron(layoutData.puzzle, faces);
     for (const faceDetails of layoutData.faces) {
-        const newFace = buildFace(faceDetails.name, layoutData.numberOfTilesPerFace, faceDetails.tilePositions);
-        faces.set(newFace.name, newFace);
-    }
-    for (const faceDetails of layoutData.faces) {
-        const fromFace = faces.get(faceDetails.name)!;
+        const fromFace = tetrahedron.getFace(faceDetails.name);
         // Join the faces...
         for (const joinData of faceDetails.joins) {
-            fromFace.join(joinData.fromSide, joinData.toSide, faces.get(joinData.ofFace)!);
+            fromFace.join(joinData.fromSide, joinData.toSide, tetrahedron.getFace(joinData.ofFace));
         }
         // Join all the tile positions...
         for (const tilePositionDetails of faceDetails.tilePositions) {
-            const fromTilePosition = faces.get(faceDetails.name)!.getTilePosition(tilePositionDetails.position);
+            const fromTilePosition = tetrahedron.getFace(faceDetails.name).getTilePosition(tilePositionDetails.position);
             for (const joinData of tilePositionDetails.joins) {
-                const toTilePosition = faces.get(joinData.onFace)!.getTilePosition(joinData.ofTilePosition);
+                const toTilePosition = tetrahedron.getFace(joinData.onFace).getTilePosition(joinData.ofTilePosition);
                 fromTilePosition.join(joinData.fromSide, joinData.toSide, toTilePosition);
             }
         }
     }
-    return new Tetrahedron(layoutData.puzzle, Array.from(faces.values()));
+    return tetrahedron;
 }
 
 function getTetrahedron(layoutData: LayoutData): Tetrahedron {
