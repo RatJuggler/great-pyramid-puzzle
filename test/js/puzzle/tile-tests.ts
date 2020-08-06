@@ -171,24 +171,20 @@ describe("Tile behaviour", function () {
     describe("if '#hasSideSegments() is called to test if a Tile has the supplied side segments", function () {
 
         context("and the Tile doesn't have the side segments", function () {
-            it("should return an array", function () {
+            it("should return an array with a length of 0", function () {
                 const findSegments = tile4.getSegmentsForSideToMatchWith(0, Side.SideA) + "...." + "....";
-                expect(tile3.hasSideSegments(findSegments)).to.be.an.instanceof(Array);
-            });
-            it("should have a length of 0", function () {
-                const findSegments = tile4.getSegmentsForSideToMatchWith(0, Side.SideA) + "...." + "....";
-                expect(tile3.hasSideSegments(findSegments).length).to.equal(0);
+                const result = tile3.hasSideSegments(findSegments);
+                expect(result).to.be.an.instanceof(Array);
+                expect(result.length).to.equal(0);
             });
         });
 
         context("and the Tile has the side segments", function () {
-            it("should return an array", function () {
+            it("should return an array with a length of 1", function () {
                 const findSegments = "...." + "...." + tile4.getSegmentsForSideToMatchWith(0, Side.SideC);
-                expect(tile3.hasSideSegments(findSegments)).to.be.an.instanceof(Array);
-            });
-            it("should have a length of 1", function () {
-                const findSegments = "...." + "...." + tile4.getSegmentsForSideToMatchWith(0, Side.SideC);
-                expect(tile3.hasSideSegments(findSegments).length).to.equal(1);
+                const result = tile3.hasSideSegments(findSegments);
+                expect(result).to.be.an.instanceof(Array);
+                expect(result.length).to.equal(1);
             });
         });
 
