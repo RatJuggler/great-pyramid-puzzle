@@ -1,22 +1,19 @@
-import { SolverBase } from "./solver-base";
-import { Tetrahedron } from "../puzzle/tetrahedron";
-import { TilePool } from "../puzzle/tile-pool";
+import { PuzzleComponents } from "../common-data-schema";
+import { IterativeSolverBase } from "./solver-iterative-base";
 import { Tile } from "../puzzle/tile";
 import { TilePosition } from "../puzzle/tile-position";
 import { PuzzleChange, TileChange, TilePositionChange } from "../puzzle-changes";
 import { getRandomInt } from "../utils";
 
 
-export class NoMatchingSolver extends SolverBase {
+export class NoMatchingSolver extends IterativeSolverBase {
 
-    private _emptyTilePositions: Array<TilePosition>;
     private _tilePosition: TilePosition;
     private _rotating: number = 0;
 
-    constructor(tetrahedron: Tetrahedron, tilePool: TilePool,
+    constructor(puzzle: PuzzleComponents,
                 private _tileSelection: string, private _tilePlacement: string, private _tileRotation: string) {
-        super(tetrahedron, tilePool);
-        this._emptyTilePositions = this._tetrahedron.emptyTilePositions;
+        super(puzzle);
         this._tilePosition = this.getNextTilePosition();
     }
 

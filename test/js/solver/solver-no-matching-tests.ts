@@ -15,16 +15,14 @@ describe("NoMatchingSolver behaviour", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
             it("should throw an error", function () {
                 expect(function () {
-                    new NoMatchingSolver(components.tetrahedron, components.tilePool,
-                        "Random", "error", "None");
+                    new NoMatchingSolver(components, "Random", "error", "None");
                 }).to.throw(Error, "Invalid tile placement option!");
             });
         });
 
         context("with an invalid tile selection", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
-                "error", "Random", "None");
+            const solver = new NoMatchingSolver(components, "error", "Random", "None");
             it("should throw an error", function () {
                 expect(function () {
                     solver.nextState();
@@ -34,8 +32,7 @@ describe("NoMatchingSolver behaviour", function () {
 
         context("with an invalid tile rotation", function () {
             const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-            const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
-                "Random", "Random", "error");
+            const solver = new NoMatchingSolver(components, "Random", "Random", "error");
             it("should throw an error", function () {
                 expect(function () {
                     solver.nextState();
@@ -48,8 +45,7 @@ describe("NoMatchingSolver behaviour", function () {
     describe("if #nextState() is called on a properly instantiated instance using Sequential options", function () {
 
         const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-        const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
-            "Sequential", "Sequential", "None");
+        const solver = new NoMatchingSolver(components, "Sequential", "Sequential", "None");
 
         context("for the first time", function () {
             const result = solver.nextState() as TileChange;
@@ -126,8 +122,7 @@ describe("NoMatchingSolver behaviour", function () {
     describe("if #nextState() is called on a properly instantiated instance using Random options", function () {
 
         const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-        const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
-            "Random", "Random", "None");
+        const solver = new NoMatchingSolver(components, "Random", "Random", "None");
 
         context("for the first time", function () {
             const result = solver.nextState() as TileChange;
@@ -205,8 +200,7 @@ describe("NoMatchingSolver behaviour", function () {
         function () {
 
         const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-        const solver = new NoMatchingSolver(components.tetrahedron, components.tilePool,
-            "DisplayTest", "Sequential", "None");
+        const solver = new NoMatchingSolver(components, "DisplayTest", "Sequential", "None");
 
         context("for the first time", function () {
             const result = solver.nextState() as TileChange;

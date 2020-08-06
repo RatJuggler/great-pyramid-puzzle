@@ -1,5 +1,3 @@
-import { Tetrahedron } from "../puzzle/tetrahedron";
-import { TilePool } from "../puzzle/tile-pool";
 import { PuzzleChange, TileChange, TilePositionChange } from "../puzzle-changes";
 import { Tile } from "../puzzle/tile";
 import { TilePosition } from "../puzzle/tile-position";
@@ -15,31 +13,15 @@ interface Solver {
 
 abstract class SolverBase implements Solver {
 
-    constructor(protected _tetrahedron: Tetrahedron, protected _tilePool: TilePool) {
-        if (this._tilePool.tileCount !== this._tetrahedron.tilePositionCount) {
-            throw new Error("There must be enough Tiles to cover the Tetrahedron!");
-        }
-    }
+    constructor() {}
 
-    initialState(): Array<PuzzleChange> {
-        return this._tetrahedron.tilePositions
-            .map((tilePosition) => SolverBase.empty(tilePosition))
-            .concat(this._tilePool.tiles.map((tile) => SolverBase.start(tile)));
-    }
+    abstract initialState(): Array<PuzzleChange>;
 
     abstract nextState(): PuzzleChange;
 
     abstract forceNextState(): PuzzleChange;
 
-    currentState(): Array<PuzzleChange> {
-        return this._tetrahedron.tilePositions.map((tilePosition) => {
-            if (tilePosition.state.isEmpty()) {
-                return SolverBase.empty(tilePosition);
-            } else {
-                return SolverBase.current(tilePosition);
-            }
-        });
-    }
+    abstract currentState(): Array<PuzzleChange>;
 
     protected static start(tile: Tile): PuzzleChange {
         return TileChange.start("start" + tile.id, tile.id, 0, tile.segments)

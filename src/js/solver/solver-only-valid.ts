@@ -1,13 +1,12 @@
-import { Tetrahedron } from "../puzzle/tetrahedron";
-import { TilePool } from "../puzzle/tile-pool";
+import { PuzzleComponents } from "../common-data-schema";
 import { TilePosition } from "../puzzle/tile-position";
-import { SolverTileState, SolverState, IterativeSolverBase } from "./solver-iterative-base";
+import { BruteSolverBase, SolverTileState, SolverState } from "./solver-brute-base";
 
 
-export class OnlyValidSolver extends IterativeSolverBase {
+export class OnlyValidSolver extends BruteSolverBase {
 
-    constructor(tetrahedron: Tetrahedron, tilePool: TilePool) {
-        super(tetrahedron, tilePool);
+    constructor(puzzle: PuzzleComponents) {
+        super(puzzle);
     }
 
     protected createNewState(state: SolverState, newTilePosition: TilePosition): SolverState {

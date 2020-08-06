@@ -12,7 +12,7 @@ describe("OnlyValidSolver behaviour", function () {
     describe("if #nextState() is called", function () {
 
         const components = getPuzzleComponents(VALID_TEST_PUZZLE);
-        const solver = new OnlyValidSolver(components.tetrahedron, components.tilePool);
+        const solver = new OnlyValidSolver(components);
 
         context("for the first time on an instance instantiated for the test puzzle", function () {
             const result = solver.nextState() as TileChange;

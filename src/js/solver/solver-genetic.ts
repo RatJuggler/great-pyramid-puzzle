@@ -1,7 +1,7 @@
 import { SolverBase } from "./solver-base";
 import { PuzzleChange } from "../puzzle-changes";
 import { Tetrahedron } from "../puzzle/tetrahedron";
-import { TilePool } from "../puzzle/tile-pool";
+import { getPuzzleComponents } from "../puzzle-loader";
 
 
 // DNA of Tile Position state:
@@ -12,9 +12,10 @@ class Population {
 
     private readonly _population = new Array<Tetrahedron>();
 
-    constructor(size: number, tetrahedron: Tetrahedron) {
+    constructor(size: number, puzzleType: string) {
         for (let i = 0; i < size; i++) {
-            this._population.push(tetrahedron);
+            const puzzle = getPuzzleComponents(puzzleType);
+            this._population.push(puzzle.tetrahedron);
         }
     }
 
@@ -35,9 +36,13 @@ export class GeneticSolver extends SolverBase {
 
     private readonly _population: Population;
 
-    constructor(tetrahedron: Tetrahedron, tilePool: TilePool) {
-        super(tetrahedron, tilePool);
-        this._population = new Population(GeneticSolver.POPULATION_SIZE, tetrahedron);
+    constructor(puzzleType: string) {
+        super();
+        this._population = new Population(GeneticSolver.POPULATION_SIZE, puzzleType);
+    }
+
+    initialState(): Array<PuzzleChange> {
+        return [PuzzleChange.INITIAL];
     }
 
     forceNextState(): PuzzleChange {
@@ -50,6 +55,10 @@ export class GeneticSolver extends SolverBase {
         } else {
             return this._population.bestSoFar();
         }
+    }
+
+    currentState(): Array<PuzzleChange> {
+        return [PuzzleChange.SOLVED];
     }
 
 }

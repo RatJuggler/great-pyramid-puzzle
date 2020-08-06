@@ -2,7 +2,7 @@ import valid_layout_data from "../data/valid-test-layout-data1.json";
 import invalid_tile_data from "../data/invalid-tile-data3.json";
 import { getPuzzleComponents, buildTetrahedron } from "../../../src/js/puzzle-loader";
 import { PuzzleComponents } from "../../../src/js/common-data-schema";
-import { SolverBase } from "../../../src/js/solver/solver-base";
+import { IterativeSolverBase } from "../../../src/js/solver/solver-iterative-base";
 import { TilePool } from "../../../src/js/puzzle/tile-pool";
 import { PuzzleChange } from "../../../src/js/puzzle-changes";
 import { expect } from 'chai';
@@ -11,7 +11,7 @@ import 'mocha';
 import { VALID_TEST_PUZZLE } from "../common-test-data";
 
 
-class MockSolver extends SolverBase {
+class MockSolver extends IterativeSolverBase {
 
     nextState(): PuzzleChange {
         return PuzzleChange.INITIAL;
@@ -31,7 +31,7 @@ describe("SolverBase behaviour using MockSolver", function () {
 
     beforeEach(function () {
         components = getPuzzleComponents(VALID_TEST_PUZZLE);
-        solver = new MockSolver(components.tetrahedron, components.tilePool);
+        solver = new MockSolver(components);
     });
 
     describe("if a new MockSolver is created", function () {
@@ -40,8 +40,12 @@ describe("SolverBase behaviour using MockSolver", function () {
             it("should throw an error", function () {
                 const tilePool = new TilePool(invalid_tile_data.testTileData.totalNumberOfTiles, invalid_tile_data.testTileData.tiles);
                 const tetrahedron = buildTetrahedron(valid_layout_data.testLayoutData);
+                const components = {
+                    tilePool: tilePool,
+                    tetrahedron: tetrahedron
+                }
                 expect(function () {
-                    new MockSolver(tetrahedron, tilePool);
+                    new MockSolver(components);
                 }).to.throw(Error, "There must be enough Tiles to cover the Tetrahedron!");
             });
         });
