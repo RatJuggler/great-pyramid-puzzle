@@ -6,22 +6,22 @@ import { PuzzleChange } from "../puzzle-changes";
 import { PuzzleComponents } from "../common-data-schema";
 
 
-type SolverTileState = {
+type BruteSolverTileState = {
     tile: Tile,
     rotations: Array<number>
 }
-type SolverState = {
+type BruteSolverState = {
     tilePosition: TilePosition,
-    tileState: SolverTileState | null,
-    untriedTiles: Array<SolverTileState>,
-    rejectedTiles: Array<SolverTileState>
+    tileState: BruteSolverTileState | null,
+    untriedTiles: Array<BruteSolverTileState>,
+    rejectedTiles: Array<BruteSolverTileState>
 }
 
 
 abstract class BruteSolverBase extends IterativeSolverBase {
 
-    private readonly _solverStack: Array<SolverState> = [];
-    private _currentState: SolverState;
+    private readonly _solverStack: Array<BruteSolverState> = [];
+    private _currentState: BruteSolverState;
 
     constructor(puzzle: PuzzleComponents) {
         super(puzzle);
@@ -36,11 +36,11 @@ abstract class BruteSolverBase extends IterativeSolverBase {
             tilePosition: this._emptyTilePositions.shift()!,
             tileState: null,
             untriedTiles: untriedTiles,
-            rejectedTiles: new Array<SolverTileState>()
+            rejectedTiles: new Array<BruteSolverTileState>()
         }
     }
 
-    private static rotateOrRemove(state: SolverState): PuzzleChange {
+    private static rotateOrRemove(state: BruteSolverState): PuzzleChange {
         let displayChange;
         // Try the next rotation position for the current tile.
         const tilePosition = state.tilePosition;
@@ -63,9 +63,9 @@ abstract class BruteSolverBase extends IterativeSolverBase {
         return displayChange;
     }
 
-    protected abstract createNewState(state: SolverState, tilePosition: TilePosition): SolverState;
+    protected abstract createNewState(state: BruteSolverState, tilePosition: TilePosition): BruteSolverState;
 
-    private tryNextTilePosition(state: SolverState): PuzzleChange {
+    private tryNextTilePosition(state: BruteSolverState): PuzzleChange {
         let displayChange;
         // If there aren't any more tile positions a solution has been reached!
         if (this._emptyTilePositions.length === 0) {
@@ -79,7 +79,7 @@ abstract class BruteSolverBase extends IterativeSolverBase {
         return displayChange;
     }
 
-    private tryNextTile(state: SolverState): PuzzleChange {
+    private tryNextTile(state: BruteSolverState): PuzzleChange {
         let displayChange;
         // If we have any untried tiles then try the next one.
         const tilePosition = state.tilePosition;
@@ -131,4 +131,4 @@ abstract class BruteSolverBase extends IterativeSolverBase {
 
 }
 
-export { SolverTileState, SolverState, BruteSolverBase }
+export { BruteSolverTileState, BruteSolverState, BruteSolverBase }
