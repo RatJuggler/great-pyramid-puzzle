@@ -9,40 +9,46 @@ import { TILE_1, ONE_TILE_POSITION, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_D
 
 describe("Face behavior", function () {
 
-    let faceWithOneTilePosition: Face;
-    let tilePositions: Map<string, TilePosition>;
+    let face1WithOneTilePosition: Face;
+    let face2WithOneTilePosition: Face;
+    let tilePositions1: Map<string, TilePosition>;
+    let tilePositions2: Map<string, TilePosition>;
 
     beforeEach(function () {
-        const tilePosition = new TilePosition("1", "1");
-        tilePositions = new Map<string, TilePosition>();
-        tilePositions.set(tilePosition.name, tilePosition);
-        faceWithOneTilePosition = new Face("1", tilePositions);
+        const tilePosition1_1 = new TilePosition("1", "1");
+        tilePositions1 = new Map<string, TilePosition>();
+        tilePositions1.set(tilePosition1_1.name, tilePosition1_1);
+        face1WithOneTilePosition = new Face("1", tilePositions1);
+        const tilePosition2_1 = new TilePosition("1", "2");
+        tilePositions2 = new Map<string, TilePosition>();
+        tilePositions2.set(tilePosition2_1.name, tilePosition2_1);
+        face2WithOneTilePosition = new Face("2", tilePositions2);
     });
 
     describe("if a new Face is created", function () {
 
         context("with a valid Face name and Tile Position details but not joined to any other faces", function () {
             it("should return a correctly initialised instance", function () {
-                expect(faceWithOneTilePosition).to.be.an.instanceOf(Face);
+                expect(face1WithOneTilePosition).to.be.an.instanceOf(Face);
             });
             it("should return the correct toString result", function () {
                 const expectedToString =
                     "Face: 1, Tile Positions: 1, Joins: \n" +
                     "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n";
-                expect(faceWithOneTilePosition.toString()).to.equal(expectedToString);
+                expect(face1WithOneTilePosition.toString()).to.equal(expectedToString);
             });
             it("should fail the integrity check", function () {
                 const expectedFailure = [false,
                     "Face joins not complete: Face: 1, Tile Positions: 1, Joins: \n" +
                     "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n"];
-                expect(faceWithOneTilePosition.integrityCheck()).to.eql(expectedFailure)
+                expect(face1WithOneTilePosition.integrityCheck()).to.eql(expectedFailure)
             });
         });
 
         context("with an invalid Face name", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    new Face("Z", tilePositions);
+                    new Face("Z", tilePositions1);
                 }).to.throw(Error, "Face must always be configured with one of the following names [1,2,3,4]!");
             });
         });
@@ -50,9 +56,9 @@ describe("Face behavior", function () {
         context("with an invalid number of Tiles Positions", function () {
             it("should throw an error", function () {
                 const tilePosition = new TilePosition("2", "1");
-                tilePositions.set(tilePosition.name, tilePosition);
+                tilePositions1.set(tilePosition.name, tilePosition);
                 expect(function () {
-                    new Face("1", tilePositions);
+                    new Face("1", tilePositions1);
                 }).to.throw(Error, "Face must always be configured with one of 1,4,9 TilePositions!");
             });
         });
@@ -82,14 +88,14 @@ describe("Face behavior", function () {
 
         context("with the id of an existing TilePosition", function () {
             it("should return the TilePosition", function () {
-                expect(faceWithOneTilePosition.getTilePosition("1")).to.be.an.instanceOf(TilePosition);
+                expect(face1WithOneTilePosition.getTilePosition("1")).to.be.an.instanceOf(TilePosition);
             });
         });
 
         context("with the id of a nonexistent TilePosition", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    faceWithOneTilePosition.getTilePosition("19");
+                    face1WithOneTilePosition.getTilePosition("19");
                 }).to.throw(Error, "TilePosition (19) not found on Face (1)!");
             });
         });
@@ -100,15 +106,15 @@ describe("Face behavior", function () {
 
         context("with the id of an existing TilePosition which has a Tile in it", function () {
             it("should return the Tile", function () {
-                faceWithOneTilePosition.emptyTilePositions[0].state.tile = TILE_1;
-                expect(faceWithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
+                face1WithOneTilePosition.emptyTilePositions[0].state.tile = TILE_1;
+                expect(face1WithOneTilePosition.getTileAtPosition("1")).to.equal(TILE_1);
             });
         });
 
         context("with the id of an existing TilePosition which doesn't have a Tile in it", function () {
             it("should return throw an error", function () {
                 expect(function () {
-                    faceWithOneTilePosition.getTileAtPosition("1");
+                    face1WithOneTilePosition.getTileAtPosition("1");
                 }).to.throw(Error, "Can't fetch a Tile from a TilePositionState when there isn't one set!");
             });
         });
@@ -116,7 +122,7 @@ describe("Face behavior", function () {
         context("with the id of a nonexistent TilePosition", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    faceWithOneTilePosition.getTilePosition("1-1");
+                    face1WithOneTilePosition.getTilePosition("1-1");
                 }).to.throw(Error, "TilePosition (1-1) not found on Face (1)!");
             });
         });
@@ -126,16 +132,15 @@ describe("Face behavior", function () {
     describe("if #join() is called to join one Face to another", function () {
 
         context("with valid side names and Tile Positions for the two different Faces to be joined", function () {
-            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
-            face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
             it("should join the Faces in the direction given", function () {
+                face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
                 const face1ExpectedToString =
                     "Face: 1, Tile Positions: 1, Joins: (1-A->2-B)\n" +
                     "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n";
                 expect(face1WithOneTilePosition.toString()).to.equal(face1ExpectedToString);
             });
             it("should not join the Faces in the opposite direction", function () {
+                face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
                 const face2ExpectedToString =
                     "Face: 2, Tile Positions: 1, Joins: \n" +
                     "TilePosition: 1, On Face: 2, Contains Tile: [Empty], Joins: \n";
@@ -146,13 +151,12 @@ describe("Face behavior", function () {
         context("where the Face to join to is the same as the Face you are joining from", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    faceWithOneTilePosition.join("A", "B", faceWithOneTilePosition);
+                    face1WithOneTilePosition.join("A", "B", face1WithOneTilePosition);
                 }).to.throw(Error, "Cannot join a Face to itself!");
             });
         });
 
         context("where the two Faces to be joined have differing numbers of Tile Positions", function () {
-            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             const face2WithFourTilePositions = buildFace("2", 4, FOUR_TILE_POSITION_DATA);
             it("should throw an error", function () {
                 expect(function () {
@@ -162,8 +166,6 @@ describe("Face behavior", function () {
         });
 
         context("where the side name to join from is invalid", function () {
-            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
             it("should throw an error", function () {
                 expect(function () {
                     face1WithOneTilePosition.join("7", "A", face2WithOneTilePosition);
@@ -172,8 +174,6 @@ describe("Face behavior", function () {
         });
 
         context("where the side name to join to is invalid", function () {
-            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
             it("should throw an error", function () {
                 expect(function () {
                     face1WithOneTilePosition.join("A", "Z", face2WithOneTilePosition);
@@ -216,14 +216,14 @@ describe("Face behavior", function () {
 
         context("and there are empty Tile Positions", function () {
             it("should return True", function () {
-                expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.true;
+                expect(face1WithOneTilePosition.hasEmptyTilePositions()).to.be.true;
             });
         });
 
         context("and there aren't any empty Tile Positions", function () {
             it("should return False", function () {
-                faceWithOneTilePosition.emptyTilePositions[0].state.tile = TILE_1;
-                expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.false;
+                face1WithOneTilePosition.emptyTilePositions[0].state.tile = TILE_1;
+                expect(face1WithOneTilePosition.hasEmptyTilePositions()).to.be.false;
             });
         });
 
