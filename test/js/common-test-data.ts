@@ -61,11 +61,6 @@ const TILE_POSITION_1 = new TilePosition("1", "1");
 const ONE_TILE_POSITION = new Map<string, TilePosition>();
 ONE_TILE_POSITION.set(TILE_POSITION_1.name, TILE_POSITION_1);
 
-const TILE_POSITION_2 = new TilePosition("2", "1");
-const TWO_TILE_POSITIONS = new Map<string, TilePosition>();
-TWO_TILE_POSITIONS.set(TILE_POSITION_1.name, TILE_POSITION_1);
-TWO_TILE_POSITIONS.set(TILE_POSITION_2.name, TILE_POSITION_2);
-
 const VALID_TEST_PUZZLE: PuzzleDataElements = {
     layoutData: valid_layout_data.testLayoutData,
     tileData: valid_tile_data.testTileData
@@ -104,7 +99,7 @@ const INVALID_TEST_PUZZLE_6: PuzzleDataElements = {
 export {
     TILE_1, TILE_1_DATA, TILE_2, TILE_2_DATA, TILE_3, TILE_3_DATA, TILE_4, TILE_4_DATA,
     ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA,
-    ONE_TILE_POSITION, TWO_TILE_POSITIONS,
+    ONE_TILE_POSITION,
     VALID_TEST_PUZZLE,
     INVALID_TEST_PUZZLE_1, INVALID_TEST_PUZZLE_2, INVALID_TEST_PUZZLE_3, INVALID_TEST_PUZZLE_4, INVALID_TEST_PUZZLE_5, INVALID_TEST_PUZZLE_6
 }
