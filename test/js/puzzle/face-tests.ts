@@ -4,7 +4,7 @@ import { TilePosition } from "../../../src/js/puzzle/tile-position";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA } from "../common-test-data";
+import { TILE_1, ONE_TILE_POSITION, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA } from "../common-test-data";
 
 
 describe("Face behavior", function () {
@@ -12,7 +12,7 @@ describe("Face behavior", function () {
     describe("if a new Face is created", function () {
 
         context("with a valid Face name and Tile Position details but not joined to any other faces", function () {
-            const face = buildFace("1", 1, ONE_TILE_POSITION_DATA);
+            const face = new Face("1", ONE_TILE_POSITION);
             it("should return a correctly initialised instance", function () {
                 expect(face).to.be.an.instanceOf(Face);
             });
@@ -33,8 +33,8 @@ describe("Face behavior", function () {
         context("with an invalid Face name", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    buildFace("Z", 1, ONE_TILE_POSITION_DATA);
-                }).to.throw(Error, "Face name must be one of 1,2,3,4!");
+                    new Face("Z", ONE_TILE_POSITION);
+                }).to.throw(Error, "Face must always be configured with one of the following names [1,2,3,4]!");
             });
         });
 

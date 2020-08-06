@@ -20,10 +20,10 @@ export class Face implements IntegrityCheck {
 
     constructor(private readonly _name: string, private readonly _tilePositions: Map<string, TilePosition>) {
         if (!(Face.FACE_NAMES.includes(_name))) {
-            throw new Error(`Face name must be one of ${Face.FACE_NAMES}!`);
+            throw new Error(`Face must always be configured with one of the following names [${Face.FACE_NAMES}]!`);
         }
         if (!(Face.VALID_TILE_COUNTS.includes(this._tilePositions.size))) {
-            throw new Error(`Number of Tile Positions on a Face must be one of ${Face.VALID_TILE_COUNTS}!`);
+            throw new Error(`Face must always be configured with one of ${Face.VALID_TILE_COUNTS} number of TilePosition!`);
         }
     }
 

@@ -3,7 +3,7 @@ import { Tetrahedron } from "../../src/js/puzzle/tetrahedron";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { VALID_TEST_PUZZLE, INVALID_TEST_PUZZLE_1, INVALID_TEST_PUZZLE_2, INVALID_TEST_PUZZLE_3 } from "./common-test-data";
+import { VALID_TEST_PUZZLE, INVALID_TEST_PUZZLE_1, INVALID_TEST_PUZZLE_2, INVALID_TEST_PUZZLE_3, INVALID_TEST_PUZZLE_4 } from "./common-test-data";
 
 
 describe("if #getPuzzleComponents() is called", function () {
@@ -59,10 +59,18 @@ describe("if #getPuzzleComponents() is called", function () {
         });
     });
 
-    context("with invalid set of data elements", function () {
+    context("with an invalid Face name", function () {
         it("should throw an error", function () {
             expect(function () {
                 getPuzzleComponents(INVALID_TEST_PUZZLE_3);
+            }).to.throw(Error, "Face name must be one of 1,2,3,4!");
+        });
+    });
+
+    context("with incompatible tetrahedron and tiles", function () {
+        it("should throw an error", function () {
+            expect(function () {
+                getPuzzleComponents(INVALID_TEST_PUZZLE_4);
             }).to.throw(Error, "There must be enough Tiles to cover the Tetrahedron!");
         });
     });
