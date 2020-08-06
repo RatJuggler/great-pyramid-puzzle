@@ -1,18 +1,21 @@
-import { buildFace } from "../../../src/js/puzzle-loader";
 import { Face } from '../../../src/js/puzzle/face';
 import { TilePosition } from "../../../src/js/puzzle/tile-position";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1, ONE_TILE_POSITION, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA } from "../common-test-data";
+import { TILE_1 } from "../common-test-data";
 
 
 describe("Face behavior", function () {
 
     let face1WithOneTilePosition: Face;
     let face2WithOneTilePosition: Face;
+    let face3WithOneTilePosition: Face;
+    let face4WithOneTilePosition: Face;
     let tilePositions1: Map<string, TilePosition>;
     let tilePositions2: Map<string, TilePosition>;
+    let tilePositions3: Map<string, TilePosition>;
+    let tilePositions4: Map<string, TilePosition>;
 
     beforeEach(function () {
         const tilePosition1_1 = new TilePosition("1", "1");
@@ -23,6 +26,14 @@ describe("Face behavior", function () {
         tilePositions2 = new Map<string, TilePosition>();
         tilePositions2.set(tilePosition2_1.name, tilePosition2_1);
         face2WithOneTilePosition = new Face("2", tilePositions2);
+        const tilePosition3_1 = new TilePosition("1", "3");
+        tilePositions3 = new Map<string, TilePosition>();
+        tilePositions3.set(tilePosition3_1.name, tilePosition3_1);
+        face3WithOneTilePosition = new Face("3", tilePositions3);
+        const tilePosition4_1 = new TilePosition("1", "4");
+        tilePositions4 = new Map<string, TilePosition>();
+        tilePositions4.set(tilePosition2_1.name, tilePosition4_1);
+        face4WithOneTilePosition = new Face("4", tilePositions4);
     });
 
     describe("if a new Face is created", function () {
@@ -64,20 +75,19 @@ describe("Face behavior", function () {
         });
 
         context("and then joined to three other Faces", function () {
-            const face1WithOneTilePosition = new Face("1", ONE_TILE_POSITION);
-            const face2WithOneTilePosition = new Face("2", ONE_TILE_POSITION);
-            const face3WithOneTilePosition = new Face("3", ONE_TILE_POSITION);
-            const face4WithOneTilePosition = new Face("4", ONE_TILE_POSITION);
-            face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
-            face1WithOneTilePosition.join("B", "C", face3WithOneTilePosition);
-            face1WithOneTilePosition.join("C", "A", face4WithOneTilePosition);
             it("should return the correct toString result", function () {
+                face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
+                face1WithOneTilePosition.join("B", "C", face3WithOneTilePosition);
+                face1WithOneTilePosition.join("C", "A", face4WithOneTilePosition);
                 const expectedToString =
                     "Face: 1, Tile Positions: 1, Joins: (1-A->2-B)(1-B->3-C)(1-C->4-A)\n" +
                     "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n";
                 expect(face1WithOneTilePosition.toString()).to.equal(expectedToString);
             });
             it("should pass the integrity check", function () {
+                face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
+                face1WithOneTilePosition.join("B", "C", face3WithOneTilePosition);
+                face1WithOneTilePosition.join("C", "A", face4WithOneTilePosition);
                 expect(face1WithOneTilePosition.integrityCheck()).to.eql([true, "Passed"]);
             });
         });
@@ -157,8 +167,14 @@ describe("Face behavior", function () {
         });
 
         context("where the two Faces to be joined have differing numbers of Tile Positions", function () {
-            const face2WithFourTilePositions = buildFace("2", 4, FOUR_TILE_POSITION_DATA);
             it("should throw an error", function () {
+                const tilePosition2_2 = new TilePosition("2", "2");
+                const tilePosition2_3 = new TilePosition("3", "2");
+                const tilePosition2_4 = new TilePosition("4", "2");
+                tilePositions2.set(tilePosition2_2.name, tilePosition2_2);
+                tilePositions2.set(tilePosition2_3.name, tilePosition2_3);
+                tilePositions2.set(tilePosition2_4.name, tilePosition2_4);
+                const face2WithFourTilePositions = new Face("2", tilePositions2);
                 expect(function () {
                     face1WithOneTilePosition.join("A", "B", face2WithFourTilePositions);
                 }).to.throw(Error, "Cannot join Faces which have differing numbers of Tile Positions!");
@@ -182,11 +198,8 @@ describe("Face behavior", function () {
         });
 
         context("where there is already a join for the side given", function () {
-            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
-            const face3WithOneTilePosition = buildFace("3", 1, ONE_TILE_POSITION_DATA);
-            face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
             it("should throw an error", function () {
+                face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
                 expect(function () {
                     face1WithOneTilePosition.join("A", "B", face3WithOneTilePosition);
                 }).to.throw(Error, "Existing join already present for side A!");
@@ -194,16 +207,15 @@ describe("Face behavior", function () {
         });
 
         context("where the Face is already joined to three others", function () {
-            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
-            const face2WithOneTilePosition = buildFace("2", 1, ONE_TILE_POSITION_DATA);
-            const face3WithOneTilePosition = buildFace("3", 1, ONE_TILE_POSITION_DATA);
-            const face4WithOneTilePosition = buildFace("4", 1, ONE_TILE_POSITION_DATA);
-            const face5WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
-            face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
-            face1WithOneTilePosition.join("B", "C", face3WithOneTilePosition);
-            face1WithOneTilePosition.join("C", "A", face4WithOneTilePosition);
-            assert(face1WithOneTilePosition.integrityCheck());
             it("should throw an error", function () {
+                const tilePosition5_1 = new TilePosition("1", "5");
+                const tilePositions5 = new Map<string, TilePosition>();
+                tilePositions5.set(tilePosition5_1.name, tilePosition5_1);
+                const face5WithOneTilePosition = new Face("4", tilePositions4);
+                face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
+                face1WithOneTilePosition.join("B", "C", face3WithOneTilePosition);
+                face1WithOneTilePosition.join("C", "A", face4WithOneTilePosition);
+                assert(face1WithOneTilePosition.integrityCheck());
                 expect(function () {
                     face1WithOneTilePosition.join("A", "A", face5WithOneTilePosition);
                 }).to.throw(Error, "Faces can only join to three other faces!");
