@@ -144,10 +144,9 @@ describe("Face behavior", function () {
         });
 
         context("where the Face to join to is the same as the Face you are joining from", function () {
-            const face1WithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             it("should throw an error", function () {
                 expect(function () {
-                    face1WithOneTilePosition.join("A", "B", face1WithOneTilePosition);
+                    faceWithOneTilePosition.join("A", "B", faceWithOneTilePosition);
                 }).to.throw(Error, "Cannot join a Face to itself!");
             });
         });
@@ -216,16 +215,14 @@ describe("Face behavior", function () {
     describe("if #hasEmptyTilePositions() is called to test if there are any empty Tile Positions on this Face", function () {
 
         context("and there are empty Tile Positions", function () {
-            const faceWithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
             it("should return True", function () {
                 expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.true;
             });
         });
 
         context("and there aren't any empty Tile Positions", function () {
-            const faceWithOneTilePosition = buildFace("1", 1, ONE_TILE_POSITION_DATA);
-            assert.isNotNull(faceWithOneTilePosition.emptyTilePositions[0].state.tile = TILE_1);
             it("should return False", function () {
+                faceWithOneTilePosition.emptyTilePositions[0].state.tile = TILE_1;
                 expect(faceWithOneTilePosition.hasEmptyTilePositions()).to.be.false;
             });
         });
