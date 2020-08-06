@@ -7,7 +7,6 @@ import invalid_layout_data4 from "./data/invalid-layout-data4.json";
 import invalid_layout_data5 from "./data/invalid-layout-data5.json";
 import invalid_tile_data from "./data/invalid-tile-data3.json";
 import { TileDefinition } from "../../src/js/puzzle/tile-data-schema";
-import { TilePositionData } from "../../src/js/puzzle/layout-data-schema";
 import { Tile } from "../../src/js/puzzle/tile";
 import { PuzzleDataElements } from "../../src/js/common-data-schema";
 
@@ -44,10 +43,6 @@ const TILE_4_DATA: TileDefinition = {
     "sideC": "0101"
 };
 const TILE_4 = new Tile(TILE_4_DATA);
-
-const ONE_TILE_POSITION_DATA: TilePositionData[]  = [
-    {"position": "1", "joins": []}
-];
 
 const VALID_TEST_PUZZLE: PuzzleDataElements = {
     layoutData: valid_layout_data.testLayoutData,
@@ -86,7 +81,6 @@ const INVALID_TEST_PUZZLE_6: PuzzleDataElements = {
 
 export {
     TILE_1, TILE_1_DATA, TILE_2, TILE_2_DATA, TILE_3, TILE_3_DATA, TILE_4, TILE_4_DATA,
-    ONE_TILE_POSITION_DATA,
     VALID_TEST_PUZZLE,
     INVALID_TEST_PUZZLE_1, INVALID_TEST_PUZZLE_2, INVALID_TEST_PUZZLE_3, INVALID_TEST_PUZZLE_4, INVALID_TEST_PUZZLE_5, INVALID_TEST_PUZZLE_6
 }

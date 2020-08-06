@@ -1,22 +1,39 @@
 import { Face } from "../../../src/js/puzzle/face";
 import { Tetrahedron } from '../../../src/js/puzzle/tetrahedron';
-import { buildFace } from "../../../src/js/puzzle-loader";
+import { TilePosition } from "../../../src/js/puzzle/tile-position";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { ONE_TILE_POSITION_DATA, TILE_1, TILE_2 } from "../common-test-data";
+import { TILE_1, TILE_2 } from "../common-test-data";
 
 
 describe("Tetrahedron behaviour", function () {
 
     let tetrahedron: Tetrahedron;
+    let face1WithOneTilePosition: Face;
 
     beforeEach(function () {
+        const tilePosition1_1 = new TilePosition("1", "1");
+        const tilePositions1 = new Map<string, TilePosition>();
+        tilePositions1.set(tilePosition1_1.name, tilePosition1_1);
+        face1WithOneTilePosition = new Face("1", tilePositions1);
+        const tilePosition2_1 = new TilePosition("1", "2");
+        const tilePositions2 = new Map<string, TilePosition>();
+        tilePositions2.set(tilePosition2_1.name, tilePosition2_1);
+        const face2WithOneTilePosition = new Face("2", tilePositions2);
+        const tilePosition3_1 = new TilePosition("1", "3");
+        const tilePositions3 = new Map<string, TilePosition>();
+        tilePositions3.set(tilePosition3_1.name, tilePosition3_1);
+        const face3WithOneTilePosition = new Face("3", tilePositions3);
+        const tilePosition4_1 = new TilePosition("1", "4");
+        const tilePositions4 = new Map<string, TilePosition>();
+        tilePositions4.set(tilePosition2_1.name, tilePosition4_1);
+        const face4WithOneTilePosition = new Face("4", tilePositions4);
         const faces: Array<Face> = [
-            buildFace("1", 1, ONE_TILE_POSITION_DATA),
-            buildFace("2", 1, ONE_TILE_POSITION_DATA),
-            buildFace("3", 1, ONE_TILE_POSITION_DATA),
-            buildFace("4", 1, ONE_TILE_POSITION_DATA)
+            face1WithOneTilePosition,
+            face2WithOneTilePosition,
+            face3WithOneTilePosition,
+            face4WithOneTilePosition
         ];
         tetrahedron = new Tetrahedron("test", faces);
     });
@@ -54,7 +71,7 @@ describe("Tetrahedron behaviour", function () {
 
         context("with an invalid number of faces", function () {
             it("should throw an error", function () {
-                const faces: Array<Face> = [buildFace("1", 1, ONE_TILE_POSITION_DATA)];
+                const faces: Array<Face> = [face1WithOneTilePosition];
                 expect(function () {
                     new Tetrahedron("invalid", faces);
                 }).to.throw(Error, "Tetrahedron must always be configured with 4 Faces!");

@@ -4,10 +4,10 @@ import { greatPuzzle } from "./great-puzzle";
 import { LayoutData, TilePositionData} from "./puzzle/layout-data-schema";
 import { TileData } from "./puzzle/tile-data-schema";
 import { Tetrahedron } from "./puzzle/tetrahedron";
+import { Face } from "./puzzle/face";
+import { TilePosition } from "./puzzle/tile-position";
 import { TilePool } from "./puzzle/tile-pool";
 import { PuzzleDataElements, PuzzleComponents } from "./common-data-schema";
-import {Face} from "./puzzle/face";
-import {TilePosition} from "./puzzle/tile-position";
 
 
 function getTilePool(tileData: TileData): TilePool {
@@ -100,4 +100,4 @@ function getPuzzleComponents(puzzleType: string | PuzzleDataElements): PuzzleCom
     }
 }
 
-export { getPuzzleComponents, buildTetrahedron, buildFace }
+export { getPuzzleComponents, buildTetrahedron }
