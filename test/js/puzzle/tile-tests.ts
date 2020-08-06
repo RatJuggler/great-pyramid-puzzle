@@ -9,19 +9,30 @@ import { TILE_1_DATA, TILE_2_DATA, TILE_3_DATA, TILE_4_DATA } from "../common-te
 
 describe("Tile behaviour", function () {
 
+    let tile1: Tile;
+    let tile2: Tile;
+    let tile3: Tile;
+    let tile4: Tile;
+
+    beforeEach(function () {
+        tile1 = new Tile(TILE_1_DATA);
+        tile2 = new Tile(TILE_2_DATA);
+        tile3 = new Tile(TILE_3_DATA);
+        tile4 = new Tile(TILE_4_DATA);
+    });
+
     describe("if a new Tile is created", function () {
 
         context("with valid Tile data", function () {
-            const tile = new Tile(TILE_1_DATA);
             it("should return a correctly initialised instance", function () {
-                expect(tile).to.be.an.instanceOf(Tile);
+                expect(tile1).to.be.an.instanceOf(Tile);
             });
             it("with the id set correctly", function () {
-                expect(tile.id).to.equal(TILE_1_DATA.tile);
+                expect(tile1.id).to.equal(TILE_1_DATA.tile);
             });
             it("should also return the correct toString result from this instance", function () {
                 const expectedToString = "Id: 101, Side-A: 1010, Side-B: 0010, Side-C: 0010";
-                expect(tile.toString()).to.equal(expectedToString);
+                expect(tile1.toString()).to.equal(expectedToString);
             });
         });
 
@@ -58,23 +69,20 @@ describe("Tile behaviour", function () {
     describe("if #getSegmentsForSide() is called to get the segments for a side on a Tile that hasn't been rotated", function () {
 
         context("with argument SideA", function () {
-            const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideA", function () {
-                expect(tile.getSegmentsForSide(0, Side.SideA)).to.equal(TILE_3_DATA.sideA);
+                expect(tile3.getSegmentsForSide(0, Side.SideA)).to.equal(TILE_3_DATA.sideA);
             });
         });
 
         context("with argument SideB", function () {
-            const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideB", function () {
-                expect(tile.getSegmentsForSide(0, Side.SideB)).to.equal(TILE_3_DATA.sideB);
+                expect(tile3.getSegmentsForSide(0, Side.SideB)).to.equal(TILE_3_DATA.sideB);
             });
         });
 
         context("with argument SideC", function () {
-            const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideC", function () {
-                expect(tile.getSegmentsForSide(0, Side.SideC)).to.equal(TILE_3_DATA.sideC);
+                expect(tile3.getSegmentsForSide(0, Side.SideC)).to.equal(TILE_3_DATA.sideC);
             });
         });
 
@@ -83,23 +91,20 @@ describe("Tile behaviour", function () {
     describe("if #getSegmentsForSide() is called to get the segments for a side on a Tile that has been rotated once", function () {
 
         context("with argument SideA", function () {
-            const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideC", function () {
-                expect(tile.getSegmentsForSide(1, Side.SideA)).to.equal(TILE_3_DATA.sideC);
+                expect(tile3.getSegmentsForSide(1, Side.SideA)).to.equal(TILE_3_DATA.sideC);
             });
         });
 
         context("with argument SideB", function () {
-            const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideA", function () {
-                expect(tile.getSegmentsForSide(1, Side.SideB)).to.equal(TILE_3_DATA.sideA);
+                expect(tile3.getSegmentsForSide(1, Side.SideB)).to.equal(TILE_3_DATA.sideA);
             });
         });
 
         context("with argument SideC", function () {
-            const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideB", function () {
-                expect(tile.getSegmentsForSide(1, Side.SideC)).to.equal(TILE_3_DATA.sideB);
+                expect(tile3.getSegmentsForSide(1, Side.SideC)).to.equal(TILE_3_DATA.sideB);
             });
         });
 
@@ -108,23 +113,20 @@ describe("Tile behaviour", function () {
     describe("if #getSegmentsForSide() is called to get the segments for a side on a Tile that has been rotated twice", function () {
 
         context("with argument SideA", function () {
-            const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideB", function () {
-                expect(tile.getSegmentsForSide(2, Side.SideA)).to.equal(TILE_3_DATA.sideB);
+                expect(tile3.getSegmentsForSide(2, Side.SideA)).to.equal(TILE_3_DATA.sideB);
             });
         });
 
         context("with argument SideB", function () {
-            const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideC", function () {
-                expect(tile.getSegmentsForSide(2, Side.SideB)).to.equal(TILE_3_DATA.sideC);
+                expect(tile3.getSegmentsForSide(2, Side.SideB)).to.equal(TILE_3_DATA.sideC);
             });
         });
 
         context("with argument SideC", function () {
-            const tile = new Tile(TILE_3_DATA);
             it("should return the segment coding for SideA", function () {
-                expect(tile.getSegmentsForSide(2, Side.SideC)).to.equal(TILE_3_DATA.sideA);
+                expect(tile3.getSegmentsForSide(2, Side.SideC)).to.equal(TILE_3_DATA.sideA);
             });
         });
 
@@ -133,18 +135,16 @@ describe("Tile behaviour", function () {
     describe("if #getSegments() is called to get the segment codings", function () {
 
         context("for test Tile 2", function () {
-            const tile = new Tile(TILE_2_DATA);
-            const expectedSegments = TILE_2_DATA.sideA + TILE_2_DATA.sideB + TILE_2_DATA.sideC;
             it("should return the segments", function () {
-                expect(tile.segments).to.equal(expectedSegments);
+                const expectedSegments = TILE_2_DATA.sideA + TILE_2_DATA.sideB + TILE_2_DATA.sideC;
+                expect(tile2.segments).to.equal(expectedSegments);
             });
         });
 
         context("for test Tile 3", function () {
-            const tile = new Tile(TILE_3_DATA);
-            const expectedSegments = TILE_3_DATA.sideA + TILE_3_DATA.sideB + TILE_3_DATA.sideC;
             it("should return the segments as normal", function () {
-                expect(tile.segments).to.equal(expectedSegments);
+                const expectedSegments = TILE_3_DATA.sideA + TILE_3_DATA.sideB + TILE_3_DATA.sideC;
+                expect(tile3.segments).to.equal(expectedSegments);
             });
         });
 
@@ -153,18 +153,16 @@ describe("Tile behaviour", function () {
     describe("if #getSegmentsForSideToMatchWith() is called to get a matching side segments", function () {
 
         context("with a newly placed Tile", function () {
-            const tile = new Tile(TILE_1_DATA);
-            const expectedSegments = TILE_1_DATA.sideA.split("").reverse().join("");
             it("should return the segments for the side reversed", function () {
-                expect(tile.getSegmentsForSideToMatchWith(0, Side.SideA)).to.equal(expectedSegments);
+                const expectedSegments = TILE_1_DATA.sideA.split("").reverse().join("");
+                expect(tile1.getSegmentsForSideToMatchWith(0, Side.SideA)).to.equal(expectedSegments);
             });
         });
 
         context("with a rotated Tile", function () {
-            const tile = new Tile(TILE_4_DATA);
-            const expectedSegments = TILE_4_DATA.sideC.split("").reverse().join("");
             it("should return the segments for the side reversed", function () {
-                expect(tile.getSegmentsForSideToMatchWith(1, Side.SideA)).to.equal(expectedSegments);
+                const expectedSegments = TILE_4_DATA.sideC.split("").reverse().join("");
+                expect(tile4.getSegmentsForSideToMatchWith(1, Side.SideA)).to.equal(expectedSegments);
             });
         });
 
@@ -173,28 +171,24 @@ describe("Tile behaviour", function () {
     describe("if '#hasSideSegments() is called to test if a Tile has the supplied side segments", function () {
 
         context("and the Tile doesn't have the side segments", function () {
-            const tile3 = new Tile(TILE_3_DATA);
-            const tile4 = new Tile(TILE_4_DATA);
-            const findSegments = tile4.getSegmentsForSideToMatchWith(0, Side.SideA) + "...." + "....";
-            const result = tile3.hasSideSegments(findSegments);
             it("should return an array", function () {
-                expect(result).to.be.an.instanceof(Array);
+                const findSegments = tile4.getSegmentsForSideToMatchWith(0, Side.SideA) + "...." + "....";
+                expect(tile3.hasSideSegments(findSegments)).to.be.an.instanceof(Array);
             });
             it("should have a length of 0", function () {
-                expect(result.length).to.equal(0);
+                const findSegments = tile4.getSegmentsForSideToMatchWith(0, Side.SideA) + "...." + "....";
+                expect(tile3.hasSideSegments(findSegments).length).to.equal(0);
             });
         });
 
         context("and the Tile has the side segments", function () {
-            const tile3 = new Tile(TILE_3_DATA);
-            const tile4 = new Tile(TILE_4_DATA);
-            const findSegments = "...." + "...." + tile4.getSegmentsForSideToMatchWith(0, Side.SideC);
-            const result = tile3.hasSideSegments(findSegments);
             it("should return an array", function () {
-                expect(result).to.be.an.instanceof(Array);
+                const findSegments = "...." + "...." + tile4.getSegmentsForSideToMatchWith(0, Side.SideC);
+                expect(tile3.hasSideSegments(findSegments)).to.be.an.instanceof(Array);
             });
             it("should have a length of 1", function () {
-                expect(result.length).to.equal(1);
+                const findSegments = "...." + "...." + tile4.getSegmentsForSideToMatchWith(0, Side.SideC);
+                expect(tile3.hasSideSegments(findSegments).length).to.equal(1);
             });
         });
 
