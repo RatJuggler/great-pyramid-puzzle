@@ -23,7 +23,7 @@ export class Face implements IntegrityCheck {
             throw new Error(`Face must always be configured with one of the following names [${Face.FACE_NAMES}]!`);
         }
         if (!(Face.VALID_TILE_COUNTS.includes(this._tilePositions.size))) {
-            throw new Error(`Face must always be configured with one of ${Face.VALID_TILE_COUNTS} number of TilePosition!`);
+            throw new Error(`Face must always be configured with one of ${Face.VALID_TILE_COUNTS} TilePositions!`);
         }
     }
 

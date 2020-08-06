@@ -4,7 +4,7 @@ import { TilePosition } from "../../../src/js/puzzle/tile-position";
 import { assert, expect } from 'chai';
 import 'mocha';
 // @ts-ignore
-import { TILE_1, ONE_TILE_POSITION, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA } from "../common-test-data";
+import { TILE_1, ONE_TILE_POSITION, ONE_TILE_POSITION_DATA, FOUR_TILE_POSITION_DATA, TWO_TILE_POSITIONS } from "../common-test-data";
 
 
 describe("Face behavior", function () {
@@ -41,16 +41,8 @@ describe("Face behavior", function () {
         context("with an invalid number of Tiles Positions", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    buildFace("1", 25, ONE_TILE_POSITION_DATA);
-                }).to.throw(Error, "Number of Tile Positions on a Face must be one of 1,4,9!");
-            });
-        });
-
-        context("where the number of Tile Positions provided does not match the number indicated", function () {
-            it("should throw an error", function () {
-                expect(function () {
-                    buildFace("1", 4, ONE_TILE_POSITION_DATA);
-                }).to.throw(Error, "Number of Tile Positions provided (1) does not match number expected (4)!");
+                    new Face("1", TWO_TILE_POSITIONS);
+                }).to.throw(Error, "Face must always be configured with one of 1,4,9 TilePositions!");
             });
         });
 

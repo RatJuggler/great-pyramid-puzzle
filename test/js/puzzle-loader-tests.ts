@@ -2,8 +2,16 @@ import { getPuzzleComponents} from "../../src/js/puzzle-loader";
 import { Tetrahedron } from "../../src/js/puzzle/tetrahedron";
 import { expect } from 'chai';
 import 'mocha';
+import {
+    VALID_TEST_PUZZLE,
+    INVALID_TEST_PUZZLE_1,
+    INVALID_TEST_PUZZLE_2,
+    INVALID_TEST_PUZZLE_3,
+    INVALID_TEST_PUZZLE_4,
+    INVALID_TEST_PUZZLE_5,
+    INVALID_TEST_PUZZLE_6
 // @ts-ignore
-import { VALID_TEST_PUZZLE, INVALID_TEST_PUZZLE_1, INVALID_TEST_PUZZLE_2, INVALID_TEST_PUZZLE_3, INVALID_TEST_PUZZLE_4 } from "./common-test-data";
+} from "./common-test-data";
 
 
 describe("if #getPuzzleComponents() is called", function () {
@@ -67,10 +75,26 @@ describe("if #getPuzzleComponents() is called", function () {
         });
     });
 
-    context("with incompatible tetrahedron and tiles", function () {
+    context("with an invalid number of Tiles Positions", function () {
         it("should throw an error", function () {
             expect(function () {
                 getPuzzleComponents(INVALID_TEST_PUZZLE_4);
+            }).to.throw(Error, "Number of Tile Positions on a Face must be one of 1,4,9!");
+        });
+    });
+
+    context("where the number of Tile Positions provided does not match the number indicated", function () {
+        it("should throw an error", function () {
+            expect(function () {
+                getPuzzleComponents(INVALID_TEST_PUZZLE_5);
+            }).to.throw(Error, "Number of Tile Positions provided (1) does not match number expected (4)!");
+        });
+    });
+
+    context("with incompatible tetrahedron and tiles", function () {
+        it("should throw an error", function () {
+            expect(function () {
+                getPuzzleComponents(INVALID_TEST_PUZZLE_6);
             }).to.throw(Error, "There must be enough Tiles to cover the Tetrahedron!");
         });
     });
