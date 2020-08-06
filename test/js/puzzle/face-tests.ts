@@ -75,7 +75,7 @@ describe("Face behavior", function () {
         });
 
         context("and then joined to three other Faces", function () {
-            it("should return the correct toString result", function () {
+            it("should return the correct toString result and pass the integrity check", function () {
                 face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
                 face1WithOneTilePosition.join("B", "C", face3WithOneTilePosition);
                 face1WithOneTilePosition.join("C", "A", face4WithOneTilePosition);
@@ -83,11 +83,6 @@ describe("Face behavior", function () {
                     "Face: 1, Tile Positions: 1, Joins: (1-A->2-B)(1-B->3-C)(1-C->4-A)\n" +
                     "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n";
                 expect(face1WithOneTilePosition.toString()).to.equal(expectedToString);
-            });
-            it("should pass the integrity check", function () {
-                face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
-                face1WithOneTilePosition.join("B", "C", face3WithOneTilePosition);
-                face1WithOneTilePosition.join("C", "A", face4WithOneTilePosition);
                 expect(face1WithOneTilePosition.integrityCheck()).to.eql([true, "Passed"]);
             });
         });
@@ -142,15 +137,12 @@ describe("Face behavior", function () {
     describe("if #join() is called to join one Face to another", function () {
 
         context("with valid side names and Tile Positions for the two different Faces to be joined", function () {
-            it("should join the Faces in the direction given", function () {
+            it("should join the Faces in the direction given but not in the opposite direction", function () {
                 face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
                 const face1ExpectedToString =
                     "Face: 1, Tile Positions: 1, Joins: (1-A->2-B)\n" +
                     "TilePosition: 1, On Face: 1, Contains Tile: [Empty], Joins: \n";
                 expect(face1WithOneTilePosition.toString()).to.equal(face1ExpectedToString);
-            });
-            it("should not join the Faces in the opposite direction", function () {
-                face1WithOneTilePosition.join("A", "B", face2WithOneTilePosition);
                 const face2ExpectedToString =
                     "Face: 2, Tile Positions: 1, Joins: \n" +
                     "TilePosition: 1, On Face: 2, Contains Tile: [Empty], Joins: \n";
