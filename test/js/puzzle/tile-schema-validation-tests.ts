@@ -10,11 +10,16 @@ import 'mocha';
 
 describe("Validate tile data definition files", function () {
 
+    let ajv: Ajv.Ajv;
+
+    beforeEach(function () {
+        ajv = new Ajv();
+    });
+
     describe("the tile data definition file schema", function () {
 
         context("when loaded", function () {
             it("should be valid", function () {
-                let ajv = new Ajv();
                 let valid = ajv.validateSchema(tile_schema);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
@@ -27,7 +32,6 @@ describe("Validate tile data definition files", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
-                let ajv = new Ajv();
                 let valid = ajv.validate(tile_schema, valid_test_tiles.testTileData);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
@@ -40,7 +44,6 @@ describe("Validate tile data definition files", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
-                let ajv = new Ajv();
                 let valid = ajv.validate(tile_schema, test_tiles);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
@@ -53,7 +56,6 @@ describe("Validate tile data definition files", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
-                let ajv = new Ajv();
                 let valid = ajv.validate(tile_schema, pocket_tiles);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
@@ -66,7 +68,6 @@ describe("Validate tile data definition files", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
-                let ajv = new Ajv();
                 let valid = ajv.validate(tile_schema, great_tiles);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
