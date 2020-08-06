@@ -10,11 +10,16 @@ import 'mocha';
 
 describe("Validate layout data definition files", function () {
 
+    let ajv: Ajv.Ajv;
+
+    beforeEach(function () {
+        ajv = new Ajv();
+    });
+
     describe("the layout data definition file schema", function () {
 
         context("when loaded", function () {
             it("should be valid", function () {
-                let ajv = new Ajv();
                 let valid = ajv.validateSchema(layout_schema);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
@@ -27,7 +32,6 @@ describe("Validate layout data definition files", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
-                let ajv = new Ajv();
                 let valid = ajv.validate(layout_schema, valid_test_layout.testLayoutData);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
@@ -40,7 +44,6 @@ describe("Validate layout data definition files", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
-                let ajv = new Ajv();
                 let valid = ajv.validate(layout_schema, test_layout);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
@@ -53,7 +56,6 @@ describe("Validate layout data definition files", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
-                let ajv = new Ajv();
                 let valid = ajv.validate(layout_schema, pocket_layout);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
@@ -66,7 +68,6 @@ describe("Validate layout data definition files", function () {
 
         context("when loaded", function () {
             it("should validate", function () {
-                let ajv = new Ajv();
                 let valid = ajv.validate(layout_schema, great_layout);
                 console.log(ajv.errorsText());
                 expect(valid).to.be.true;
