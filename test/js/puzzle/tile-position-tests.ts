@@ -41,7 +41,7 @@ describe("TilePosition behaviour", function () {
         });
 
         context("and then joined to three other TilePositions", function () {
-            it("should return the correct toString result", function () {
+            it("should return the correct toString result pass the integrity check", function () {
                 const tilePosition = new TilePosition("XYZ", "1");
                 tilePosition.join("A", "B", tilePosition1);
                 tilePosition.join("B", "C", tilePosition2);
@@ -49,12 +49,6 @@ describe("TilePosition behaviour", function () {
                 const expectedToString =
                     "TilePosition: XYZ, On Face: 1, Contains Tile: [Empty], Joins: (XYZ-A->1-TP1-B)(XYZ-B->1-TP2-C)(XYZ-C->1-TP3-A)";
                 expect(tilePosition.toString()).to.equal(expectedToString);
-            });
-            it("should pass the integrity check", function () {
-                const tilePosition = new TilePosition("XYZ", "1");
-                tilePosition.join("A", "B", tilePosition1);
-                tilePosition.join("B", "C", tilePosition2);
-                tilePosition.join("C", "A", tilePosition3);
                 expect(tilePosition.integrityCheck()).to.eql([true, "Passed"]);
             });
         });
@@ -64,13 +58,10 @@ describe("TilePosition behaviour", function () {
     describe("if #join() is called to join one TilePosition to another", function () {
 
         context("with valid side names for the two different TilePositions to be joined", function () {
-            it("should join the TilePositions in the direction given", function () {
+            it("should join the TilePositions in the direction given but not the opposite direction", function () {
                 tilePosition1.join("A", "B", tilePosition2);
                 const tile1ExpectedToString = "TilePosition: TP1, On Face: 1, Contains Tile: [Empty], Joins: (TP1-A->1-TP2-B)";
                 expect(tilePosition1.toString()).to.equal(tile1ExpectedToString);
-            });
-            it("should not join the TilePositions in the opposite direction", function () {
-                tilePosition1.join("A", "B", tilePosition2);
                 const tile2ExpectedToString = "TilePosition: TP2, On Face: 1, Contains Tile: [Empty], Joins: ";
                 expect(tilePosition2.toString()).to.equal(tile2ExpectedToString);
             });
@@ -198,65 +189,45 @@ describe("TilePosition behaviour", function () {
     describe("if #tilesMatch() is called on all the TilePositions of a Test puzzle", function () {
 
         context("and the three adjoining TilePositions each with a Tile, but not all the sides match", function () {
-            const validLayoutData = valid_layout_config1.testLayoutData;
-            const tetrahedron = buildTetrahedron(validLayoutData);
-            const tilePositions = tetrahedron.tilePositions;
-            const tilePosition1 = tilePositions[0];
-            const tilePosition2 = tilePositions[1];
-            const tilePosition3 = tilePositions[2];
-            const tilePosition4 = tilePositions[3];
-            tilePosition1.state.tile = TILE_2;
-            tilePosition2.state.tile = TILE_3;
-            tilePosition3.state.tile = TILE_1;
-            tilePosition4.state.tile = TILE_4;
-            const result1 = tilePosition1.tilesMatch();
-            const result2 = tilePosition2.tilesMatch();
-            const result3 = tilePosition3.tilesMatch();
-            const result4 = tilePosition4.tilesMatch();
-            it("should return false for the first TilePosition", function () {
-                expect(result1).to.be.false;
-            });
-            it("should return false for the second TilePosition", function () {
-                expect(result2).to.be.false;
-            });
-            it("should return false for the third TilePosition", function () {
-                expect(result3).to.be.false;
-            });
-            it("should return false for the fourth TilePosition", function () {
-                expect(result4).to.be.false;
+            it("should return false for all the TilePositions", function () {
+                const validLayoutData = valid_layout_config1.testLayoutData;
+                const tetrahedron = buildTetrahedron(validLayoutData);
+                const tilePositions = tetrahedron.tilePositions;
+                const tilePosition1 = tilePositions[0];
+                const tilePosition2 = tilePositions[1];
+                const tilePosition3 = tilePositions[2];
+                const tilePosition4 = tilePositions[3];
+                tilePosition1.state.tile = TILE_2;
+                tilePosition2.state.tile = TILE_3;
+                tilePosition3.state.tile = TILE_1;
+                tilePosition4.state.tile = TILE_4;
+                expect(tilePosition1.tilesMatch()).to.be.false;
+                expect(tilePosition2.tilesMatch()).to.be.false;
+                expect(tilePosition3.tilesMatch()).to.be.false;
+                expect(tilePosition4.tilesMatch()).to.be.false;
             });
         });
 
         context("and the three adjoining TilePositions each with a Tile, and all the sides match", function () {
-            const validLayoutData = valid_layout_config1.testLayoutData;
-            const tetrahedron = buildTetrahedron(validLayoutData);
-            const tilePositions = tetrahedron.tilePositions;
-            const tilePosition1 = tilePositions[0];
-            const tilePosition2 = tilePositions[1];
-            const tilePosition3 = tilePositions[2];
-            const tilePosition4 = tilePositions[3];
-            tilePosition1.state.tile = TILE_2;
-            tilePosition2.state.tile = TILE_3;
-            tilePosition3.state.tile = TILE_1;
-            tilePosition3.state.rotate();
-            tilePosition3.state.rotate();
-            tilePosition4.state.tile = TILE_4;
-            tilePosition4.state.rotate();
-            const result1 = tilePosition1.tilesMatch();
-            const result2 = tilePosition2.tilesMatch();
-            const result3 = tilePosition3.tilesMatch();
-            const result4 = tilePosition4.tilesMatch();
-            it("should return true for the first TilePosition", function () {
-                expect(result1).to.be.true;
-            });
-            it("should return true for the second TilePosition", function () {
-                expect(result2).to.be.true;
-            });
-            it("should return true for the third TilePosition", function () {
-                expect(result3).to.be.true;
-            });
-            it("should return true for the fourth TilePosition", function () {
-                expect(result4).to.be.true;
+            it("should return true for all the TilePositions", function () {
+                const validLayoutData = valid_layout_config1.testLayoutData;
+                const tetrahedron = buildTetrahedron(validLayoutData);
+                const tilePositions = tetrahedron.tilePositions;
+                const tilePosition1 = tilePositions[0];
+                const tilePosition2 = tilePositions[1];
+                const tilePosition3 = tilePositions[2];
+                const tilePosition4 = tilePositions[3];
+                tilePosition1.state.tile = TILE_2;
+                tilePosition2.state.tile = TILE_3;
+                tilePosition3.state.tile = TILE_1;
+                tilePosition3.state.rotate();
+                tilePosition3.state.rotate();
+                tilePosition4.state.tile = TILE_4;
+                tilePosition4.state.rotate();
+                expect(tilePosition1.tilesMatch()).to.be.true;
+                expect(tilePosition2.tilesMatch()).to.be.true;
+                expect(tilePosition3.tilesMatch()).to.be.true;
+                expect(tilePosition4.tilesMatch()).to.be.true;
             });
         });
 
