@@ -26,7 +26,7 @@ function buildFace(faceName: string, numberOfTiles: number, tilePositionData: Ti
     }
     // We can't join the tile positions until they've been created for every face.
     const tilePositions = tilePositionData
-        .map((tilePositionDetails) => new TilePosition(tilePositionDetails.position, faceName))
+        .map(tilePositionDetails => new TilePosition(tilePositionDetails.position, faceName))
         .reduce((map, newTilePosition) => {
                 map.set(newTilePosition.name, newTilePosition);
                 return map;
@@ -40,23 +40,22 @@ function buildTetrahedron(layoutData: LayoutData): Tetrahedron {
     }
     // We have to create all of the face and tile positions before we can create the tetrahedron and join them together.
     const faces = layoutData.faces
-        .map((faceDetails) => buildFace(faceDetails.name, layoutData.numberOfTilesPerFace, faceDetails.tilePositions));
+        .map(faceDetails => buildFace(faceDetails.name, layoutData.numberOfTilesPerFace, faceDetails.tilePositions));
     const tetrahedron = new Tetrahedron(layoutData.puzzle, faces);
-    for (const faceDetails of layoutData.faces) {
+    layoutData.faces.forEach(faceDetails => {
         const fromFace = tetrahedron.getFace(faceDetails.name);
         // Join the faces...
-        for (const joinData of faceDetails.joins) {
-            fromFace.join(joinData.fromSide, joinData.toSide, tetrahedron.getFace(joinData.ofFace));
-        }
+        faceDetails.joins
+            .forEach(joinData => fromFace.join(joinData.fromSide, joinData.toSide, tetrahedron.getFace(joinData.ofFace)));
         // Join all the tile positions...
-        for (const tilePositionDetails of faceDetails.tilePositions) {
+        faceDetails.tilePositions.forEach(tilePositionDetails => {
             const fromTilePosition = tetrahedron.getFace(faceDetails.name).getTilePosition(tilePositionDetails.position);
-            for (const joinData of tilePositionDetails.joins) {
+            tilePositionDetails.joins.forEach(joinData => {
                 const toTilePosition = tetrahedron.getFace(joinData.onFace).getTilePosition(joinData.ofTilePosition);
                 fromTilePosition.join(joinData.fromSide, joinData.toSide, toTilePosition);
-            }
-        }
-    }
+            });
+        });
+    });
     return tetrahedron;
 }
 
