@@ -8,6 +8,9 @@ import { getRandomInt } from "../utils";
 class Population {
 
     private readonly _population = new Array<Tetrahedron>();
+    private readonly _sidesMatchingWhenSolved: number;
+
+    private _memberWithMostSidesMatching = 0;
 
     constructor(size: number, puzzleType: string) {
         for (let i = 0; i < size; i++) {
@@ -18,14 +21,22 @@ class Population {
             });
             this._population.push(puzzle.tetrahedron);
         }
+        this._sidesMatchingWhenSolved = this._population[0].tilePositionCount * 3;
     }
 
-    isSolved(): boolean {
-        return true;
+    evaluate(): boolean {
+        this._memberWithMostSidesMatching = 0;
+        for (let i = 0; i < this._population.length; i++) {
+            const sidesMatching = this._population[i].tileSidesMatching();
+            if (sidesMatching > this._memberWithMostSidesMatching) {
+                this._memberWithMostSidesMatching = sidesMatching;
+            }
+        }
+        return this._memberWithMostSidesMatching == this._sidesMatchingWhenSolved;
     }
 
-    bestSoFar() {
-        return PuzzleChange.SOLVED;
+    bestSoFar(): Tetrahedron {
+        return this._population[this._memberWithMostSidesMatching];
     }
 
 }
@@ -43,7 +54,7 @@ export class GeneticSolver extends SolverBase {
     }
 
     initialState(): Array<PuzzleChange> {
-        return [PuzzleChange.INITIAL];
+        return this.currentState();
     }
 
     forceNextState(): PuzzleChange {
@@ -51,15 +62,21 @@ export class GeneticSolver extends SolverBase {
     }
 
     nextState(): PuzzleChange {
-        if (this._population.isSolved()) {
+        if (this._population.evaluate()) {
             return PuzzleChange.SOLVED;
         } else {
-            return this._population.bestSoFar();
+            return PuzzleChange.COMPLETED;
         }
     }
 
     currentState(): Array<PuzzleChange> {
-        return [PuzzleChange.SOLVED];
+        return this._population.bestSoFar().tilePositions.map((tilePosition) => {
+            if (tilePosition.state.isEmpty()) {
+                return SolverBase.empty(tilePosition);
+            } else {
+                return SolverBase.current(tilePosition);
+            }
+        });
     }
 
 }
