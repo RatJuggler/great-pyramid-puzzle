@@ -74,17 +74,17 @@ export class TilePosition implements IntegrityCheck {
         return true;
     }
 
-    tilesMatch(): boolean {
+    sidesMatching(): number {
         if (this.state.isEmpty()) {
-            throw new Error("Can't check if a Tile matches when there is no Tile at the TilePosition to match from!");
+            throw new Error("Can't check if a Tiles sides match when there is no Tile at the TilePosition to match from!");
         }
-        // Check match for each join to another TilePosition.
-        for (const join of this._joins) {
-            if (!this.sideMatches(join)) {
-                return false;
-            }
-        }
-        return true;
+        // Count the matching sides for each join to another TilePosition.
+        return this._joins.reduce((matches, join) => matches + (this.sideMatches(join) ? 1 : 0), 0);
+    }
+
+    tilesMatch(): boolean {
+        // Check that all the sides match.
+        return this.sidesMatching() == this._joins.length;
     }
 
     private static sideSegments(join: TilePositionJoinProperties): string {

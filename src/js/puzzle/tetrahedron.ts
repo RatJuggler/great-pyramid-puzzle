@@ -63,6 +63,11 @@ export class Tetrahedron implements IntegrityCheck {
         throw new Error(`Face (${name}) not found on Tetrahedron!`);
     }
 
+    tileSidesMatching(): number {
+        return this.tilePositions
+            .reduce((totalMatches, tilePosition) => totalMatches + tilePosition.sidesMatching(), 0);
+    }
+
     toString(): string {
         let tetrahedronString = `Puzzle Type: ${this._name}\n`;
         this._faces.forEach(face => tetrahedronString += face.toString());
