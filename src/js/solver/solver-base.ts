@@ -31,12 +31,12 @@ abstract class SolverBase implements Solver {
         return TilePositionChange.empty(tilePosition.id);
     }
 
-    protected static current(tilePosition: TilePosition): PuzzleChange {
-        return TileChange.current(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments)
+    protected static set(tilePosition: TilePosition): PuzzleChange {
+        return TileChange.set(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments)
     }
 
-    protected static place(tilePosition: TilePosition): PuzzleChange {
-        return TileChange.place(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments);
+    protected static add(tilePosition: TilePosition): PuzzleChange {
+        return TileChange.add(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments);
     }
 
     protected static rotate(tilePosition: TilePosition, rotations: number): PuzzleChange {

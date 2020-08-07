@@ -1,6 +1,7 @@
 import { SolverBase } from "./solver-base";
-import { PuzzleChange } from "../puzzle-changes";
+import { PuzzleChange, PuzzleChangeSet } from "../puzzle-changes";
 import { Tetrahedron } from "../puzzle/tetrahedron";
+import { Side } from "../puzzle/side";
 import { getPuzzleComponents } from "../puzzle-loader";
 import { getRandomInt } from "../utils";
 
@@ -17,11 +18,11 @@ class Population {
             const puzzle = getPuzzleComponents(puzzleType);
             puzzle.tetrahedron.emptyTilePositions.forEach((tilePosition) => {
                 tilePosition.state.tile = puzzle.tilePool.randomTile;
-                tilePosition.state.rotations = getRandomInt(3);
+                tilePosition.state.rotations = getRandomInt(Side.numberOfSides);
             });
             this._population.push(puzzle.tetrahedron);
         }
-        this._sidesMatchingWhenSolved = this._population[0].tilePositionCount * 3;
+        this._sidesMatchingWhenSolved = this._population[0].tilePositionCount * Side.numberOfSides;
     }
 
     evaluate(): boolean {
@@ -44,7 +45,7 @@ class Population {
 
 export class GeneticSolver extends SolverBase {
 
-    private static readonly POPULATION_SIZE = 100;
+    private static readonly POPULATION_SIZE = 10;
 
     private readonly _population: Population;
 
@@ -62,11 +63,8 @@ export class GeneticSolver extends SolverBase {
     }
 
     nextState(): PuzzleChange {
-        if (this._population.evaluate()) {
-            return PuzzleChange.SOLVED;
-        } else {
-            return PuzzleChange.COMPLETED;
-        }
+        this._population.evaluate();
+        return PuzzleChangeSet.current(this.currentState());
     }
 
     currentState(): Array<PuzzleChange> {
@@ -74,7 +72,7 @@ export class GeneticSolver extends SolverBase {
             if (tilePosition.state.isEmpty()) {
                 return SolverBase.empty(tilePosition);
             } else {
-                return SolverBase.current(tilePosition);
+                return SolverBase.set(tilePosition);
             }
         });
     }

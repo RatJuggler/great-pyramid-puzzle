@@ -16,7 +16,8 @@ enum PuzzleChangeType {
     Start = "Start",
     Empty = "Empty",
     Current = "Current",
-    Place = "Place",
+    Set = "Set",
+    Add = "Add",
     Rotate = "Rotate",
     Remove = "Remove",
     Solved = "Solved",
@@ -56,6 +57,20 @@ class PuzzleChange {
 
 }
 
+
+class PuzzleChangeSet extends PuzzleChange {
+
+    static current(puzzleChanges: Array<PuzzleChange>): PuzzleChange {
+        return new PuzzleChangeSet(PuzzleChangeType.Current, puzzleChanges);
+    }
+
+    constructor(type: PuzzleChangeType, readonly puzzleChanges: Array<PuzzleChange>) {
+        super(type);
+    }
+
+}
+
+
 class TilePositionChange extends PuzzleChange {
 
     static empty(tilePositionId: string): PuzzleChange {
@@ -72,18 +87,19 @@ class TilePositionChange extends PuzzleChange {
 
 }
 
+
 class TileChange extends TilePositionChange {
 
     static start(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
         return new TileChange(PuzzleChangeType.Start, tilePositionId, tileId, rotations, segments);
     }
 
-    static current(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
-        return new TileChange(PuzzleChangeType.Current, tilePositionId, tileId, rotations, segments);
+    static set(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.Set, tilePositionId, tileId, rotations, segments);
     }
 
-    static place(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
-        return new TileChange(PuzzleChangeType.Place, tilePositionId, tileId, rotations, segments);
+    static add(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.Add, tilePositionId, tileId, rotations, segments);
     }
 
     static remove(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
@@ -96,4 +112,5 @@ class TileChange extends TilePositionChange {
 
 }
 
-export { PuzzleChange, PuzzleChangeType, TilePositionChange, TileChange }
+
+export { PuzzleChangeType, PuzzleChange, PuzzleChangeSet, TilePositionChange, TileChange }

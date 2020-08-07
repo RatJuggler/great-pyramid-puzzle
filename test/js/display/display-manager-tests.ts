@@ -27,7 +27,7 @@ function puzzleWithAllTiles(puzzleTypeData: PuzzleDataElements, displayManager: 
         tilePosition.state.tile = puzzle.tilePool.randomTile;
     })
     puzzle.tetrahedron.tilePositions
-        .map((tilePosition) => TileChange.current(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments))
+        .map((tilePosition) => TileChange.set(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments))
         .forEach((displayChange) => displayManager.display(displayChange));
     return puzzle;
 }
@@ -67,7 +67,7 @@ describe("Puzzle display functionality", function () {
                 if (tilePosition.state.isEmpty()) {
                     tpChange = TilePositionChange.empty(tilePosition.id);
                 } else {
-                    tpChange = TileChange.current(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments);
+                    tpChange = TileChange.set(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments);
                 }
                 displayManager.display(tpChange);
             });
@@ -100,7 +100,7 @@ describe("Puzzle display functionality", function () {
             const document = createDocument();
             const displayManager = getDisplayManager(document.documentElement, valid_display1.testDisplayData);
             displayManager.display(PuzzleChange.INITIAL);
-            const tpChange = TileChange.place("1-1", 1, 0, "000100100100");
+            const tpChange = TileChange.add("1-1", 1, 0, "000100100100");
             displayManager.display(tpChange);
             it("should have 4 faces, 3 empty tile position, 1 tile position with 1 tile and 4 tile start positions", function () {
                 expect(document.getElementsByTagName("g")).to.have.length(13);

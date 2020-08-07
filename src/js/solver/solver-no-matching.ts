@@ -54,10 +54,10 @@ export class NoMatchingSolver extends IterativeSolverBase {
         }
     }
 
-    private placeTile(): PuzzleChange {
+    private addTile(): PuzzleChange {
         this._tilePosition.state.tile = this.getTileSelection();
         this._rotating = this.tileRotations();
-        return TileChange.place(this._tilePosition.id, this._tilePosition.state.tile.id, 0, this._tilePosition.state.tile.segments);
+        return TileChange.add(this._tilePosition.id, this._tilePosition.state.tile.id, 0, this._tilePosition.state.tile.segments);
     }
 
     private rotateOrNext(): PuzzleChange {
@@ -70,14 +70,14 @@ export class NoMatchingSolver extends IterativeSolverBase {
                 return PuzzleChange.SOLVED;
             } else {
                 this._tilePosition = this.getNextTilePosition();
-                return this.placeTile()
+                return this.addTile()
             }
         }
     }
 
     nextState(): PuzzleChange {
         if (this._tilePosition.state.isEmpty()) {
-            return this.placeTile();
+            return this.addTile();
         }
         return this.rotateOrNext();
     }

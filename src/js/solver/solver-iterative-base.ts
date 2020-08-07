@@ -36,7 +36,7 @@ abstract class IterativeSolverBase extends SolverBase {
             if (tilePosition.state.isEmpty()) {
                 return SolverBase.empty(tilePosition);
             } else {
-                return SolverBase.current(tilePosition);
+                return SolverBase.set(tilePosition);
             }
         });
     }

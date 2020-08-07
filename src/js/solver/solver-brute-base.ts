@@ -90,7 +90,7 @@ abstract class BruteSolverBase extends IterativeSolverBase {
                 throw new Error("There should be at least one rotation position for an untried Tile!");
             }
             tilePosition.state.rotations = state.tileState.rotations.shift()!;
-            displayChange = SolverBase.place(tilePosition);
+            displayChange = SolverBase.add(tilePosition);
         } else {
             // Otherwise if we've tried all the tiles and nothing matches we need to move back a tile position.
             this._emptyTilePositions.unshift(tilePosition);

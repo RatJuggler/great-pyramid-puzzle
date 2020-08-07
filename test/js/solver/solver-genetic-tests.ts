@@ -18,7 +18,7 @@ describe("GeneticSolver behaviour", function () {
             it("should return an instance of PuzzleChange of type Solved", function () {
                 const result = solver.nextState() as PuzzleChange;
                 expect(result).to.be.an.instanceOf(PuzzleChange);
-                expect(result.type).to.equal(PuzzleChangeType.Solved);
+                expect(result.type).to.equal(PuzzleChangeType.Current);
             });
         });
 
@@ -26,7 +26,7 @@ describe("GeneticSolver behaviour", function () {
             it("should return an instance of PuzzleChange of type Solved", function () {
                 const result = solver.nextState() as PuzzleChange;
                 expect(result).to.be.an.instanceOf(PuzzleChange);
-                expect(result.type).to.equal(PuzzleChangeType.Solved);
+                expect(result.type).to.equal(PuzzleChangeType.Current);
             });
         });
 

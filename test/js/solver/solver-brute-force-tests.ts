@@ -19,8 +19,8 @@ describe("BruteForceSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 1-1", function () {
                 expect(result.tilePositionId).to.equal("1-1");
@@ -37,8 +37,8 @@ describe("BruteForceSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 2-1", function () {
                 expect(result.tilePositionId).to.equal("2-1");
@@ -55,8 +55,8 @@ describe("BruteForceSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 3-1", function () {
                 expect(result.tilePositionId).to.equal("3-1");
@@ -121,8 +121,8 @@ describe("BruteForceSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 3-1", function () {
                 expect(result.tilePositionId).to.equal("3-1");

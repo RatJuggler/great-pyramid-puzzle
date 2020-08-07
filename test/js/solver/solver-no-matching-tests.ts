@@ -52,8 +52,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 1-1", function () {
                 expect(result.tilePositionId).to.equal("1-1");
@@ -67,8 +67,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 2-1", function () {
                 expect(result.tilePositionId).to.equal("2-1");
@@ -82,8 +82,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 3-1", function () {
                 expect(result.tilePositionId).to.equal("3-1");
@@ -97,8 +97,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 4-1", function () {
                 expect(result.tilePositionId).to.equal("4-1");
@@ -129,8 +129,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for a random position", function () {
                 expect("1-1,2-1,3-1,4-1").to.include(result.tilePositionId);
@@ -144,8 +144,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for a random position", function () {
                 expect("1-1,2-1,3-1,4-1").to.include(result.tilePositionId);
@@ -159,8 +159,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for a random position", function () {
                 expect("1-1,2-1,3-1,4-1").to.include(result.tilePositionId);
@@ -174,8 +174,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for a random position", function () {
                 expect("1-1,2-1,3-1,4-1").to.include(result.tilePositionId);
@@ -207,8 +207,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 1-1", function () {
                 expect(result.tilePositionId).to.equal("1-1");
@@ -222,8 +222,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 3-1", function () {
                 expect(result.tilePositionId).to.equal("2-1");
@@ -237,8 +237,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 3-1", function () {
                 expect(result.tilePositionId).to.equal("3-1");
@@ -252,8 +252,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should return an instance of TileChange", function () {
                 expect(result).to.be.an.instanceOf(TileChange);
             });
-            it("should be for type Place", function () {
-                expect(result.type).to.equal(PuzzleChangeType.Place);
+            it("should be for type Add", function () {
+                expect(result.type).to.equal(PuzzleChangeType.Add);
             });
             it("should be for position 4-1", function () {
                 expect(result.tilePositionId).to.equal("4-1");
