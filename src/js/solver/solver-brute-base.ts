@@ -115,7 +115,7 @@ abstract class BruteSolverBase extends IterativeSolverBase {
             displayChange = this.tryNextTile(this._currentState);
         } else {
             // If everything matches then move on to the next tile position.
-            if (tilePosition.tilesMatch()) {
+            if (tilePosition.tileMatches()) {
                 displayChange = this.tryNextTilePosition(this._currentState);
             } else {
                 // Cycle through the rotations or remove the tile if nothing matches.

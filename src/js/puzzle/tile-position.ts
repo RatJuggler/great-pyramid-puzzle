@@ -82,7 +82,7 @@ export class TilePosition implements IntegrityCheck {
         return this._joins.reduce((matches, join) => matches + (this.sideMatches(join) ? 1 : 0), 0);
     }
 
-    tilesMatch(): boolean {
+    tileMatches(): boolean {
         // Check that all the sides match.
         return this.sidesMatching() == this._joins.length;
     }

@@ -114,13 +114,13 @@ describe("TilePosition behaviour", function () {
 
     });
 
-    describe("if #tilesMatch() is called to check if the Tile at a TilePosition matches with a single adjoining TilePosition", function () {
+    describe("if #tileMatches() is called to check if the Tile at a TilePosition matches with a single adjoining TilePosition", function () {
 
         context("and the TilePosition being checked is empty", function () {
             it("should throw an error", function () {
                 tilePosition1.join("C", "B", tilePosition2);
                 expect(function () {
-                    tilePosition1.tilesMatch();
+                    tilePosition1.tileMatches();
                 }).to.throw(Error, "Can't check if a Tile matches when there is no Tile at the TilePosition to match from!");
             });
         });
@@ -129,7 +129,7 @@ describe("TilePosition behaviour", function () {
             it("should return true for the first TilePosition", function () {
                 tilePosition1.join("C", "B", tilePosition2);
                 tilePosition1.state.tile = TILE_1;
-                expect(tilePosition1.tilesMatch()).to.be.true;
+                expect(tilePosition1.tileMatches()).to.be.true;
             });
         });
 
@@ -138,7 +138,7 @@ describe("TilePosition behaviour", function () {
                 tilePosition1.join("C", "B", tilePosition2);
                 tilePosition1.state.tile = TILE_1;
                 tilePosition2.state.tile = TILE_3;
-                expect(tilePosition1.tilesMatch()).to.be.false;
+                expect(tilePosition1.tileMatches()).to.be.false;
             });
         });
 
@@ -147,13 +147,13 @@ describe("TilePosition behaviour", function () {
                 tilePosition1.join("C", "B", tilePosition2);
                 tilePosition1.state.tile = TILE_1;
                 tilePosition2.state.tile = TILE_2;
-                expect(tilePosition1.tilesMatch()).to.be.true;
+                expect(tilePosition1.tileMatches()).to.be.true;
             });
         });
 
     });
 
-    describe("if #tilesMatch() is called to check a Tile and there are three adjoining TilePositions", function () {
+    describe("if #tileMatches() is called to check a Tile and there are three adjoining TilePositions", function () {
 
         context("and the three adjoining TilePositions each have a Tile, but not all the sides match", function () {
             it("should return false", function () {
@@ -164,7 +164,7 @@ describe("TilePosition behaviour", function () {
                 tilePosition2.state.tile = TILE_3;
                 tilePosition3.state.tile = TILE_1;
                 tilePosition4.state.tile = TILE_4;
-                expect(tilePosition1.tilesMatch()).to.be.false;
+                expect(tilePosition1.tileMatches()).to.be.false;
             });
         });
 
@@ -180,13 +180,13 @@ describe("TilePosition behaviour", function () {
                 tilePosition3.state.rotate();
                 tilePosition4.state.tile = TILE_4;
                 tilePosition4.state.rotate();
-                expect(tilePosition1.tilesMatch()).to.be.true;
+                expect(tilePosition1.tileMatches()).to.be.true;
             });
         });
 
     });
 
-    describe("if #tilesMatch() is called on all the TilePositions of a Test puzzle", function () {
+    describe("if #tileMatches() is called on all the TilePositions of a Test puzzle", function () {
 
         context("and the three adjoining TilePositions each with a Tile, but not all the sides match", function () {
             it("should return false for all the TilePositions", function () {
@@ -201,10 +201,10 @@ describe("TilePosition behaviour", function () {
                 tilePosition2.state.tile = TILE_3;
                 tilePosition3.state.tile = TILE_1;
                 tilePosition4.state.tile = TILE_4;
-                expect(tilePosition1.tilesMatch()).to.be.false;
-                expect(tilePosition2.tilesMatch()).to.be.false;
-                expect(tilePosition3.tilesMatch()).to.be.false;
-                expect(tilePosition4.tilesMatch()).to.be.false;
+                expect(tilePosition1.tileMatches()).to.be.false;
+                expect(tilePosition2.tileMatches()).to.be.false;
+                expect(tilePosition3.tileMatches()).to.be.false;
+                expect(tilePosition4.tileMatches()).to.be.false;
             });
         });
 
@@ -224,10 +224,10 @@ describe("TilePosition behaviour", function () {
                 tilePosition3.state.rotate();
                 tilePosition4.state.tile = TILE_4;
                 tilePosition4.state.rotate();
-                expect(tilePosition1.tilesMatch()).to.be.true;
-                expect(tilePosition2.tilesMatch()).to.be.true;
-                expect(tilePosition3.tilesMatch()).to.be.true;
-                expect(tilePosition4.tilesMatch()).to.be.true;
+                expect(tilePosition1.tileMatches()).to.be.true;
+                expect(tilePosition2.tileMatches()).to.be.true;
+                expect(tilePosition3.tileMatches()).to.be.true;
+                expect(tilePosition4.tileMatches()).to.be.true;
             });
         });
 
