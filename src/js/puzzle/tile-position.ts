@@ -37,6 +37,10 @@ export class TilePosition implements IntegrityCheck {
         return this._state;
     }
 
+    set state(state: TilePositionState)  {
+        this._state = state;
+    }
+
     join(joinFrom: string, joinTo: string, ofTilePosition: TilePosition) : void {
         if (this._joins.length === Side.numberOfSides) {
             throw new Error("TilePositions can only join to three other TilePositions!");

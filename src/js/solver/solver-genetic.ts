@@ -30,10 +30,28 @@ class Population {
         for (let i = 0; i < this._population.length; i++) {
             const sidesMatching = this._population[i].tileSidesMatching();
             if (sidesMatching > this._memberWithMostSidesMatching) {
-                this._memberWithMostSidesMatching = sidesMatching;
+                this._memberWithMostSidesMatching = i;
             }
         }
         return this._memberWithMostSidesMatching == this._sidesMatchingWhenSolved;
+    }
+
+    mutate(): void {
+        for (let i = 0; i < this._population.length; i++) {
+            const tilePositions = this._population[i].tilePositions;
+            for (let j = 0; j < getRandomInt(tilePositions.length); j++) {
+                const swapFrom = getRandomInt(tilePositions.length);
+                const swapTo = getRandomInt(tilePositions.length);
+                if (swapFrom != swapTo) {
+                    const swapState = tilePositions[swapFrom].state;
+                    tilePositions[swapFrom].state = tilePositions[swapTo].state;
+                    tilePositions[swapTo].state = swapState;
+                }
+                if (getRandomInt(100) > 90) {
+                    tilePositions[swapFrom].state.rotate();
+                }
+            }
+        }
     }
 
     bestSoFar(): Tetrahedron {
@@ -45,7 +63,7 @@ class Population {
 
 export class GeneticSolver extends SolverBase {
 
-    private static readonly POPULATION_SIZE = 10;
+    private static readonly POPULATION_SIZE = 100;
 
     private readonly _population: Population;
 
@@ -59,11 +77,14 @@ export class GeneticSolver extends SolverBase {
     }
 
     forceNextState(): PuzzleChange {
-        return PuzzleChange.COMPLETED;
+        return this.nextState();
     }
 
     nextState(): PuzzleChange {
-        this._population.evaluate();
+        this._population.mutate();
+        if (this._population.evaluate()) {
+            return PuzzleChange.SOLVED;
+        }
         return this.currentState();
     }
 
@@ -71,7 +92,7 @@ export class GeneticSolver extends SolverBase {
         const displayChanges = this._population.bestSoFar().tilePositions
             .map((tilePosition) => {
                 if (tilePosition.state.isEmpty()) {
-                    return SolverBase.empty(tilePosition);
+                    throw new Error("Not expecting an empty tile position!");
                 } else {
                     return SolverBase.set(tilePosition);
                 }
