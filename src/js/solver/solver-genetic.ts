@@ -2,11 +2,8 @@ import { SolverBase } from "./solver-base";
 import { PuzzleChange } from "../puzzle-changes";
 import { Tetrahedron } from "../puzzle/tetrahedron";
 import { getPuzzleComponents } from "../puzzle-loader";
+import { getRandomInt } from "../utils";
 
-
-// DNA of Tile Position state:
-// Empty or Tile
-// Rotations
 
 class Population {
 
@@ -15,6 +12,10 @@ class Population {
     constructor(size: number, puzzleType: string) {
         for (let i = 0; i < size; i++) {
             const puzzle = getPuzzleComponents(puzzleType);
+            puzzle.tetrahedron.emptyTilePositions.forEach((tilePosition) => {
+                tilePosition.state.tile = puzzle.tilePool.randomTile;
+                tilePosition.state.rotations = getRandomInt(3);
+            });
             this._population.push(puzzle.tetrahedron);
         }
     }
