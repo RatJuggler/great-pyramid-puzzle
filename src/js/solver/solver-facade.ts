@@ -121,7 +121,7 @@ class AnimatedFacade extends SolverFacade {
 
     protected startSolver(): void {
         // Show the initial tile positions.
-        this._solver.initialState().forEach((tpChange) => this._displayManager.display(tpChange));
+        this._displayManager.display(this._solver.initialState());
         // Kick off the animated solver.
         this.runAnimatedSolver();
     }
@@ -174,7 +174,7 @@ class WorkerFacade extends SolverFacade {
         const puzzleChange = PuzzleChange.fromString(workerResult.solvedOrCompleted);
         this.overrideCounter(workerResult.stepCounter);
         this.solutionFound(puzzleChange);
-        workerResult.finalState.forEach((tpChange) => this._displayManager.display(tpChange));
+        this._displayManager.display(workerResult.finalState);
         this.disableOverlay();
     }
 

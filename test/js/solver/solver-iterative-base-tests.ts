@@ -4,7 +4,7 @@ import { getPuzzleComponents, buildTetrahedron } from "../../../src/js/puzzle-lo
 import { PuzzleComponents } from "../../../src/js/common-data-schema";
 import { IterativeSolverBase } from "../../../src/js/solver/solver-iterative-base";
 import { TilePool } from "../../../src/js/puzzle/tile-pool";
-import { PuzzleChange } from "../../../src/js/puzzle-changes";
+import { PuzzleChange, PuzzleChangeType } from "../../../src/js/puzzle-changes";
 import { expect } from 'chai';
 import 'mocha';
 // @ts-ignore
@@ -55,10 +55,10 @@ describe("SolverBase behaviour using MockSolver", function () {
     describe("if #initialState() is called", function () {
 
         context("on a MockSolver instantiated with the test puzzle", function () {
-            it("should return an array of tile position changes with an entry for each tile start position and puzzle position", function () {
+            it("should return an instance of PuzzleChange with a type of Current", function () {
                 const result = solver.initialState();
-                expect(result).to.be.instanceof(Array);
-                expect(result.length).to.equal(components.tilePool.tileCount + components.tetrahedron.tilePositionCount);
+                expect(result).to.be.instanceof(PuzzleChange);
+                expect(result.type).to.equal(PuzzleChangeType.Current);
             });
         });
 
@@ -67,7 +67,7 @@ describe("SolverBase behaviour using MockSolver", function () {
     describe("if #nextState() is called", function () {
 
         context("on a MockSolver instantiated with the test puzzle", function () {
-            it("should return an instance of PuzzleChange with a type if Initial", function () {
+            it("should return an instance of PuzzleChange with a type of Initial", function () {
                 const result = solver.nextState();
                 expect(result).to.be.an.instanceof(PuzzleChange);
                 expect(result).to.equal(PuzzleChange.INITIAL);
@@ -76,16 +76,16 @@ describe("SolverBase behaviour using MockSolver", function () {
 
     });
 
-    describe("if #finalState() is called", function () {
+    describe("if #currentState() is called", function () {
 
         context("on a MockSolver with all the tile positions filled", function () {
-            it("should return an array of puzzle changes with an entry for each tile position", function () {
+            it("should return an instance of PuzzleChange with a type of Current", function () {
                 components.tetrahedron.tilePositions.forEach((tilePosition) => {
                     tilePosition.state.tile = components.tilePool.randomTile;
                 })
                 const result = solver.currentState();
-                expect(result).to.be.instanceof(Array);
-                expect(result.length).to.equal(components.tetrahedron.tilePositionCount);
+                expect(result).to.be.instanceof(PuzzleChange);
+                expect(result.type).to.equal(PuzzleChangeType.Current);
             });
         });
 

@@ -4,10 +4,10 @@ import { TilePosition } from "../puzzle/tile-position";
 
 
 interface Solver {
-    initialState: () => Array<PuzzleChange>;
+    initialState: () => PuzzleChange;
     nextState: () => PuzzleChange;
     forceNextState: () => PuzzleChange;
-    currentState: () => Array<PuzzleChange>;
+    currentState: () => PuzzleChange;
 }
 
 
@@ -15,13 +15,13 @@ abstract class SolverBase implements Solver {
 
     constructor() {}
 
-    abstract initialState(): Array<PuzzleChange>;
+    abstract initialState(): PuzzleChange;
 
     abstract nextState(): PuzzleChange;
 
     abstract forceNextState(): PuzzleChange;
 
-    abstract currentState(): Array<PuzzleChange>;
+    abstract currentState(): PuzzleChange;
 
     protected static start(tile: Tile): PuzzleChange {
         return TileChange.start("start" + tile.id, tile.id, 0, tile.segments)
