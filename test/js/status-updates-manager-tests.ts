@@ -13,8 +13,8 @@ class MockStatusUpdates implements StatusUpdates {
         this._mockStatus = `Add: ${id} - ${title} - ${status}`;
     }
 
-    addTo(_id: string, _status: string): void {
-        throw new Error("Not expected to be called as part of these tests!");
+    addTo(id: string, status: string): void {
+        this._mockStatus += `AddTo: ${id} - ${status}`;
     }
 
     clear(): void {

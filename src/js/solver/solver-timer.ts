@@ -26,9 +26,20 @@ export class SolverTimer {
         this._elapsedIntervalId = 0;
     }
 
+    private reset(): void {
+        this._startTime = new Date();
+        this._finishTime = null;
+        this._elapsedIntervalId = setInterval(() => {
+            this.updateDisplay();
+        }, 1000);
+    }
+
     start(): void {
+        if (this._elapsedIntervalId) {
+            throw new Error("Timer already started!");
+        }
         this.clearInterval();
-        this.continue();
+        this.reset();
         this._statusUpdates.add(SolverTimer.STATUS_ID, "Timer", "Starting...");
     }
 
@@ -49,16 +60,18 @@ export class SolverTimer {
     }
 
     continue(): void {
-        this._startTime = new Date();
-        this._finishTime = null;
-        this._elapsedIntervalId = setInterval(() => {
-            this.updateDisplay();
-        }, 1000);
+        if (this._elapsedIntervalId) {
+            throw new Error("Timer already running!");
+        }
+        if (this._totalElapsed == 0) {
+            throw new Error("Timer can't continue if it has never been started!");
+        }
+        this.reset();
     }
 
     cancel(): void {
         if (!this._elapsedIntervalId) {
-            throw new Error("Timer already cancelled!");
+            throw new Error(this._startTime ? "Timer already stopped!" : "Timer never started!");
         }
         this.clearInterval();
         this._statusUpdates.addTo(SolverTimer.STATUS_ID, "\nCancelled!");
@@ -66,7 +79,7 @@ export class SolverTimer {
 
     private elapsed(since: Date): number {
         if (!this._startTime) {
-            throw new Error("SolverTimer not initialised properly!")
+            throw new Error("Timer not initialised properly!")
         }
         return since.getTime() - this._startTime.getTime();
     }
@@ -87,7 +100,7 @@ export class SolverTimer {
 
     private static formatTime(time: Date | null): string {
         if (!time) {
-            throw new Error("SolverTimer not initialised properly!")
+            throw new Error("Timer not initialised properly!")
         }
         const seconds = time.getSeconds();
         const minutes = time.getMinutes();
