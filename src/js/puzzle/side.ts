@@ -1,28 +1,36 @@
-enum Side {SideA = 'A', SideB = 'B', SideC = 'C'}
+class Side {
 
-class Sides {
+    static readonly sideA = new Side("A");
+    static readonly sideB = new Side("B");
+    static readonly sideC = new Side("C");
 
-    private static readonly _sides = new Map<string, Side>([
-        [Side.SideA.toString(), Side.SideA],
-        [Side.SideB.toString(), Side.SideB],
-        [Side.SideC.toString(), Side.SideC]
-    ]);
+    private readonly _side: string;
 
-    constructor() {}
-
-    get numberOfSides(): number {
-        return Sides._sides.size;
+    constructor(side: string) {
+        this._side = side;
     }
 
-    validateSide(side: string, name: string): Side {
-        if (Sides._sides.has(side)) {
-            return Sides._sides.get(side)!;
+    static get numberOfSides(): number {
+        return 3;
+    }
+
+    static validateSide(side: string): Side {
+        switch (side) {
+            case "A":
+                return Side.sideA;
+            case "B":
+                return Side.sideB;
+            case "C":
+                return Side.sideC;
+            default:
+                throw new Error(`Side ${side} must be one of A, B or C!`);
         }
-        throw new Error(`Side ${name} must be one of ${Side.SideA},${Side.SideB},${Side.SideC}!`);
+    }
+
+    toString(): string {
+        return this._side;
     }
 
 }
 
-const SIDES = new Sides();
-
-export { SIDES, Side }
+export { Side }

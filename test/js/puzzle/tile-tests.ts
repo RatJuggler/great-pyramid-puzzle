@@ -70,19 +70,19 @@ describe("Tile behaviour", function () {
 
         context("with argument SideA", function () {
             it("should return the segment coding for SideA", function () {
-                expect(tile3.getSegmentsForSide(0, Side.SideA)).to.equal(TILE_3_DATA.sideA);
+                expect(tile3.getSegmentsForSide(0, Side.sideA)).to.equal(TILE_3_DATA.sideA);
             });
         });
 
         context("with argument SideB", function () {
             it("should return the segment coding for SideB", function () {
-                expect(tile3.getSegmentsForSide(0, Side.SideB)).to.equal(TILE_3_DATA.sideB);
+                expect(tile3.getSegmentsForSide(0, Side.sideB)).to.equal(TILE_3_DATA.sideB);
             });
         });
 
         context("with argument SideC", function () {
             it("should return the segment coding for SideC", function () {
-                expect(tile3.getSegmentsForSide(0, Side.SideC)).to.equal(TILE_3_DATA.sideC);
+                expect(tile3.getSegmentsForSide(0, Side.sideC)).to.equal(TILE_3_DATA.sideC);
             });
         });
 
@@ -92,19 +92,19 @@ describe("Tile behaviour", function () {
 
         context("with argument SideA", function () {
             it("should return the segment coding for SideC", function () {
-                expect(tile3.getSegmentsForSide(1, Side.SideA)).to.equal(TILE_3_DATA.sideC);
+                expect(tile3.getSegmentsForSide(1, Side.sideA)).to.equal(TILE_3_DATA.sideC);
             });
         });
 
         context("with argument SideB", function () {
             it("should return the segment coding for SideA", function () {
-                expect(tile3.getSegmentsForSide(1, Side.SideB)).to.equal(TILE_3_DATA.sideA);
+                expect(tile3.getSegmentsForSide(1, Side.sideB)).to.equal(TILE_3_DATA.sideA);
             });
         });
 
         context("with argument SideC", function () {
             it("should return the segment coding for SideB", function () {
-                expect(tile3.getSegmentsForSide(1, Side.SideC)).to.equal(TILE_3_DATA.sideB);
+                expect(tile3.getSegmentsForSide(1, Side.sideC)).to.equal(TILE_3_DATA.sideB);
             });
         });
 
@@ -114,19 +114,19 @@ describe("Tile behaviour", function () {
 
         context("with argument SideA", function () {
             it("should return the segment coding for SideB", function () {
-                expect(tile3.getSegmentsForSide(2, Side.SideA)).to.equal(TILE_3_DATA.sideB);
+                expect(tile3.getSegmentsForSide(2, Side.sideA)).to.equal(TILE_3_DATA.sideB);
             });
         });
 
         context("with argument SideB", function () {
             it("should return the segment coding for SideC", function () {
-                expect(tile3.getSegmentsForSide(2, Side.SideB)).to.equal(TILE_3_DATA.sideC);
+                expect(tile3.getSegmentsForSide(2, Side.sideB)).to.equal(TILE_3_DATA.sideC);
             });
         });
 
         context("with argument SideC", function () {
             it("should return the segment coding for SideA", function () {
-                expect(tile3.getSegmentsForSide(2, Side.SideC)).to.equal(TILE_3_DATA.sideA);
+                expect(tile3.getSegmentsForSide(2, Side.sideC)).to.equal(TILE_3_DATA.sideA);
             });
         });
 
@@ -155,14 +155,14 @@ describe("Tile behaviour", function () {
         context("with a newly placed Tile", function () {
             it("should return the segments for the side reversed", function () {
                 const expectedSegments = TILE_1_DATA.sideA.split("").reverse().join("");
-                expect(tile1.getSegmentsForSideToMatchWith(0, Side.SideA)).to.equal(expectedSegments);
+                expect(tile1.getSegmentsForSideToMatchWith(0, Side.sideA)).to.equal(expectedSegments);
             });
         });
 
         context("with a rotated Tile", function () {
             it("should return the segments for the side reversed", function () {
                 const expectedSegments = TILE_4_DATA.sideC.split("").reverse().join("");
-                expect(tile4.getSegmentsForSideToMatchWith(1, Side.SideA)).to.equal(expectedSegments);
+                expect(tile4.getSegmentsForSideToMatchWith(1, Side.sideA)).to.equal(expectedSegments);
             });
         });
 
@@ -172,7 +172,7 @@ describe("Tile behaviour", function () {
 
         context("and the Tile doesn't have the side segments", function () {
             it("should return an array with a length of 0", function () {
-                const findSegments = tile4.getSegmentsForSideToMatchWith(0, Side.SideA) + "...." + "....";
+                const findSegments = tile4.getSegmentsForSideToMatchWith(0, Side.sideA) + "...." + "....";
                 const result = tile3.hasSideSegments(findSegments);
                 expect(result).to.be.an.instanceof(Array);
                 expect(result.length).to.equal(0);
@@ -181,7 +181,7 @@ describe("Tile behaviour", function () {
 
         context("and the Tile has the side segments", function () {
             it("should return an array with a length of 1", function () {
-                const findSegments = "...." + "...." + tile4.getSegmentsForSideToMatchWith(0, Side.SideC);
+                const findSegments = "...." + "...." + tile4.getSegmentsForSideToMatchWith(0, Side.sideC);
                 const result = tile3.hasSideSegments(findSegments);
                 expect(result).to.be.an.instanceof(Array);
                 expect(result.length).to.equal(1);

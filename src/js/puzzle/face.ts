@@ -1,7 +1,7 @@
 import { IntegrityCheck, IntegrityCheckResult } from "./integrity";
 import { Tile } from "./tile";
 import { TilePosition } from "./tile-position";
-import { Side, SIDES } from "./side";
+import { Side } from "./side";
 
 
 type FaceJoinProperties = {
@@ -29,7 +29,7 @@ export class Face implements IntegrityCheck {
 
     integrityCheck(): IntegrityCheckResult {
         // Each face must join to 3 other faces and must have a valid number of tile positions.
-        if (this._joins.length !== SIDES.numberOfSides) {
+        if (this._joins.length !== Side.numberOfSides) {
             return [false, `Face joins not complete: ${this.toString()}`];
         }
         if (!Face.VALID_TILE_COUNTS.includes(this._tilePositions.size)) {
@@ -84,7 +84,7 @@ export class Face implements IntegrityCheck {
     }
 
     join(joinFrom: string, joinTo: string, ofFace: Face) : void {
-        if (this._joins.length === SIDES.numberOfSides) {
+        if (this._joins.length === Side.numberOfSides) {
             throw new Error("Faces can only join to three other faces!");
         }
         if (this === ofFace) {
@@ -93,9 +93,9 @@ export class Face implements IntegrityCheck {
         if (this.tilePositionCount !== ofFace.tilePositionCount) {
             throw new Error("Cannot join Faces which have differing numbers of Tile Positions!");
         }
-        const fromSide = SIDES.validateSide(joinFrom, "to join from");
-        const toSide = SIDES.validateSide(joinTo, "to join to");
-        if (this._joins.some((face) => face.fromSide === joinFrom)) {
+        const fromSide = Side.validateSide(joinFrom);
+        const toSide = Side.validateSide(joinTo);
+        if (this._joins.some((face) => face.fromSide.toString() === joinFrom)) {
             throw new Error(`Existing join already present for side ${joinFrom}!`);
         }
         this._joins.push({

@@ -1,6 +1,6 @@
 import { IntegrityCheck, IntegrityCheckResult } from "./integrity";
 import { TilePositionState } from "./tile-position-state";
-import { Side, SIDES } from "./side";
+import { Side } from "./side";
 
 
 type TilePositionJoinProperties = {
@@ -19,7 +19,7 @@ export class TilePosition implements IntegrityCheck {
 
     integrityCheck(): IntegrityCheckResult {
         // Each tile position must join to 3 other tile positions.
-        if (this._joins.length === SIDES.numberOfSides) {
+        if (this._joins.length === Side.numberOfSides) {
             return [true, "Passed"];
         }
         return [false, `Tile position joins not complete: ${this.toString()}`];
@@ -38,16 +38,16 @@ export class TilePosition implements IntegrityCheck {
     }
 
     join(joinFrom: string, joinTo: string, ofTilePosition: TilePosition) : void {
-        if (this._joins.length === SIDES.numberOfSides) {
+        if (this._joins.length === Side.numberOfSides) {
             throw new Error("TilePositions can only join to three other TilePositions!");
         }
         if (this === ofTilePosition) {
             throw new Error("Cannot join a TilePosition to itself!");
         }
-        const fromSide = SIDES.validateSide(joinFrom, "to join from");
-        const toSide = SIDES.validateSide(joinTo, "to join to");
+        const fromSide = Side.validateSide(joinFrom);
+        const toSide = Side.validateSide(joinTo);
         for (const join of this._joins) {
-            if (join.fromSide === joinFrom) {
+            if (join.fromSide.toString() === joinFrom) {
                 throw new Error(`Existing join already present for side ${joinFrom}!`);
             }
         }

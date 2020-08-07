@@ -79,7 +79,7 @@ describe("TilePosition behaviour", function () {
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.join("1", "A", tilePosition2);
-                }).to.throw(Error, "Side to join from must be one of A,B,C!");
+                }).to.throw(Error, "Side 1 must be one of A, B or C!");
             });
         });
 
@@ -87,7 +87,7 @@ describe("TilePosition behaviour", function () {
             it("should throw an error", function () {
                 expect(function () {
                     tilePosition1.join("A", "X", tilePosition2);
-                }).to.throw(Error, "Side to join to must be one of A,B,C!");
+                }).to.throw(Error, "Side X must be one of A, B or C!");
             });
         });
 
@@ -121,7 +121,7 @@ describe("TilePosition behaviour", function () {
                 tilePosition1.join("C", "B", tilePosition2);
                 expect(function () {
                     tilePosition1.tileMatches();
-                }).to.throw(Error, "Can't check if a Tile matches when there is no Tile at the TilePosition to match from!");
+                }).to.throw(Error, "Can't check if a Tiles sides match when there is no Tile at the TilePosition to match from!");
             });
         });
 
@@ -257,7 +257,7 @@ describe("TilePosition behaviour", function () {
             it("should return the segments side B reversed", function () {
                 tilePosition1.join("C", "B", tilePosition2);
                 tilePosition2.state.tile = TILE_3;
-                expect(tilePosition1.segmentsToFind()).to.equal(TILE_3.getSegmentsForSideToMatchWith(0, Side.SideB));
+                expect(tilePosition1.segmentsToFind()).to.equal(TILE_3.getSegmentsForSideToMatchWith(0, Side.sideB));
             });
         });
 

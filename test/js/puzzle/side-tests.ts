@@ -1,4 +1,4 @@
-import { SIDES, Side } from "../../../src/js/puzzle/side";
+import { Side } from "../../../src/js/puzzle/side";
 import { expect } from 'chai';
 import 'mocha';
 
@@ -9,7 +9,7 @@ describe("Side behaviour", function () {
 
         context("on the SIDES instance", function () {
             it("should return the fixed number of sides", function () {
-                expect(SIDES.numberOfSides).to.equal(3);
+                expect(Side.numberOfSides).to.equal(3);
             });
         });
 
@@ -18,28 +18,28 @@ describe("Side behaviour", function () {
     describe("if #validateSide is called", function () {
 
         context("with valid side identifier 'A'", function () {
-            it("should the definition for side A", function () {
-                expect(SIDES.validateSide("A", "test A")).to.equal(Side.SideA);
+            it("should return the definition for side A", function () {
+                expect(Side.validateSide("A")).to.equal(Side.sideA);
             });
         });
 
         context("with valid side identifier 'B'", function () {
-            it("should the definition for side B", function () {
-                expect(SIDES.validateSide("B", "test B")).to.equal(Side.SideB);
+            it("should return the definition for side B", function () {
+                expect(Side.validateSide("B")).to.equal(Side.sideB);
             });
         });
 
         context("with valid side identifier 'C'", function () {
-            it("should the definition for side C", function () {
-                expect(SIDES.validateSide("C", "test C")).to.equal(Side.SideC);
+            it("should return the definition for side C", function () {
+                expect(Side.validateSide("C")).to.equal(Side.sideC);
             });
         });
 
         context("with an invalid side identifier", function () {
             it("should throw an error", function () {
                 expect(function () {
-                    SIDES.validateSide('Z', "test Z");
-                }).to.throw(Error, "Side test Z must be one of A,B,C!");
+                    Side.validateSide('Z');
+                }).to.throw(Error, "Side Z must be one of A, B or C!");
             });
         });
 

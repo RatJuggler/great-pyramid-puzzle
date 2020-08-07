@@ -6,20 +6,21 @@ class SideSegments {
 
     constructor(private readonly _sideA: string, private readonly _sideB: string, private readonly _sideC: string) {}
 
-    get A(): string {
-        return this._sideA;
-    }
-
-    get B(): string {
-        return this._sideB;
-    }
-
-    get C(): string {
-        return this._sideC;
+    getSegments(side: Side): string {
+        switch (side) {
+            case Side.sideA:
+                return this._sideA;
+            case Side.sideB:
+                return this._sideB;
+            case Side.sideC:
+                return this._sideC;
+            default:
+                throw new Error("Unexpected value of Side!");
+        }
     }
 
     toString(): string {
-        return this.A + this.B + this.C;
+        return this._sideA + this._sideB + this._sideC;
     }
 
 }
@@ -46,8 +47,8 @@ export class Tile {
             this.validateSegments(tileDetails.sideB),
             this.validateSegments(tileDetails.sideC));
         this._sideSegments.push(segments);
-        this._sideSegments.push(new SideSegments(segments.C, segments.A, segments.B));
-        this._sideSegments.push(new SideSegments(segments.B, segments.C, segments.A));
+        this._sideSegments.push(new SideSegments(segments.getSegments(Side.sideC), segments.getSegments(Side.sideA), segments.getSegments(Side.sideB)));
+        this._sideSegments.push(new SideSegments(segments.getSegments(Side.sideB), segments.getSegments(Side.sideC), segments.getSegments(Side.sideA)));
     }
 
     get id(): number {
@@ -59,7 +60,7 @@ export class Tile {
     }
 
     getSegmentsForSide(rotations: number, side: Side): string {
-        return this._sideSegments[rotations][side];
+        return this._sideSegments[rotations].getSegments(side);
     }
 
     getSegmentsForSideToMatchWith(rotations: number, side: Side): string {
@@ -79,9 +80,9 @@ export class Tile {
 
     toString(): string {
         return `Id: ${this._id}, ` +
-            `Side-A: ${this.getSegmentsForSide(0, Side.SideA)}, ` +
-            `Side-B: ${this.getSegmentsForSide(0, Side.SideB)}, ` +
-            `Side-C: ${this.getSegmentsForSide(0, Side.SideC)}`;
+            `Side-A: ${this.getSegmentsForSide(0, Side.sideA)}, ` +
+            `Side-B: ${this.getSegmentsForSide(0, Side.sideB)}, ` +
+            `Side-C: ${this.getSegmentsForSide(0, Side.sideC)}`;
     }
 
 }
