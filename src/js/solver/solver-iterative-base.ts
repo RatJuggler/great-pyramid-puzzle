@@ -43,14 +43,6 @@ abstract class IterativeSolverBase extends SolverBase {
             });
     }
 
-    // currentState(): PuzzleChange {
-    //     return SolverBase.current(this.stateForDisplay());
-    // }
-    //
-    // solved(): PuzzleChange {
-    //     return SolverBase.solved(this.stateForDisplay());
-    // }
-
 }
 
 export { IterativeSolverBase }

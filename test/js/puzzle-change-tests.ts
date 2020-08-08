@@ -1,35 +1,9 @@
+import { PuzzleChange, PuzzleChangeSet } from "../../src/js/puzzle-changes";
 import { expect } from 'chai';
 import 'mocha';
-import {PuzzleChange, PuzzleChangeSet} from "../../src/js/puzzle-changes";
 
 
 describe("PuzzleChange behaviour", function () {
-
-    describe("if #fromString() is called", function () {
-
-        context("with an unsupported change type argument", function () {
-            it("should throw an error", function () {
-                expect(function () {
-                    PuzzleChange.fromString("Error");
-                }).to.throw(Error, "Base PuzzleChange only for Initial, Solved or Completed changes!");
-            });
-        });
-
-        context("with Initial as an argument", function () {
-            const result = PuzzleChange.fromString("Initial");
-            it("should return the Initial PuzzleChange", function () {
-                expect(result).to.equal(PuzzleChange.INITIAL);
-            });
-        });
-
-        context("with Completed as an argument", function () {
-            const result = PuzzleChange.fromString("Completed");
-            it("should return the Completed PuzzleChange", function () {
-                expect(result).to.equal(PuzzleChange.COMPLETED);
-            });
-        });
-
-    });
 
     describe("if #isSolved() is called", function () {
 
@@ -52,7 +26,8 @@ describe("PuzzleChange behaviour", function () {
 
         context("on the Completed instance of PuzzleChange", function () {
             it("should return true", function () {
-                expect(PuzzleChange.COMPLETED.isCompleted()).to.be.true;
+                const change = PuzzleChangeSet.completed(new Array<PuzzleChange>());
+                expect(change.isCompleted()).to.be.true;
             });
         });
 

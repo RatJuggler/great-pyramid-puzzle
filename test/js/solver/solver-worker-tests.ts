@@ -1,6 +1,5 @@
 import { solverWorker } from "../../../src/js/solver/solver-worker";
 import { WorkerParameters } from "../../../src/js/common-data-schema";
-import { PuzzleChange, PuzzleChangeType } from "../../../src/js/puzzle-changes";
 import { expect } from "chai";
 import 'mocha';
 
@@ -50,11 +49,11 @@ describe("SolverWorker behaviour", function () {
             it("should return a WorkerResult finalState property", function () {
                 expect(result).to.have.property("finalState");
             });
-            it("should return an instance of PuzzleChange in finalState", function () {
-                expect(result.finalState).to.be.instanceof(PuzzleChange);
+            it("should return an Array in finalState", function () {
+                expect(result.finalState).to.be.instanceof(Array);
             });
-            it("should return a PuzzleChange type of Current", function () {
-                expect(result.finalState.type).to.equal(PuzzleChangeType.Current);
+            it("should return a Array length of 4", function () {
+                expect(result.finalState.length).to.equal(4);
             });
         });
 

@@ -18,7 +18,7 @@ class MockSolver extends IterativeSolverBase {
     }
 
     forceNextState(): PuzzleChange {
-        return PuzzleChange.COMPLETED;
+        return PuzzleChange.INITIAL;
     }
 
 }
@@ -76,16 +76,28 @@ describe("SolverBase behaviour using MockSolver", function () {
 
     });
 
-    describe("if #currentState() is called", function () {
+    describe("if #forceNextState() is called", function () {
+
+        context("on a MockSolver instantiated with the test puzzle", function () {
+            it("should return an instance of PuzzleChange with a type of Initial", function () {
+                const result = solver.forceNextState();
+                expect(result).to.be.an.instanceof(PuzzleChange);
+                expect(result).to.equal(PuzzleChange.INITIAL);
+            });
+        });
+
+    });
+
+    describe("if #stateForDisplay() is called", function () {
 
         context("on a MockSolver with all the tile positions filled", function () {
             it("should return an instance of PuzzleChange with a type of Current", function () {
                 components.tetrahedron.tilePositions.forEach((tilePosition) => {
                     tilePosition.state.tile = components.tilePool.randomTile;
-                })
-                const result = solver.currentState();
-                expect(result).to.be.instanceof(PuzzleChange);
-                expect(result.type).to.equal(PuzzleChangeType.Current);
+                });
+                const result = solver.stateForDisplay();
+                expect(result).to.be.instanceof(Array);
+                expect(result.length).to.equal(components.tetrahedron.tilePositions.length);
             });
         });
 
