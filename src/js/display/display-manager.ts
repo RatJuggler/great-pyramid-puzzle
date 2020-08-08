@@ -1,4 +1,4 @@
-import {PuzzleChange, PuzzleChangeSet, PuzzleChangeType, TileChange, TilePositionChange} from "../puzzle-changes";
+import { PuzzleChange, PuzzleChangeSet, PuzzleChangeType, TileChange, TilePositionChange } from "../puzzle-changes";
 import { Matrix } from "@svgdotjs/svg.js";
 import { DisplayData } from "./display-data-schema";
 import { Display } from "./display";
@@ -135,7 +135,7 @@ class SetTilePosition extends DisplayChange {
 }
 
 
-class AddTilePosition extends DisplayChange {
+class AddTile extends DisplayChange {
 
     constructor(display: Display,
                 private readonly _tChange: TileChange,
@@ -152,7 +152,7 @@ class AddTilePosition extends DisplayChange {
         const tpDisplay = this.display.getTilePosition(this._tChange);
         // Redraw the start position with the tile removed then draw the tile at the start position ready to be animated.
         this.display.drawEmptyStartPosition(tspDisplay, this._tChange, this._scaleTileStart);
-        const placeTile = this.display.drawTile(tspDisplay.center, this._tChange, this._scaleTileStart, 0);
+        const tile = this.display.drawTile(tspDisplay.center, this._tChange, this._scaleTileStart, 0);
         // Animate the tile moving from the start position to the destination position.
         const scaleChange = this._scaleTile / this._scaleTileStart;
         const matrix = new Matrix()
@@ -160,10 +160,10 @@ class AddTilePosition extends DisplayChange {
             .rotate(tpDisplay.center.r + (this._tChange.rotations * 120), tpDisplay.center.x, tpDisplay.center.y)
             .scale(scaleChange, scaleChange, tpDisplay.center.x, tpDisplay.center.y);
         // @ts-ignore
-        placeTile.animate({duration: this._animationDuration}).transform(matrix)
+        tile.animate({duration: this._animationDuration}).transform(matrix)
             .after(() => {
                 // Remove the animated tile then redraw the tile position with the placed tile.
-                placeTile.remove();
+                tile.remove();
                 this.display.drawTilePosition(tpDisplay, this._tChange, this._scaleTile,);
             });
     }
@@ -193,7 +193,7 @@ class RotateTilePosition extends DisplayChange {
 }
 
 
-class RemoveTilePosition extends DisplayChange {
+class RemoveTile extends DisplayChange {
 
     constructor(display: Display,
                 private readonly _tChange: TileChange,
@@ -210,7 +210,7 @@ class RemoveTilePosition extends DisplayChange {
         const tpDisplay = this.display.getTilePosition(this._tChange);
         // Redraw the tile position with the tile removed then draw the tile at the tile position ready to be animated.
         this.display.drawEmptyTilePosition(tpDisplay, this._tChange, this._scaleTile);
-        const removeTile = this.display.drawTile(tpDisplay.center, this._tChange, this._scaleTile, this._tChange.rotations);
+        const tile = this.display.drawTile(tpDisplay.center, this._tChange, this._scaleTile, this._tChange.rotations);
         // Animate the tile moving from it's old position back to the start.
         const scaleChange = this._scaleTileStart / this._scaleTile;
         const matrix = new Matrix()
@@ -218,10 +218,10 @@ class RemoveTilePosition extends DisplayChange {
             .rotate(-tpDisplay.center.r, tspDisplay.center.x, tspDisplay.center.y)
             .scale(scaleChange, scaleChange, tspDisplay.center.x, tspDisplay.center.y);
         // @ts-ignore
-        removeTile.animate({duration: this._animationDuration}).transform(matrix)
+        tile.animate({duration: this._animationDuration}).transform(matrix)
             .after(() => {
                 // Remove the animated tile then redraw the tile at its start position.
-                removeTile.remove();
+                tile.remove();
                 this.display.drawStartPosition(tspDisplay, this._tChange, this._scaleTileStart);
             });
     }
@@ -274,13 +274,13 @@ export class DisplayManager {
                 action = new SetTilePosition(this._display, pChange as TileChange, this._scaleTile);
                 break;
             case PuzzleChangeType.Add:
-                action = new AddTilePosition(this._display, pChange as TileChange,  this._scaleTileStart, this._scaleTile, this._animationDuration);
+                action = new AddTile(this._display, pChange as TileChange,  this._scaleTileStart, this._scaleTile, this._animationDuration);
                 break;
             case PuzzleChangeType.Rotate:
                 action = new RotateTilePosition(this._display, pChange as TilePositionChange, this._animationDuration);
                 break;
             case PuzzleChangeType.Remove:
-                action = new RemoveTilePosition(this._display, pChange as TileChange, this._scaleTileStart, this._scaleTile, this._animationDuration);
+                action = new RemoveTile(this._display, pChange as TileChange, this._scaleTileStart, this._scaleTile, this._animationDuration);
                 break;
             default:
                 throw new Error("Unknown puzzle display change!");
