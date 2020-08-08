@@ -59,7 +59,8 @@ class SolvedDisplay extends DisplayChange {
 
     constructor(display: Display,
                 private readonly _tpChanges: PuzzleChangeSet,
-                private readonly _scaleTile: number) {
+                private readonly _scaleTile: number,
+                private readonly _animationDuration: number) {
         super(display);
     }
 
@@ -70,10 +71,9 @@ class SolvedDisplay extends DisplayChange {
         this.display.drawEmptyTilePosition(tpDisplay, tChange, this._scaleTile);
         const tile = this.display.drawTile(tpDisplay.center, tChange, this._scaleTile, tChange.rotations);
         // Animate the tile.
-        const matrix = new Matrix()
-            .rotate(120, tpDisplay.center.x, tpDisplay.center.y);
-        // @ts-ignore
-        tile.animate({duration: this._animationDuration, ease: "<>"}).transform(matrix)
+        tile.animate({duration: this._animationDuration, delay: 0, ease: "<>"})
+            // @ts-ignore
+            .rotate(360, tpDisplay.center.x, tpDisplay.center.y)
             .after(() => {
                 // Remove the animated tile then redraw the tile position with the placed tile.
                 tile.remove();
@@ -92,13 +92,14 @@ class CompletedDisplay extends DisplayChange {
 
     constructor(display: Display,
             private readonly _tpChanges: PuzzleChangeSet,
-            private readonly _scaleTile: number) {
+            private readonly _scaleTile: number,
+            private readonly _animationDuration: number) {
         super(display);
     }
 
     show(): void {
         // TODO: Implement some sort of celebratory display for getting this far!
-        console.log(this._tpChanges, this._scaleTile);
+        console.log(this._tpChanges, this._scaleTile, this._animationDuration);
     }
 
 }
@@ -282,10 +283,10 @@ export class DisplayManager {
                 action = new CurrentDisplay(this._display, this, pChange as PuzzleChangeSet);
                 break;
             case PuzzleChangeType.Solved:
-                action = new SolvedDisplay(this._display, pChange as PuzzleChangeSet, this._scaleTile);
+                action = new SolvedDisplay(this._display, pChange as PuzzleChangeSet, this._scaleTile, this._animationDuration);
                 break;
             case PuzzleChangeType.Completed:
-                action = new CompletedDisplay(this._display, pChange as PuzzleChangeSet, this._scaleTile);
+                action = new CompletedDisplay(this._display, pChange as PuzzleChangeSet, this._scaleTile, this._animationDuration);
                 break;
             case PuzzleChangeType.Empty:
                 action = new EmptyTilePosition(this._display, pChange as TilePositionChange, this._scaleTile);
