@@ -22,11 +22,12 @@ function solverWorker(parameters: WorkerParameters): WorkerResult {
         puzzleChange = solver.nextState();
         stepCounter++;
     }
-    // Return the result for display, including the final change.
+    // Return the result for display, including the final state.
+    // See: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
     return {
         solvedOrCompleted: puzzleChange.type,
         stepCounter: stepCounter,
-        finalState: solver.currentState()
+        finalState: solver.stateForDisplay()
     }
 }
 

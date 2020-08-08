@@ -2,7 +2,7 @@ import { PuzzleComponents } from "../common-data-schema";
 import { IterativeSolverBase } from "./solver-iterative-base";
 import { Tile } from "../puzzle/tile";
 import { TilePosition } from "../puzzle/tile-position";
-import {PuzzleChange, TileChange, TilePositionChange} from "../puzzle-changes";
+import { PuzzleChange, TileChange } from "../puzzle-changes";
 import { getRandomInt } from "../utils";
 
 
@@ -64,10 +64,10 @@ export class NoMatchingSolver extends IterativeSolverBase {
         if (this._rotating > 0) {
             this._rotating--;
             this._tilePosition.state.rotate();
-            return TilePositionChange.rotate(this._tilePosition.id, 1);
+            return IterativeSolverBase.rotate(this._tilePosition, 1);
         } else {
             if (this._emptyTilePositions.length === 0) {
-                return this.solved();
+                return IterativeSolverBase.solved(this.stateForDisplay());
             } else {
                 this._tilePosition = this.getNextTilePosition();
                 return this.addTile()
@@ -84,7 +84,7 @@ export class NoMatchingSolver extends IterativeSolverBase {
 
     forceNextState(): PuzzleChange {
         // TODO: Reset the puzzle or make random changes?
-        return PuzzleChange.COMPLETED;
+        return IterativeSolverBase.completed(this.stateForDisplay());
     }
 
 }

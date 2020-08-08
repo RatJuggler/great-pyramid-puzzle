@@ -32,7 +32,7 @@ abstract class IterativeSolverBase extends SolverBase {
         return SolverBase.current(displayChanges);
     }
 
-    private stateForDisplay(): Array<PuzzleChange> {
+    stateForDisplay(): Array<PuzzleChange> {
         return this._tetrahedron.tilePositions
             .map((tilePosition) => {
                 if (tilePosition.state.isEmpty()) {
@@ -43,13 +43,13 @@ abstract class IterativeSolverBase extends SolverBase {
             });
     }
 
-    currentState(): PuzzleChange {
-        return SolverBase.current(this.stateForDisplay());
-    }
-
-    solved(): PuzzleChange {
-        return SolverBase.solved(this.stateForDisplay());
-    }
+    // currentState(): PuzzleChange {
+    //     return SolverBase.current(this.stateForDisplay());
+    // }
+    //
+    // solved(): PuzzleChange {
+    //     return SolverBase.solved(this.stateForDisplay());
+    // }
 
 }
 

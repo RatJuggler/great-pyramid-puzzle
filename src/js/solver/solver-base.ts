@@ -7,13 +7,13 @@ interface Solver {
     initialState: () => PuzzleChange;
     nextState: () => PuzzleChange;
     forceNextState: () => PuzzleChange;
-    currentState: () => PuzzleChange;
+    stateForDisplay: () => Array<PuzzleChange>;
 }
 
 
 abstract class SolverBase implements Solver {
 
-    constructor() {}
+    protected constructor() {}
 
     abstract initialState(): PuzzleChange;
 
@@ -21,9 +21,7 @@ abstract class SolverBase implements Solver {
 
     abstract forceNextState(): PuzzleChange;
 
-    abstract currentState(): PuzzleChange;
-
-    abstract solved(): PuzzleChange;
+    abstract stateForDisplay(): Array<PuzzleChange>;
 
     protected static start(tile: Tile): PuzzleChange {
         return TileChange.start("start" + tile.id, tile.id, 0, tile.segments)
@@ -55,6 +53,10 @@ abstract class SolverBase implements Solver {
 
     protected static solved(puzzleChanges: Array<PuzzleChange>): PuzzleChange {
         return PuzzleChangeSet.solved(puzzleChanges);
+    }
+
+    protected static completed(puzzleChanges: Array<PuzzleChange>): PuzzleChange {
+        return PuzzleChangeSet.completed(puzzleChanges);
     }
 
 }

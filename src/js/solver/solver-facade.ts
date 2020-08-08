@@ -4,7 +4,7 @@ import { Solver } from "./solver-base";
 import { SolverTimer } from "./solver-timer";
 import { SolverStepCounter } from "./solver-step-counter";
 import { WorkerParameters, WorkerResult } from "../common-data-schema";
-import { PuzzleChange} from "../puzzle-changes";
+import {PuzzleChange, PuzzleChangeSet} from "../puzzle-changes";
 import { DisplayManager } from "../display/display-manager";
 import { StatusUpdates } from "../status-updates-manager";
 
@@ -171,10 +171,9 @@ class WorkerFacade extends SolverFacade {
     }
 
     private processResult(workerResult: WorkerResult): void {
-        const puzzleChange = PuzzleChange.fromString(workerResult.solvedOrCompleted);
+        const puzzleChange = PuzzleChangeSet.build(workerResult.solvedOrCompleted, workerResult.finalState);
         this.overrideCounter(workerResult.stepCounter);
         this.solutionFound(puzzleChange);
-        this._displayManager.display(workerResult.finalState);
         this.disableOverlay();
     }
 

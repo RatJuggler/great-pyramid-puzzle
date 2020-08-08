@@ -73,7 +73,7 @@ class SolvedDisplay extends DisplayChange {
         const matrix = new Matrix()
             .rotate(120, tpDisplay.center.x, tpDisplay.center.y);
         // @ts-ignore
-        tile.animate({duration: this._animationDuration * 4, ease: "<>"}).transform(matrix)
+        tile.animate({duration: this._animationDuration, ease: "<>"}).transform(matrix)
             .after(() => {
                 // Remove the animated tile then redraw the tile position with the placed tile.
                 tile.remove();
@@ -82,11 +82,7 @@ class SolvedDisplay extends DisplayChange {
     }
 
     show(): void {
-        this._tpChanges.puzzleChanges.forEach(tChange => {
-            this.animateTile(tChange as TileChange);
-            this.animateTile(tChange as TileChange);
-            this.animateTile(tChange as TileChange);
-        });
+        this._tpChanges.puzzleChanges.forEach(tChange => this.animateTile(tChange as TileChange));
     }
 
 }
@@ -94,12 +90,15 @@ class SolvedDisplay extends DisplayChange {
 
 class CompletedDisplay extends DisplayChange {
 
-    constructor(display: Display) {
+    constructor(display: Display,
+            private readonly _tpChanges: PuzzleChangeSet,
+            private readonly _scaleTile: number) {
         super(display);
     }
 
     show(): void {
         // TODO: Implement some sort of celebratory display for getting this far!
+        console.log(this._tpChanges, this._scaleTile);
     }
 
 }
@@ -286,7 +285,7 @@ export class DisplayManager {
                 action = new SolvedDisplay(this._display, pChange as PuzzleChangeSet, this._scaleTile);
                 break;
             case PuzzleChangeType.Completed:
-                action = new CompletedDisplay(this._display);
+                action = new CompletedDisplay(this._display, pChange as PuzzleChangeSet, this._scaleTile);
                 break;
             case PuzzleChangeType.Empty:
                 action = new EmptyTilePosition(this._display, pChange as TilePositionChange, this._scaleTile);

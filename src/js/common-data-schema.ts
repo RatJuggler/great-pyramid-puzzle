@@ -25,7 +25,7 @@ type WorkerParameters = {
 type WorkerResult = {
     solvedOrCompleted: string
     stepCounter: number,
-    finalState: PuzzleChange
+    finalState: Array<PuzzleChange>
 }
 
 export { PuzzleDataElements, PuzzleComponents, WorkerParameters, WorkerResult }

@@ -1,5 +1,4 @@
 import { IterativeSolverBase } from "./solver-iterative-base";
-import { SolverBase } from "./solver-base";
 import { Tile } from "../puzzle/tile";
 import { TilePosition } from "../puzzle/tile-position";
 import { PuzzleChange } from "../puzzle-changes";
@@ -53,10 +52,10 @@ abstract class BruteSolverBase extends IterativeSolverBase {
             // How many rotations are moving round from the current one.
             const rotate = newRotations - tilePosition.state.rotations;
             tilePosition.state.rotations = newRotations;
-            displayChange = SolverBase.rotate(tilePosition, rotate);
+            displayChange = IterativeSolverBase.rotate(tilePosition, rotate);
         } else {
             // If we've tried all the rotations and none match then reject this tile.
-            displayChange = SolverBase.remove(tilePosition);
+            displayChange = IterativeSolverBase.remove(tilePosition);
             tilePosition.state.removeTile();
             state.rejectedTiles.push(tileState);
         }
@@ -69,7 +68,7 @@ abstract class BruteSolverBase extends IterativeSolverBase {
         let displayChange;
         // If there aren't any more tile positions a solution has been reached!
         if (this._emptyTilePositions.length === 0) {
-            displayChange = this.solved();
+            displayChange = IterativeSolverBase.solved(this.stateForDisplay());
         } else {
             // Save the current state, initialise a new state and move on.
             this._solverStack.push(state);
@@ -90,13 +89,13 @@ abstract class BruteSolverBase extends IterativeSolverBase {
                 throw new Error("There should be at least one rotation position for an untried Tile!");
             }
             tilePosition.state.rotations = state.tileState.rotations.shift()!;
-            displayChange = SolverBase.add(tilePosition);
+            displayChange = IterativeSolverBase.add(tilePosition);
         } else {
             // Otherwise if we've tried all the tiles and nothing matches we need to move back a tile position.
             this._emptyTilePositions.unshift(tilePosition);
             // If we can't move back then we've tried every combination!
             if (this._solverStack.length === 0) {
-                displayChange = PuzzleChange.COMPLETED;
+                displayChange = IterativeSolverBase.completed(this.stateForDisplay());
             } else {
                 this._currentState = this._solverStack.pop()!;
                 // Cycle through the rotations or remove the tile if nothing matches.

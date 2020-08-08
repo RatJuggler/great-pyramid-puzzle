@@ -73,7 +73,7 @@ export class GeneticSolver extends SolverBase {
     }
 
     initialState(): PuzzleChange {
-        return this.currentState();
+        return GeneticSolver.current(this.stateForDisplay());
     }
 
     forceNextState(): PuzzleChange {
@@ -83,12 +83,12 @@ export class GeneticSolver extends SolverBase {
     nextState(): PuzzleChange {
         this._population.mutate();
         if (this._population.evaluate()) {
-            return this.solved();
+            return GeneticSolver.solved(this.stateForDisplay());
         }
-        return this.currentState();
+        return GeneticSolver.current(this.stateForDisplay());
     }
 
-    private stateForDisplay(): Array<PuzzleChange> {
+    stateForDisplay(): Array<PuzzleChange> {
         return this._population.bestSoFar().tilePositions
             .map((tilePosition) => {
                 if (tilePosition.state.isEmpty()) {
@@ -97,14 +97,6 @@ export class GeneticSolver extends SolverBase {
                     return SolverBase.set(tilePosition);
                 }
             });
-    }
-
-    currentState(): PuzzleChange {
-        return SolverBase.current(this.stateForDisplay());
-    }
-
-    solved(): PuzzleChange {
-        return SolverBase.solved(this.stateForDisplay());
     }
 
 }
