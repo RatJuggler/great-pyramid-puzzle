@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import 'mocha';
-import {PuzzleChange} from "../../src/js/puzzle-changes";
+import {PuzzleChange, PuzzleChangeSet} from "../../src/js/puzzle-changes";
 
 
 describe("PuzzleChange behaviour", function () {
@@ -22,13 +22,6 @@ describe("PuzzleChange behaviour", function () {
             });
         });
 
-        context("with Solved as an argument", function () {
-            const result = PuzzleChange.fromString("Solved");
-            it("should return the Solved PuzzleChange", function () {
-                expect(result).to.equal(PuzzleChange.SOLVED);
-            });
-        });
-
         context("with Completed as an argument", function () {
             const result = PuzzleChange.fromString("Completed");
             it("should return the Completed PuzzleChange", function () {
@@ -42,7 +35,8 @@ describe("PuzzleChange behaviour", function () {
 
         context("on the Solved instance of PuzzleChange", function () {
             it("should return true", function () {
-                expect(PuzzleChange.SOLVED.isSolved()).to.be.true;
+                const change = PuzzleChangeSet.solved(new Array<PuzzleChange>());
+                expect(change.isSolved()).to.be.true;
             });
         });
 

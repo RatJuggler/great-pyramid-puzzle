@@ -1,4 +1,4 @@
-import { PuzzleChange, TileChange, TilePositionChange } from "../puzzle-changes";
+import { PuzzleChange, PuzzleChangeSet, TileChange, TilePositionChange } from "../puzzle-changes";
 import { Tile } from "../puzzle/tile";
 import { TilePosition } from "../puzzle/tile-position";
 
@@ -23,6 +23,8 @@ abstract class SolverBase implements Solver {
 
     abstract currentState(): PuzzleChange;
 
+    abstract solved(): PuzzleChange;
+
     protected static start(tile: Tile): PuzzleChange {
         return TileChange.start("start" + tile.id, tile.id, 0, tile.segments)
     }
@@ -45,6 +47,14 @@ abstract class SolverBase implements Solver {
 
     protected static remove(tilePosition: TilePosition): PuzzleChange {
         return TileChange.remove(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments);
+    }
+
+    protected static current(puzzleChanges: Array<PuzzleChange>): PuzzleChange {
+        return PuzzleChangeSet.current(puzzleChanges);
+    }
+
+    protected static solved(puzzleChanges: Array<PuzzleChange>): PuzzleChange {
+        return PuzzleChangeSet.solved(puzzleChanges);
     }
 
 }

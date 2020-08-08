@@ -113,7 +113,7 @@ describe("NoMatchingSolver behaviour", function () {
                 expect(result).to.be.an.instanceof(PuzzleChange);
             });
             it("should have a type of Solved", function () {
-                expect(result).to.equal(PuzzleChange.SOLVED);
+                expect(result.type).to.equal(PuzzleChangeType.Solved);
             });
         });
 
@@ -190,7 +190,7 @@ describe("NoMatchingSolver behaviour", function () {
                 expect(result).to.be.an.instanceof(PuzzleChange);
             });
             it("should have a type of Solved", function () {
-                expect(result).to.equal(PuzzleChange.SOLVED);
+                expect(result.type).to.equal(PuzzleChangeType.Solved);
             });
         });
 
@@ -268,7 +268,7 @@ describe("NoMatchingSolver behaviour", function () {
                 expect(result).to.be.an.instanceof(PuzzleChange);
             });
             it("should have a type of Solved", function () {
-                expect(result).to.equal(PuzzleChange.SOLVED);
+                expect(result.type).to.equal(PuzzleChangeType.Solved);
             });
         });
 

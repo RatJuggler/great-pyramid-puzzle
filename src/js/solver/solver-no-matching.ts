@@ -2,7 +2,7 @@ import { PuzzleComponents } from "../common-data-schema";
 import { IterativeSolverBase } from "./solver-iterative-base";
 import { Tile } from "../puzzle/tile";
 import { TilePosition } from "../puzzle/tile-position";
-import { PuzzleChange, TileChange, TilePositionChange } from "../puzzle-changes";
+import {PuzzleChange, TileChange, TilePositionChange} from "../puzzle-changes";
 import { getRandomInt } from "../utils";
 
 
@@ -67,7 +67,7 @@ export class NoMatchingSolver extends IterativeSolverBase {
             return TilePositionChange.rotate(this._tilePosition.id, 1);
         } else {
             if (this._emptyTilePositions.length === 0) {
-                return PuzzleChange.SOLVED;
+                return this.solved();
             } else {
                 this._tilePosition = this.getNextTilePosition();
                 return this.addTile()

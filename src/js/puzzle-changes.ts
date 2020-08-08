@@ -28,7 +28,6 @@ enum PuzzleChangeType {
 class PuzzleChange {
 
     static readonly INITIAL = new PuzzleChange(PuzzleChangeType.Initial);
-    static readonly SOLVED = new PuzzleChange(PuzzleChangeType.Solved);
     static readonly COMPLETED = new PuzzleChange(PuzzleChangeType.Completed);
 
     constructor(readonly type: PuzzleChangeType) {}
@@ -37,8 +36,6 @@ class PuzzleChange {
         let puzzleChange: PuzzleChange;
         if (type === "Initial") {
             puzzleChange = PuzzleChange.INITIAL;
-        } else if (type === "Solved") {
-            puzzleChange = PuzzleChange.SOLVED;
         } else if (type === "Completed") {
             puzzleChange = PuzzleChange.COMPLETED;
         } else {
@@ -48,11 +45,11 @@ class PuzzleChange {
     }
 
     isSolved(): boolean {
-        return this === PuzzleChange.SOLVED;
+        return this.type === PuzzleChangeType.Solved;
     }
 
     isCompleted(): boolean {
-        return this === PuzzleChange.COMPLETED;
+        return this.type === PuzzleChangeType.Completed;
     }
 
 }
@@ -62,6 +59,10 @@ class PuzzleChangeSet extends PuzzleChange {
 
     static current(puzzleChanges: Array<PuzzleChange>): PuzzleChange {
         return new PuzzleChangeSet(PuzzleChangeType.Current, puzzleChanges);
+    }
+
+    static solved(puzzleChanges: Array<PuzzleChange>): PuzzleChange {
+        return new PuzzleChangeSet(PuzzleChangeType.Solved, puzzleChanges);
     }
 
     constructor(type: PuzzleChangeType, readonly puzzleChanges: Array<PuzzleChange>) {

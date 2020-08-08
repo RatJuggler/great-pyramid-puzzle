@@ -57,12 +57,36 @@ class CurrentDisplay extends DisplayChange {
 
 class SolvedDisplay extends DisplayChange {
 
-    constructor(display: Display) {
+    constructor(display: Display,
+                private readonly _tpChanges: PuzzleChangeSet,
+                private readonly _scaleTile: number) {
         super(display);
     }
 
+    private animateTile(tChange: TileChange): void {
+        // Find the tile position of the tile to be removed.
+        const tpDisplay = this.display.getTilePosition(tChange);
+        // Redraw the tile position with the tile removed then draw the tile at the tile position ready to be animated.
+        this.display.drawEmptyTilePosition(tpDisplay, tChange, this._scaleTile);
+        const tile = this.display.drawTile(tpDisplay.center, tChange, this._scaleTile, tChange.rotations);
+        // Animate the tile.
+        const matrix = new Matrix()
+            .rotate(120, tpDisplay.center.x, tpDisplay.center.y);
+        // @ts-ignore
+        tile.animate({duration: this._animationDuration * 4, ease: "<>"}).transform(matrix)
+            .after(() => {
+                // Remove the animated tile then redraw the tile position with the placed tile.
+                tile.remove();
+                this.display.drawTilePosition(tpDisplay, tChange, this._scaleTile,);
+            });
+    }
+
     show(): void {
-        // TODO: Implement some sort of celebratory display for getting this far!
+        this._tpChanges.puzzleChanges.forEach(tChange => {
+            this.animateTile(tChange as TileChange);
+            this.animateTile(tChange as TileChange);
+            this.animateTile(tChange as TileChange);
+        });
     }
 
 }
@@ -162,7 +186,7 @@ class AddTile extends DisplayChange {
         // @ts-ignore
         tile.animate({duration: this._animationDuration}).transform(matrix)
             .after(() => {
-                // Remove the animated tile then redraw the tile position with the placed tile.
+                // Remove the animated tile then redraw the tile position with the tile added.
                 tile.remove();
                 this.display.drawTilePosition(tpDisplay, this._tChange, this._scaleTile,);
             });
@@ -259,7 +283,7 @@ export class DisplayManager {
                 action = new CurrentDisplay(this._display, this, pChange as PuzzleChangeSet);
                 break;
             case PuzzleChangeType.Solved:
-                action = new SolvedDisplay(this._display);
+                action = new SolvedDisplay(this._display, pChange as PuzzleChangeSet, this._scaleTile);
                 break;
             case PuzzleChangeType.Completed:
                 action = new CompletedDisplay(this._display);

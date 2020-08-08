@@ -1,5 +1,5 @@
 import { SolverBase } from "./solver-base";
-import { PuzzleChange, PuzzleChangeSet } from "../puzzle-changes";
+import { PuzzleChange } from "../puzzle-changes";
 import { Tetrahedron } from "../puzzle/tetrahedron";
 import { Side } from "../puzzle/side";
 import { getPuzzleComponents } from "../puzzle-loader";
@@ -83,13 +83,13 @@ export class GeneticSolver extends SolverBase {
     nextState(): PuzzleChange {
         this._population.mutate();
         if (this._population.evaluate()) {
-            return PuzzleChange.SOLVED;
+            return this.solved();
         }
         return this.currentState();
     }
 
-    currentState(): PuzzleChange {
-        const displayChanges = this._population.bestSoFar().tilePositions
+    private stateForDisplay(): Array<PuzzleChange> {
+        return this._population.bestSoFar().tilePositions
             .map((tilePosition) => {
                 if (tilePosition.state.isEmpty()) {
                     throw new Error("Not expecting an empty tile position!");
@@ -97,7 +97,14 @@ export class GeneticSolver extends SolverBase {
                     return SolverBase.set(tilePosition);
                 }
             });
-        return PuzzleChangeSet.current(displayChanges);
+    }
+
+    currentState(): PuzzleChange {
+        return SolverBase.current(this.stateForDisplay());
+    }
+
+    solved(): PuzzleChange {
+        return SolverBase.solved(this.stateForDisplay());
     }
 
 }

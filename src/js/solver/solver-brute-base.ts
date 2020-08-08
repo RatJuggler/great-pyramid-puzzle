@@ -69,7 +69,7 @@ abstract class BruteSolverBase extends IterativeSolverBase {
         let displayChange;
         // If there aren't any more tile positions a solution has been reached!
         if (this._emptyTilePositions.length === 0) {
-            displayChange = PuzzleChange.SOLVED;
+            displayChange = this.solved();
         } else {
             // Save the current state, initialise a new state and move on.
             this._solverStack.push(state);
