@@ -32,26 +32,26 @@ export class Tetrahedron implements IntegrityCheck {
         return [true, "Passed"];
     }
 
-    get tilePositionCount(): number {
-        let tilePositions = 0;
-        this._faces.forEach(face => tilePositions += face.tilePositionCount);
-        return tilePositions;
-    }
-
     get name(): string {
         return this._name;
     }
 
+    get tilePositionCount(): number {
+        return this._faces.reduce((count, face) => count += face.tilePositionCount, 0);
+    }
+
     get tilePositions(): Array<TilePosition> {
-        let tilePositions: Array<TilePosition> = [];
-        this._faces.forEach((face) => tilePositions = tilePositions.concat(face.tilePositions))
-        return tilePositions;
+        return this._faces
+            .map((face) => face.tilePositions)
+            .reduce((allTilePositions, tilePositions) =>
+                allTilePositions.concat(tilePositions), new Array<TilePosition>());
     }
 
     get emptyTilePositions(): Array<TilePosition> {
-        let tilePositions: Array<TilePosition> = [];
-        this._faces.forEach((face) => tilePositions = tilePositions.concat(face.emptyTilePositions))
-        return tilePositions;
+        return this._faces
+            .map((face) => face.emptyTilePositions)
+            .reduce((allEmptyTilePositions, tilePositions) =>
+                allEmptyTilePositions.concat(tilePositions), new Array<TilePosition>());
     }
 
     getFace(name: string): Face {
