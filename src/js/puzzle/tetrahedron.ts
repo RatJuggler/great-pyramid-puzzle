@@ -7,6 +7,8 @@ export class Tetrahedron implements IntegrityCheck {
 
     static readonly FACES = 4;
 
+    private _tileSidesMatching: number = 0;
+
     constructor(private readonly _name: string, private readonly _faces: Array<Face>) {
         if (this._faces.length !== Tetrahedron.FACES) {
             throw new Error(`Tetrahedron must always be configured with ${Tetrahedron.FACES} Faces!`)
@@ -37,7 +39,7 @@ export class Tetrahedron implements IntegrityCheck {
     }
 
     get tilePositionCount(): number {
-        return this._faces.reduce((count, face) => count += face.tilePositionCount, 0);
+        return this._faces.reduce((count, face) => count + face.tilePositionCount, 0);
     }
 
     get tilePositions(): Array<TilePosition> {
@@ -64,8 +66,9 @@ export class Tetrahedron implements IntegrityCheck {
     }
 
     tileSidesMatching(): number {
-        return this.tilePositions
+        this._tileSidesMatching = this.tilePositions
             .reduce((totalMatches, tilePosition) => totalMatches + tilePosition.sidesMatching(), 0);
+        return this._tileSidesMatching;
     }
 
     toString(): string {
