@@ -40,7 +40,7 @@ describe("Tetrahedron behaviour", function () {
 
     describe("if a new Tetrahedron is created", function () {
 
-        context("with valid layout configuration file 1", function () {
+        context("with the minimum configuration", function () {
             it("should return a correctly initialised instance", function () {
                 expect(tetrahedron).to.be.an.instanceOf(Tetrahedron);
             });
