@@ -34,7 +34,7 @@ function continuePuzzle(): void {
 }
 
 
-function addClickEventListener(id: string, callback: (this:HTMLElement, ev: MouseEvent) => any): void {
+function addClickEventListener(id: string, callback: (this:HTMLElement, evt: MouseEvent) => any): void {
     document.getElementById(id)!.addEventListener("click", callback);
 }
 
@@ -139,11 +139,8 @@ document.getElementById("continue")!.addEventListener("disable", () => {
 });
 
 
-// @ts-ignore
-function getMousePosition(evt) {
-    // @ts-ignore
+function getMousePosition(evt: MouseEvent) {
     let CTM = displayElement.getScreenCTM()!;
-    if (evt.touches) { evt = evt.touches[0]; }
     return {
         x: (evt.clientX - CTM.e) / CTM.a,
         y: (evt.clientY - CTM.f) / CTM.d
@@ -151,8 +148,7 @@ function getMousePosition(evt) {
 }
 // @ts-ignore
 let selectedElement, offset, transform;
-// @ts-ignore
-function initialiseDragging(evt) {
+function initialiseDragging(evt: MouseEvent) {
     offset = getMousePosition(evt);
     // Make sure the first transform on the element is a translate transform
     // @ts-ignore
@@ -177,8 +173,7 @@ function startDrag(evt) {
         initialiseDragging(evt);
     }
 }
-// @ts-ignore
-function drag(evt) {
+function drag(evt: MouseEvent) {
     // @ts-ignore
     if (selectedElement) {
         evt.preventDefault();
@@ -187,8 +182,7 @@ function drag(evt) {
         transform.setTranslate(coord.x - offset.x, coord.y - offset.y);
     }
 }
-// @ts-ignore
-function endDrag(evt) {
+function endDrag(_evt: MouseEvent) {
     selectedElement = false;
 }
 
