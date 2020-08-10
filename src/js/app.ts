@@ -47,13 +47,14 @@ function removeActive(id: string): void {
     document.getElementById(id)!.classList.remove("active");
 }
 
-addClickEventListener("algorithm-no-matching", () => { addActive("no-matching-options"); });
 addClickEventListener("algorithm-genetic", () => { removeActive("no-matching-options"); });
 addClickEventListener("algorithm-only-valid", () => { removeActive("no-matching-options"); });
 addClickEventListener("algorithm-brute", () => { removeActive("no-matching-options"); });
+addClickEventListener("algorithm-no-matching", () => { addActive("no-matching-options"); });
 
-addClickEventListener("display-animated", () => { addActive("animation-options"); });
-addClickEventListener("display-completed", () => { removeActive("animation-options"); });
+addClickEventListener("display-animated", () => { addActive("algorithm-options"); addActive("animation-options"); });
+addClickEventListener("display-completed", () => { addActive("algorithm-options"); removeActive("animation-options"); });
+addClickEventListener("display-human", () => { removeActive("algorithm-options"); removeActive("animation-options"); });
 
 addClickEventListener("menu-toggle", () => { toggleActive("layout", "menu", "menu-toggle") });
 
@@ -71,11 +72,11 @@ addMenuHelpEvent("go", "Start a new puzzle solving process with the selected opt
 addMenuHelpEvent("cancel", "Cancel the solution in progress.");
 addMenuHelpEvent("continue", "Continue with the current options to try to find another solution.");
 addMenuHelpEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
+addMenuHelpEvent("display-option", "Show an animation of the puzzle being solved or just display the completed solution.");
 addMenuHelpEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
 addMenuHelpEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
 addMenuHelpEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
 addMenuHelpEvent("tile-rotation", "If tiles are randomly rotated before being placed on the test display.");
-addMenuHelpEvent("puzzle-display", "Show an animation of the puzzle being solved or just display the completed solution.");
 addMenuHelpEvent("animation-speed", "How fast you want the animation to run.");
 
 function defaultMenuHelp() {
@@ -135,3 +136,62 @@ document.getElementById("continue")!.addEventListener("enable", () => {
 document.getElementById("continue")!.addEventListener("disable", () => {
     enableGo();
 });
+
+
+let svg = document.getElementById("puzzle-display-area")!;
+svg.addEventListener('mousedown', startDrag);
+svg.addEventListener('mousemove', drag);
+svg.addEventListener('mouseup', endDrag);
+svg.addEventListener('mouseleave', endDrag);
+// @ts-ignore
+function getMousePosition(evt) {
+    // @ts-ignore
+    let CTM = svg.getScreenCTM();
+    if (evt.touches) { evt = evt.touches[0]; }
+    return {
+        x: (evt.clientX - CTM.e) / CTM.a,
+        y: (evt.clientY - CTM.f) / CTM.d
+    };
+}
+// @ts-ignore
+let selectedElement, offset, transform;
+// @ts-ignore
+function initialiseDragging(evt) {
+    offset = getMousePosition(evt);
+    // Make sure the first transform on the element is a translate transform
+    // @ts-ignore
+    let transforms = selectedElement.transform.baseVal;
+    if (transforms.length === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
+        // Create an transform that translates by (0, 0)
+        // @ts-ignore
+        let translate = svg.createSVGTransform();
+        translate.setTranslate(0, 0);
+        // @ts-ignore
+        selectedElement.transform.baseVal.insertItemBefore(translate, 0);
+    }
+    // Get initial translation
+    transform = transforms.getItem(0);
+    offset.x -= transform.matrix.e;
+    offset.y -= transform.matrix.f;
+}
+// @ts-ignore
+function startDrag(evt) {
+    if (evt.target.parentNode.classList.contains('draggable-group')) {
+        selectedElement = evt.target.parentNode;
+        initialiseDragging(evt);
+    }
+}
+// @ts-ignore
+function drag(evt) {
+    // @ts-ignore
+    if (selectedElement) {
+        evt.preventDefault();
+        let coord = getMousePosition(evt);
+        // @ts-ignore
+        transform.setTranslate(coord.x - offset.x, coord.y - offset.y);
+    }
+}
+// @ts-ignore
+function endDrag(evt) {
+    selectedElement = false;
+}
