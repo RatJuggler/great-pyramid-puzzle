@@ -4,7 +4,7 @@ import { StatusUpdatesManager } from "./status-updates-manager";
 import { SolverFacade, getSolverFacade} from "./solver/solver-facade";
 
 
-const displayElement = <SVGAElement> <any> document.getElementById("puzzle-display-area")!;
+const displayElement = <SVGSVGElement> <any> document.getElementById("puzzle-display-area")!;
 
 let solverFacade: SolverFacade;
 
@@ -144,6 +144,8 @@ type Coords = {
     readonly y: number
 }
 let mousePointerOffset: Coords;
+let selectedElement: any | null;
+let transform: SVGTransform;
 
 function getMousePosition(evt: MouseEvent): Coords {
     let CTM = displayElement.getScreenCTM()!;
@@ -152,15 +154,12 @@ function getMousePosition(evt: MouseEvent): Coords {
         y: (evt.clientY - CTM.f) / CTM.d
     };
 }
-let selectedElement: any;
-let transform: any;
-function initialiseDragging(evt: MouseEvent) {
-    let mousePosition = getMousePosition(evt);
+
+function initialiseDragging(mousePosition: Coords) {
     // Make sure the first transform on the element is a translate transform
     let transforms = selectedElement.transform.baseVal;
     if (transforms.length === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
         // Create an transform that translates by (0, 0)
-        // @ts-ignore
         let translate = displayElement.createSVGTransform();
         translate.setTranslate(0, 0);
         selectedElement.transform.baseVal.insertItemBefore(translate, 0);
@@ -172,13 +171,14 @@ function initialiseDragging(evt: MouseEvent) {
         y: mousePosition.y - transform.matrix.f
     }
 }
-// @ts-ignore
-function startDrag(evt) {
+
+function startDrag(evt: any) {
     if (evt.target.parentNode.classList.contains('draggable-group')) {
         selectedElement = evt.target.parentNode;
-        initialiseDragging(evt);
+        initialiseDragging(getMousePosition(evt));
     }
 }
+
 function drag(evt: MouseEvent) {
     if (selectedElement) {
         evt.preventDefault();
@@ -186,8 +186,9 @@ function drag(evt: MouseEvent) {
         transform.setTranslate(mousePosition.x - mousePointerOffset.x, mousePosition.y - mousePointerOffset.y);
     }
 }
+
 function endDrag(_evt: MouseEvent) {
-    selectedElement = false;
+    selectedElement = null;
 }
 
 displayElement.addEventListener('mousedown', startDrag);

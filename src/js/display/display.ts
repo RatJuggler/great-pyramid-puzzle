@@ -20,7 +20,7 @@ export class Display {
 
     private readonly _draw: Svg;
 
-    constructor(rootElement: string | SVGAElement, private readonly _displayData: DisplayData) {
+    constructor(rootElement: string | SVGSVGElement, private readonly _displayData: DisplayData) {
         // Should be using an existing SVG root element.
         this._draw = SVG(rootElement) as Svg;
     }
