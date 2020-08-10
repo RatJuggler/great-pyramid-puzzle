@@ -48,8 +48,9 @@ function removeActive(id: string): void {
 }
 
 addClickEventListener("algorithm-no-matching", () => { addActive("no-matching-options"); });
-addClickEventListener("algorithm-brute", () => { removeActive("no-matching-options"); });
+addClickEventListener("algorithm-genetic", () => { removeActive("no-matching-options"); });
 addClickEventListener("algorithm-only-valid", () => { removeActive("no-matching-options"); });
+addClickEventListener("algorithm-brute", () => { removeActive("no-matching-options"); });
 
 addClickEventListener("display-animated", () => { addActive("animation-options"); });
 addClickEventListener("display-completed", () => { removeActive("animation-options"); });
