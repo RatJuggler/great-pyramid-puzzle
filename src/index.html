@@ -49,6 +49,19 @@
               <label for="puzzle-great">Great</label>
             </div>
           </li>
+          <li id="display-option" class="pure-menu-item">
+            <p>Display:</p>
+            <div class="selector">
+              <input type="radio" id="display-animated" name="display-option" value="Animated" checked>
+              <label for="display-animated">Animated</label>
+              <input type="radio" id="display-completed" name="display-option" value="Completed">
+              <label for="display-completed">Completed</label>
+              <input type="radio" id="display-human" name="display-option" value="Human">
+              <label for="display-human">Human</label>
+            </div>
+          </li>
+        </ul>
+        <ul id="algorithm-options" class="pure-menu-list active">
           <li id="solve-algorithm" class="pure-menu-item">
             <p>Algorithm:</p>
             <div class="selector">
@@ -60,17 +73,6 @@
               <label for="algorithm-brute">Brute Force</label>
               <input type="radio" id="algorithm-no-matching" name="solve-algorithm" value="NoMatching">
               <label for="algorithm-no-matching">No Matching</label>
-            </div>
-          </li>
-        </ul>
-        <ul id="puzzle-display" class="pure-menu-list active">
-          <li id="display-option" class="pure-menu-item">
-            <p>Display:</p>
-            <div class="selector">
-              <input type="radio" id="display-animated" name="display-option" value="Animated" checked>
-              <label for="display-animated">Animated</label>
-              <input type="radio" id="display-completed" name="display-option" value="Completed">
-              <label for="display-completed">Completed</label>
             </div>
           </li>
         </ul>
