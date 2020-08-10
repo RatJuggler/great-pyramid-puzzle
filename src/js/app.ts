@@ -139,32 +139,38 @@ document.getElementById("continue")!.addEventListener("disable", () => {
 });
 
 
-function getMousePosition(evt: MouseEvent) {
+type Coords = {
+    readonly x: number,
+    readonly y: number
+}
+let mousePointerOffset: Coords;
+
+function getMousePosition(evt: MouseEvent): Coords {
     let CTM = displayElement.getScreenCTM()!;
     return {
         x: (evt.clientX - CTM.e) / CTM.a,
         y: (evt.clientY - CTM.f) / CTM.d
     };
 }
-// @ts-ignore
-let selectedElement, offset, transform;
+let selectedElement: any;
+let transform: any;
 function initialiseDragging(evt: MouseEvent) {
-    offset = getMousePosition(evt);
+    let mousePosition = getMousePosition(evt);
     // Make sure the first transform on the element is a translate transform
-    // @ts-ignore
     let transforms = selectedElement.transform.baseVal;
     if (transforms.length === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
         // Create an transform that translates by (0, 0)
         // @ts-ignore
         let translate = displayElement.createSVGTransform();
         translate.setTranslate(0, 0);
-        // @ts-ignore
         selectedElement.transform.baseVal.insertItemBefore(translate, 0);
     }
     // Get initial translation
     transform = transforms.getItem(0);
-    offset.x -= transform.matrix.e;
-    offset.y -= transform.matrix.f;
+    mousePointerOffset = {
+        x: mousePosition.x - transform.matrix.e,
+        y: mousePosition.y - transform.matrix.f
+    }
 }
 // @ts-ignore
 function startDrag(evt) {
@@ -174,12 +180,10 @@ function startDrag(evt) {
     }
 }
 function drag(evt: MouseEvent) {
-    // @ts-ignore
     if (selectedElement) {
         evt.preventDefault();
-        let coord = getMousePosition(evt);
-        // @ts-ignore
-        transform.setTranslate(coord.x - offset.x, coord.y - offset.y);
+        let mousePosition = getMousePosition(evt);
+        transform.setTranslate(mousePosition.x - mousePointerOffset.x, mousePosition.y - mousePointerOffset.y);
     }
 }
 function endDrag(_evt: MouseEvent) {
