@@ -18,6 +18,7 @@ The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I t
 - Allow solvers to run as dedicated web workers, without animation, for speed.
 - Option to allow solvers to continue to search for further solutions.
 - Report rough timings and number of steps (tiles added/removed/rotated) taken for each solver run.
+- Started work on a genetic algorithm solver.
 
 You can see the latest release in action [here](https://ratjuggler.github.io/great-pyramid-puzzle/).
 
@@ -30,6 +31,9 @@ Rough timings (time is to first solution):
 |                  | Great / 36     | ???       | ???                  | ???     |
 | Only Valid Tiles | Simple / 4     | 7         | 4 Secs               | Instant |
 |                  | Pocket / 16    | 86,358    | ~14 hrs (est)        | Instant |
+|                  | Great / 36     | ???       | ???                  | ???     |
+| Generic          | Simple / 4     | ???       | ???                  | ???     |
+|                  | Pocket / 16    | ???       | ???                  | ???     |
 |                  | Great / 36     | ???       | ???                  | ???     |
 
 ## Puzzle Overview
