@@ -4,6 +4,8 @@ import { StatusUpdatesManager } from "./status-updates-manager";
 import { SolverFacade, getSolverFacade} from "./solver/solver-facade";
 
 
+const displayElement = <SVGAElement> <any> document.getElementById("puzzle-display-area")!;
+
 let solverFacade: SolverFacade;
 
 function solvePuzzle(): void {
@@ -11,7 +13,6 @@ function solvePuzzle(): void {
     const domUIOptions = new DOMUIOptions(document);
     const solverOptions = domUIOptions.solverOptions;
     // Build the display manager.
-    const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
     const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, domUIOptions.animationSpeed);
     // Build the status list manager.
     const statusUpdatesList = document.getElementById("status-updates-list")!;
@@ -138,15 +139,10 @@ document.getElementById("continue")!.addEventListener("disable", () => {
 });
 
 
-let svg = document.getElementById("puzzle-display-area")!;
-svg.addEventListener('mousedown', startDrag);
-svg.addEventListener('mousemove', drag);
-svg.addEventListener('mouseup', endDrag);
-svg.addEventListener('mouseleave', endDrag);
 // @ts-ignore
 function getMousePosition(evt) {
     // @ts-ignore
-    let CTM = svg.getScreenCTM();
+    let CTM = displayElement.getScreenCTM()!;
     if (evt.touches) { evt = evt.touches[0]; }
     return {
         x: (evt.clientX - CTM.e) / CTM.a,
@@ -164,7 +160,7 @@ function initialiseDragging(evt) {
     if (transforms.length === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
         // Create an transform that translates by (0, 0)
         // @ts-ignore
-        let translate = svg.createSVGTransform();
+        let translate = displayElement.createSVGTransform();
         translate.setTranslate(0, 0);
         // @ts-ignore
         selectedElement.transform.baseVal.insertItemBefore(translate, 0);
@@ -195,3 +191,8 @@ function drag(evt) {
 function endDrag(evt) {
     selectedElement = false;
 }
+
+displayElement.addEventListener('mousedown', startDrag);
+displayElement.addEventListener('mousemove', drag);
+displayElement.addEventListener('mouseup', endDrag);
+displayElement.addEventListener('mouseleave', endDrag);
