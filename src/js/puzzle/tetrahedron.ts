@@ -42,6 +42,10 @@ export class Tetrahedron implements IntegrityCheck {
         return this._faces.reduce((count, face) => count + face.tilePositionCount, 0);
     }
 
+    get tileSidesMatching(): number {
+        return this._tileSidesMatching;
+    }
+
     get tilePositions(): Array<TilePosition> {
         return this._faces
             .map((face) => face.tilePositions)
@@ -65,7 +69,7 @@ export class Tetrahedron implements IntegrityCheck {
         throw new Error(`Face (${name}) not found on Tetrahedron!`);
     }
 
-    tileSidesMatching(): number {
+    countTileSidesMatching(): number {
         this._tileSidesMatching = this.tilePositions
             .reduce((totalMatches, tilePosition) => totalMatches + tilePosition.sidesMatching(), 0);
         return this._tileSidesMatching;

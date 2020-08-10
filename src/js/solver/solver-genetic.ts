@@ -8,32 +8,61 @@ import { getRandomInt } from "../utils";
 
 class Population {
 
-    private readonly _population = new Array<Tetrahedron>();
+    private _population: Array<Tetrahedron>;
+    private readonly _selection: Array<number>;
     private readonly _sidesMatchingWhenSolved: number;
 
-    private _memberWithMostSidesMatching = 0;
+    private _memberWithMostSidesMatching: number;
+    private _totalMatchingAcrossAllMembers: number;
 
     constructor(size: number, puzzleType: string) {
-        for (let i = 0; i < size; i++) {
+        this._population = new Array<Tetrahedron>(size);
+        for (let i = 0; i < this._population.length; i++) {
             const puzzle = getPuzzleComponents(puzzleType);
             puzzle.tetrahedron.emptyTilePositions.forEach((tilePosition) => {
                 tilePosition.state.tile = puzzle.tilePool.randomTile;
                 tilePosition.state.rotations = getRandomInt(Side.numberOfSides);
             });
-            this._population.push(puzzle.tetrahedron);
+            this._population[i] = puzzle.tetrahedron;
         }
         this._sidesMatchingWhenSolved = this._population[0].tilePositionCount * Side.numberOfSides;
+        this._memberWithMostSidesMatching = 0;
+        this._totalMatchingAcrossAllMembers = 0;
+        this._selection = new Array<number>(size);
+        this.evaluate();
     }
 
     evaluate(): boolean {
+        this._totalMatchingAcrossAllMembers = 0;
         this._memberWithMostSidesMatching = 0;
         for (let i = 0; i < this._population.length; i++) {
-            const sidesMatching = this._population[i].tileSidesMatching();
+            const sidesMatching = this._population[i].countTileSidesMatching();
             if (sidesMatching > this._memberWithMostSidesMatching) {
                 this._memberWithMostSidesMatching = i;
             }
+            this._totalMatchingAcrossAllMembers += sidesMatching;
         }
-        return this._memberWithMostSidesMatching == this._sidesMatchingWhenSolved;
+        for (let i = 0; i < this._population.length; i++) {
+            this._selection[i] = this._population[i].tileSidesMatching / this._totalMatchingAcrossAllMembers;
+        }
+        return this._memberWithMostSidesMatching === this._sidesMatchingWhenSolved;
+    }
+
+    getSelection(): Tetrahedron {
+        let selected = -1;
+        let r = Math.random();
+        while (r > 0) {
+            r -= this._selection[++selected];
+        }
+        return this._population[selected];
+    }
+
+    generate(): void {
+        const newPopulation = new Array<Tetrahedron>(this._population.length);
+        for (let i = 0; i < this._population.length; i++) {
+            newPopulation[i] = this.getSelection();
+        }
+        this._population = newPopulation;
     }
 
     mutate(): void {
@@ -63,7 +92,7 @@ class Population {
 
 export class GeneticSolver extends SolverBase {
 
-    private static readonly POPULATION_SIZE = 100;
+    private static readonly POPULATION_SIZE = 10;
 
     private readonly _population: Population;
 
@@ -81,6 +110,7 @@ export class GeneticSolver extends SolverBase {
     }
 
     nextState(): PuzzleChange {
+        this._population.generate();
         this._population.mutate();
         if (this._population.evaluate()) {
             return GeneticSolver.solved(this.stateForDisplay());
