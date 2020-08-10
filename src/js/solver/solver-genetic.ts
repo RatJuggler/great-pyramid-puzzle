@@ -29,10 +29,10 @@ class Population {
         this._memberWithMostSidesMatching = 0;
         this._totalMatchingAcrossAllMembers = 0;
         this._selection = new Array<number>(size);
-        this.evaluate();
+        this.evaluation();
     }
 
-    evaluate(): boolean {
+    evaluation(): boolean {
         this._totalMatchingAcrossAllMembers = 0;
         this._memberWithMostSidesMatching = 0;
         for (let i = 0; i < this._population.length; i++) {
@@ -45,10 +45,10 @@ class Population {
         for (let i = 0; i < this._population.length; i++) {
             this._selection[i] = this._population[i].tileSidesMatching / this._totalMatchingAcrossAllMembers;
         }
-        return this._memberWithMostSidesMatching === this._sidesMatchingWhenSolved;
+        return this.bestSoFar().tileSidesMatching === this._sidesMatchingWhenSolved;
     }
 
-    getSelection(): Tetrahedron {
+    private selection(): Tetrahedron {
         let selected = -1;
         let r = Math.random();
         while (r > 0) {
@@ -57,28 +57,33 @@ class Population {
         return this._population[selected];
     }
 
-    generate(): void {
+    generation(): void {
         const newPopulation = new Array<Tetrahedron>(this._population.length);
         for (let i = 0; i < this._population.length; i++) {
-            newPopulation[i] = this.getSelection();
+            newPopulation[i] = this.selection();
         }
         this._population = newPopulation;
     }
 
-    mutate(): void {
+    private static mutate(tetrahedron: Tetrahedron): void {
+        const tilePositions = tetrahedron.tilePositions;
+        if (Math.random() > 0.5) {
+            tilePositions[getRandomInt(tilePositions.length)].state.rotate();
+        } else {
+            const swapFrom = getRandomInt(tilePositions.length);
+            const swapTo = getRandomInt(tilePositions.length);
+            if (swapFrom != swapTo) {
+                const swapState = tilePositions[swapFrom].state;
+                tilePositions[swapFrom].state = tilePositions[swapTo].state;
+                tilePositions[swapTo].state = swapState;
+            }
+        }
+    }
+
+    mutation(): void {
         for (let i = 0; i < this._population.length; i++) {
-            const tilePositions = this._population[i].tilePositions;
-            for (let j = 0; j < getRandomInt(tilePositions.length); j++) {
-                const swapFrom = getRandomInt(tilePositions.length);
-                const swapTo = getRandomInt(tilePositions.length);
-                if (swapFrom != swapTo) {
-                    const swapState = tilePositions[swapFrom].state;
-                    tilePositions[swapFrom].state = tilePositions[swapTo].state;
-                    tilePositions[swapTo].state = swapState;
-                }
-                if (getRandomInt(100) > 90) {
-                    tilePositions[swapFrom].state.rotate();
-                }
+            if (Math.random() > 0.01) {
+                Population.mutate(this._population[i]);
             }
         }
     }
@@ -110,9 +115,9 @@ export class GeneticSolver extends SolverBase {
     }
 
     nextState(): PuzzleChange {
-        this._population.generate();
-        this._population.mutate();
-        if (this._population.evaluate()) {
+        this._population.generation();
+        this._population.mutation();
+        if (this._population.evaluation()) {
             return GeneticSolver.solved(this.stateForDisplay());
         }
         return GeneticSolver.current(this.stateForDisplay());
