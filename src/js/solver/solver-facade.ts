@@ -79,29 +79,6 @@ abstract class SolverFacade {
 
 }
 
-class HumanFacade extends SolverFacade {
-
-    // The solver being used.
-    private _solver: Solver = buildSolver(this._solverOptions);
-
-    constructor(solverOptions: SolverOptions,
-                displayManager: DisplayManager,
-                statusUpdates: StatusUpdates,
-                continueElement: HTMLElement) {
-        super(solverOptions, displayManager, statusUpdates, continueElement);
-        this._solverOptions.solveAlgorithm = "Human";
-    }
-
-    protected solverCancel(): void {}
-
-    protected startSolver(): void {
-        // Show the initial tile positions.
-        this._displayManager.display(this._solver.initialState());
-    }
-
-    protected continueSolver(): void {}
-
-}
 
 class AnimatedFacade extends SolverFacade {
 
@@ -155,6 +132,7 @@ class AnimatedFacade extends SolverFacade {
     }
 
 }
+
 
 class WorkerFacade extends SolverFacade {
 
@@ -226,6 +204,30 @@ class WorkerFacade extends SolverFacade {
 }
 
 
+class HumanFacade extends SolverFacade {
+
+    // The solver being used.
+    private _solver: Solver = buildSolver(this._solverOptions);
+
+    constructor(solverOptions: SolverOptions,
+                displayManager: DisplayManager,
+                statusUpdates: StatusUpdates,
+                continueElement: HTMLElement) {
+        super(solverOptions, displayManager, statusUpdates, continueElement);
+    }
+
+    protected solverCancel(): void {}
+
+    protected startSolver(): void {
+        // Show the initial tile positions.
+        this._displayManager.display(this._solver.initialState());
+    }
+
+    protected continueSolver(): void {}
+
+}
+
+
 function getSolverFacade(uiControls: UIOptions,
                          displayManager: DisplayManager,
                          statusUpdates: StatusUpdates,
@@ -239,7 +241,10 @@ function getSolverFacade(uiControls: UIOptions,
             // Worker solution needs to know where the overlay element is.
             return new WorkerFacade(uiControls.solverOptions, displayManager, statusUpdates, continueButton, overlay!);
         case "Human":
-            return new HumanFacade(uiControls.solverOptions, displayManager, statusUpdates, continueButton);
+            // Human solution needs to use it's own solver.
+            const solverOptions = uiControls.solverOptions;
+            solverOptions.solveAlgorithm = "Human";
+            return new HumanFacade(solverOptions, displayManager, statusUpdates, continueButton);
         default:
             throw new Error("Invalid solution option!");
     }

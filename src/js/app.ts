@@ -155,7 +155,7 @@ function getMousePosition(evt: MouseEvent): Coords {
     };
 }
 
-function startDrag(evt: MouseEvent) {
+function startDrag(evt: MouseEvent): void {
     if (evt.target) {
         let node = (<Element> evt.target).parentNode;
         // Only Tile groups should be made draggable.
@@ -172,7 +172,7 @@ function startDrag(evt: MouseEvent) {
     }
 }
 
-function drag(evt: MouseEvent) {
+function drag(evt: MouseEvent): void {
     if (groupSelected) {
         evt.preventDefault();
         let mousePosition = getMousePosition(evt);
@@ -180,8 +180,13 @@ function drag(evt: MouseEvent) {
     }
 }
 
-function endDrag(_evt: MouseEvent) {
-    groupSelected = null;
+function endDrag(evt: MouseEvent): void {
+    if (groupSelected) {
+        groupSelected.style.visibility = "hidden";
+        console.log(document.elementFromPoint(evt.clientX, evt.clientY)!.parentElement);
+        groupSelected.style.visibility = "";
+        groupSelected = null;
+    }
 }
 
 displayElement.addEventListener('mousedown', startDrag);

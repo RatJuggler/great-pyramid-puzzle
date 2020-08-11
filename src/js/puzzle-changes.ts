@@ -14,6 +14,7 @@
 enum PuzzleChangeType {
     Initial = "Initial",
     Start = "Start",
+    StartDraggable = "StartDraggable",
     Empty = "Empty",
     Current = "Current",
     Set = "Set",
@@ -96,6 +97,10 @@ class TileChange extends TilePositionChange {
 
     static start(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
         return new TileChange(PuzzleChangeType.Start, tilePositionId, tileId, rotations, segments);
+    }
+
+    static startDraggable(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.StartDraggable, tilePositionId, tileId, rotations, segments);
     }
 
     static set(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {

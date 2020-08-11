@@ -23,7 +23,7 @@ export class HumanSolver extends SolverBase {
     initialState(): PuzzleChange {
         const displayChanges = this._tetrahedron.tilePositions
             .map((tilePosition) => SolverBase.empty(tilePosition))
-            .concat(this._tilePool.tiles.map((tile) => SolverBase.start(tile)));
+            .concat(this._tilePool.tiles.map((tile) => SolverBase.startDraggable(tile)));
         return SolverBase.current(displayChanges);
     }
 

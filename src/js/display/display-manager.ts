@@ -141,6 +141,27 @@ class StartTilePosition extends DisplayChange {
 }
 
 
+class StartTileDraggable extends DisplayChange {
+
+    constructor(display: Display,
+                private readonly _tChange: TileChange,
+                private readonly _scaleTileStart: number) {
+        super(display);
+    }
+
+    show(): void {
+        // Find the start position of the tile to place on the puzzle.
+        const tspDisplay = this.display.getStartPosition(this._tChange);
+        // Redraw the start position with the tile removed then draw the tile at the start position ready to be dragged.
+        this.display.drawEmptyStartPosition(tspDisplay, this._tChange, this._scaleTileStart);
+        const tile = this.display.drawTile(tspDisplay.center, this._tChange, this._scaleTileStart, 0);
+        // The group should include the class and 0 translate to make it draggable.
+        tile.addClass("draggable-group").translate(0, 0);
+    }
+
+}
+
+
 class SetTilePosition extends DisplayChange {
 
     constructor(display: Display,
@@ -293,6 +314,9 @@ export class DisplayManager {
                 break;
             case PuzzleChangeType.Start:
                 action = new StartTilePosition(this._display, pChange as TileChange, this._scaleTileStart);
+                break;
+            case PuzzleChangeType.StartDraggable:
+                action = new StartTileDraggable(this._display, pChange as TileChange, this._scaleTileStart);
                 break;
             case PuzzleChangeType.Set:
                 action = new SetTilePosition(this._display, pChange as TileChange, this._scaleTile);

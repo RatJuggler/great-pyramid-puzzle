@@ -27,6 +27,10 @@ abstract class SolverBase implements Solver {
         return TileChange.start("start" + tile.id, tile.id, 0, tile.segments)
     }
 
+    protected static startDraggable(tile: Tile): PuzzleChange {
+        return TileChange.startDraggable("draggable" + tile.id, tile.id, 0, tile.segments)
+    }
+
     protected static empty(tilePosition: TilePosition): PuzzleChange {
         return TilePositionChange.empty(tilePosition.id);
     }

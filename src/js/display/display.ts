@@ -47,9 +47,8 @@ export class Display {
 
     drawTile(tpCenter: CenterPointData, tChange: TileChange, scaleTile: number, rotations: number): G {
         // Create the display for a tile under a single group.
-        // The group should include the class and 0 translate to make it draggable.
         const tDisplay = {
-            group: this._draw.group().id("tile" + tChange.tileId).addClass("draggable-group").translate(0, 0),
+            group: this._draw.group().id("tile" + tChange.tileId),
             center: tpCenter
         }
         // Draw a triangle in the base tile colour.
