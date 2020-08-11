@@ -51,6 +51,8 @@ export class Display {
             group: this._draw.group().id("tile" + tChange.tileId),
             center: tpCenter
         }
+        // Set the tile description.
+        tDisplay.group.element('title').words("Tile: " + tChange.tileId);
         // Draw a triangle in the base tile colour.
         this.drawTriangle(tDisplay, scaleTile, Display.TILE_COLOUR, 0);
         // Draw the red segments.
