@@ -2,6 +2,7 @@ import { DOMUIOptions } from "./ui-options";
 import { getDisplayManager } from "./display/display-loader";
 import { StatusUpdatesManager } from "./status-updates-manager";
 import { SolverFacade, getSolverFacade} from "./solver/solver-facade";
+import { Coords, UIDragGroup } from "./ui-drag-group";
 
 
 const displayElement = <SVGSVGElement> <any> document.getElementById("puzzle-display-area")!;
@@ -139,13 +140,7 @@ document.getElementById("continue")!.addEventListener("disable", () => {
 });
 
 
-type Coords = {
-    readonly x: number,
-    readonly y: number
-}
-let mousePointerOffset: Coords;
-let groupSelected: SVGGElement | null;
-let transform: SVGTransform;
+let dragGroup: UIDragGroup | null = null;
 
 function getMousePosition(evt: MouseEvent): Coords {
     let CTM = displayElement.getScreenCTM()!;
@@ -158,34 +153,26 @@ function getMousePosition(evt: MouseEvent): Coords {
 function startDrag(evt: MouseEvent): void {
     if (evt.target) {
         let node = (<Element> evt.target).parentNode;
-        // Only Tile groups should be made draggable.
+        // Only Tile groups should have been made draggable.
         if (node && (<Element> node).classList.contains('draggable-group')) {
-            let mousePosition = getMousePosition(evt);
-            groupSelected = <SVGGElement> node;
-            // Each Tile group should already have a transform.
-            transform = groupSelected!.transform.baseVal.getItem(0);
-            mousePointerOffset = {
-                x: mousePosition.x - transform.matrix.e,
-                y: mousePosition.y - transform.matrix.f
-            }
+            dragGroup = new UIDragGroup(<SVGGElement> node, getMousePosition(evt));
         }
     }
 }
 
 function drag(evt: MouseEvent): void {
-    if (groupSelected) {
+    if (dragGroup) {
         evt.preventDefault();
-        let mousePosition = getMousePosition(evt);
-        transform.setTranslate(mousePosition.x - mousePointerOffset.x, mousePosition.y - mousePointerOffset.y);
+        dragGroup.drag(getMousePosition(evt));
     }
 }
 
 function endDrag(evt: MouseEvent): void {
-    if (groupSelected) {
-        groupSelected.style.visibility = "hidden";
+    if (dragGroup) {
+        dragGroup.hide();
         console.log(document.elementFromPoint(evt.clientX, evt.clientY)!.parentElement);
-        groupSelected.style.visibility = "";
-        groupSelected = null;
+        dragGroup.show();
+        dragGroup = null;
     }
 }
 
