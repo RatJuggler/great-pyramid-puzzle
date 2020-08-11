@@ -2,7 +2,7 @@ import { DOMUIOptions } from "./ui-options";
 import { getDisplayManager } from "./display/display-loader";
 import { StatusUpdatesManager } from "./status-updates-manager";
 import { SolverFacade, getSolverFacade} from "./solver/solver-facade";
-import { Coords, UIDragGroup } from "./ui-drag-group";
+import { UIDragGroup } from "./ui-drag-group";
 
 
 const displayElement = <SVGSVGElement> <any> document.getElementById("puzzle-display-area")!;
@@ -142,20 +142,12 @@ document.getElementById("continue")!.addEventListener("disable", () => {
 
 let dragGroup: UIDragGroup | null = null;
 
-function getMousePosition(evt: MouseEvent): Coords {
-    let CTM = displayElement.getScreenCTM()!;
-    return {
-        x: (evt.clientX - CTM.e) / CTM.a,
-        y: (evt.clientY - CTM.f) / CTM.d
-    };
-}
-
 function startDrag(evt: MouseEvent): void {
     if (evt.target) {
         let node = (<Element> evt.target).parentNode;
         // Only Tile groups should have been made draggable.
         if (node && (<Element> node).classList.contains('draggable-group')) {
-            dragGroup = new UIDragGroup(<SVGGElement> node, getMousePosition(evt));
+            dragGroup = new UIDragGroup(displayElement, <SVGGElement> node, evt);
         }
     }
 }
@@ -163,7 +155,7 @@ function startDrag(evt: MouseEvent): void {
 function drag(evt: MouseEvent): void {
     if (dragGroup) {
         evt.preventDefault();
-        dragGroup.drag(getMousePosition(evt));
+        dragGroup.drag(evt);
     }
 }
 

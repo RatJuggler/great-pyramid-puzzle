@@ -8,12 +8,23 @@ type Coords = {
 
 class UIDragGroup {
 
-    private offset: Coords;
+    private svg: SVGSVGElement;
     private group: SVGGElement;
+    private offset: Coords;
     private transform: SVGTransform;
 
-    constructor(group: SVGGElement, mousePosition: Coords) {
+    private mapMousePosition(evt: MouseEvent): Coords {
+        let CTM = this.svg.getScreenCTM()!;
+        return {
+            x: (evt.clientX - CTM.e) / CTM.a,
+            y: (evt.clientY - CTM.f) / CTM.d
+        };
+    }
+
+    constructor(svg: SVGSVGElement, group: SVGGElement, evt: MouseEvent) {
+        this.svg = svg;
         this.group = group;
+        let mousePosition = this.mapMousePosition(evt);
         this.transform = group!.transform.baseVal.getItem(0);
         this.offset = {
             x: mousePosition.x - this.transform.matrix.e,
@@ -21,11 +32,13 @@ class UIDragGroup {
         }
     }
 
-    drag(mousePosition: Coords): void {
+    drag(evt: MouseEvent): void {
+        const mousePosition = this.mapMousePosition(evt);
         this.transform.setTranslate(mousePosition.x - this.offset.x, mousePosition.y - this.offset.y);
     }
 
     endDrag(document: Document, evt: MouseEvent): void {
+        // Hide dragged element so we can see what's underneath it.
         this.group.style.visibility = "hidden";
         const onElement = document.elementFromPoint(evt.clientX, evt.clientY);
         if (onElement) {
@@ -39,4 +52,4 @@ class UIDragGroup {
 
 }
 
-export { UIDragGroup, Coords }
+export { UIDragGroup }
