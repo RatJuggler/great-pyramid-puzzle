@@ -2,7 +2,7 @@ import { SolverOptions } from "./solver/solver-factory";
 
 
 interface UIOptions {
-    displayOption: string;
+    solutionOption: string;
     solverOptions: SolverOptions;
     animationSpeed: number;
 }
@@ -21,8 +21,8 @@ class DOMUIOptions implements UIOptions {
         throw new Error("Expected radio option to be selected!");
     }
 
-    get displayOption(): string {
-        return this.getSelector("display-option");
+    get solutionOption(): string {
+        return this.getSelector("solution-option");
     }
 
     get solverOptions(): SolverOptions {

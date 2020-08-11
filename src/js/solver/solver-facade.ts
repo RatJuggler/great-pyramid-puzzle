@@ -4,7 +4,7 @@ import { Solver } from "./solver-base";
 import { SolverTimer } from "./solver-timer";
 import { SolverStepCounter } from "./solver-step-counter";
 import { WorkerParameters, WorkerResult } from "../common-data-schema";
-import {PuzzleChange, PuzzleChangeSet} from "../puzzle-changes";
+import { PuzzleChange, PuzzleChangeSet } from "../puzzle-changes";
 import { DisplayManager } from "../display/display-manager";
 import { StatusUpdates } from "../status-updates-manager";
 
@@ -76,6 +76,30 @@ abstract class SolverFacade {
         this._continueElement.dispatchEvent(continueEvent);
         this._displayManager.display(puzzleChange);
     }
+
+}
+
+class HumanFacade extends SolverFacade {
+
+    // The solver being used.
+    private _solver: Solver = buildSolver(this._solverOptions);
+
+    constructor(solverOptions: SolverOptions,
+                displayManager: DisplayManager,
+                statusUpdates: StatusUpdates,
+                continueElement: HTMLElement) {
+        super(solverOptions, displayManager, statusUpdates, continueElement);
+        this._solverOptions.solveAlgorithm = "Human";
+    }
+
+    protected solverCancel(): void {}
+
+    protected startSolver(): void {
+        // Show the initial tile positions.
+        this._displayManager.display(this._solver.initialState());
+    }
+
+    protected continueSolver(): void {}
 
 }
 
@@ -207,15 +231,17 @@ function getSolverFacade(uiControls: UIOptions,
                          statusUpdates: StatusUpdates,
                          continueButton: HTMLElement,
                          overlay: HTMLElement): SolverFacade {
-    switch (uiControls.displayOption) {
+    switch (uiControls.solutionOption) {
         case "Animated":
-            // Animated solver needs to know the animation speed.
+            // Animated solution needs to know the animation speed.
             return new AnimatedFacade(uiControls.solverOptions, displayManager, statusUpdates, continueButton, uiControls.animationSpeed);
         case "Completed":
-            // Worker solver needs to know where the overlay element is.
+            // Worker solution needs to know where the overlay element is.
             return new WorkerFacade(uiControls.solverOptions, displayManager, statusUpdates, continueButton, overlay!);
+        case "Human":
+            return new HumanFacade(uiControls.solverOptions, displayManager, statusUpdates, continueButton);
         default:
-            throw new Error("Invalid solver display option!");
+            throw new Error("Invalid solution option!");
     }
 }
 

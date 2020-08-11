@@ -3,6 +3,7 @@ import { NoMatchingSolver } from "./solver-no-matching";
 import { BruteForceSolver } from "./solver-brute-force";
 import { OnlyValidSolver } from "./solver-only-valid";
 import { GeneticSolver } from "./solver-genetic";
+import { HumanSolver } from "./solver-human";
 import { getPuzzleComponents } from "../puzzle-loader";
 
 
@@ -26,6 +27,8 @@ function buildSolver(options: SolverOptions): Solver {
             return new OnlyValidSolver(getPuzzleComponents(options.puzzleType));
         case "Genetic":
             return new GeneticSolver(options.puzzleType);
+        case "Human":
+            return new HumanSolver(getPuzzleComponents(options.puzzleType));
         default:
             throw new Error("Invalid solve algorithm option!");
     }

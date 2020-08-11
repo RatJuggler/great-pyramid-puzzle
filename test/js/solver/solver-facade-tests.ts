@@ -21,7 +21,7 @@ class MockUIOptions implements UIOptions {
         tilePlacement: "Random",
         tileRotation: "None"
     }
-    constructor(public readonly displayOption: string) {}
+    constructor(public readonly solutionOption: string) {}
 }
 
 function createDocument(): Document {
@@ -61,7 +61,7 @@ describe("SolverFacade behaviour", function () {
                 expect(function () {
                     getSolverFacade(facadeArgs.mockUIOptions, facadeArgs.displayManager, facadeArgs.statusUpdates,
                         facadeArgs.continueButton, facadeArgs.overlay);
-                }).to.throw(Error, "Invalid solver display option!");
+                }).to.throw(Error, "Invalid solution option!");
             });
         });
 

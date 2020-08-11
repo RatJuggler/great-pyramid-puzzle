@@ -53,9 +53,9 @@ addClickEventListener("algorithm-only-valid", () => { removeActive("no-matching-
 addClickEventListener("algorithm-brute", () => { removeActive("no-matching-options"); });
 addClickEventListener("algorithm-no-matching", () => { addActive("no-matching-options"); });
 
-addClickEventListener("display-animated", () => { addActive("algorithm-options"); addActive("animation-options"); });
-addClickEventListener("display-completed", () => { addActive("algorithm-options"); removeActive("animation-options"); });
-addClickEventListener("display-human", () => { removeActive("algorithm-options"); removeActive("animation-options"); });
+addClickEventListener("solution-animated", () => { addActive("algorithm-options"); addActive("animation-options"); });
+addClickEventListener("solution-completed", () => { addActive("algorithm-options"); removeActive("animation-options"); });
+addClickEventListener("solution-human", () => { removeActive("algorithm-options"); removeActive("animation-options"); });
 
 addClickEventListener("menu-toggle", () => { toggleActive("layout", "menu", "menu-toggle") });
 
@@ -73,7 +73,7 @@ addMenuHelpEvent("go", "Start a new puzzle solving process with the selected opt
 addMenuHelpEvent("cancel", "Cancel the solution in progress.");
 addMenuHelpEvent("continue", "Continue with the current options to try to find another solution.");
 addMenuHelpEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
-addMenuHelpEvent("display-option", "Show an animation of the puzzle being solved or just display the completed solution.");
+addMenuHelpEvent("solution-option", "Show an animation of the puzzle being solved, just display the completed solution or try it yourself.");
 addMenuHelpEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
 addMenuHelpEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
 addMenuHelpEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
