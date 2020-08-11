@@ -246,4 +246,4 @@ function getSolverFacade(uiControls: UIOptions,
 }
 
 
-export { SolverFacade, AnimatedFacade, WorkerFacade, getSolverFacade }
+export { SolverFacade, AnimatedFacade, WorkerFacade, HumanFacade, getSolverFacade }

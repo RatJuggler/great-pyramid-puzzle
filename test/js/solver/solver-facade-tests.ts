@@ -3,7 +3,7 @@ import { UIOptions } from "../../../src/js/ui-options";
 import { getDisplayManager } from "../../../src/js/display/display-loader";
 import { DisplayManager } from "../../../src/js/display/display-manager";
 import { StatusUpdatesManager } from "../../../src/js/status-updates-manager";
-import { getSolverFacade, AnimatedFacade } from "../../../src/js/solver/solver-facade";
+import { getSolverFacade, AnimatedFacade, HumanFacade } from "../../../src/js/solver/solver-facade";
 import { expect } from "chai";
 import 'mocha';
 // @ts-ignore
@@ -55,7 +55,7 @@ describe("SolverFacade behaviour", function () {
 
     describe("if #getSolverFacade() is called", function () {
 
-        context("and an invalid display option is set", function () {
+        context("and an invalid solution option is set", function () {
             it("should throw an error", function () {
                 const facadeArgs = createSolverFacadeArguments("Error");
                 expect(function () {
@@ -65,11 +65,7 @@ describe("SolverFacade behaviour", function () {
             });
         });
 
-    });
-
-    describe("if #getSolverFacade() is called", function () {
-
-        context("and the animated display option is set", function () {
+        context("and the animated solution option is set", function () {
             it("should return an instance of AnimatedFacade", function () {
                 const facadeArgs = createSolverFacadeArguments("Animated");
                 const result = getSolverFacade(facadeArgs.mockUIOptions, facadeArgs.displayManager, facadeArgs.statusUpdates,
@@ -78,17 +74,22 @@ describe("SolverFacade behaviour", function () {
             });
         });
 
-    });
-
-    describe("if #getSolverFacade() is called", function () {
-
-        context("and the worker option is set", function () {
+        context("and the worker solution option is set", function () {
             // it("should return an instance of WorkerFacade", function () {
             //     const facadeArgs = createSolverFacadeArguments("Completed");
             //     const result = getSolverFacade(facadeArgs.mockUIOptions, facadeArgs.displayManager, facadeArgs.statusUpdates,
             //         facadeArgs.continueButton, facadeArgs.overlay);
             //     expect(result).to.be.an.instanceof(WorkerFacade);
             // });
+        });
+
+        context("and the human solution option is set", function () {
+            it("should return an instance of HumanFacade", function () {
+                const facadeArgs = createSolverFacadeArguments("Human");
+                const result = getSolverFacade(facadeArgs.mockUIOptions, facadeArgs.displayManager, facadeArgs.statusUpdates,
+                    facadeArgs.continueButton, facadeArgs.overlay);
+                expect(result).to.be.an.instanceof(HumanFacade);
+            });
         });
 
     });
@@ -104,15 +105,20 @@ describe("SolverFacade behaviour", function () {
             // });
         });
 
-    });
-
-    describe("if #start() is called", function () {
-
         context("on an instance of the WorkerFacade", function () {
             // const facadeArgs = createSolverFacadeArguments("Completed");
             // const result = getSolverFacade(facadeArgs.mockUIOptions, facadeArgs.displayManager, facadeArgs.statusUpdates,
             //     facadeArgs.continueButton, facadeArgs.overlay);
             // it("should produce a completed solution", function () {
+            //     expect(result.start());
+            // });
+        });
+
+        context("on an instance of the HumanFacade", function () {
+            // it("should produce a human solution", function () {
+            //     const facadeArgs = createSolverFacadeArguments("Human");
+            //     const result = getSolverFacade(facadeArgs.mockUIOptions, facadeArgs.displayManager, facadeArgs.statusUpdates,
+            //         facadeArgs.continueButton, facadeArgs.overlay);
             //     expect(result.start());
             // });
         });
