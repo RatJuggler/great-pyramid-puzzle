@@ -3,6 +3,7 @@ import { NoMatchingSolver } from "../../../src/js/solver/solver-no-matching";
 import { BruteForceSolver } from "../../../src/js/solver/solver-brute-force";
 import { OnlyValidSolver } from "../../../src/js/solver/solver-only-valid";
 import { GeneticSolver } from "../../../src/js/solver/solver-genetic";
+import { HumanSolver } from "../../../src/js/solver/solver-human";
 import { expect } from 'chai';
 import 'mocha';
 
@@ -77,6 +78,20 @@ describe("if #buildSolver() is called", function () {
         it("should return an instance of GeneticSolver", function () {
             const result = buildSolver(solverOptions);
             expect(result).to.an.instanceof(GeneticSolver);
+        });
+    });
+
+    context("with a valid set of arguments for the Human algorithm", function () {
+        const solverOptions = {
+            puzzleType: "Simple",
+            solveAlgorithm: "Human",
+            tileSelection: "",
+            tilePlacement: "",
+            tileRotation: ""
+        }
+        it("should return an instance of HumanSolver", function () {
+            const result = buildSolver(solverOptions);
+            expect(result).to.an.instanceof(HumanSolver);
         });
     });
 
