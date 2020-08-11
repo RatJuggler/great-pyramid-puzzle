@@ -44,7 +44,7 @@ function createSolverFacadeArguments(displayOption: string): SolverFacadeArgumen
     const statusUpdatesList = document.createElement("li");
     return {
         mockUIOptions: new MockUIOptions(displayOption),
-        displayManager: getDisplayManager(document.documentElement, valid_display1.testDisplayData),
+        displayManager: getDisplayManager(<SVGSVGElement> <any> document.documentElement, valid_display1.testDisplayData),
         statusUpdates: new StatusUpdatesManager(document, statusUpdatesList),
         continueButton: document.createElement("button"),
         overlay: document.createElement("div")

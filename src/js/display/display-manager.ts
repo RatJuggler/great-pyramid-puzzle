@@ -260,7 +260,7 @@ export class DisplayManager {
     private readonly _scaleTile: number;
     private readonly _scaleTileStart: number;
 
-    constructor(rootElement: string | HTMLElement,
+    constructor(rootElement: string | SVGSVGElement,
                 displayData: DisplayData,
                 private _animationDuration: number) {
         this._display = new Display(rootElement, displayData)
