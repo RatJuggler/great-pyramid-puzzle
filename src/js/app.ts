@@ -155,29 +155,19 @@ function getMousePosition(evt: MouseEvent): Coords {
     };
 }
 
-function initialiseDragging(mousePosition: Coords) {
-    // Make sure the first transform on the element is a translate transform
-    let transforms = groupSelected!.transform.baseVal;
-    if (transforms.numberOfItems === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
-        // Create an transform that translates by (0, 0)
-        let translate = displayElement.createSVGTransform();
-        translate.setTranslate(0, 0);
-        transforms.insertItemBefore(translate, 0);
-    }
-    // Get initial translation
-    transform = transforms.getItem(0);
-    mousePointerOffset = {
-        x: mousePosition.x - transform.matrix.e,
-        y: mousePosition.y - transform.matrix.f
-    }
-}
-
 function startDrag(evt: MouseEvent) {
     if (evt.target) {
         let node = (<Element> evt.target).parentNode;
+        // Only Tile groups should be made draggable.
         if (node && (<Element> node).classList.contains('draggable-group')) {
+            let mousePosition = getMousePosition(evt);
             groupSelected = <SVGGElement> node;
-            initialiseDragging(getMousePosition(evt));
+            // Each Tile group should already have a transform.
+            transform = groupSelected!.transform.baseVal.getItem(0);
+            mousePointerOffset = {
+                x: mousePosition.x - transform.matrix.e,
+                y: mousePosition.y - transform.matrix.f
+            }
         }
     }
 }
