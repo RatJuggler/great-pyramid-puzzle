@@ -1,3 +1,6 @@
+import { isTilePositionId } from "./utils";
+
+
 type Coords = {
     readonly x: number,
     readonly y: number
@@ -18,15 +21,19 @@ class UIDragGroup {
         }
     }
 
-    drag(mousePosition: Coords) {
+    drag(mousePosition: Coords): void {
         this.transform.setTranslate(mousePosition.x - this.offset.x, mousePosition.y - this.offset.y);
     }
 
-    hide(): void {
+    endDrag(document: Document, evt: MouseEvent): void {
         this.group.style.visibility = "hidden";
-    }
-
-    show(): void {
+        const onElement = document.elementFromPoint(evt.clientX, evt.clientY);
+        if (onElement) {
+            const onGroup = onElement.parentElement;
+            if (onGroup && isTilePositionId(onGroup.id)) {
+                console.log("Tile " + this.group.id + " dropped on Position " + onGroup.id);
+            }
+        }
         this.group.style.visibility = "";
     }
 

@@ -169,9 +169,7 @@ function drag(evt: MouseEvent): void {
 
 function endDrag(evt: MouseEvent): void {
     if (dragGroup) {
-        dragGroup.hide();
-        console.log(document.elementFromPoint(evt.clientX, evt.clientY)!.parentElement);
-        dragGroup.show();
+        dragGroup.endDrag(document, evt);
         dragGroup = null;
     }
 }

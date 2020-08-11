@@ -1,5 +1,6 @@
-import {TileChange, TilePositionChange} from "../puzzle-changes";
+import { TileChange, TilePositionChange } from "../puzzle-changes";
 import { DisplayData, FaceDisplayData, TileStartDisplayData, CenterPointData, PolygonDisplayData } from "./display-data-schema";
+import { isTilePositionId } from "../utils";
 import { SVG, Svg, G } from "@svgdotjs/svg.js";
 
 
@@ -125,7 +126,7 @@ export class Display {
 
     findTilePositions(): G[] {
         return this._draw.find("g")
-            .filter((group) => !!group.id().match(/^[1-4]-[1-9]$/))
+            .filter((group) => isTilePositionId(group.id()))
             .map((element) => SVG(element) as G);
     }
 
