@@ -144,7 +144,7 @@ type Coords = {
     readonly y: number
 }
 let mousePointerOffset: Coords;
-let selectedElement: any | null;
+let groupSelected: SVGGElement | null;
 let transform: SVGTransform;
 
 function getMousePosition(evt: MouseEvent): Coords {
@@ -157,12 +157,12 @@ function getMousePosition(evt: MouseEvent): Coords {
 
 function initialiseDragging(mousePosition: Coords) {
     // Make sure the first transform on the element is a translate transform
-    let transforms = selectedElement.transform.baseVal;
-    if (transforms.length === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
+    let transforms = groupSelected!.transform.baseVal;
+    if (transforms.numberOfItems === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
         // Create an transform that translates by (0, 0)
         let translate = displayElement.createSVGTransform();
         translate.setTranslate(0, 0);
-        selectedElement.transform.baseVal.insertItemBefore(translate, 0);
+        transforms.insertItemBefore(translate, 0);
     }
     // Get initial translation
     transform = transforms.getItem(0);
@@ -172,15 +172,18 @@ function initialiseDragging(mousePosition: Coords) {
     }
 }
 
-function startDrag(evt: any) {
-    if (evt.target.parentNode.classList.contains('draggable-group')) {
-        selectedElement = evt.target.parentNode;
-        initialiseDragging(getMousePosition(evt));
+function startDrag(evt: MouseEvent) {
+    if (evt.target) {
+        let node = (<Element> evt.target).parentNode;
+        if (node && (<Element> node).classList.contains('draggable-group')) {
+            groupSelected = <SVGGElement> node;
+            initialiseDragging(getMousePosition(evt));
+        }
     }
 }
 
 function drag(evt: MouseEvent) {
-    if (selectedElement) {
+    if (groupSelected) {
         evt.preventDefault();
         let mousePosition = getMousePosition(evt);
         transform.setTranslate(mousePosition.x - mousePointerOffset.x, mousePosition.y - mousePointerOffset.y);
@@ -188,7 +191,7 @@ function drag(evt: MouseEvent) {
 }
 
 function endDrag(_evt: MouseEvent) {
-    selectedElement = null;
+    groupSelected = null;
 }
 
 displayElement.addEventListener('mousedown', startDrag);
