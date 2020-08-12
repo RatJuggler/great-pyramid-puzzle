@@ -148,7 +148,7 @@ function startDrag(evt: MouseEvent): void {
         let node = (<Element> evt.target).parentNode;
         // Only Tile groups should be draggable.
         if (node && isTileId((<Element> node).id)) {
-            dragGroup = new UIDragGroup(displayElement, <SVGGElement> node, evt);
+            dragGroup = new UIDragGroup(document, displayElement, <SVGGElement> node, evt);
         }
     }
 }
@@ -162,7 +162,7 @@ function drag(evt: MouseEvent): void {
 
 function endDrag(evt: MouseEvent): void {
     if (dragGroup) {
-        let onGroup = dragGroup.endDrag(document, evt);
+        let onGroup = dragGroup.endDrag(evt);
         if (onGroup) {
             (<HumanFacade> solverFacade).placeTile(dragGroup.id, onGroup.id);
             dragGroup.tilePlaced();

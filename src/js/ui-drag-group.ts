@@ -8,8 +8,11 @@ type Coords = {
 
 class UIDragGroup {
 
+    private document: Document;
     private svg: SVGSVGElement;
-    private group: SVGGElement;
+    private dragGroup: SVGGElement;
+    private fromGroup: Element;
+    private toGroup: Element | null;
     private offset: Coords;
     private transform: SVGTransform;
 
@@ -21,9 +24,24 @@ class UIDragGroup {
         };
     }
 
-    constructor(svg: SVGSVGElement, group: SVGGElement, evt: MouseEvent) {
+    private onElement(evt: MouseEvent): Element | null {
+        // Hide dragged element so we can see what's underneath it.
+        this.dragGroup.style.visibility = "hidden";
+        const onElement = this.document.elementFromPoint(evt.clientX, evt.clientY);
+        this.dragGroup.style.visibility = "";
+        return onElement;
+    }
+
+    constructor(document: Document, svg: SVGSVGElement, group: SVGGElement, evt: MouseEvent) {
+        this.document = document;
         this.svg = svg;
-        this.group = group;
+        this.dragGroup = group;
+        const fromGroup = this.onElement(evt);
+        if (!fromGroup) {
+            throw new Error("Must drag from an Element!");
+        }
+        this.fromGroup = fromGroup;
+        this.toGroup = null;
         let mousePosition = this.mapMousePosition(evt);
         this.transform = group!.transform.baseVal.getItem(0);
         this.offset = {
@@ -33,7 +51,21 @@ class UIDragGroup {
     }
 
     get id(): number {
-        return parseInt(this.group.id.substring(4));
+        return parseInt(this.dragGroup.id.substring(4));
+    }
+
+    get fromId(): string {
+        if (this.fromGroup) {
+            return this.fromGroup.id;
+        }
+        throw new Error("Dragged group was not dragged from an element!");
+    }
+
+    get toId(): string {
+        if (this.toGroup) {
+            return this.toGroup.id;
+        }
+        throw new Error("Dragged group has not been dropped on an element yet!");
     }
 
     drag(evt: MouseEvent): void {
@@ -41,23 +73,20 @@ class UIDragGroup {
         this.transform.setTranslate(mousePosition.x - this.offset.x, mousePosition.y - this.offset.y);
     }
 
-    endDrag(document: Document, evt: MouseEvent): HTMLElement | null {
-        // Hide dragged element so we can see what's underneath it.
-        this.group.style.visibility = "hidden";
-        let returnGroup = null;
-        const onElement = document.elementFromPoint(evt.clientX, evt.clientY);
+    endDrag(evt: MouseEvent): Element | null {
+        const onElement = this.onElement(evt);
         if (onElement) {
             let onGroup = onElement.parentElement;
             if (onGroup && isTilePositionId(onGroup.id)) {
-                returnGroup = onGroup;
+                this.toGroup = onGroup;
+                console.log("Tile: " + this.dragGroup.id + " - From: " + this.fromGroup.id + " - To: " + this.toGroup.id);
             }
         }
-        this.group.style.visibility = "";
-        return returnGroup;
+        return this.toGroup;
     }
 
     tilePlaced(): void {
-        this.group.remove();
+        this.dragGroup.remove();
     }
 
 }
