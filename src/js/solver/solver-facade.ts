@@ -229,18 +229,6 @@ class HumanFacade extends SolverFacade {
 
     userMove(dragGroup: UIDragGroup): void {
         // (N). Moving Tile From -> To = Results in Tile being at
-        // 1.  TileStart -> <invalid to> = TileStart (same)
-        // 2.  TilePosition -> <invalid to> = TilePosition (same)
-        // 3.  TileStart -> TileStart (same) = TileStart (same)
-        // 4.  TileStart -> TileStart (different, empty) = TileStart (same)
-        // 5.  TileStart -> TileStart (different, filled) = TileStart (same)
-        // 6.  TileStart -> TilePosition (empty) = TilePosition (empty)
-        // 7.  TileStart -> TilePosition (filled) = TileStart (same)
-        // 8.  TilePosition -> TilePosition (same) = TilePosition (same)
-        // 9.  TilePosition -> TilePosition (different, empty) = TilePosition (different, empty)
-        // 10. TilePosition -> TilePosition (different, filled) = TilePosition (same)
-        // 11. TilePosition -> TileStart (same) = TileStart (same)
-        // 12. TilePosition -> TileStart (different) = TilePosition (same)
         let puzzleChange;
         if (dragGroup.hasTo()) {
             if (dragGroup.isFromStart() && dragGroup.isToStart()) {
@@ -256,7 +244,7 @@ class HumanFacade extends SolverFacade {
                 // 8.  TilePosition -> TilePosition (same) = TilePosition (same)
                 // 9.  TilePosition -> TilePosition (different, empty) = TilePosition (different, empty)
                 // 10. TilePosition -> TilePosition (different, filled) = TilePosition (same)
-                puzzleChange = (<HumanSolver>this._solver).placeTile(dragGroup.id, dragGroup.toId);
+                puzzleChange = (<HumanSolver>this._solver).moveTile(dragGroup.fromId, dragGroup.toId);
             } else if (dragGroup.isFromTilePosition() && dragGroup.isToStart()) {
                 // 11. TilePosition -> TileStart (same) = TileStart (same)
                 // 12. TilePosition -> TileStart (different) = TilePosition (same)

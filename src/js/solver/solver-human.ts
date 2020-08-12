@@ -35,12 +35,23 @@ export class HumanSolver extends SolverBase {
         return [PuzzleChange.INITIAL];
     }
 
+    moveTile(fromTilePositionId: string, toTilePositionId: string): PuzzleChange {
+        const fromTilePosition = this._tetrahedron.getFace(fromTilePositionId[0]).getTilePosition(fromTilePositionId[2]);
+        const toTilePosition = this._tetrahedron.getFace(toTilePositionId[0]).getTilePosition(toTilePositionId[2]);
+        if (toTilePosition.state.isEmpty()) {
+            toTilePosition.state.tile = fromTilePosition.state.removeTile();
+            return SolverBase.tileDraggable(toTilePosition);
+        }
+        return this.returnToTilePosition(fromTilePositionId);
+    }
+
     placeTile(tileId: number, tilePositionId: string): PuzzleChange {
         const tilePosition = this._tetrahedron.getFace(tilePositionId[0]).getTilePosition(tilePositionId[2]);
         if (tilePosition.state.isEmpty()) {
             tilePosition.state.tile = this._tilePool.getTile(tileId);
+            return SolverBase.tileDraggable(tilePosition);
         }
-        return SolverBase.tileDraggable(tilePosition);
+        return this.returnToStart(tileId);
     }
 
     removeTile(tilePositionId: string): PuzzleChange {
