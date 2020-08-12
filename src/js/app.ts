@@ -158,11 +158,8 @@ function drag(evt: MouseEvent): void {
 
 function endDrag(evt: MouseEvent): void {
     if (dragGroup) {
-        if (dragGroup.endDrag(evt)) {
-            (<HumanFacade> solverFacade).placeTile(dragGroup);
-        } else {
-            (<HumanFacade> solverFacade).returnTile(dragGroup);
-        }
+        dragGroup.endDrag(evt);
+        (<HumanFacade> solverFacade).userMove(dragGroup);
         dragGroup = null;
     }
 }

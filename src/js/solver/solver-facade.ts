@@ -227,17 +227,33 @@ class HumanFacade extends SolverFacade {
 
     protected continueSolver(): void {}
 
-    placeTile(dragGroup: UIDragGroup): void {
+    private placeTile(dragGroup: UIDragGroup): void {
         this.stepCount();
         const puzzleChange = (<HumanSolver> this._solver).placeTile(dragGroup.id, dragGroup.toId);
         this._displayManager.display(puzzleChange);
         dragGroup.remove();
     }
 
-    returnTile(dragGroup: UIDragGroup): void {
-        const puzzleChange = (<HumanSolver> this._solver).returnTile(dragGroup.id);
+    private returnTile(dragGroup: UIDragGroup): void {
+        const puzzleChange = (<HumanSolver> this._solver).returnTile(dragGroup.fromId);
         this._displayManager.display(puzzleChange);
         dragGroup.remove();
+    }
+
+    userMove(dragGroup: UIDragGroup): void {
+        if (dragGroup.hasTo()) {
+            if (dragGroup.toTilePosition()) {
+                this.placeTile(dragGroup);
+            } else {
+                this.returnTile(dragGroup);
+            }
+        } else {
+            if (dragGroup.fromTilePosition()) {
+                this.placeTile(dragGroup);
+            } else {
+                this.returnTile(dragGroup);
+            }
+        }
     }
 
 }

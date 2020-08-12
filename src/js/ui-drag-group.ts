@@ -76,11 +76,23 @@ class UIDragGroup {
         throw new Error("Dragged group was not dragged from an element!");
     }
 
+    fromTilePosition(): boolean {
+        return isTilePositionId(this.fromId);
+    }
+
+    hasTo(): boolean {
+        return !!this.toGroup;
+    }
+
     get toId(): string {
         if (this.toGroup) {
             return this.toGroup.id;
         }
         throw new Error("Dragged group has not been dropped on an element yet!");
+    }
+
+    toTilePosition(): boolean {
+        return isTilePositionId(this.toId);
     }
 
     drag(evt: MouseEvent): void {

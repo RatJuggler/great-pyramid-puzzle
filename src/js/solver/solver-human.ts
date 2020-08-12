@@ -42,11 +42,11 @@ export class HumanSolver extends SolverBase {
         return SolverBase.tileDraggable(tilePosition);
     }
 
-    returnTile(tileId: number): PuzzleChange {
-        const tile = this._tilePool.getTile(tileId);
-        const puzzleChange = SolverBase.startDraggable(tile);
+    returnTile(tilePositionId: string): PuzzleChange {
+        const tilePosition = this._tetrahedron.getFace(tilePositionId[0]).getTilePosition(tilePositionId[2]);
+        const tile = tilePosition.state.removeTile();
         this._tilePool.returnTile(tile);
-        return puzzleChange;
+        return SolverBase.startDraggable(tile);
     }
 
 }
