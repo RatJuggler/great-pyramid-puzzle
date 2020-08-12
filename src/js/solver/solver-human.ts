@@ -35,4 +35,11 @@ export class HumanSolver extends SolverBase {
         return [PuzzleChange.INITIAL];
     }
 
+    placeTile(tileId: number, tilePositionId: string): PuzzleChange {
+        const tile = this._tilePool.getTile(tileId);
+        const tilePosition = this._tetrahedron.getFace(tilePositionId[0]).getTilePosition(tilePositionId[2]);
+        tilePosition.state.tile = tile;
+        return SolverBase.add(tilePosition);
+    }
+
 }

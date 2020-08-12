@@ -22,6 +22,9 @@ class UIDragGroup {
     }
 
     constructor(svg: SVGSVGElement, group: SVGGElement, evt: MouseEvent) {
+        if (!group.id.startsWith("tile")) {
+            throw new Error("Only expecting to drag tiles!");
+        }
         this.svg = svg;
         this.group = group;
         let mousePosition = this.mapMousePosition(evt);
@@ -32,22 +35,32 @@ class UIDragGroup {
         }
     }
 
+    get id(): number {
+        return parseInt(this.group.id.substring(4));
+    }
+
     drag(evt: MouseEvent): void {
         const mousePosition = this.mapMousePosition(evt);
         this.transform.setTranslate(mousePosition.x - this.offset.x, mousePosition.y - this.offset.y);
     }
 
-    endDrag(document: Document, evt: MouseEvent): void {
+    endDrag(document: Document, evt: MouseEvent): HTMLElement | null {
         // Hide dragged element so we can see what's underneath it.
         this.group.style.visibility = "hidden";
+        let returnGroup = null;
         const onElement = document.elementFromPoint(evt.clientX, evt.clientY);
         if (onElement) {
-            const onGroup = onElement.parentElement;
+            let onGroup = onElement.parentElement;
             if (onGroup && isTilePositionId(onGroup.id)) {
-                console.log("Tile " + this.group.id + " dropped on Position " + onGroup.id);
+                returnGroup = onGroup;
             }
         }
         this.group.style.visibility = "";
+        return returnGroup;
+    }
+
+    tilePlaced(): void {
+        this.group.remove();
     }
 
 }

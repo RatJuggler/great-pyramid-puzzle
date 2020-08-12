@@ -7,6 +7,7 @@ import { WorkerParameters, WorkerResult } from "../common-data-schema";
 import { PuzzleChange, PuzzleChangeSet } from "../puzzle-changes";
 import { DisplayManager } from "../display/display-manager";
 import { StatusUpdates } from "../status-updates-manager";
+import {HumanSolver} from "./solver-human";
 
 
 abstract class SolverFacade {
@@ -224,6 +225,12 @@ class HumanFacade extends SolverFacade {
     }
 
     protected continueSolver(): void {}
+
+    placeTile(tileId: number, tilePositionId: string): void {
+        this.stepCount();
+        const puzzleChange = (<HumanSolver> this._solver).placeTile(tileId, tilePositionId);
+        this._displayManager.display(puzzleChange);
+    }
 
 }
 

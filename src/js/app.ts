@@ -1,7 +1,7 @@
 import { DOMUIOptions } from "./ui-options";
 import { getDisplayManager } from "./display/display-loader";
 import { StatusUpdatesManager } from "./status-updates-manager";
-import { SolverFacade, getSolverFacade} from "./solver/solver-facade";
+import { SolverFacade, getSolverFacade, HumanFacade } from "./solver/solver-facade";
 import { UIDragGroup } from "./ui-drag-group";
 
 
@@ -161,7 +161,11 @@ function drag(evt: MouseEvent): void {
 
 function endDrag(evt: MouseEvent): void {
     if (dragGroup) {
-        dragGroup.endDrag(document, evt);
+        let onGroup = dragGroup.endDrag(document, evt);
+        if (onGroup) {
+            (<HumanFacade> solverFacade).placeTile(dragGroup.id, onGroup.id);
+            dragGroup.tilePlaced();
+        }
         dragGroup = null;
     }
 }
