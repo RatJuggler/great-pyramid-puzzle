@@ -241,6 +241,19 @@ class HumanFacade extends SolverFacade {
     }
 
     userMove(dragGroup: UIDragGroup): void {
+        // Moving Tile From -> To = Results in Tile being at
+        // TileStart -> <invalid to> = TileStart (same)
+        // TilePosition -> <invalid to> = TilePosition (same)
+        // TileStart -> TileStart (same) = TileStart (same)
+        // TileStart -> TileStart (different, empty) = TileStart (same)
+        // TileStart -> TileStart (different, filled) = TileStart (same)
+        // TileStart -> TilePosition (empty) = TilePosition (empty)
+        // TileStart -> TilePosition (filled) = TileStart (same)
+        // TilePosition -> TilePosition (same) = TilePosition (same)
+        // TilePosition -> TilePosition (different, empty) = TilePosition (different, empty)
+        // TilePosition -> TilePosition (different, filled) = TilePosition (same)
+        // TilePosition -> TileStart (same) = TileStart (same)
+        // TilePosition -> TileStart (different) = TilePosition (same)
         if (dragGroup.hasTo()) {
             if (dragGroup.toTilePosition()) {
                 this.placeTile(dragGroup);
