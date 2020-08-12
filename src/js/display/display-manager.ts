@@ -162,6 +162,26 @@ class StartTileDraggable extends DisplayChange {
 }
 
 
+class TileDraggable extends DisplayChange {
+
+    constructor(display: Display,
+                private readonly _tChange: TileChange,
+                private readonly _scaleTile: number) {
+        super(display);
+    }
+
+    show(): void {
+        // Find the tile position of the tile.
+        const tpDisplay = this.display.getTilePosition(this._tChange);
+        // Just draw the tile directly at this position.
+        const tile = this.display.drawTile(tpDisplay.center, this._tChange, this._scaleTile, this._tChange.rotations);
+        // The group should include a 0 translate to help make it draggable.
+        tile.translate(0, 0);
+    }
+
+}
+
+
 class SetTilePosition extends DisplayChange {
 
     constructor(display: Display,
@@ -317,6 +337,9 @@ export class DisplayManager {
                 break;
             case PuzzleChangeType.StartDraggable:
                 action = new StartTileDraggable(this._display, pChange as TileChange, this._scaleTileStart);
+                break;
+            case PuzzleChangeType.TileDraggable:
+                action = new TileDraggable(this._display, pChange as TileChange, this._scaleTile);
                 break;
             case PuzzleChangeType.Set:
                 action = new SetTilePosition(this._display, pChange as TileChange, this._scaleTile);

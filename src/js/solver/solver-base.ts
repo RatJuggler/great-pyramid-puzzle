@@ -24,11 +24,15 @@ abstract class SolverBase implements Solver {
     abstract stateForDisplay(): Array<PuzzleChange>;
 
     protected static start(tile: Tile): PuzzleChange {
-        return TileChange.start("start" + tile.id, tile.id, 0, tile.segments)
+        return TileChange.start("start" + tile.id, tile.id, 0, tile.segments);
     }
 
     protected static startDraggable(tile: Tile): PuzzleChange {
-        return TileChange.startDraggable("Draggable", tile.id, 0, tile.segments)
+        return TileChange.startDraggable("Draggable", tile.id, 0, tile.segments);
+    }
+
+    protected static tileDraggable(tilePosition: TilePosition): PuzzleChange {
+        return TileChange.tileDraggable(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments);
     }
 
     protected static empty(tilePosition: TilePosition): PuzzleChange {
@@ -36,7 +40,7 @@ abstract class SolverBase implements Solver {
     }
 
     protected static set(tilePosition: TilePosition): PuzzleChange {
-        return TileChange.set(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments)
+        return TileChange.set(tilePosition.id, tilePosition.state.tile.id, tilePosition.state.rotations, tilePosition.state.tile.segments);
     }
 
     protected static add(tilePosition: TilePosition): PuzzleChange {
