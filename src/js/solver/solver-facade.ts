@@ -227,46 +227,56 @@ class HumanFacade extends SolverFacade {
 
     protected continueSolver(): void {}
 
-    private placeTile(dragGroup: UIDragGroup): void {
-        this.stepCount();
-        const puzzleChange = (<HumanSolver> this._solver).placeTile(dragGroup.id, dragGroup.toId);
-        this._displayManager.display(puzzleChange);
-        dragGroup.remove();
-    }
-
-    private returnTile(dragGroup: UIDragGroup): void {
-        const puzzleChange = (<HumanSolver> this._solver).returnTile(dragGroup.fromId);
-        this._displayManager.display(puzzleChange);
-        dragGroup.remove();
-    }
-
     userMove(dragGroup: UIDragGroup): void {
-        // Moving Tile From -> To = Results in Tile being at
-        // TileStart -> <invalid to> = TileStart (same)
-        // TilePosition -> <invalid to> = TilePosition (same)
-        // TileStart -> TileStart (same) = TileStart (same)
-        // TileStart -> TileStart (different, empty) = TileStart (same)
-        // TileStart -> TileStart (different, filled) = TileStart (same)
-        // TileStart -> TilePosition (empty) = TilePosition (empty)
-        // TileStart -> TilePosition (filled) = TileStart (same)
-        // TilePosition -> TilePosition (same) = TilePosition (same)
-        // TilePosition -> TilePosition (different, empty) = TilePosition (different, empty)
-        // TilePosition -> TilePosition (different, filled) = TilePosition (same)
-        // TilePosition -> TileStart (same) = TileStart (same)
-        // TilePosition -> TileStart (different) = TilePosition (same)
+        // (N). Moving Tile From -> To = Results in Tile being at
+        // 1.  TileStart -> <invalid to> = TileStart (same)
+        // 2.  TilePosition -> <invalid to> = TilePosition (same)
+        // 3.  TileStart -> TileStart (same) = TileStart (same)
+        // 4.  TileStart -> TileStart (different, empty) = TileStart (same)
+        // 5.  TileStart -> TileStart (different, filled) = TileStart (same)
+        // 6.  TileStart -> TilePosition (empty) = TilePosition (empty)
+        // 7.  TileStart -> TilePosition (filled) = TileStart (same)
+        // 8.  TilePosition -> TilePosition (same) = TilePosition (same)
+        // 9.  TilePosition -> TilePosition (different, empty) = TilePosition (different, empty)
+        // 10. TilePosition -> TilePosition (different, filled) = TilePosition (same)
+        // 11. TilePosition -> TileStart (same) = TileStart (same)
+        // 12. TilePosition -> TileStart (different) = TilePosition (same)
+        let puzzleChange;
         if (dragGroup.hasTo()) {
-            if (dragGroup.toTilePosition()) {
-                this.placeTile(dragGroup);
+            if (dragGroup.isFromStart() && dragGroup.isToStart()) {
+                // 3.  TileStart -> TileStart (same) = TileStart (same)
+                // 4.  TileStart -> TileStart (different, empty) = TileStart (same)
+                // 5.  TileStart -> TileStart (different, filled) = TileStart (same)
+                puzzleChange = (<HumanSolver>this._solver).returnToStart(dragGroup.id);
+            } else if (dragGroup.isFromStart() && dragGroup.isToTilePosition()) {
+                // 6.  TileStart -> TilePosition (empty) = TilePosition (empty)
+                // 7.  TileStart -> TilePosition (filled) = TileStart (same)
+                puzzleChange = (<HumanSolver>this._solver).placeTile(dragGroup.id, dragGroup.toId);
+            } else if (dragGroup.isFromTilePosition() && dragGroup.isToTilePosition()) {
+                // 8.  TilePosition -> TilePosition (same) = TilePosition (same)
+                // 9.  TilePosition -> TilePosition (different, empty) = TilePosition (different, empty)
+                // 10. TilePosition -> TilePosition (different, filled) = TilePosition (same)
+                puzzleChange = (<HumanSolver>this._solver).placeTile(dragGroup.id, dragGroup.toId);
+            } else if (dragGroup.isFromTilePosition() && dragGroup.isToStart()) {
+                // 11. TilePosition -> TileStart (same) = TileStart (same)
+                // 12. TilePosition -> TileStart (different) = TilePosition (same)
+                puzzleChange = (<HumanSolver>this._solver).removeTile(dragGroup.fromId);
             } else {
-                this.returnTile(dragGroup);
+                throw new Error("Unknown draggable from/to!");
             }
         } else {
-            if (dragGroup.fromTilePosition()) {
-                this.placeTile(dragGroup);
+            if (dragGroup.isFromStart()) {
+                // 1.  TileStart -> <invalid to> = TileStart (same)
+                puzzleChange = (<HumanSolver>this._solver).returnToStart(dragGroup.id);
+            } else if (dragGroup.isFromTilePosition()) {
+                // 2.  TilePosition -> <invalid to> = TilePosition (same)
+                puzzleChange = (<HumanSolver>this._solver).returnToTilePosition(dragGroup.fromId);
             } else {
-                this.returnTile(dragGroup);
+                throw new Error("Unknown draggable from!");
             }
         }
+        this._displayManager.display(puzzleChange);
+        dragGroup.remove();
     }
 
 }

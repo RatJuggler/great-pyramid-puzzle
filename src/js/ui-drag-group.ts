@@ -76,7 +76,11 @@ class UIDragGroup {
         throw new Error("Dragged group was not dragged from an element!");
     }
 
-    fromTilePosition(): boolean {
+    isFromStart(): boolean {
+        return isStartId(this.fromId);
+    }
+
+    isFromTilePosition(): boolean {
         return isTilePositionId(this.fromId);
     }
 
@@ -91,7 +95,11 @@ class UIDragGroup {
         throw new Error("Dragged group has not been dropped on an element yet!");
     }
 
-    toTilePosition(): boolean {
+    isToStart(): boolean {
+        return isStartId(this.toId);
+    }
+
+    isToTilePosition(): boolean {
         return isTilePositionId(this.toId);
     }
 

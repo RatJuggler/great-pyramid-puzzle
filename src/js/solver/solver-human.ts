@@ -36,17 +36,30 @@ export class HumanSolver extends SolverBase {
     }
 
     placeTile(tileId: number, tilePositionId: string): PuzzleChange {
-        const tile = this._tilePool.getTile(tileId);
         const tilePosition = this._tetrahedron.getFace(tilePositionId[0]).getTilePosition(tilePositionId[2]);
-        tilePosition.state.tile = tile;
+        if (tilePosition.state.isEmpty()) {
+            tilePosition.state.tile = this._tilePool.getTile(tileId);
+        }
         return SolverBase.tileDraggable(tilePosition);
     }
 
-    returnTile(tilePositionId: string): PuzzleChange {
+    removeTile(tilePositionId: string): PuzzleChange {
         const tilePosition = this._tetrahedron.getFace(tilePositionId[0]).getTilePosition(tilePositionId[2]);
         const tile = tilePosition.state.removeTile();
         this._tilePool.returnTile(tile);
         return SolverBase.startDraggable(tile);
+    }
+
+    returnToStart(tileId: number): PuzzleChange {
+        const tile = this._tilePool.getTile(tileId);
+        const puzzleChange = SolverBase.startDraggable(tile);
+        this._tilePool.returnTile(tile);
+        return puzzleChange;
+    }
+
+    returnToTilePosition(tilePositionId: string) {
+        const tilePosition = this._tetrahedron.getFace(tilePositionId[0]).getTilePosition(tilePositionId[2]);
+        return SolverBase.tileDraggable(tilePosition);
     }
 
 }
