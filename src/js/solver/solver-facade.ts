@@ -1,13 +1,14 @@
 import { UIOptions} from "../ui-options";
+import { UIDragGroup } from "../ui-drag-group";
 import { buildSolver, SolverOptions } from "./solver-factory";
 import { Solver } from "./solver-base";
+import { HumanSolver } from "./solver-human";
 import { SolverTimer } from "./solver-timer";
 import { SolverStepCounter } from "./solver-step-counter";
 import { WorkerParameters, WorkerResult } from "../common-data-schema";
 import { PuzzleChange, PuzzleChangeSet } from "../puzzle-changes";
 import { DisplayManager } from "../display/display-manager";
 import { StatusUpdates } from "../status-updates-manager";
-import {HumanSolver} from "./solver-human";
 
 
 abstract class SolverFacade {
@@ -226,10 +227,17 @@ class HumanFacade extends SolverFacade {
 
     protected continueSolver(): void {}
 
-    placeTile(tileId: number, tilePositionId: string): void {
+    placeTile(dragGroup: UIDragGroup): void {
         this.stepCount();
-        const puzzleChange = (<HumanSolver> this._solver).placeTile(tileId, tilePositionId);
+        const puzzleChange = (<HumanSolver> this._solver).placeTile(dragGroup.id, dragGroup.toId);
         this._displayManager.display(puzzleChange);
+        dragGroup.remove();
+    }
+
+    returnTile(dragGroup: UIDragGroup): void {
+        const puzzleChange = (<HumanSolver> this._solver).returnTile(dragGroup.id);
+        this._displayManager.display(puzzleChange);
+        dragGroup.remove();
     }
 
 }

@@ -3,7 +3,6 @@ import { getDisplayManager } from "./display/display-loader";
 import { StatusUpdatesManager } from "./status-updates-manager";
 import { SolverFacade, getSolverFacade, HumanFacade } from "./solver/solver-facade";
 import { UIDragGroup } from "./ui-drag-group";
-import {isTileId} from "./utils";
 
 
 const displayElement = <SVGSVGElement> <any> document.getElementById("puzzle-display-area")!;
@@ -144,12 +143,9 @@ document.getElementById("continue")!.addEventListener("disable", () => {
 let dragGroup: UIDragGroup | null = null;
 
 function startDrag(evt: MouseEvent): void {
-    if (evt.target) {
-        let node = (<Element> evt.target).parentNode;
-        // Only Tile groups should be draggable.
-        if (node && isTileId((<Element> node).id)) {
-            dragGroup = new UIDragGroup(document, displayElement, <SVGGElement> node, evt);
-        }
+    dragGroup = new UIDragGroup(document, displayElement);
+    if (!dragGroup.validDrag(evt)) {
+        dragGroup = null;
     }
 }
 
@@ -162,10 +158,10 @@ function drag(evt: MouseEvent): void {
 
 function endDrag(evt: MouseEvent): void {
     if (dragGroup) {
-        let onGroup = dragGroup.endDrag(evt);
-        if (onGroup) {
-            (<HumanFacade> solverFacade).placeTile(dragGroup.id, onGroup.id);
-            dragGroup.tilePlaced();
+        if (dragGroup.endDrag(evt)) {
+            (<HumanFacade> solverFacade).placeTile(dragGroup);
+        } else {
+            (<HumanFacade> solverFacade).returnTile(dragGroup);
         }
         dragGroup = null;
     }

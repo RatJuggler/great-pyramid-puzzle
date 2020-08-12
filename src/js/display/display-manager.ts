@@ -150,9 +150,9 @@ class StartTileDraggable extends DisplayChange {
     }
 
     show(): void {
-        // Find the start position of the tile to place on the puzzle.
+        // Find the start position of the tile to be used on the puzzle.
         const tspDisplay = this.display.getStartPosition(this._tChange);
-        // Redraw the start position with the tile removed then draw the tile at the start position ready to be dragged.
+        // Draw the start position with the tile removed then draw the tile at the start position ready to be dragged.
         this.display.drawEmptyStartPosition(tspDisplay, this._tChange, this._scaleTileStart);
         const tile = this.display.drawTile(tspDisplay.center, this._tChange, this._scaleTileStart, 0);
         // The group should include a 0 translate to help make it draggable.

@@ -42,4 +42,11 @@ export class HumanSolver extends SolverBase {
         return SolverBase.tileDraggable(tilePosition);
     }
 
+    returnTile(tileId: number): PuzzleChange {
+        const tile = this._tilePool.getTile(tileId);
+        const puzzleChange = SolverBase.startDraggable(tile);
+        this._tilePool.returnTile(tile);
+        return puzzleChange;
+    }
+
 }
