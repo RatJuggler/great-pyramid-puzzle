@@ -3,6 +3,7 @@ import { getDisplayManager } from "./display/display-loader";
 import { StatusUpdatesManager } from "./status-updates-manager";
 import { SolverFacade, getSolverFacade, HumanFacade } from "./solver/solver-facade";
 import { UIDragGroup } from "./ui-drag-group";
+import {isTileId} from "./utils";
 
 
 const displayElement = <SVGSVGElement> <any> document.getElementById("puzzle-display-area")!;
@@ -145,8 +146,8 @@ let dragGroup: UIDragGroup | null = null;
 function startDrag(evt: MouseEvent): void {
     if (evt.target) {
         let node = (<Element> evt.target).parentNode;
-        // Only Tile groups should have been made draggable.
-        if (node && (<Element> node).classList.contains('draggable-group')) {
+        // Only Tile groups should be draggable.
+        if (node && isTileId((<Element> node).id)) {
             dragGroup = new UIDragGroup(displayElement, <SVGGElement> node, evt);
         }
     }

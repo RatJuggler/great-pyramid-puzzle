@@ -22,9 +22,6 @@ class UIDragGroup {
     }
 
     constructor(svg: SVGSVGElement, group: SVGGElement, evt: MouseEvent) {
-        if (!group.id.startsWith("tile")) {
-            throw new Error("Only expecting to drag tiles!");
-        }
         this.svg = svg;
         this.group = group;
         let mousePosition = this.mapMousePosition(evt);

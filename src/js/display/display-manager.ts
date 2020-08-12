@@ -155,8 +155,8 @@ class StartTileDraggable extends DisplayChange {
         // Redraw the start position with the tile removed then draw the tile at the start position ready to be dragged.
         this.display.drawEmptyStartPosition(tspDisplay, this._tChange, this._scaleTileStart);
         const tile = this.display.drawTile(tspDisplay.center, this._tChange, this._scaleTileStart, 0);
-        // The group should include the class and 0 translate to make it draggable.
-        tile.addClass("draggable-group").translate(0, 0);
+        // The group should include a 0 translate to help make it draggable.
+        tile.translate(0, 0);
     }
 
 }
