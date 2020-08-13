@@ -246,7 +246,11 @@ class HumanFacade extends SolverFacade {
                 // 9.  TilePosition -> TilePosition (different, empty) = TilePosition (different, empty)
                 // 10. TilePosition -> TilePosition (different, filled) = TilePosition (same)
                 this.stepCount();
-                puzzleChange = (<HumanSolver>this._solver).moveTile(dragGroup.fromId, dragGroup.toId);
+                if (dragGroup.moved()) {
+                    puzzleChange = (<HumanSolver>this._solver).moveTile(dragGroup.fromId, dragGroup.toId);
+                } else {
+                    puzzleChange = (<HumanSolver>this._solver).rotateTile(dragGroup.fromId);
+                }
             } else if (dragGroup.isFromTilePosition() && dragGroup.isToStart()) {
                 // 11. TilePosition -> TileStart (same) = TileStart (same)
                 // 12. TilePosition -> TileStart (different) = TilePosition (same)
@@ -268,6 +272,9 @@ class HumanFacade extends SolverFacade {
         }
         this._displayManager.display(puzzleChange);
         dragGroup.remove();
+        if (dragGroup.moved()) {
+            dragGroup.remove();
+        }
     }
 
 }

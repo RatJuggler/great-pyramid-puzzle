@@ -154,8 +154,7 @@ class TileDraggable extends DisplayChange {
 
     constructor(display: Display,
                 private readonly _tChange: TileChange,
-                private readonly _scaleTile: number,
-                private readonly _animationDuration: number) {
+                private readonly _scaleTile: number,) {
         super(display);
     }
 
@@ -166,13 +165,6 @@ class TileDraggable extends DisplayChange {
         const tile = this.display.drawTile(tpDisplay.center, this._tChange, this._scaleTile, this._tChange.rotations);
         // The group should include a 0 translate to help make it draggable.
         tile.translate(0, 0);
-        // Allow tile to be rotated.
-        console.log("Make Rotatable: " + tpDisplay.group.id());
-        tile.click(() => {
-            const tpChange = TilePositionChange.rotate(tpDisplay.group.id(), 1);
-            const action = new RotateTilePosition(this.display, tpChange as TilePositionChange, this._animationDuration);
-            action.show();
-        });
     }
 
 }
@@ -335,7 +327,7 @@ export class DisplayManager {
                 action = new StartTileDraggable(this._display, pChange as TileChange, this._scaleTileStart);
                 break;
             case PuzzleChangeType.TileDraggable:
-                action = new TileDraggable(this._display, pChange as TileChange, this._scaleTile, this._animationDuration);
+                action = new TileDraggable(this._display, pChange as TileChange, this._scaleTile);
                 break;
             case PuzzleChangeType.Set:
                 action = new SetTilePosition(this._display, pChange as TileChange, this._scaleTile);

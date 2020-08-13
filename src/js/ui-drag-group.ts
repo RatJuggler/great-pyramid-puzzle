@@ -103,6 +103,13 @@ class UIDragGroup {
         return isTilePositionId(this.toId);
     }
 
+    moved(): boolean {
+        if (this.transform) {
+            return this.transform.matrix.e !== 0 || this.transform.matrix.f !== 0;
+        }
+        return true;
+    }
+
     drag(evt: MouseEvent): void {
         if (this.transform && this.offset) {
             const mousePosition = this.mapMousePosition(evt);
@@ -110,13 +117,8 @@ class UIDragGroup {
         }
     }
 
-    endDrag(evt: MouseEvent): boolean {
+    endDrag(evt: MouseEvent): void {
         this.toGroup = this.onParentGroup(evt);
-        if (this.dragGroup && this.fromGroup && this.toGroup) {
-            console.log("Tile: " + this.dragGroup.id + " - From: " + this.fromGroup.id + " - To: " + this.toGroup.id);
-            return true;
-        }
-        return false;
     }
 
     remove(): void {
