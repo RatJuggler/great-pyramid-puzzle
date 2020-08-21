@@ -10,7 +10,6 @@ class Population {
 
     private _population: Array<Tetrahedron>;
     private readonly _selection: Array<number>;
-    private readonly _sidesMatchingWhenSolved: number;
 
     private _memberWithMostSidesMatching: number;
     private _totalMatchingAcrossAllMembers: number;
@@ -25,7 +24,6 @@ class Population {
             });
             this._population[i] = puzzle.tetrahedron;
         }
-        this._sidesMatchingWhenSolved = this._population[0].tilePositionCount * Side.numberOfSides;
         this._memberWithMostSidesMatching = 0;
         this._totalMatchingAcrossAllMembers = 0;
         this._selection = new Array<number>(size);
@@ -45,7 +43,7 @@ class Population {
         for (let i = 0; i < this._population.length; i++) {
             this._selection[i] = this._population[i].tileSidesMatching / this._totalMatchingAcrossAllMembers;
         }
-        return this.bestSoFar().tileSidesMatching === this._sidesMatchingWhenSolved;
+        return this.bestSoFar().isSolved();
     }
 
     private selection(): Tetrahedron {

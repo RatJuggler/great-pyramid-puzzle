@@ -80,6 +80,7 @@ export class HumanSolver extends SolverBase {
     }
 
     isSolved(): boolean {
+        this._tetrahedron.countTileSidesMatching();
         return this._tetrahedron.isSolved();
     }
 

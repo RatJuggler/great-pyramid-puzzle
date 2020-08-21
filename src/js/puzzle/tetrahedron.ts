@@ -80,7 +80,6 @@ export class Tetrahedron implements IntegrityCheck {
     }
 
     isSolved(): boolean {
-        this.countTileSidesMatching();
         return this._tileSidesMatching === this._sidesMatchingWhenSolved;
     }
 
