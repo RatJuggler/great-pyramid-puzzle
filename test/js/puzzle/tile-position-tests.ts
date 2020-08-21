@@ -119,9 +119,7 @@ describe("TilePosition behaviour", function () {
         context("and the TilePosition being checked is empty", function () {
             it("should throw an error", function () {
                 tilePosition1.join("C", "B", tilePosition2);
-                expect(function () {
-                    tilePosition1.tileMatches();
-                }).to.throw(Error, "Can't check if a Tiles sides match when there is no Tile at the TilePosition to match from!");
+                expect(tilePosition1.tileMatches()).to.be.false;
             });
         });
 
