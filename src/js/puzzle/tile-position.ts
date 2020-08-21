@@ -80,7 +80,7 @@ export class TilePosition implements IntegrityCheck {
 
     sidesMatching(): number {
         if (this.state.isEmpty()) {
-            throw new Error("Can't check if a Tiles sides match when there is no Tile at the TilePosition to match from!");
+            return 0;
         }
         // Count the matching sides for each join to another TilePosition.
         return this._joins.reduce((matches, join) => matches + (this.sideMatches(join) ? 1 : 0), 0);

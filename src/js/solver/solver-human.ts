@@ -79,4 +79,12 @@ export class HumanSolver extends SolverBase {
         return SolverBase.tileDraggable(tilePosition);
     }
 
+    isSolved(): boolean {
+        return this._tetrahedron.isSolved();
+    }
+
+    solved(): PuzzleChange {
+        return SolverBase.solved(this.stateForDisplay());
+    }
+
 }

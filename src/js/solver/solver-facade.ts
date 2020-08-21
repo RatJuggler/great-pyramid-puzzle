@@ -235,12 +235,12 @@ class HumanFacade extends SolverFacade {
                 // 3.  TileStart -> TileStart (same) = TileStart (same)
                 // 4.  TileStart -> TileStart (different, empty) = TileStart (same)
                 // 5.  TileStart -> TileStart (different, filled) = TileStart (same)
-                puzzleChange = (<HumanSolver>this._solver).returnToStart(dragGroup.id);
+                puzzleChange = (<HumanSolver> this._solver).returnToStart(dragGroup.id);
             } else if (dragGroup.isFromStart() && dragGroup.isToTilePosition()) {
                 // 6.  TileStart -> TilePosition (empty) = TilePosition (empty)
                 // 7.  TileStart -> TilePosition (filled) = TileStart (same)
                 this.stepCount();
-                puzzleChange = (<HumanSolver>this._solver).placeTile(dragGroup.id, dragGroup.toId);
+                puzzleChange = (<HumanSolver> this._solver).placeTile(dragGroup.id, dragGroup.toId);
             } else if (dragGroup.isFromTilePosition() && dragGroup.isToTilePosition()) {
                 // 8.  TilePosition -> TilePosition (same) = TilePosition (same)
                 // 9.  TilePosition -> TilePosition (different, empty) = TilePosition (different, empty)
@@ -248,31 +248,34 @@ class HumanFacade extends SolverFacade {
                 this.stepCount();
                 // If it didn't actually move, rotate it.
                 if (dragGroup.moved()) {
-                    puzzleChange = (<HumanSolver>this._solver).moveTile(dragGroup.fromId, dragGroup.toId);
+                    puzzleChange = (<HumanSolver> this._solver).moveTile(dragGroup.fromId, dragGroup.toId);
                 } else {
-                    puzzleChange = (<HumanSolver>this._solver).rotateTile(dragGroup.fromId);
+                    puzzleChange = (<HumanSolver> this._solver).rotateTile(dragGroup.fromId);
                 }
             } else if (dragGroup.isFromTilePosition() && dragGroup.isToStart()) {
                 // 11. TilePosition -> TileStart (same) = TileStart (same)
                 // 12. TilePosition -> TileStart (different) = TilePosition (same)
                 this.stepCount();
-                puzzleChange = (<HumanSolver>this._solver).removeTile(dragGroup.fromId);
+                puzzleChange = (<HumanSolver> this._solver).removeTile(dragGroup.fromId);
             } else {
                 throw new Error("Unknown draggable from/to!");
             }
         } else {
             if (dragGroup.isFromStart()) {
                 // 1.  TileStart -> <invalid to> = TileStart (same)
-                puzzleChange = (<HumanSolver>this._solver).returnToStart(dragGroup.id);
+                puzzleChange = (<HumanSolver> this._solver).returnToStart(dragGroup.id);
             } else if (dragGroup.isFromTilePosition()) {
                 // 2.  TilePosition -> <invalid to> = TileStart (same)
-                puzzleChange = (<HumanSolver>this._solver).removeTile(dragGroup.fromId);
+                puzzleChange = (<HumanSolver> this._solver).removeTile(dragGroup.fromId);
             } else {
                 throw new Error("Unknown draggable from!");
             }
         }
         this._displayManager.display(puzzleChange);
         dragGroup.remove();
+        if ((<HumanSolver> this._solver).isSolved()) {
+            this.solutionFound((<HumanSolver> this._solver).solved());
+        }
     }
 
 }
