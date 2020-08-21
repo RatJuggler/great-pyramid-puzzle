@@ -134,6 +134,11 @@ export class Display {
         return this.getPosition(tpChange.tilePositionId);
     }
 
+    getTile(tChange: TileChange): G {
+        const element = this._draw.findOne("[id='tile" + tChange.tileId + "']");
+        return SVG(element) as G;
+    }
+
     getStartPosition(tChange: TileChange): PositionData {
         return this.getPosition("start" + tChange.tileId);
     }

@@ -76,7 +76,7 @@ export class HumanSolver extends SolverBase {
     rotateTile(tilePositionId: string): PuzzleChange {
         const tilePosition = this._tetrahedron.getFace(tilePositionId[0]).getTilePosition(tilePositionId[2]);
         tilePosition.state.rotate();
-        return SolverBase.rotate(tilePosition, 1);
+        return SolverBase.tileDraggable(tilePosition);
     }
 
 }
