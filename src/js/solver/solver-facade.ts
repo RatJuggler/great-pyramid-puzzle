@@ -265,7 +265,7 @@ class HumanFacade extends SolverFacade {
                 puzzleChange = (<HumanSolver>this._solver).returnToStart(dragGroup.id);
             } else if (dragGroup.isFromTilePosition()) {
                 // 2.  TilePosition -> <invalid to> = TilePosition (same)
-                puzzleChange = (<HumanSolver>this._solver).returnToTilePosition(dragGroup.fromId);
+                puzzleChange = (<HumanSolver>this._solver).removeTile(dragGroup.fromId);
             } else {
                 throw new Error("Unknown draggable from!");
             }
