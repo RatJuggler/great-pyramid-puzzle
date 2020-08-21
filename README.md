@@ -10,7 +10,8 @@ The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I t
 ##### Progress
 - Captured data representing the Pocket and Great version of the puzzle and a Simple version aimed at testing.
 - Built data structures to hold the puzzle data and state.
-- Built mechanisms to add tiles to the puzzle, randomly or in sequence without matching, as well as matching with adjacent tiles. 
+- Created some tests to verify the basic functionality.
+- Built mechanisms to add tiles to the puzzle, randomly or in sequence without matching, as a test.
 - Built a display renderer using SVG to show the puzzle in a given state and to animate tiles as they are placed and removed.
 - Built a UI with options to control the display and solving process.
 - Brute Force solver working (cycles through every single possible combination of tiles, positions and orientations).
@@ -18,7 +19,8 @@ The Great Pyramid Puzzle was a puzzle made by Eliot Inventions Ltd. in 1981. I t
 - Allow solvers to run as dedicated web workers, without animation, for speed.
 - Option to allow solvers to continue to search for further solutions.
 - Report rough timings and number of steps (tiles added/removed/rotated) taken for each solver run.
-- Started work on a genetic algorithm solver.
+- Human option, so you can drag and rotate the tiles yourself to try to solve it.
+- Started work on a genetic algorithm solver, but it's not doing very well at the moment.
 
 You can see the latest release in action [here](https://ratjuggler.github.io/great-pyramid-puzzle/).
 
@@ -32,7 +34,7 @@ Rough timings (time is to first solution):
 | Only Valid Tiles | Simple / 4     | 7         | 4 Secs               | Instant |
 |                  | Pocket / 16    | 86,358    | ~14 hrs (est)        | Instant |
 |                  | Great / 36     | ???       | ???                  | ???     |
-| Generic          | Simple / 4     | ???       | ???                  | ???     |
+| Genetic          | Simple / 4     | ???       | ???                  | ???     |
 |                  | Pocket / 16    | ???       | ???                  | ???     |
 |                  | Great / 36     | ???       | ???                  | ???     |
 
