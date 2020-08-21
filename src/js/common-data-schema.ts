@@ -1,9 +1,9 @@
-import { LayoutData } from "./layout-data-schema";
-import { TileData } from "./tile-data-schema";
-import { TilePool } from "./tile-pool";
-import { Tetrahedron } from "./tetrahedron";
+import { LayoutData } from "./puzzle/layout-data-schema";
+import { TileData } from "./puzzle/tile-data-schema";
+import { TilePool } from "./puzzle/tile-pool";
+import { Tetrahedron } from "./puzzle/tetrahedron";
 import { PuzzleChange } from "./puzzle-changes";
-import { SolverOptions } from "./solver-factory";
+import { SolverOptions } from "./solver/solver-factory";
 
 // Types used across the application.
 
@@ -17,8 +17,6 @@ type PuzzleComponents = {
     readonly tetrahedron: Tetrahedron
 }
 
-type IntegrityCheckResult = [boolean, string];
-
 type WorkerParameters = {
     continue: boolean,
     solverOptions: SolverOptions
@@ -26,8 +24,8 @@ type WorkerParameters = {
 
 type WorkerResult = {
     solvedOrCompleted: string
-    changeCounter: number,
-    finalState: Array<PuzzleChange>,
+    stepCounter: number,
+    finalState: Array<PuzzleChange>
 }
 
-export { PuzzleDataElements, PuzzleComponents, IntegrityCheckResult, WorkerParameters, WorkerResult }
+export { PuzzleDataElements, PuzzleComponents, WorkerParameters, WorkerResult }

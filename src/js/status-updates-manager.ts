@@ -8,26 +8,30 @@ interface StatusUpdates {
 
 class StatusUpdatesManager implements StatusUpdates {
 
-    private _statusUpdatesList: HTMLElement;
+    private readonly _statusUpdatesList: HTMLElement;
 
-    constructor(statusUpdatesListId: string) {
-        this._statusUpdatesList = document.getElementById(statusUpdatesListId)!;
+    constructor(private readonly _document: Document, statusUpdatesListId: string | HTMLElement) {
+        if (typeof(statusUpdatesListId) === "string") {
+            this._statusUpdatesList = this._document.getElementById(statusUpdatesListId)!;
+        } else {
+            this._statusUpdatesList = statusUpdatesListId;
+        }
     }
 
     add(id: string, title: string, status: string): void {
-        const newLi = document.createElement("li");
+        const newLi = this._document.createElement("li");
         newLi.id = id;
-        const newH2 = document.createElement("h4");
+        const newH2 = this._document.createElement("h4");
         newH2.innerText = title;
         newLi.appendChild(newH2);
-        const newP = document.createElement("p");
+        const newP = this._document.createElement("p");
         newP.innerText = status;
         newLi.appendChild(newP);
         this._statusUpdatesList.appendChild(newLi);
     }
 
-    private static findStatusP(id: string): HTMLParagraphElement {
-        const li = document.getElementById(id);
+    private findStatusP(id: string): HTMLParagraphElement {
+        const li = this._document.getElementById(id);
         if (!li) {
             throw new Error("Unable to find status li!");
         }
@@ -39,11 +43,11 @@ class StatusUpdatesManager implements StatusUpdates {
     }
 
     addTo(id: string, status: string): void {
-        StatusUpdatesManager.findStatusP(id).innerText += status;
+        this.findStatusP(id).innerText += status;
     }
 
     replace(id: string, status: string): void {
-        StatusUpdatesManager.findStatusP(id).innerText = status;
+        this.findStatusP(id).innerText = status;
     }
 
     clear(): void {

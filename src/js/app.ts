@@ -1,59 +1,27 @@
-import { getDisplayManager } from "./display-loader";
-import { SolverFacade, AnimatedFacade, WorkerFacade } from "./solver-facade";
-import { SolverOptions } from "./solver-factory";
-import { DisplayManager } from "./display-manager";
+import { DOMUIOptions } from "./ui-options";
+import { getDisplayManager } from "./display/display-loader";
+import { StatusUpdatesManager } from "./status-updates-manager";
+import { SolverFacade, getSolverFacade, HumanFacade } from "./solver/solver-facade";
+import { UIDragGroup } from "./ui-drag-group";
 
+
+const displayElement = <SVGSVGElement> <any> document.getElementById("puzzle-display-area")!;
 
 let solverFacade: SolverFacade;
 
-
-function getSelector(name: string): string {
-    const selection  = document.querySelectorAll(`input[name = "${name}"]`) as NodeListOf<HTMLInputElement>;
-    for (const rb of selection) {
-        if (rb.checked) {
-            return rb.value;
-        }
-    }
-    throw new Error("Expected radio option to be selected!");
-}
-
-function getAnimationSpeed(): number {
-    return parseInt(getSelector("animation-speed"));
-}
-
-function getSolverFacade(solverOptions: SolverOptions, displayManager: DisplayManager): SolverFacade {
-    const displayOption = getSelector("display-option");
-    switch (displayOption) {
-        case "Completed":
-            // Worker solver needs to know where the overlay element is.
-            return new WorkerFacade(solverOptions, displayManager,
-                document.getElementById("continue")!,
-                document.getElementById("overlay")!);
-        case "Animated":
-            // Animated solver needs to know the animation speed.
-            return new AnimatedFacade(solverOptions, displayManager,
-                document.getElementById("continue")!,
-                getAnimationSpeed());
-        default:
-            throw new Error("Invalid solve display option!");
-    }
-}
-
 function solvePuzzle(): void {
     // Determine the solver options.
-    const solverOptions: SolverOptions = {
-        puzzleType: getSelector("puzzle-type"),
-        solveAlgorithm: getSelector("solve-algorithm"),
-        tileSelection: getSelector("tile-selection"),
-        tilePlacement: getSelector("tile-placement"),
-        tileRotation: getSelector("tile-rotation"),
-    };
-    // Find where we want the puzzle displayed.
-    const displayElement = <HTMLElement>document.getElementById("puzzle-display-area")!;
+    const domUIOptions = new DOMUIOptions(document);
+    const solverOptions = domUIOptions.solverOptions;
     // Build the display manager.
-    const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, getAnimationSpeed());
+    const displayManager = getDisplayManager(displayElement, solverOptions.puzzleType, domUIOptions.animationSpeed);
+    // Build the status list manager.
+    const statusUpdatesList = document.getElementById("status-updates-list")!;
+    const statusUpdates = new StatusUpdatesManager(document, statusUpdatesList);
     // Build the solver facade.
-    solverFacade = getSolverFacade(solverOptions, displayManager);
+    solverFacade = getSolverFacade(domUIOptions, displayManager, statusUpdates,
+        document.getElementById("continue")!,
+        document.getElementById("overlay")!);
     // Start the solving process.
     solverFacade.start();
 }
@@ -67,7 +35,7 @@ function continuePuzzle(): void {
 }
 
 
-function addClickEventListener(id: string, callback: (this:HTMLElement, ev: MouseEvent) => any): void {
+function addClickEventListener(id: string, callback: (this:HTMLElement, evt: MouseEvent) => any): void {
     document.getElementById(id)!.addEventListener("click", callback);
 }
 
@@ -81,12 +49,14 @@ function removeActive(id: string): void {
     document.getElementById(id)!.classList.remove("active");
 }
 
-addClickEventListener("algorithm-no-matching", () => { addActive("no-matching-options"); });
-addClickEventListener("algorithm-brute", () => { removeActive("no-matching-options"); });
+addClickEventListener("algorithm-genetic", () => { removeActive("no-matching-options"); });
 addClickEventListener("algorithm-only-valid", () => { removeActive("no-matching-options"); });
+addClickEventListener("algorithm-brute", () => { removeActive("no-matching-options"); });
+addClickEventListener("algorithm-no-matching", () => { addActive("no-matching-options"); });
 
-addClickEventListener("display-animated", () => { addActive("animation-options"); });
-addClickEventListener("display-completed", () => { removeActive("animation-options"); });
+addClickEventListener("solution-animated", () => { addActive("algorithm-options"); addActive("animation-options"); });
+addClickEventListener("solution-completed", () => { addActive("algorithm-options"); removeActive("animation-options"); });
+addClickEventListener("solution-human", () => { removeActive("algorithm-options"); removeActive("animation-options"); });
 
 addClickEventListener("menu-toggle", () => { toggleActive("layout", "menu", "menu-toggle") });
 
@@ -104,11 +74,11 @@ addMenuHelpEvent("go", "Start a new puzzle solving process with the selected opt
 addMenuHelpEvent("cancel", "Cancel the solution in progress.");
 addMenuHelpEvent("continue", "Continue with the current options to try to find another solution.");
 addMenuHelpEvent("puzzle-type", "Select the difficulty of puzzle to work with.");
+addMenuHelpEvent("solution-option", "Show an animation of the puzzle being solved, just display the completed solution or try it yourself.");
 addMenuHelpEvent("solve-algorithm", "Select which algorithm to use when solving the puzzle.");
 addMenuHelpEvent("tile-selection", "How tiles are selected for the test display, randomly, in order or to use a fixed tile pattern.");
 addMenuHelpEvent("tile-placement", "How tiles are placed on the test display, randomly or in order.");
 addMenuHelpEvent("tile-rotation", "If tiles are randomly rotated before being placed on the test display.");
-addMenuHelpEvent("puzzle-display", "Show an animation of the puzzle being solved or just display the completed solution.");
 addMenuHelpEvent("animation-speed", "How fast you want the animation to run.");
 
 function defaultMenuHelp() {
@@ -168,3 +138,33 @@ document.getElementById("continue")!.addEventListener("enable", () => {
 document.getElementById("continue")!.addEventListener("disable", () => {
     enableGo();
 });
+
+
+let dragGroup: UIDragGroup | null = null;
+
+function startDrag(evt: MouseEvent): void {
+    dragGroup = new UIDragGroup(document, displayElement);
+    if (!dragGroup.validDrag(evt)) {
+        dragGroup = null;
+    }
+}
+
+function drag(evt: MouseEvent): void {
+    if (dragGroup) {
+        evt.preventDefault();
+        dragGroup.drag(evt);
+    }
+}
+
+function endDrag(evt: MouseEvent): void {
+    if (dragGroup) {
+        dragGroup.endDrag(evt);
+        (<HumanFacade> solverFacade).userMove(dragGroup);
+        dragGroup = null;
+    }
+}
+
+displayElement.addEventListener('mousedown', startDrag);
+displayElement.addEventListener('mousemove', drag);
+displayElement.addEventListener('mouseup', endDrag);
+displayElement.addEventListener('mouseleave', endDrag);

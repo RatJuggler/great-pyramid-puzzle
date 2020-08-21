@@ -1,10 +1,13 @@
 // These change value objects allow us to keep the solving and display code separate.
 //
 // Initial - Draw an empty puzzle
-// Start - Draw a Tile at it's starting position.
+// Start - Draw a tile at it's starting position
+// StartDraggable - A draggable tile at it's start position
+// TileDraggable - A draggable tile at a tile position
 // Empty - Draw an empty tile position
-// Final - Draw a tile at it's final tile position (no animation)
-// Place - Animate a tile moving from it's start position to a tile position
+// Current - The current state of the puzzle
+// Set - Draw a tile at it's current tile position (no animation)
+// Add - Animate a tile moving from it's start position to a tile position
 // Rotate - Animate rotating a tile at a tile position
 // Remove - Animate a tile moving from a tile position back to it's start position
 // Solved - A solution to the current puzzle
@@ -14,9 +17,12 @@
 enum PuzzleChangeType {
     Initial = "Initial",
     Start = "Start",
+    StartDraggable = "StartDraggable",
+    TileDraggable = "TileDraggable",
     Empty = "Empty",
-    Final = "Final",
-    Place = "Place",
+    Current = "Current",
+    Set = "Set",
+    Add = "Add",
     Rotate = "Rotate",
     Remove = "Remove",
     Solved = "Solved",
@@ -27,34 +33,52 @@ enum PuzzleChangeType {
 class PuzzleChange {
 
     static readonly INITIAL = new PuzzleChange(PuzzleChangeType.Initial);
-    static readonly SOLVED = new PuzzleChange(PuzzleChangeType.Solved);
-    static readonly COMPLETED = new PuzzleChange(PuzzleChangeType.Completed);
 
     constructor(readonly type: PuzzleChangeType) {}
 
-    static fromString(type: string): PuzzleChange {
+    isSolved(): boolean {
+        return this.type === PuzzleChangeType.Solved;
+    }
+
+    isCompleted(): boolean {
+        return this.type === PuzzleChangeType.Completed;
+    }
+
+}
+
+
+class PuzzleChangeSet extends PuzzleChange {
+
+    static current(puzzleChanges: Array<PuzzleChange>): PuzzleChange {
+        return new PuzzleChangeSet(PuzzleChangeType.Current, puzzleChanges);
+    }
+
+    static solved(puzzleChanges: Array<PuzzleChange>): PuzzleChange {
+        return new PuzzleChangeSet(PuzzleChangeType.Solved, puzzleChanges);
+    }
+
+    static completed(puzzleChanges: Array<PuzzleChange>): PuzzleChange {
+        return new PuzzleChangeSet(PuzzleChangeType.Completed, puzzleChanges);
+    }
+
+    static build(type: string, puzzleChanges: Array<PuzzleChange>): PuzzleChange {
         let puzzleChange: PuzzleChange;
-        if (type === "Initial") {
-            puzzleChange = PuzzleChange.INITIAL;
-        } else if (type === "Solved") {
-            puzzleChange = PuzzleChange.SOLVED;
+        if (type === "Solved") {
+            puzzleChange = PuzzleChangeSet.solved(puzzleChanges);
         } else if (type === "Completed") {
-            puzzleChange = PuzzleChange.COMPLETED;
+            puzzleChange = PuzzleChangeSet.completed(puzzleChanges);
         } else {
-            throw new Error("Base PuzzleChange only for Initial, Solved or Completed changes!");
+            throw new Error("Build PuzzleChangeSet only for Solved or Completed changes!");
         }
         return puzzleChange;
     }
 
-    isSolved(): boolean {
-        return this === PuzzleChange.SOLVED;
-    }
-
-    isCompleted(): boolean {
-        return this === PuzzleChange.COMPLETED;
+    constructor(type: PuzzleChangeType, readonly puzzleChanges: Array<PuzzleChange>) {
+        super(type);
     }
 
 }
+
 
 class TilePositionChange extends PuzzleChange {
 
@@ -72,18 +96,27 @@ class TilePositionChange extends PuzzleChange {
 
 }
 
+
 class TileChange extends TilePositionChange {
 
     static start(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
         return new TileChange(PuzzleChangeType.Start, tilePositionId, tileId, rotations, segments);
     }
 
-    static final(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
-        return new TileChange(PuzzleChangeType.Final, tilePositionId, tileId, rotations, segments);
+    static startDraggable(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.StartDraggable, tilePositionId, tileId, rotations, segments);
     }
 
-    static place(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
-        return new TileChange(PuzzleChangeType.Place, tilePositionId, tileId, rotations, segments);
+    static tileDraggable(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.TileDraggable, tilePositionId, tileId, rotations, segments);
+    }
+
+    static set(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.Set, tilePositionId, tileId, rotations, segments);
+    }
+
+    static add(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
+        return new TileChange(PuzzleChangeType.Add, tilePositionId, tileId, rotations, segments);
     }
 
     static remove(tilePositionId: string, tileId: number, rotations: number, segments: string): PuzzleChange {
@@ -96,4 +129,5 @@ class TileChange extends TilePositionChange {
 
 }
 
-export { PuzzleChange, PuzzleChangeType, TilePositionChange, TileChange }
+
+export { PuzzleChangeType, PuzzleChange, PuzzleChangeSet, TilePositionChange, TileChange }

@@ -49,15 +49,43 @@
               <label for="puzzle-great">Great</label>
             </div>
           </li>
+          <li id="solution-option" class="pure-menu-item">
+            <p>Solution:</p>
+            <div class="selector">
+              <input type="radio" id="solution-animated" name="solution-option" value="Animated" checked>
+              <label for="solution-animated">Animated</label>
+              <input type="radio" id="solution-completed" name="solution-option" value="Completed">
+              <label for="solution-completed">Completed</label>
+              <input type="radio" id="solution-human" name="solution-option" value="Human">
+              <label for="solution-human">Human</label>
+            </div>
+          </li>
+        </ul>
+        <ul id="algorithm-options" class="pure-menu-list active">
           <li id="solve-algorithm" class="pure-menu-item">
             <p>Algorithm:</p>
             <div class="selector">
-              <input type="radio" id="algorithm-brute" name="solve-algorithm" value="Brute" checked>
-              <label for="algorithm-brute">Brute Force</label>
-              <input type="radio" id="algorithm-only-valid" name="solve-algorithm" value="OnlyValid">
+              <input type="radio" id="algorithm-genetic" name="solve-algorithm" value="Genetic">
+              <label for="algorithm-genetic">Genetic</label>
+              <input type="radio" id="algorithm-only-valid" name="solve-algorithm" value="OnlyValid" checked>
               <label for="algorithm-only-valid">Only Valid Tiles</label>
+              <input type="radio" id="algorithm-brute" name="solve-algorithm" value="Brute">
+              <label for="algorithm-brute">Brute Force</label>
               <input type="radio" id="algorithm-no-matching" name="solve-algorithm" value="NoMatching">
               <label for="algorithm-no-matching">No Matching</label>
+            </div>
+          </li>
+        </ul>
+        <ul id="animation-options" class="pure-menu-list active">
+          <li id="animation-speed" class="pure-menu-item">
+            <p>Animation speed:</p>
+            <div class="selector">
+              <input type="radio" id="animation-slow" name="animation-speed" value="500" checked>
+              <label for="animation-slow">Slow</label>
+              <input type="radio" id="animation-fast" name="animation-speed" value="250">
+              <label for="animation-fast">Fast</label>
+              <input type="radio" id="animation-ludicrous" name="animation-speed" value="100">
+              <label for="animation-ludicrous">Ludicrous</label>
             </div>
           </li>
         </ul>
@@ -89,30 +117,6 @@
               <label for="rotation-random">Random</label>
               <input type="radio" id="rotation-none" name="tile-rotation" value="None">
               <label for="rotation-none">None</label>
-            </div>
-          </li>
-        </ul>
-        <ul id="puzzle-display" class="pure-menu-list active">
-          <li id="display-option" class="pure-menu-item">
-            <p>Display:</p>
-            <div class="selector">
-              <input type="radio" id="display-animated" name="display-option" value="Animated" checked>
-              <label for="display-animated">Animated</label>
-              <input type="radio" id="display-completed" name="display-option" value="Completed">
-              <label for="display-completed">Completed</label>
-            </div>
-          </li>
-        </ul>
-        <ul id="animation-options" class="pure-menu-list active">
-          <li id="animation-speed" class="pure-menu-item">
-            <p>Animation speed:</p>
-            <div class="selector">
-              <input type="radio" id="animation-slow" name="animation-speed" value="500" checked>
-              <label for="animation-slow">Slow</label>
-              <input type="radio" id="animation-fast" name="animation-speed" value="250">
-              <label for="animation-fast">Fast</label>
-              <input type="radio" id="animation-ludicrous" name="animation-speed" value="100">
-              <label for="animation-ludicrous">Ludicrous</label>
             </div>
           </li>
         </ul>

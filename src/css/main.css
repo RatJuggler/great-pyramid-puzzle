@@ -94,16 +94,22 @@ header {
   margin-top: .5em;
   margin-bottom: .25em;
 }
-#no-matching-options {
+#algorithm-options {
   display: none;
 }
-#no-matching-options.active {
+#algorithm-options.active {
   display: block;
 }
 #animation-options {
   display: none;
 }
 #animation-options.active {
+  display: block;
+}
+#no-matching-options {
+  display: none;
+}
+#no-matching-options.active {
   display: block;
 }
 .selector {
@@ -182,6 +188,10 @@ header {
   overflow: hidden;
   margin-top: 3em;
   margin-left: 220px;
+}
+
+.draggable-group {
+  cursor: move;
 }
 
 /* Footer. */
