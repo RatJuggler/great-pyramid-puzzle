@@ -246,6 +246,7 @@ class HumanFacade extends SolverFacade {
                 // 9.  TilePosition -> TilePosition (different, empty) = TilePosition (different, empty)
                 // 10. TilePosition -> TilePosition (different, filled) = TilePosition (same)
                 this.stepCount();
+                // If it didn't actually move, rotate it.
                 if (dragGroup.moved()) {
                     puzzleChange = (<HumanSolver>this._solver).moveTile(dragGroup.fromId, dragGroup.toId);
                 } else {
@@ -264,7 +265,7 @@ class HumanFacade extends SolverFacade {
                 // 1.  TileStart -> <invalid to> = TileStart (same)
                 puzzleChange = (<HumanSolver>this._solver).returnToStart(dragGroup.id);
             } else if (dragGroup.isFromTilePosition()) {
-                // 2.  TilePosition -> <invalid to> = TilePosition (same)
+                // 2.  TilePosition -> <invalid to> = TileStart (same)
                 puzzleChange = (<HumanSolver>this._solver).removeTile(dragGroup.fromId);
             } else {
                 throw new Error("Unknown draggable from!");
@@ -272,9 +273,6 @@ class HumanFacade extends SolverFacade {
         }
         this._displayManager.display(puzzleChange);
         dragGroup.remove();
-        if (dragGroup.moved()) {
-            dragGroup.remove();
-        }
     }
 
 }
