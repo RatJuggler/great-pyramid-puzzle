@@ -1,10 +1,13 @@
 // These change value objects allow us to keep the solving and display code separate.
 //
 // Initial - Draw an empty puzzle
-// Start - Draw a Tile at it's starting position.
+// Start - Draw a tile at it's starting position
+// StartDraggable - A draggable tile at it's start position
+// TileDraggable - A draggable tile at a tile position
 // Empty - Draw an empty tile position
-// Current - Draw a tile at it's current tile position (no animation)
-// Place - Animate a tile moving from it's start position to a tile position
+// Current - The current state of the puzzle
+// Set - Draw a tile at it's current tile position (no animation)
+// Add - Animate a tile moving from it's start position to a tile position
 // Rotate - Animate rotating a tile at a tile position
 // Remove - Animate a tile moving from a tile position back to it's start position
 // Solved - A solution to the current puzzle
