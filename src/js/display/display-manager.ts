@@ -52,7 +52,25 @@ class SolvedDisplay extends DisplayChange {
         super(display);
     }
 
+    private animateTile(tChange: TileChange): void {
+        // Find the tile position of the tile to be removed.
+        const tpDisplay = this.display.getTilePosition(tChange);
+        // Redraw the tile position with the tile removed then draw the tile at the tile position ready to be animated.
+        this.display.drawEmptyTilePosition(tpDisplay, tChange, this._scaleTile);
+        const tile = this.display.drawTile(tpDisplay.center, tChange, this._scaleTile, tChange.rotations);
+        // Animate the tile.
+        tile.animate({duration: this._animationDuration, delay: 0, ease: "<>"})
+            // @ts-ignore
+            .rotate(360, tpDisplay.center.x, tpDisplay.center.y)
+            .after(() => {
+                // Remove the animated tile then redraw the tile position with the placed tile.
+                tile.remove();
+                this.display.drawTilePosition(tpDisplay, tChange, this._scaleTile,);
+            });
+    }
+
     show(): void {
+        this._tpChanges.puzzleChanges.forEach(tChange => this.animateTile(tChange as TileChange));
         // TODO: Implement some sort of celebratory display for getting this far!
         console.log(this._tpChanges, this._scaleTile, this._animationDuration);
     }
