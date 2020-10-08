@@ -65,7 +65,7 @@ export class Face implements IntegrityCheck {
     }
 
     get emptyTilePositions(): TilePosition[] {
-        return Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.state.isEmpty()).reverse();
+        return Array.from(this._tilePositions.values()).filter(tilePosition => tilePosition.state.isEmpty());
     }
 
     hasEmptyTilePositions(): boolean {

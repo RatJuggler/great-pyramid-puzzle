@@ -2,6 +2,16 @@ import { PuzzleChange, PuzzleChangeSet, TileChange, TilePositionChange } from ".
 import { Tile } from "../puzzle/tile";
 import { TilePosition } from "../puzzle/tile-position";
 
+/**
+ * A Solver is used to generate solutions to a given puzzle.
+ * Solvers may use different strategies to find a solution but will need to conform with the following:
+ * - After setting an initialState changes to the puzzle will be enumerated using nextState until a solution is found or all states
+ *   have been checked.
+ * - Once a solution is found forceNextState can be used to re-start the search for another solution then changes enumerated using
+ *   nextState again until a further solution is found.
+ * - stateForDisplay can be called to provide a snapshot of the puzzles current state.
+ */
+
 
 interface Solver {
     initialState: () => PuzzleChange;

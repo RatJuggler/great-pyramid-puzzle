@@ -58,8 +58,8 @@ describe("BruteForceSolver behaviour", function () {
             it("should be for type Add", function () {
                 expect(result.type).to.equal(PuzzleChangeType.Add);
             });
-            it("should be for position 3-1", function () {
-                expect(result.tilePositionId).to.equal("3-1");
+            it("should be for position 4-1", function () {
+                expect(result.tilePositionId).to.equal("4-1");
             });
             it("should be with tile 3", function () {
                 expect(result.tileId).to.equal(3);
@@ -76,8 +76,8 @@ describe("BruteForceSolver behaviour", function () {
             it("should be for type Rotate", function () {
                 expect(result.type).to.equal(PuzzleChangeType.Rotate);
             });
-            it("should be for position 3-1", function () {
-                expect(result.tilePositionId).to.equal("3-1");
+            it("should be for position 4-1", function () {
+                expect(result.tilePositionId).to.equal("4-1");
             });
             it("should be with 1 rotation", function () {
                 expect(result.rotations).to.equal(1);
@@ -91,8 +91,8 @@ describe("BruteForceSolver behaviour", function () {
             it("should be for type Rotate", function () {
                 expect(result.type).to.equal(PuzzleChangeType.Rotate);
             });
-            it("should be for position 3-1", function () {
-                expect(result.tilePositionId).to.equal("3-1");
+            it("should be for position 4-1", function () {
+                expect(result.tilePositionId).to.equal("4-1");
             });
             it("should be with 1 rotation", function () {
                 expect(result.rotations).to.equal(1);
@@ -106,8 +106,8 @@ describe("BruteForceSolver behaviour", function () {
             it("should be for type Remove", function () {
                 expect(result.type).to.equal(PuzzleChangeType.Remove);
             });
-            it("should be for position 3-1", function () {
-                expect(result.tilePositionId).to.equal("3-1");
+            it("should be for position 4-1", function () {
+                expect(result.tilePositionId).to.equal("4-1");
             });
             it("should be with tile 3", function () {
                 expect(result.tileId).to.equal(3);
@@ -124,8 +124,8 @@ describe("BruteForceSolver behaviour", function () {
             it("should be for type Add", function () {
                 expect(result.type).to.equal(PuzzleChangeType.Add);
             });
-            it("should be for position 3-1", function () {
-                expect(result.tilePositionId).to.equal("3-1");
+            it("should be for position 4-1", function () {
+                expect(result.tilePositionId).to.equal("4-1");
             });
             it("should be with tile 4", function () {
                 expect(result.tileId).to.equal(4);
@@ -142,8 +142,8 @@ describe("BruteForceSolver behaviour", function () {
             it("should be for type Rotate", function () {
                 expect(result.type).to.equal(PuzzleChangeType.Rotate);
             });
-            it("should be for position 3-1", function () {
-                expect(result.tilePositionId).to.equal("3-1");
+            it("should be for position 4-1", function () {
+                expect(result.tilePositionId).to.equal("4-1");
             });
             it("should be with 1 rotation", function () {
                 expect(result.rotations).to.equal(1);

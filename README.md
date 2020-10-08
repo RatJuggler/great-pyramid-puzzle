@@ -26,17 +26,17 @@ You can see the latest release in action [here](https://ratjuggler.github.io/gre
 
 Rough timings (time is to first solution):
 
-| Algorithm        | Puzzle / Tiles | Steps     | Time (slow animated) | Time    |
-| ---------------- | -------------- | --------- | -------------------- | ------- |
-| Brute Force      | Simple / 4     | 18        | 10 secs              | Instant |
-|                  | Pocket / 16    | 1,295,315 | ~200 hrs (est)       | 4 secs  |
-|                  | Great / 36     | ???       | ???                  | ???     |
-| Only Valid Tiles | Simple / 4     | 7         | 4 Secs               | Instant |
-|                  | Pocket / 16    | 86,358    | ~14 hrs (est)        | Instant |
-|                  | Great / 36     | ???       | ???                  | ???     |
-| Genetic          | Simple / 4     | ???       | ???                  | ???     |
-|                  | Pocket / 16    | ???       | ???                  | ???     |
-|                  | Great / 36     | ???       | ???                  | ???     |
+| Algorithm        | Puzzle / Tiles | Steps      | Time (slow animated) | Time     |
+| ---------------- | -------------- | ---------- | -------------------- | -------- |
+| Brute Force      | Simple / 4     | 18         | 10 secs              | Instant  |
+|                  | Pocket / 16    | 218,842    | ~34 hrs (est)        | 1 secs   |
+|                  | Great / 36     | 7,333,769  | ~48 days (est)       | 24 secs  |
+| Only Valid Tiles | Simple / 4     | 5          | 3 Secs               | Instant  |
+|                  | Pocket / 16    | 20,065     | ~3 hrs 30 mins (est) | Instant  |
+|                  | Great / 36     | 12,411,365 | ~87 days (est)       | 152 secs |
+| Genetic          | Simple / 4     | ???        | ???                  | ???      |
+|                  | Pocket / 16    | ???        | ???                  | ???      |
+|                  | Great / 36     | ???        | ???                  | ???      |
 
 ## Puzzle Overview
 There's an excellent overview of the puzzle on [Jaap's Puzzle Page](https://www.jaapsch.net/puzzles/pyramid.htm) but I'll repeat a
