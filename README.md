@@ -30,10 +30,10 @@ Rough timings (time is to first solution):
 | ---------------- | -------------- | ---------- | -------------------- | -------- |
 | Brute Force      | Simple / 4     | 18         | 10 secs              | Instant  |
 |                  | Pocket / 16    | 218,842    | ~34 hrs (est)        | 1 secs   |
-|                  | Great / 36     | ???        | ???                  | ???      |
+|                  | Great / 36     | 7,333,769  | ~48 days (est)       | 24 secs  |
 | Only Valid Tiles | Simple / 4     | 5          | 3 Secs               | Instant  |
 |                  | Pocket / 16    | 20,065     | ~3 hrs 30 mins (est) | Instant  |
-|                  | Great / 36     | 12,411,365 | ~87 days (est)       | 192 secs |
+|                  | Great / 36     | 12,411,365 | ~87 days (est)       | 152 secs |
 | Genetic          | Simple / 4     | ???        | ???                  | ???      |
 |                  | Pocket / 16    | ???        | ???                  | ???      |
 |                  | Great / 36     | ???        | ???                  | ???      |
