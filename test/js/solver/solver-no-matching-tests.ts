@@ -85,8 +85,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should be for type Add", function () {
                 expect(result.type).to.equal(PuzzleChangeType.Add);
             });
-            it("should be for position 3-1", function () {
-                expect(result.tilePositionId).to.equal("3-1");
+            it("should be for position 4-1", function () {
+                expect(result.tilePositionId).to.equal("4-1");
             });
             it("should be with tile 3", function () {
                 expect(result.tileId).to.equal(3);
@@ -100,8 +100,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should be for type Add", function () {
                 expect(result.type).to.equal(PuzzleChangeType.Add);
             });
-            it("should be for position 4-1", function () {
-                expect(result.tilePositionId).to.equal("4-1");
+            it("should be for position 3-1", function () {
+                expect(result.tilePositionId).to.equal("3-1");
             });
             it("should be with tile 4", function () {
                 expect(result.tileId).to.equal(4);
@@ -240,8 +240,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should be for type Add", function () {
                 expect(result.type).to.equal(PuzzleChangeType.Add);
             });
-            it("should be for position 3-1", function () {
-                expect(result.tilePositionId).to.equal("3-1");
+            it("should be for position 4-1", function () {
+                expect(result.tilePositionId).to.equal("4-1");
             });
             it("should be with tile 0", function () {
                 expect(result.tileId).to.equal(0);
@@ -255,8 +255,8 @@ describe("NoMatchingSolver behaviour", function () {
             it("should be for type Add", function () {
                 expect(result.type).to.equal(PuzzleChangeType.Add);
             });
-            it("should be for position 4-1", function () {
-                expect(result.tilePositionId).to.equal("4-1");
+            it("should be for position 3-1", function () {
+                expect(result.tilePositionId).to.equal("3-1");
             });
             it("should be with tile 0", function () {
                 expect(result.tileId).to.equal(0);
