@@ -10,7 +10,7 @@ import 'mocha';
 
 describe("Validate layout data definition files", function () {
 
-    let ajv: Ajv.Ajv;
+    let ajv: Ajv;
 
     beforeEach(function () {
         ajv = new Ajv();
